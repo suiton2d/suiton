@@ -17,11 +17,10 @@ import com.nebula2d.editor.framework.components.PanelRenderer;
 public class RenderAdapter implements ApplicationListener {
 
     private GameObject selectedObject;
-    PanelRenderer renderer;
+    private boolean enabled;
+
     public RenderAdapter() {
-        renderer = new PanelRenderer("test");
-        //Texture tex = new Texture("C:\\Users\\bonazza\\Desktop\\972054_651885671491059_1198577050_n");
-        //renderer.setTexture(tex);
+
     }
     //region accessors
     public GameObject getSelectedObject() {
@@ -34,21 +33,21 @@ public class RenderAdapter implements ApplicationListener {
     //endregion
     @Override
     public void create() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public void resize(int width, int height) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public void render() {
+
         SpriteBatch batcher = new SpriteBatch();
         batcher.begin();
-        renderer.render(null, batcher);
-        batcher.end();
 
+        batcher.end();
     }
 
     @Override
@@ -64,5 +63,9 @@ public class RenderAdapter implements ApplicationListener {
     @Override
     public void dispose() {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

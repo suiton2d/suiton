@@ -29,6 +29,11 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         //this.getCanvas().setMinimumSize(new Dimension(600,600));
     }
 
+    public void setEnabled(boolean enabled) {
+        getCanvas().setEnabled(enabled);
+        adapter.setEnabled(enabled);
+    }
+
     protected List<GameObject> getSelectedGameObjects(int x, int y) {
 
         List<GameObject> res = null;

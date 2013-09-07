@@ -12,7 +12,7 @@ public class Texture extends Asset {
 
     public Texture(String path) {
         super(path);
-        texture = new com.badlogic.gdx.graphics.Texture(new FileHandle(new File(path)));
+        texture = new com.badlogic.gdx.graphics.Texture(path);
     }
 
     //region Accessors
