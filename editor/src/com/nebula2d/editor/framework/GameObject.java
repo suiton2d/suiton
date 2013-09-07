@@ -1,0 +1,153 @@
+package com.nebula2d.editor.framework;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.nebula2d.editor.common.ILoadable;
+import com.nebula2d.editor.common.ISaveable;
+import com.nebula2d.editor.framework.components.*;
+import com.nebula2d.editor.util.FullBufferedReader;
+import com.nebula2d.editor.util.FullBufferedWriter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GameObject extends Node implements ISaveable, ILoadable{
+
+    protected String name;
+    protected Vector2 pos;
+    protected  Vector2 scale;
+    protected float rot;
+
+    protected List<Component> components;
+
+    public GameObject(String name) {
+        this.name = name;
+        components = new ArrayList<Component>();
+        pos = new Vector2();
+        scale = new Vector2();
+        rot = 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Vector2 getPosition() {
+        return pos;
+    }
+
+    public Vector2 getScale() {
+        return scale;
+    }
+
+    public float getRotation() {
+        return rot;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPosition(float x, float y) {
+        pos.x = x;
+        pos.y = y;
+    }
+
+    public void setScale(float x, float y) {
+        scale.x = x;
+        scale.y = y;
+    }
+
+    public void setRotation(float rot) {
+        this.rot = rot;
+    }
+
+    public List<Component> getComponents() {
+        return this.components;
+    }
+
+    public void addComponent(Component comp) {
+        components.add(comp);
+        comp.setParent(this);
+    }
+
+    public void removeComponent(Component comp) {
+        components.remove(comp);
+    }
+
+    public void removeComponent(int idx) {
+        components.remove(idx);
+    }
+
+    public Component getComponent(String name) {
+        for (Component c : components) {
+            if (c.getName().equals(name)) {
+                return c;
+            }
+        }
+
+        return null;
+    }
+
+    public Component getComponent(int idx) {
+        return components.get(idx);
+    }
+
+    @Override
+    public void load(FullBufferedReader fr) throws IOException {
+        name = fr.readLine();
+        pos.x = fr.readIntLine();
+        pos.y = fr.readIntLine();
+        scale.x = fr.readFloatLine();
+        scale.y = fr.readFloatLine();
+        rot = fr.readFloatLine();
+        int size = fr.readIntLine();
+
+        for (int i = 0; i < size; ++i) {
+            String name = fr.readLine();
+            int type = fr.readIntLine();
+            Component component = null;
+            if (type == Component.COMPONENT_TYPE_RENDER) {
+                //TODO: implement
+            } else if (type == Component.COMPONENT_TYPE_AUDIO) {
+                //component = new AudioSource(name);
+            } else if (type == Component.COMPONENT_TYPE_BEHAVE) {
+                component = new Behaviour(name);
+            } else if (type == Component.COMPONENT_TYPE_RIGID_BODY) {
+
+            }
+
+            component.load(fr);
+            addComponent(component);
+        }
+    }
+
+    @Override
+    public void save(FullBufferedWriter fw) throws IOException {
+        fw.writeLine(name);
+        fw.writeFloatLine(pos.x);
+        fw.writeFloatLine(pos.y);
+        fw.writeFloatLine(scale.x);
+        fw.writeFloatLine(scale.y);
+        fw.writeFloatLine(rot);
+        fw.writeIntLine(components.size());
+
+        for (Component c : components) {
+            c.save(fw);
+        }
+    }
+
+    public void render(GameObject selectedObject, SpriteBatch batcher) {
+        for (Component c : components) {
+            if (c.isEnabled()) {
+                c.render(selectedObject, batcher);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
