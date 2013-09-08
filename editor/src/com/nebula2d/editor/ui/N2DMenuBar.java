@@ -4,41 +4,43 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Created with IntelliJ IDEA.
- * User: bonazza
- * Date: 9/6/13
- * Time: 11:20 PM
- * To change this template use File | Settings | File Templates.
- */
 public class N2DMenuBar extends JMenuBar {
 
-    private MainFrame parent;
-
-    private JMenu fileMenu;
-
+    //region members
     private JMenuItem newMenuItem;
     private JMenuItem openMenuItem;
     private JMenuItem exitMenuItem;
 
-    public N2DMenuBar(MainFrame parent) {
-        this.parent = parent;
+    private JMenuItem componentsMenuItem;
+    //endregion
 
-        fileMenu = new JMenu("File");
+    //region constructors
+    public N2DMenuBar() {
+
+        JMenu fileMenu = new JMenu("File");
+        JMenu toolsMenu = new JMenu("Tools");
 
         newMenuItem = fileMenu.add("New Project");
         openMenuItem = fileMenu.add("Open Project");
         exitMenuItem = fileMenu.add("Exit Nebula2D");
 
+        componentsMenuItem = toolsMenu.add("Components");
+        componentsMenuItem.setEnabled(false);
+
         add(fileMenu);
+        add(toolsMenu);
         bindMenuItems();
     }
 
+    //endregion
+
+    //region internal methods
     private void bindMenuItems() {
+        //region file menu bindings
         newMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new NewProjectDialog(parent);
+                new NewProjectDialog();
             }
         });
 
@@ -56,20 +58,22 @@ public class N2DMenuBar extends JMenuBar {
                 System.exit(0);
             }
         });
+        //endregion
+
+        //region tool menu bindings
+        componentsMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO: implement
+            }
+        });
+        //endregion
     }
+    //endregion
 
     //region accessors
-    public JMenuItem getNewMenuItem() {
-        return newMenuItem;
+    public JMenuItem getComponentsMenuItem() {
+        return componentsMenuItem;
     }
-
-    public JMenuItem getOpenMenuItem() {
-        return openMenuItem;
-    }
-
-    public JMenuItem getExitMenuItem() {
-        return exitMenuItem;
-    }
-
     //endregion
 }

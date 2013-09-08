@@ -10,21 +10,19 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: bonazza
- * Date: 8/2/13
- * Time: 9:08 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Behaviour extends Component {
 
+    //region members
     protected Script script;
+    //endregion
 
+    //region constructor
     public Behaviour(String name) {
         super(name);
     }
+    //endregion
 
+    //region accessors
     public Script getScript() {
         return script;
     }
@@ -32,7 +30,9 @@ public class Behaviour extends Component {
     public void setScript(Script script) {
         this.script = script;
     }
+    //endregion
 
+    //region overrided methods from Component
     @Override
     public void render(GameObject selectedObject, SpriteBatch batcher) {
         //Noop!
@@ -59,4 +59,5 @@ public class Behaviour extends Component {
             fw.writeLine(script.getPath());
         }
     }
+    //endregion
 }

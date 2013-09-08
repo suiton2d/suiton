@@ -12,6 +12,7 @@ import java.util.List;
 
 public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, MouseMotionListener{
 
+    //region members
     protected float camXOffset, camYOffset;
 
     protected RenderAdapter adapter;
@@ -19,7 +20,9 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     protected Point lastPoint;
 
     protected boolean isMouseDown;
+    //endregion
 
+    //region constructors
     public RenderCanvas(RenderAdapter adapter) {
         super(adapter, true);
         this.adapter = adapter;
@@ -28,12 +31,16 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         this.isMouseDown = false;
         //this.getCanvas().setMinimumSize(new Dimension(600,600));
     }
+    //endregion
 
+    //region public methods
     public void setEnabled(boolean enabled) {
         getCanvas().setEnabled(enabled);
         adapter.setEnabled(enabled);
     }
+    //endregion
 
+    //region internal methods
     protected List<GameObject> getSelectedGameObjects(int x, int y) {
 
         List<GameObject> res = null;
@@ -79,7 +86,9 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
 
         return (dx > center.x - w/2 && dx < center.x + w/2 && dy > center.y - h/2 && dy < center.y + h/2);
     }
+    //endregion
 
+    //region accessors
     public float getCamXOffset() {
         return camXOffset;
     }
@@ -95,7 +104,9 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     public void setSelectedObject(GameObject go) {
         this.adapter.setSelectedObject(go);
     }
+    //endregion
 
+    //region overrided methods from MouseListener
     @Override
     public void mouseClicked(MouseEvent e) {}
 
@@ -120,9 +131,12 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         }
     }
 
+
     @Override
     public void mouseReleased(MouseEvent e) {}
+    //endregion
 
+    //region overrided methods from MouseMotionListener
     @Override
     public void mouseEntered(MouseEvent e) {}
 
@@ -147,4 +161,5 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
 
     @Override
     public void mouseMoved(MouseEvent e) {}
+    //endregion
 }

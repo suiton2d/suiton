@@ -6,11 +6,14 @@ import java.awt.*;
 
 public class MainFrame extends JFrame {
 
+    //region static members
     private static RenderCanvas renderCanvas = new RenderCanvas(new RenderAdapter());
     private static SceneGraph sceneGraph = new SceneGraph();
     private static N2DMenuBar menuBar;
     private static Project project;
+    //endregion
 
+    //region constructor
     public MainFrame() {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -23,18 +26,24 @@ public class MainFrame extends JFrame {
         sceneGraph.setEnabled(false);
         renderCanvas.setEnabled(false);
 
-        menuBar = new N2DMenuBar(this);
+        menuBar = new N2DMenuBar();
         setJMenuBar(menuBar);
         setSize(1200, 768);
         setVisible(true);
     }
+    //endregion
 
+    //region static accessors
     public static RenderCanvas getRenderCanvas() {
         return renderCanvas;
     }
 
     public static SceneGraph getSceneGraph() {
         return sceneGraph;
+    }
+
+    public static N2DMenuBar getN2DMenuBar() {
+        return menuBar;
     }
 
     public static Project getProject() {
@@ -46,4 +55,5 @@ public class MainFrame extends JFrame {
         sceneGraph.setEnabled(true);
         renderCanvas.setEnabled(true);
     }
+    //endregion
 }

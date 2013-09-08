@@ -8,34 +8,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-/**
- * Created with IntelliJ IDEA.
- * User: bonazza
- * Date: 9/6/13
- * Time: 11:38 PM
- * To change this template use File | Settings | File Templates.
- */
 public class NewProjectDialog extends JDialog {
 
-    private MainFrame parent;
-
+    //region members
     private JTextField projNameTf;
     private JTextField parentDirTf;
     private JButton browseBtn;
     private JButton createBtn;
     private JButton cancelBtn;
+    //endregion members
 
-    public NewProjectDialog(MainFrame parent) {
-        this.parent = parent;
+    //region constructors
+    public NewProjectDialog() {
         setTitle("New Project");
 
         JLabel projNameLbl = new JLabel("Project Name:");
         JLabel parentDirLbl = new JLabel("Parent Directory:");
 
-        projNameTf = new JTextField();
-        projNameTf.setMinimumSize(new Dimension(200, 5));
-        parentDirTf = new JTextField();
-        parentDirTf.setMinimumSize(new Dimension(200, 5));
+        projNameTf = new JTextField(20);
+        //projNameTf.setMinimumSize(new Dimension(200, 5));
+        parentDirTf = new JTextField(20);
+        //parentDirTf.setMinimumSize(new Dimension(200, 5));
 
         browseBtn = new JButton("...");
         createBtn = new JButton("Create");
@@ -76,7 +69,9 @@ public class NewProjectDialog extends JDialog {
         //setSize(new Dimension(400, 300));
         setVisible(true);
     }
+    //endregion
 
+    //region internal methods
     private void bindButtons() {
         cancelBtn.addActionListener(new ActionListener() {
             @Override
@@ -122,10 +117,8 @@ public class NewProjectDialog extends JDialog {
 
         File parentDir = new File(parentDirTf.getText().trim());
 
-        if (!parentDir.exists() || !parentDir.isDirectory()) {
-            return false;
-        }
-
-        return true;
+        return parentDir.exists() && parentDir.isDirectory();
     }
+
+    //endregion
 }

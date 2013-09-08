@@ -8,11 +8,15 @@ import java.io.IOException;
 
 public abstract class Animation implements ISaveable, ILoadable{
 
+    //region members
     protected String name;
+    //endregion
 
+    //region constructor
     public Animation(String name) {
         this.name = name;
     }
+    //endregion
 
     //region Accessors
     public String getName() {
@@ -24,8 +28,10 @@ public abstract class Animation implements ISaveable, ILoadable{
     }
     //endregion
 
+    //region interface overrides
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
     }
+    //endregion
 }

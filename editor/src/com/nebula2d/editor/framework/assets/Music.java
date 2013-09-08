@@ -8,25 +8,23 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: bonazza
- * Date: 8/20/13
- * Time: 11:06 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Music extends Asset {
 
+    //region members
     private com.badlogic.gdx.audio.Music music;
 
     private float volume;
+    //endregion
 
+    //region constructor
     public Music(String path) {
         super(path);
         music = Gdx.audio.newMusic(new FileHandle(new File(path)));
         music.setVolume(volume);
     }
+    //endregion
 
+    //region playback controls
     public void play() {
         music.play();
     }
@@ -38,6 +36,7 @@ public class Music extends Asset {
     public void pause() {
         music.pause();
     }
+    //endregion
 
     //region accessors
     public boolean isLooping() {
@@ -58,6 +57,7 @@ public class Music extends Asset {
     }
     //endregion
 
+    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         volume = fr.readFloatLine();
@@ -68,6 +68,5 @@ public class Music extends Asset {
         super.save(fw);
         fw.writeFloatLine(volume);
     }
-
-
+    //endregion
 }

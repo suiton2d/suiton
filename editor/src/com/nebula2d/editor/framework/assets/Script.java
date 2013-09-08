@@ -7,8 +7,18 @@ import java.io.*;
 
 public class Script extends Asset {
 
+    //region members
     protected String content;
+    //endregion
 
+    //region constructor
+    public Script(String path) {
+        super(path);
+        init();
+    }
+    //endregion
+
+    //region internal methods
     protected void init() {
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
@@ -26,18 +36,18 @@ public class Script extends Asset {
             System.out.println("Failed to read file at path: " + path);
         }
     }
+    //endregion
 
-    public Script(String path) {
-        super(path);
-        init();
-    }
-
+    //region accessors
     public String getContent() {
         return this.content;
     }
+    //endregion
 
+    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         //Noop!
     }
+    //endregion
 }

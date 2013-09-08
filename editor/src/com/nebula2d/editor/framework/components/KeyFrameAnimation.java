@@ -9,14 +9,17 @@ import java.io.IOException;
 
 public class KeyFrameAnimation extends Animation {
 
-    TextureRegion[] frames;
+    //region members
+    protected TextureRegion[] frames;
     protected int numRows;
     protected int numCols;
     protected int startFrame;
     protected int endFrame;
     protected float speed;
     protected Texture tex;
+    //endregion
 
+    //region constructors
     /**
      * Ctor used for loading animation form disk
      * @param tex the texture to associate with the animation
@@ -44,7 +47,9 @@ public class KeyFrameAnimation extends Animation {
 
         init();
     }
+    //endregion
 
+    //region internal methods
     protected void init() {
         com.badlogic.gdx.graphics.Texture tmpTexture = tex.getTexture();
         TextureRegion[][] tmpRegions = TextureRegion.split(tmpTexture, tmpTexture.getWidth() / numCols, tmpTexture.getHeight() / numRows);
@@ -58,8 +63,9 @@ public class KeyFrameAnimation extends Animation {
         }
 
     }
+    //endregion
 
-    //region Accessors
+    //region accessors
     public TextureRegion[] getFrames() {
         return frames;
     }
@@ -89,6 +95,7 @@ public class KeyFrameAnimation extends Animation {
     }
     //endregion
 
+    //region overrided methods from Animation
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         this.numRows = fr.readIntLine();
@@ -108,4 +115,5 @@ public class KeyFrameAnimation extends Animation {
         fw.writeIntLine(this.startFrame);
         fw.writeIntLine(this.endFrame);
     }
+    //endregion
 }

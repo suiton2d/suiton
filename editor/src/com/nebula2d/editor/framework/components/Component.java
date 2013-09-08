@@ -18,19 +18,24 @@ import java.io.OutputStream;
  */
 public abstract class Component implements ISaveable, ILoadable {
 
+    //region constants
     public static final int COMPONENT_TYPE_RENDER = 0;
     public static final int COMPONENT_TYPE_AUDIO = 1;
     public static final int COMPONENT_TYPE_BEHAVE = 2;
     public static final int COMPONENT_TYPE_RIGID_BODY = 3;
+    //endregion
 
+    //region members
     protected String name;
     protected GameObject parent;
     protected boolean enabled;
+    //endregion
 
-
+    //region constructor
     public Component(String name) {
         this.name = name;
     }
+    //endregion
 
     //region Accessors
     public String getName() {
@@ -59,13 +64,16 @@ public abstract class Component implements ISaveable, ILoadable {
 
     //endregion
 
+    //region public methods
     /**
      * abstract method for rendering a component in the scene
      * @param selectedObject the selected object in the render canvas
      * @parem batcher the sprite batcher used for rendering
      */
     public abstract void render(GameObject selectedObject, SpriteBatch batcher);
+    //endregion
 
+    //region interface overrides
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
@@ -76,4 +84,5 @@ public abstract class Component implements ISaveable, ILoadable {
     public void load(FullBufferedReader fr) throws IOException {
         enabled = fr.readBooleanLine();
     }
+    //endregion
 }

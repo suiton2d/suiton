@@ -4,13 +4,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-/**
- * Created with IntelliJ IDEA.
- * User: bonazza
- * Date: 8/2/13
- * Time: 9:51 PM
- * To change this template use File | Settings | File Templates.
- */
 public class FullBufferedWriter extends BufferedWriter {
 
     public FullBufferedWriter(Writer out) {

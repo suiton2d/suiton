@@ -14,13 +14,16 @@ import java.util.List;
 
 public class GameObject extends Node implements ISaveable, ILoadable{
 
+    //region members
     protected String name;
     protected Vector2 pos;
     protected  Vector2 scale;
     protected float rot;
 
     protected List<Component> components;
+    //endregion
 
+    //region constructors
     public GameObject(String name) {
         this.name = name;
         components = new ArrayList<Component>();
@@ -28,7 +31,9 @@ public class GameObject extends Node implements ISaveable, ILoadable{
         scale = new Vector2();
         rot = 0;
     }
+    //endregion
 
+    //region accessors
     public String getName() {
         return name;
     }
@@ -93,7 +98,9 @@ public class GameObject extends Node implements ISaveable, ILoadable{
     public Component getComponent(int idx) {
         return components.get(idx);
     }
+    //endregion
 
+    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         name = fr.readLine();
@@ -137,7 +144,9 @@ public class GameObject extends Node implements ISaveable, ILoadable{
             c.save(fw);
         }
     }
+    //endregion
 
+    //region public methods
     public void render(GameObject selectedObject, SpriteBatch batcher) {
         for (Component c : components) {
             if (c.isEnabled()) {
@@ -150,4 +159,5 @@ public class GameObject extends Node implements ISaveable, ILoadable{
     public String toString() {
         return name;
     }
+    //endregion
 }

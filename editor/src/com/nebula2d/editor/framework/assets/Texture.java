@@ -1,19 +1,21 @@
 package com.nebula2d.editor.framework.assets;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.nebula2d.editor.util.FullBufferedReader;
 
-import java.io.File;
 import java.io.IOException;
 
 public class Texture extends Asset {
 
+    //region members
     protected com.badlogic.gdx.graphics.Texture texture;
+    //endregion
 
+    //region constructor
     public Texture(String path) {
         super(path);
         texture = new com.badlogic.gdx.graphics.Texture(path);
     }
+    //endregion
 
     //region Accessors
     public int getWidth() {
@@ -33,8 +35,10 @@ public class Texture extends Asset {
     }
     //endregion
 
+    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         //Noop!
     }
+    //endregion
 }

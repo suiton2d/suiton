@@ -13,17 +13,22 @@ import java.io.IOException;
  */
 public abstract class Asset implements ISaveable, ILoadable{
 
+    //region members
     protected String path;
     protected int type;
     protected String name;
     protected boolean isExtra;
+    //endregion
 
+    //region constructor
     public Asset(String path) {
         this.path = path;
         int slash = path.indexOf(File.pathSeparator);
         name = slash != -1 ? path.substring(slash + 1) : "";
     }
+    //endregion
 
+    //region accessors
     public String getPath() {
         return this.path;
     }
@@ -47,10 +52,13 @@ public abstract class Asset implements ISaveable, ILoadable{
     public void setPath(String path) {
         this.path = path;
     }
+    //endregion
 
+    //region interface overrides
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(path);
         fw.writeIntLine(type);
     }
+    //endregion
 }

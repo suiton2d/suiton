@@ -6,15 +6,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Node {
+
+    //region members
     public Node parent;
     public Node nextSibling;
     public Node prevSibling;
     public List<Node> children;
+    //endregion
 
+    //region constructors
     public Node() {
         this.children = Collections.synchronizedList(new LinkedList<Node>());
     }
+    //endregion
 
+    //region public methods
     public boolean hasParent() {
         return this.parent != null;
     }
@@ -54,4 +60,5 @@ public class Node {
     public int getChildCount() {
         return children.size();
     }
+    //endregion
 }

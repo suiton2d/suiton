@@ -11,18 +11,23 @@ import java.io.IOException;
 
 public class SoundEffect extends Asset {
 
+    //region members
     private  Sound sound;
     private boolean isPlaying;
     private boolean isPaused;
     private boolean loop;
     private float volume;
-    
+    //endregion
+
+    //region constructor
     public SoundEffect(String path) {
         super(path);
         sound = Gdx.audio.newSound(new FileHandle(new File(path)));
         isPlaying = isPaused = loop = false;
     }
+    //endregion
 
+    //region playback controls
     public void play() {
         if (!isPlaying) {
             if (loop)
@@ -35,7 +40,9 @@ public class SoundEffect extends Asset {
     public void stop() {
         sound.stop();
     }
+    //endregion
 
+    //region interface ovverrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         loop = fr.readBooleanLine();
@@ -48,4 +55,5 @@ public class SoundEffect extends Asset {
         fw.writeBoolLine(loop);
         fw.writeFloatLine(volume);
     }
+    //endregion
 }

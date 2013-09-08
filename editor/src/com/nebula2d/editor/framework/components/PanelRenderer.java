@@ -5,23 +5,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Texture;
 
-/**
- * Created with IntelliJ IDEA.
- * User: bonazza
- * Date: 8/25/13
- * Time: 11:04 PM
- * To change this template use File | Settings | File Templates.
- */
 public class PanelRenderer extends Renderer {
 
+    //region constructor
     public PanelRenderer(String name) {
         super(name);
     }
+    //endregion
 
-    public void setTexture(Texture tex) {
-        this.texture = tex;
-    }
-
+    //region overrided methods from Renderer
     @Override
     public void render(GameObject selectedObject, SpriteBatch batcher) {
         if (texture != null) {
@@ -34,4 +26,5 @@ public class PanelRenderer extends Renderer {
             }
         }
     }
+    //endregion
 }

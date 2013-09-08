@@ -6,21 +6,17 @@ import com.nebula2d.editor.framework.Layer;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: bonazza
- * Date: 8/9/13
- * Time: 8:09 PM
- * To change this template use File | Settings | File Templates.
- */
 public class SceneGraph extends JTree {
 
+    //region members
     private DefaultMutableTreeNode root;
+    //endregion
+
+    //region constructors
     public SceneGraph() {
 
         setRootVisible(false);
@@ -28,7 +24,9 @@ public class SceneGraph extends JTree {
         DefaultTreeModel model = new DefaultTreeModel(root);
         setModel(model);
     }
+    //endregion
 
+    //region public methods
     public void addLayer(Layer layer) {
         root.add(new DefaultMutableTreeNode(layer));
         ((DefaultTreeModel)getModel()).nodeStructureChanged(root);
@@ -81,7 +79,9 @@ public class SceneGraph extends JTree {
         root.removeAllChildren();
         ((DefaultTreeModel)getModel()).nodeStructureChanged(root);
     }
+    //endregion
 
+    //region accessors
     public List<Layer> getAllLayers() {
         List<Layer> layers = new ArrayList<Layer>();
         Enumeration<DefaultMutableTreeNode> children = root.children();
@@ -116,4 +116,5 @@ public class SceneGraph extends JTree {
 
         return null;
     }
+    //endregion
 }

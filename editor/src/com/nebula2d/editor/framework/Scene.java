@@ -12,16 +12,22 @@ import java.util.List;
 
 public class Scene implements ISaveable, ILoadable {
 
+    //region members
     protected String name;
     protected int id;
-    protected List<Layer> layers;
 
+    protected List<Layer> layers;
+    //endregion
+
+    //region constructors
     public Scene(String name) {
         this.name = name;
         id = 0;
         layers = new ArrayList<Layer>();
     }
+    //endregion
 
+    //region accessors
     public String getName() {
         return this.name;
     }
@@ -63,13 +69,17 @@ public class Scene implements ISaveable, ILoadable {
 
         return null;
     }
+    //endregion
 
+    //region public methods
     public void render(GameObject selectedObject, SpriteBatch batcher) {
         for (Layer l : layers) {
             l.render(selectedObject, batcher);
         }
     }
+    //endregion
 
+    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         name = fr.readLine();
@@ -91,4 +101,5 @@ public class Scene implements ISaveable, ILoadable {
             l.save(fw);
         }
     }
+    //endregion
 }

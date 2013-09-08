@@ -12,15 +12,20 @@ import java.util.List;
 
 public class Layer implements ISaveable, ILoadable {
 
+    //region members
     protected String name;
 
     protected List<GameObject> gameObjects;
+    //endregion
 
+    //region constructors
     public Layer(String name) {
         this.name = name;
         gameObjects = new ArrayList<GameObject>();
     }
+    //endregion
 
+    //region accessors
     public String getName() {
         return name;
     }
@@ -58,13 +63,22 @@ public class Layer implements ISaveable, ILoadable {
     public GameObject getGameObject(int idx) {
         return gameObjects.get(idx);
     }
+    //endregion
 
+    //region public methods
     public void render(GameObject selectedObject, SpriteBatch batcher) {
         for (GameObject go : gameObjects) {
             go.render(selectedObject, batcher);
         }
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+    //endregion
+
+    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         name = fr.readLine();
@@ -84,9 +98,5 @@ public class Layer implements ISaveable, ILoadable {
             go.save(fw);
         }
     }
-
-    @Override
-    public String toString() {
-        return name;
-    }
+    //endregion
 }

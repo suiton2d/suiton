@@ -1,5 +1,7 @@
 package com.nebula2d.editor.util;
 
+import java.io.File;
+
 /**
  * Created with IntelliJ IDEA.
  * User: bonazza
@@ -10,12 +12,6 @@ package com.nebula2d.editor.util;
 public class PlatformUtil {
 
     public static int findSlashChar(String base) {
-        int slash = base.indexOf('/');
-
-        if (slash == -1) {
-            slash = base.indexOf('\\');
-        }
-
-        return slash;
+        return base.indexOf(File.separator);
     }
 }
