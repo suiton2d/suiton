@@ -15,8 +15,6 @@ import java.awt.event.ActionListener;
  */
 public class N2DMenuBar extends JMenuBar {
 
-    private MainFrame parent;
-
     private JMenu sceneMenu;
     private JMenu gameObjectMenu;
 
@@ -30,9 +28,7 @@ public class N2DMenuBar extends JMenuBar {
 
     private JMenuItem newEmptyGameObjectMenuItem;
 
-    public N2DMenuBar(MainFrame parent) {
-        this.parent = parent;
-
+    public N2DMenuBar() {
         JMenu fileMenu = new JMenu("File");
 
         newMenuItem = fileMenu.add("New Project");
@@ -67,7 +63,7 @@ public class N2DMenuBar extends JMenuBar {
         newMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new NewProjectDialog(parent);
+                new NewProjectDialog();
             }
         });
 

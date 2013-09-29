@@ -48,10 +48,6 @@ public class MainFrame extends JFrame {
         return sceneGraph;
     }
 
-    public static N2DMenuBar getN2DMenuBar() {
-        return menuBar;
-    }
-
     public static Project getProject() {
         return project;
     }
