@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.nebula2d.editor.framework.GameObject;
 
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -122,11 +123,10 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
             int size = selectedObjects != null ? selectedObjects.size() : 0;
 
             if (size > 0) {
-                adapter.setSelectedObject(selectedObjects.get(size - 1));
-                //TODO: finish this block
+                GameObject selectedObject = selectedObjects.get(size - 1);
+                MainFrame.getSceneGraph().setSelectedNode(selectedObject);
             } else {
-                adapter.setSelectedObject(null);
-                //TODO: finish this block;
+                MainFrame.getSceneGraph().setSelectionPath(null);
             }
         }
     }
@@ -146,14 +146,24 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     @Override
     public void mouseDragged(MouseEvent e) {
         Point pos = e.getPoint();
-
+        GameObject selectedObject = adapter.getSelectedObject();
         if (e.isControlDown()) {
             int dx = pos.x - lastPoint.x;
             int dy = pos.y - lastPoint.y;
             camXOffset += dx;
             camYOffset += dy;
-        } else if (adapter.getSelectedObject() != null) {
-            //TODO: finish this block
+        } else if (selectedObject != null) {
+            switch (MainFrame.getToolbar().getSelectedRendererWidget()) {
+                case N2DToolbar.RENDERER_WIDGET_TRANSLATE:
+                    translateObject(pos);
+                    break;
+                case N2DToolbar.RENDERER_WIDGET_SCALE:
+                    scaleObject(pos);
+                    break;
+                case N2DToolbar.RENDERER_WIDGET_ROTATE:
+                    rotateObject(pos);
+                    break;
+            }
         }
 
         lastPoint = pos;
