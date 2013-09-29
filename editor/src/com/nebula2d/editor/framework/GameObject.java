@@ -10,32 +10,23 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
-public class GameObject extends Node implements ISaveable, ILoadable{
+public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
 
-    //region members
-    protected String name;
     protected Vector2 pos;
     protected  Vector2 scale;
     protected float rot;
 
     protected List<Component> components;
-    //endregion
 
-    //region constructors
     public GameObject(String name) {
-        this.name = name;
+        super(name);
         components = new ArrayList<Component>();
         pos = new Vector2();
         scale = new Vector2();
         rot = 0;
-    }
-    //endregion
-
-    //region accessors
-    public String getName() {
-        return name;
     }
 
     public Vector2 getPosition() {
@@ -48,10 +39,6 @@ public class GameObject extends Node implements ISaveable, ILoadable{
 
     public float getRotation() {
         return rot;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setPosition(float x, float y) {
@@ -98,9 +85,7 @@ public class GameObject extends Node implements ISaveable, ILoadable{
     public Component getComponent(int idx) {
         return components.get(idx);
     }
-    //endregion
 
-    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         name = fr.readLine();
@@ -123,10 +108,19 @@ public class GameObject extends Node implements ISaveable, ILoadable{
                 component = new Behaviour(name);
             } else if (type == Component.COMPONENT_TYPE_RIGID_BODY) {
 
+            } else {
+
             }
 
             component.load(fr);
             addComponent(component);
+        }
+
+        int childCount = fr.readIntLine();
+
+        for (int i = 0; i < childCount; ++i) {
+            GameObject go = new GameObject("tmp");
+            go.load(fr);
         }
     }
 
@@ -143,10 +137,15 @@ public class GameObject extends Node implements ISaveable, ILoadable{
         for (Component c : components) {
             c.save(fw);
         }
-    }
-    //endregion
 
-    //region public methods
+        fw.writeIntLine(getChildCount());
+        Enumeration children = children();
+        while (children.hasMoreElements()) {
+            GameObject go = (GameObject) children.nextElement();
+            go.save(fw);
+        }
+    }
+
     public void render(GameObject selectedObject, SpriteBatch batcher) {
         for (Component c : components) {
             if (c.isEnabled()) {
@@ -154,10 +153,4 @@ public class GameObject extends Node implements ISaveable, ILoadable{
             }
         }
     }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-    //endregion
 }

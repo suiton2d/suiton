@@ -1,46 +1,73 @@
 package com.nebula2d.editor.ui;
 
+import com.nebula2d.editor.framework.BaseSceneNode;
+import com.nebula2d.editor.framework.GameObject;
+import com.nebula2d.editor.framework.Layer;
+import com.nebula2d.editor.util.PlatformUtil;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+/**
+ * Custome JMenuBar implementation
+ */
 public class N2DMenuBar extends JMenuBar {
 
-    //region members
+    private MainFrame parent;
+
+    private JMenu sceneMenu;
+    private JMenu gameObjectMenu;
+
     private JMenuItem newMenuItem;
     private JMenuItem openMenuItem;
     private JMenuItem exitMenuItem;
 
-    private JMenuItem componentsMenuItem;
-    //endregion
+    private JMenuItem newSceneMenuItem;
+    private JMenuItem changeSceneMenuItem;
+    private JMenuItem newLayerMenuItem;
 
-    //region constructors
-    public N2DMenuBar() {
+    private JMenuItem newEmptyGameObjectMenuItem;
+
+    public N2DMenuBar(MainFrame parent) {
+        this.parent = parent;
 
         JMenu fileMenu = new JMenu("File");
-        JMenu toolsMenu = new JMenu("Tools");
 
         newMenuItem = fileMenu.add("New Project");
         openMenuItem = fileMenu.add("Open Project");
-        exitMenuItem = fileMenu.add("Exit Nebula2D");
 
-        componentsMenuItem = toolsMenu.add("Components");
-        componentsMenuItem.setEnabled(false);
+        //Don't need exit menu item on Mac
+        if (!PlatformUtil.isMac())
+            exitMenuItem = fileMenu.add("Exit Nebula2D");
 
+        sceneMenu = new JMenu("Scene");
+
+        newSceneMenuItem = sceneMenu.add("New Scene");
+        changeSceneMenuItem = sceneMenu.add("Change Scene");
+        newLayerMenuItem = sceneMenu.add("New Layer");
+
+        gameObjectMenu = new JMenu("New GameObject");
+
+        newEmptyGameObjectMenuItem = gameObjectMenu.add("Empty GameObject");
+
+        sceneMenu.add(gameObjectMenu);
+        gameObjectMenu.setEnabled(false);
+        sceneMenu.setEnabled(false);
         add(fileMenu);
-        add(toolsMenu);
+        add(sceneMenu);
         bindMenuItems();
     }
 
-    //endregion
-
-    //region internal methods
+    /**
+     * binds click events to menu items
+     */
     private void bindMenuItems() {
-        //region file menu bindings
         newMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new NewProjectDialog();
+                new NewProjectDialog(parent);
             }
         });
 
@@ -51,29 +78,57 @@ public class N2DMenuBar extends JMenuBar {
             }
         });
 
-        exitMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO: Prompt on exit
-                System.exit(0);
-            }
-        });
-        //endregion
+        if (exitMenuItem != null) {
+            exitMenuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //TODO: Prompt on exit
+                    System.exit(0);
+                }
+            });
+        }
 
-        //region tool menu bindings
-        componentsMenuItem.addActionListener(new ActionListener() {
+        newSceneMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO: implement
             }
         });
-        //endregion
+
+        changeSceneMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO: implement
+            }
+        });
+
+        newLayerMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount());
+                MainFrame.getSceneGraph().addLayer(layer);
+            }
+        });
+
+        newEmptyGameObjectMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //If this memnu item is enabled, we know 100% that something is selected, so no check is necessary. =)
+                BaseSceneNode selectedNode = (BaseSceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
+
+                GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
+                selectedNode.addGameObject(go);
+            }
+        });
     }
-    //endregion
 
     //region accessors
-    public JMenuItem getComponentsMenuItem() {
-        return componentsMenuItem;
+    public JMenu getSceneMenu() {
+        return sceneMenu;
+    }
+
+    public JMenu getGameObjectMenu() {
+        return gameObjectMenu;
     }
     //endregion
 }

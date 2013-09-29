@@ -1,6 +1,7 @@
 package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.Project;
+import com.nebula2d.editor.framework.Scene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,8 +90,9 @@ public class NewProjectDialog extends JDialog {
 
                     return;
                 }
-
-                MainFrame.setProject(new Project(parentDirTf.getText().trim(), projNameTf.getText().trim()));
+                Project project = new Project(parentDirTf.getText().trim(), projNameTf.getText().trim());
+                project.addScene(new Scene("Untitled Scene 0"));
+                MainFrame.setProject(project);
                 dispose();
             }
         });

@@ -119,7 +119,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
             }
 
             List<GameObject> selectedObjects = getSelectedGameObjects(lastPoint.x, lastPoint.y);
-            int size = selectedObjects.size();
+            int size = selectedObjects != null ? selectedObjects.size() : 0;
 
             if (size > 0) {
                 adapter.setSelectedObject(selectedObjects.get(size - 1));

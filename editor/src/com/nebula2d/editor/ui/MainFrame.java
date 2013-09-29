@@ -1,8 +1,11 @@
 package com.nebula2d.editor.ui;
+import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.Project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
 
@@ -15,7 +18,7 @@ public class MainFrame extends JFrame {
 
     //region constructor
     public MainFrame() {
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
+        super("Nebula2D");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JScrollPane sp = new JScrollPane(sceneGraph);
         sp.setPreferredSize(new Dimension(300, 600));
@@ -28,6 +31,7 @@ public class MainFrame extends JFrame {
 
         menuBar = new N2DMenuBar();
         setJMenuBar(menuBar);
+
         setSize(1200, 768);
         setVisible(true);
     }
@@ -50,10 +54,15 @@ public class MainFrame extends JFrame {
         return project;
     }
 
+    public static N2DMenuBar getN2DMenuBar() {
+        return menuBar;
+    }
+
     public static void setProject(Project project) {
         MainFrame.project = project;
         sceneGraph.setEnabled(true);
         renderCanvas.setEnabled(true);
+        menuBar.getSceneMenu().setEnabled(true);
     }
     //endregion
 }

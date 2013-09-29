@@ -2,10 +2,13 @@ package com.nebula2d.editor.framework;
 
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
+import com.nebula2d.editor.ui.MainFrame;
+import com.nebula2d.editor.ui.SceneGraph;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Project implements ISaveable, ILoadable{
@@ -22,6 +25,7 @@ public class Project implements ISaveable, ILoadable{
         this.projectDir = dir;
         this.projectName = name;
         this.currentSceneIdx = 0;
+        scenes = new ArrayList<Scene>();
     }
     //endregion
 
@@ -144,9 +148,7 @@ public class Project implements ISaveable, ILoadable{
         if (scene == null)
             return;
 
-        for (Layer layer : scene.getLayers()) {
-            //TODO:: Construct scene graph
-        }
+        loadScene(scene);
     }
 
     public void loadScene(String name) {
@@ -154,8 +156,13 @@ public class Project implements ISaveable, ILoadable{
         if (scene == null)
             return;
 
+        loadScene(scene);
+    }
+
+    private void loadScene(Scene scene) {
         for (Layer layer : scene.getLayers()) {
-            //TODO: Construct scene graph
+            SceneGraph graph = MainFrame.getSceneGraph();
+            graph.addLayer(layer);
         }
     }
     //endregion
