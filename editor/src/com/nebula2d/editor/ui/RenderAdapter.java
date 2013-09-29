@@ -2,6 +2,8 @@ package com.nebula2d.editor.ui;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Project;
@@ -44,7 +46,8 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-
+        Gdx.graphics.getGL20().glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
         SpriteBatch batcher = new SpriteBatch();
         batcher.begin();
         Project p = MainFrame.getProject();

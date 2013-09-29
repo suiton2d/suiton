@@ -6,10 +6,7 @@ import com.nebula2d.editor.framework.Layer;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeSelectionModel;
+import javax.swing.tree.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -62,6 +59,16 @@ public class SceneGraph extends JTree {
             public void valueChanged(TreeSelectionEvent e) {
                 //Don't want the new game object menu items to be enabled if nothing is selected.
                 MainFrame.getN2DMenuBar().getGameObjectMenu().setEnabled(e.isAddedPath());
+
+                if (e.isAddedPath()) {
+                    DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+                    if (selectedNode instanceof GameObject) {
+                        MainFrame.getRenderCanvas().setSelectedObject((GameObject) selectedNode);
+                        return;
+                    }
+                }
+
+                MainFrame.getRenderCanvas().setSelectedObject(null);
             }
         });
 
@@ -82,6 +89,13 @@ public class SceneGraph extends JTree {
 
     public DefaultMutableTreeNode getRoot() {
         return this.root;
+    }
+
+    public void setSelectedNode(DefaultMutableTreeNode node) {
+        DefaultTreeModel model = (DefaultTreeModel) getModel();
+        TreeNode[] nodes = model.getPathToRoot(node);
+        TreePath path = new TreePath(nodes);
+        setSelectionPath(path);
     }
 
     /**

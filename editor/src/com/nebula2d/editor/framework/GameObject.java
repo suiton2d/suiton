@@ -1,6 +1,9 @@
 package com.nebula2d.editor.framework;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
@@ -20,6 +23,7 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
     protected float rot;
 
     protected List<Component> components;
+    protected Renderer renderer;
 
     public GameObject(String name) {
         super(name);
@@ -29,6 +33,7 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
         rot = 0;
     }
 
+    //region accessors
     public Vector2 getPosition() {
         return pos;
     }
@@ -39,6 +44,10 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
 
     public float getRotation() {
         return rot;
+    }
+
+    public Renderer getRenderer() {
+        return renderer;
     }
 
     public void setPosition(float x, float y) {
@@ -62,14 +71,23 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
     public void addComponent(Component comp) {
         components.add(comp);
         comp.setParent(this);
+
+        if (comp instanceof Renderer) {
+            renderer = (Renderer) comp;
+        }
     }
 
     public void removeComponent(Component comp) {
         components.remove(comp);
+        if (renderer == comp)
+            renderer = null;
     }
 
     public void removeComponent(int idx) {
-        components.remove(idx);
+        Component component = components.get(idx);
+        components.remove(component);
+        if (renderer == component)
+            renderer = null;
     }
 
     public Component getComponent(String name) {
@@ -85,6 +103,7 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
     public Component getComponent(int idx) {
         return components.get(idx);
     }
+    //endregion
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
@@ -151,6 +170,14 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
             if (c.isEnabled()) {
                 c.render(selectedObject, batcher);
             }
+        }
+
+        if (renderer == null && selectedObject == this) {
+            ShapeRenderer shape = new ShapeRenderer();
+            shape.setColor(Color.GREEN);
+            shape.begin(ShapeRenderer.ShapeType.Filled);
+            shape.circle(100, 100, 2);
+            shape.end();
         }
     }
 }

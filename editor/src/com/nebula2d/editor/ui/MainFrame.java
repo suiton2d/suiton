@@ -12,6 +12,7 @@ public class MainFrame extends JFrame {
     //region static members
     private static RenderCanvas renderCanvas = new RenderCanvas(new RenderAdapter());
     private static SceneGraph sceneGraph = new SceneGraph();
+    private static N2DToolbar toolbar = new N2DToolbar();
     private static N2DMenuBar menuBar;
     private static Project project;
     //endregion
@@ -23,6 +24,7 @@ public class MainFrame extends JFrame {
         JScrollPane sp = new JScrollPane(sceneGraph);
         sp.setPreferredSize(new Dimension(300, 600));
 
+        getContentPane().add(toolbar, BorderLayout.NORTH);
         getContentPane().add(sp, BorderLayout.WEST);
         getContentPane().add(renderCanvas.getCanvas());
 
@@ -58,11 +60,16 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
+    public static N2DToolbar getToolbar() {
+        return toolbar;
+    }
+
     public static void setProject(Project project) {
         MainFrame.project = project;
         sceneGraph.setEnabled(true);
         renderCanvas.setEnabled(true);
         menuBar.getSceneMenu().setEnabled(true);
+        toolbar.setRendererWidgetsEnabled(true);
     }
     //endregion
 }
