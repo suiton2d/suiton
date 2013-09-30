@@ -1,6 +1,10 @@
 package com.nebula2d.editor.ui;
 
+import com.nebula2d.editor.framework.GameObject;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Enumeration;
@@ -15,6 +19,7 @@ public class N2DToolbar extends JToolBar {
 
     private int selectedRendererWidget;
     private ButtonGroup renderWidgets;
+    private JButton componentsButton;
 
     public N2DToolbar() {
         selectedRendererWidget = 0;
@@ -22,9 +27,15 @@ public class N2DToolbar extends JToolBar {
         setRendererWidgetsEnabled(false);
     }
 
+    //region accessors
     public int getSelectedRendererWidget() {
         return selectedRendererWidget;
     }
+
+    public JButton getComponentsButton() {
+        return componentsButton;
+    }
+    //endregion
 
     private void addButtons() {
         renderWidgets = forgeRendererWidgetButtons();
@@ -34,6 +45,26 @@ public class N2DToolbar extends JToolBar {
         while(buttons.hasMoreElements()) {
             add((JToggleButton)buttons.nextElement());
         }
+        addSeparator();
+
+        componentsButton = forgeComponentButton();
+        add(componentsButton);
+    }
+
+    private JButton forgeComponentButton() {
+        JButton componentsButton = new JButton("Components");
+        componentsButton.setEnabled(false);
+
+
+        componentsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameObject selectedGameObject = (GameObject) MainFrame.getSceneGraph().
+                        getSelectionPath().getLastPathComponent();
+                new ComponentsDialog(selectedGameObject);
+            }
+        });
+        return componentsButton;
     }
 
     private ButtonGroup forgeRendererWidgetButtons() {

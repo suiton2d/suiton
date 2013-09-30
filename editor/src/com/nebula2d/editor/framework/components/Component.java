@@ -83,4 +83,9 @@ public abstract class Component implements ISaveable, ILoadable {
         enabled = fr.readBooleanLine();
     }
     //endregion
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
