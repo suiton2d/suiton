@@ -3,11 +3,11 @@ package com.nebula2d.editor.framework.components;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Script;
+import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import javax.swing.*;
 import java.io.IOException;
 
 public class Behaviour extends Component {
@@ -36,6 +36,11 @@ public class Behaviour extends Component {
     @Override
     public void render(GameObject selectedObject, SpriteBatch batcher) {
         //Noop!
+    }
+
+    @Override
+    public JPanel forgeComponentContentPanel(final ComponentsDialog parent) {
+        return null;
     }
 
     @Override

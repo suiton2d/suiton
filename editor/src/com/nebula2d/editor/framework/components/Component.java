@@ -4,9 +4,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
 import com.nebula2d.editor.framework.GameObject;
+import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -69,6 +71,12 @@ public abstract class Component implements ISaveable, ILoadable {
      * @parem batcher the sprite batcher used for rendering
      */
     public abstract void render(GameObject selectedObject, SpriteBatch batcher);
+
+    /**
+     * abstract method for creating the content JPanel used in the component dialog for this component
+     * @return a panel containing the common top panel and the component specific controls
+     */
+    public abstract JPanel forgeComponentContentPanel(final ComponentsDialog parent);
     //endregion
 
     //region interface overrides

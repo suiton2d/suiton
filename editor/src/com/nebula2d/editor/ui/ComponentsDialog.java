@@ -17,17 +17,25 @@ public class ComponentsDialog extends JDialog {
 
     private JPanel rightPanel;
     private GameObject gameObject;
+    private JPanel mainPanel;
+    private JList<Component> componentList;
 
     public ComponentsDialog(GameObject gameObject) {
         this.gameObject = gameObject;
 
         JPanel componentListPanel = forgeComponentsListPanel();
         rightPanel = forgeEmptyPanel();
-
-        add(componentListPanel, BorderLayout.WEST);
-        add(rightPanel);
+        mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(componentListPanel, BorderLayout.WEST);
+        mainPanel.add(rightPanel);
+        add(mainPanel);
         setSize(new Dimension(800, 600));
+        setResizable(false);
         setVisible(true);
+    }
+
+    public JList<Component> getComponentList() {
+        return componentList;
     }
 
     private JPanel forgeEmptyPanel() {
@@ -39,7 +47,7 @@ public class ComponentsDialog extends JDialog {
     }
 
     private JPanel forgeComponentsListPanel() {
-        final JList<Component> componentList = new JList<Component>();
+        componentList = new JList<Component>();
         final DefaultListModel<Component> model = new DefaultListModel<Component>();
         componentList.setModel(model);
 
@@ -79,7 +87,13 @@ public class ComponentsDialog extends JDialog {
                 removeButton.setEnabled(component != null);
 
                 if (component != null) {
-                    //TODO: populate content.
+                    System.out.println("component is not null!");
+                    rightPanel = component.forgeComponentContentPanel(ComponentsDialog.this);
+                    getLayout().removeLayoutComponent(rightPanel);
+                    mainPanel.remove(rightPanel);
+                    mainPanel.add(rightPanel);
+                    revalidate();
+                    //pack();
                 }
             }
         });
@@ -92,36 +106,10 @@ public class ComponentsDialog extends JDialog {
     }
 
     private void populateComponentList(JList<Component> listBox) {
+        DefaultListModel<Component> model = (DefaultListModel<Component>) listBox.getModel();
         for (Component component : gameObject.getComponents()) {
-            DefaultListModel<Component> model = (DefaultListModel<Component>) listBox.getModel();
             model.addElement(component);
         }
     }
 
-    private JPanel forgeCommonTopPanel() {
-        JLabel nameLbl = new JLabel("Name:");
-        JTextField nameTf = new JTextField(20);
-
-        JCheckBox enabledCb = new JCheckBox("Enabled");
-
-        JPanel panel = new JPanel();
-        GroupLayout layout = new GroupLayout(panel);
-        panel.setLayout(layout);
-
-        layout.setAutoCreateContainerGaps(true);
-        layout.setAutoCreateGaps(true);
-
-        GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        hGroup.addGroup(layout.createParallelGroup().addComponent(nameLbl).addComponent(enabledCb));
-        hGroup.addGroup(layout.createParallelGroup().addComponent(nameTf));
-        layout.setHorizontalGroup(hGroup);
-
-        GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(nameLbl).
-                addComponent(nameTf));
-        vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(enabledCb));
-        layout.setVerticalGroup(vGroup);
-
-        return panel;
-    }
 }
