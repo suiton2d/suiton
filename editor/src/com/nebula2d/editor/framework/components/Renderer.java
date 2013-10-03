@@ -1,6 +1,7 @@
 package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
 import com.nebula2d.editor.framework.assets.Texture;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.ui.ImagePanel;
@@ -80,6 +81,25 @@ public abstract class Renderer extends Component {
 
             idx++;
         }
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public int getBoundingWidth() {
+        return texture.getWidth();
+    }
+
+    public int getBoundingHeight() {
+        return texture.getHeight();
+    }
+
+    public Rectangle getBoundingBox() {
+        float x = parent.getPosition().x  -  (getBoundingWidth() / 2.0f);
+        float y = parent.getPosition().y - (getBoundingHeight() / 2.0f);
+
+        return new Rectangle(x, y, getBoundingWidth(), getBoundingHeight());
     }
 
     public void setTexture(Texture tex) {
@@ -192,35 +212,8 @@ public abstract class Renderer extends Component {
         final JPanel animationPanel = new JPanel(new BorderLayout());
         animationPanel.add(addRemoveBtnPanel, BorderLayout.NORTH);
         animationPanel.add(sp);
-        /*final JPanel filenamePanel = new JPanel();
-        filenamePanel.add(new JLabel("Texture: "));
-        filenamePanel.add(imageTf);
-        filenamePanel.add(browseBtn);
 
-        final JPanel leftPanel = new JPanel(new BorderLayout());
-        leftPanel.add(commonTopPanel, BorderLayout.NORTH);
-        leftPanel.add(imagePanel, BorderLayout.SOUTH);
-        leftPanel.add(filenamePanel);
-        /*
-        final JPanel bottomPanel = new JPanel();
-        bottomPanel.add(imagePanel);
-        bottomPanel.add(animationPanel);
-
-        final JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(filenamePanel, BorderLayout.NORTH);
-        //mainPanel.add(bottomPanel);
-        */
         final JLabel imageLbl = new JLabel("Texture:");
-        /*stuff.hGroup.addGroup(stuff.layout.createParallelGroup().addComponent(imageLbl));
-        stuff.hGroup.addGroup(stuff.layout.createParallelGroup().addComponent(imageTf).addComponent(imagePanel));
-        stuff.hGroup.addGroup(stuff.layout.createParallelGroup().addComponent(browseBtn));
-        stuff.hGroup.addGroup(stuff.layout.createParallelGroup().addComponent(animationPanel));
-
-        stuff.vGroup.addGroup(stuff.layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(imageLbl).
-                addComponent(imageTf).addComponent(browseBtn).addComponent(animationPanel));
-        stuff.vGroup.addGroup(stuff.layout.createParallelGroup(GroupLayout.Alignment.BASELINE).
-                addComponent(imagePanel));
-        */
         final JLabel nameLbl = new JLabel("Name:");
         final JTextField nameTf = new JTextField(20);
         nameTf.getDocument().addDocumentListener(new DocumentListener() {

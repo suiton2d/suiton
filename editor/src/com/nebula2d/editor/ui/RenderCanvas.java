@@ -1,7 +1,13 @@
 package com.nebula2d.editor.ui;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.nebula2d.editor.framework.GameObject;
+import com.nebula2d.editor.framework.Layer;
+import com.nebula2d.editor.framework.Scene;
 
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -9,6 +15,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, MouseMotionListener{
@@ -30,10 +38,8 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         this.getCanvas().addMouseListener(this);
         this.getCanvas().addMouseMotionListener(this);
         this.isMouseDown = false;
-        //this.getCanvas().setMinimumSize(new Dimension(600,600));
     }
     //endregion
-
     //region public methods
     public void setEnabled(boolean enabled) {
         getCanvas().setEnabled(enabled);
@@ -41,13 +47,47 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     }
     //endregion
 
+    public OrthographicCamera getCamera() {
+        return adapter.getCamera();
+    }
     //region internal methods
     protected List<GameObject> getSelectedGameObjects(int x, int y) {
 
-        List<GameObject> res = null;
-        //TODO: finish this method
+        List<GameObject> res = new ArrayList<GameObject>();
+
+        Scene scene = MainFrame.getProject().getCurrentScene();
+        for (Layer l : scene.getLayers()) {
+            Enumeration gameObjects = l.depthFirstEnumeration();
+            while (gameObjects.hasMoreElements()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) gameObjects.nextElement();
+                if (node instanceof GameObject) {
+                    GameObject g = (GameObject) node;
+                    Vector2 scale = g.getScale();
+                    int w = g.getRenderer().getBoundingWidth();
+                    int h = g.getRenderer().getBoundingHeight();
+                    Camera cam = adapter.getCamera();
+                    System.out.println(g.getName());
+
+                    if (g.getRenderer() != null) {
+                        System.out.println("renderer is not null");
+                        System.out.println("center: " + g.getPosition().x + " " + g.getPosition().y);
+
+                        Rectangle boundingBox = g.getRenderer().getBoundingBox();
+                        if (boundingBox.contains(new Vector2(x + cam.position.x, (getCanvas().getHeight() - y) + cam.position.y))) {
+                            res.add(g);
+                        }
+                    }
+                }
+
+            }
+        }
+
 
         return res;
+    }
+
+    public void initCamera(int w, int h) {
+        adapter.initCamera(w, h);
     }
 
     protected void translateObject(Point mousePos) {
@@ -73,19 +113,6 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         int dy = mousePos.y - lastPoint.y;
         float newY = adapter.getSelectedObject().getRotation() + dy * 0.5f;
         adapter.getSelectedObject().setRotation(newY);
-    }
-
-    protected boolean checkPointInRect(int w, int h, Point center, Point posi, float rot) {
-        double rotRad = Math.PI * rot / 180.0f;
-        float tx = posi.x - center.x;
-        float ty = posi.y - center.y;
-        double dx = tx * Math.cos(rotRad) - ty * Math.sin(rotRad);
-        double dy = tx * Math.sin(rotRad) - ty * Math.cos(rotRad);
-
-        dx += center.x;
-        dy += center.y;
-
-        return (dx > center.x - w/2 && dx < center.x + w/2 && dy > center.y - h/2 && dy < center.y + h/2);
     }
     //endregion
 
@@ -120,8 +147,8 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
             }
 
             List<GameObject> selectedObjects = getSelectedGameObjects(lastPoint.x, lastPoint.y);
-            int size = selectedObjects != null ? selectedObjects.size() : 0;
-
+            int size = selectedObjects.size();
+            System.out.println(size);
             if (size > 0) {
                 GameObject selectedObject = selectedObjects.get(size - 1);
                 MainFrame.getSceneGraph().setSelectedNode(selectedObject);
@@ -148,10 +175,15 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         Point pos = e.getPoint();
         GameObject selectedObject = adapter.getSelectedObject();
         if (e.isControlDown()) {
-            int dx = pos.x - lastPoint.x;
-            int dy = pos.y - lastPoint.y;
-            camXOffset += dx;
-            camYOffset += dy;
+            int dx = (pos.x - lastPoint.x) / 2;
+            int dy = -(pos.y - lastPoint.y) / 2;
+            /*camXOffset += dx;
+            camYOffset += dy;*/
+            System.out.println("test");
+            getCamera().translate(dx, dy);
+            System.out.println("x: " + dx + " | y: " + dy);
+
+
         } else if (selectedObject != null) {
             switch (MainFrame.getToolbar().getSelectedRendererWidget()) {
                 case N2DToolbar.RENDERER_WIDGET_TRANSLATE:
@@ -167,6 +199,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         }
 
         lastPoint = pos;
+
     }
 
     @Override

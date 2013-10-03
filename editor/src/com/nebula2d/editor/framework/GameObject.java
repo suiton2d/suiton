@@ -1,5 +1,6 @@
 package com.nebula2d.editor.framework;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -164,10 +165,10 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
         }
     }
 
-    public void render(GameObject selectedObject, SpriteBatch batcher) {
+    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         for (Component c : components) {
             if (c.isEnabled()) {
-                c.render(selectedObject, batcher);
+                c.render(selectedObject, batcher, cam);
             }
         }
 

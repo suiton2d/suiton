@@ -16,9 +16,9 @@ public class NewComponentPopup extends JPopupMenu {
 
     private GameObject gameObject;
     private DefaultListModel<Component> listModel;
-    private JList list;
+    private JList<Component> list;
 
-    public NewComponentPopup(GameObject gameObject, JList list) {
+    public NewComponentPopup(GameObject gameObject, JList<Component> list) {
         this.list = list;
         this.gameObject = gameObject;
         this.listModel = (DefaultListModel<Component>) list.getModel();
@@ -28,6 +28,12 @@ public class NewComponentPopup extends JPopupMenu {
         panelRendererMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                if (NewComponentPopup.this.gameObject.getRenderer() != null) {
+                    JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a renderer attached.");
+                    return;
+                }
+
                 PanelRenderer panelRenderer = new PanelRenderer("");
                 new NewComponentDialog(panelRenderer);
             }
@@ -71,8 +77,14 @@ public class NewComponentPopup extends JPopupMenu {
                     errorMessage.setVisible(false);
                     NewComponentDialog.this.component.setName(name);
                     gameObject.addComponent(NewComponentDialog.this.component);
-                    listModel.addElement(NewComponentDialog.this.component);
-                    list.setSelectedIndex(listModel.size() - 1);
+
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            listModel.addElement(NewComponentDialog.this.component);
+                            list.setSelectedValue(NewComponentDialog.this.component, true);
+                        }
+                    });
                     dispose();
                 }
             });

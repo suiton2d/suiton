@@ -1,5 +1,6 @@
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.editor.framework.GameObject;
@@ -22,14 +23,16 @@ public class PanelRenderer extends Renderer {
 
     //region overrided methods from Renderer
     @Override
-    public void render(GameObject selectedObject, SpriteBatch batcher) {
+    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         if (texture != null) {
+            float halfw = getBoundingWidth() / 2.0f;
+            float halfh = getBoundingHeight() / 2.0f;
             if (currentAnim == -1) {
-                batcher.draw(texture.getTexture(), parent.getPosition().x, parent.getPosition().y);
+                batcher.draw(texture.getTexture(), parent.getPosition().x - halfw - cam.position.x, parent.getPosition().y - halfh - cam.position.y);
             } else {
                 KeyFrameAnimation anim = (KeyFrameAnimation)getCurrentAnimation();
                 TextureRegion frame = anim.getFrames()[0];
-                batcher.draw(frame, parent.getPosition().x, parent.getPosition().y);
+                batcher.draw(frame, parent.getPosition().x - halfw - cam.position.x, parent.getPosition().y - halfh - cam.position.y);
             }
         }
     }

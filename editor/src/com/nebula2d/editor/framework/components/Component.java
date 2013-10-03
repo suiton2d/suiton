@@ -1,5 +1,6 @@
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
@@ -70,7 +71,7 @@ public abstract class Component implements ISaveable, ILoadable {
      * @param selectedObject the selected object in the render canvas
      * @parem batcher the sprite batcher used for rendering
      */
-    public abstract void render(GameObject selectedObject, SpriteBatch batcher);
+    public abstract void render(GameObject selectedObject, SpriteBatch batcher, Camera cam);
 
     /**
      * abstract method for creating the content JPanel used in the component dialog for this component

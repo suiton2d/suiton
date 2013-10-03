@@ -35,6 +35,9 @@ public class MainFrame extends JFrame {
         setJMenuBar(menuBar);
 
         setSize(1200, 768);
+
+        validate();
+        renderCanvas.initCamera(renderCanvas.getCanvas().getWidth(), renderCanvas.getCanvas().getHeight());
         setVisible(true);
     }
     //endregion

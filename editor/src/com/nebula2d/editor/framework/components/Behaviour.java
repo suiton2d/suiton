@@ -1,5 +1,6 @@
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Script;
@@ -34,7 +35,7 @@ public class Behaviour extends Component {
 
     //region overrided methods from Component
     @Override
-    public void render(GameObject selectedObject, SpriteBatch batcher) {
+    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         //Noop!
     }
 
