@@ -1,5 +1,6 @@
 package com.nebula2d.editor.framework;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
@@ -72,9 +73,9 @@ public class Scene implements ISaveable, ILoadable {
     //endregion
 
     //region public methods
-    public void render(GameObject selectedObject, SpriteBatch batcher) {
+    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         for (Layer l : layers) {
-            l.render(selectedObject, batcher);
+            l.render(selectedObject, batcher, cam);
         }
     }
     //endregion

@@ -1,5 +1,6 @@
 package com.nebula2d.editor.framework;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
@@ -37,14 +38,14 @@ public class Layer extends BaseSceneNode implements ISaveable, ILoadable {
         super.remove();
     }
 
-    public void render(GameObject selectedObject, SpriteBatch batcher) {
+    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
 
         Enumeration children = depthFirstEnumeration();
         while (children.hasMoreElements()) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
 
             if (node instanceof GameObject) {
-                ((GameObject) node).render(selectedObject, batcher);
+                ((GameObject) node).render(selectedObject, batcher, cam);
             }
         }
     }
