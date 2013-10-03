@@ -64,10 +64,12 @@ public class SceneGraph extends JTree {
                     DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
                     if (selectedNode instanceof GameObject) {
                         MainFrame.getRenderCanvas().setSelectedObject((GameObject) selectedNode);
+                        MainFrame.getToolbar().getComponentsButton().setEnabled(true);
                         return;
                     }
                 }
 
+                MainFrame.getToolbar().getComponentsButton().setEnabled(false);
                 MainFrame.getRenderCanvas().setSelectedObject(null);
             }
         });

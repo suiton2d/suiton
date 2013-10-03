@@ -34,4 +34,9 @@ public abstract class Animation implements ISaveable, ILoadable{
         fw.writeLine(name);
     }
     //endregion
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
