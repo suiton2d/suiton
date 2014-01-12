@@ -28,11 +28,30 @@ public class PanelRenderer extends Renderer {
             float halfw = getBoundingWidth() / 2.0f;
             float halfh = getBoundingHeight() / 2.0f;
             if (currentAnim == -1) {
-                batcher.draw(texture.getTexture(), parent.getPosition().x - halfw - cam.position.x, parent.getPosition().y - halfh - cam.position.y);
+                batcher.draw(new TextureRegion(texture.getTexture()),
+                        parent.getPosition().x - halfw - cam.position.x,
+                        parent.getPosition().y - halfh - cam.position.y,
+                        halfw,
+                        halfh,
+                        texture.getTexture().getWidth(),
+                        texture.getTexture().getHeight(),
+                        parent.getScale().x,
+                        parent.getScale().y,
+                        parent.getRotation());
+
             } else {
                 KeyFrameAnimation anim = (KeyFrameAnimation)getCurrentAnimation();
                 TextureRegion frame = anim.getFrames()[0];
-                batcher.draw(frame, parent.getPosition().x - halfw - cam.position.x, parent.getPosition().y - halfh - cam.position.y);
+                batcher.draw(frame,
+                        parent.getPosition().x - halfw - cam.position.x,
+                        parent.getPosition().y - halfh - cam.position.y,
+                        parent.getPosition().x - halfw - cam.position.x,
+                        parent.getPosition().y - halfh - cam.position.y,
+                        frame.getRegionWidth(),
+                        frame.getRegionHeight(),
+                        parent.getScale().x,
+                        parent.getScale().y,
+                        parent.getRotation());
             }
         }
     }

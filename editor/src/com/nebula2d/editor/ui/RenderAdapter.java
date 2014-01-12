@@ -3,13 +3,17 @@ package com.nebula2d.editor.ui;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.framework.assets.Texture;
 import com.nebula2d.editor.framework.components.PanelRenderer;
+import com.nebula2d.editor.framework.components.Renderer;
 
 
 public class RenderAdapter implements ApplicationListener {
@@ -62,7 +66,31 @@ public class RenderAdapter implements ApplicationListener {
         }
         batcher.end();
 
+        if (selectedObject != null && selectedObject.getRenderer() != null) {
+            Rectangle boundingBox = selectedObject.getRenderer().getBoundingBox();
 
+            if (boundingBox != null) {
+                ShapeRenderer shape = new ShapeRenderer();
+                shape.setColor(Color.GREEN);
+                shape.begin(ShapeRenderer.ShapeType.Line);
+
+                float x = boundingBox.getX() - camera.position.x;
+                float y = boundingBox.getY() - camera.position.y;
+                float r = x + boundingBox.getWidth();
+                float t = y + boundingBox.getHeight();
+
+
+                shape.line(x, y, x, t);
+
+                shape.line(x, t, r, t);
+
+                shape.line(r, t, r, y);
+
+                shape.line(r, y, x, y);
+
+                shape.end();
+            }
+        }
     }
 
     @Override
@@ -78,6 +106,7 @@ public class RenderAdapter implements ApplicationListener {
     }
 
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        //this.enabled = enabled;
+        this.enabled = true;
     }
 }

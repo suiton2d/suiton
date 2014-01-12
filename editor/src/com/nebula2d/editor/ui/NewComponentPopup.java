@@ -78,6 +78,7 @@ public class NewComponentPopup extends JPopupMenu {
                     NewComponentDialog.this.component.setName(name);
                     gameObject.addComponent(NewComponentDialog.this.component);
 
+                    //There is an NPE here that is seemingly harmless. Just ignore it for now.
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
@@ -85,6 +86,7 @@ public class NewComponentPopup extends JPopupMenu {
                             list.setSelectedValue(NewComponentDialog.this.component, true);
                         }
                     });
+
                     dispose();
                 }
             });

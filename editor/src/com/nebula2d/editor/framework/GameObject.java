@@ -29,7 +29,7 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
         super(name);
         components = new ArrayList<Component>();
         pos = new Vector2();
-        scale = new Vector2();
+        scale = new Vector2(1, 1);
         rot = 0;
     }
 
@@ -172,12 +172,12 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
             }
         }
 
-        if (renderer == null && selectedObject == this) {
+        /*if (renderer == null && selectedObject == this) {
             ShapeRenderer shape = new ShapeRenderer();
             shape.setColor(Color.GREEN);
             shape.begin(ShapeRenderer.ShapeType.Filled);
             shape.circle(100, 100, 2);
             shape.end();
-        }
+        }*/
     }
 }

@@ -72,6 +72,9 @@ public class ComponentsDialog extends JDialog {
                 Component selectedComponent = componentList.getSelectedValue();
                 gameObject.removeComponent(selectedComponent);
                 ((DefaultListModel<Component>) componentList.getModel()).removeElement(selectedComponent);
+                mainPanel.remove(rightPanel);
+                mainPanel.add(forgeEmptyPanel());
+                revalidate();
             }
         });
         removeButton.setEnabled(false);

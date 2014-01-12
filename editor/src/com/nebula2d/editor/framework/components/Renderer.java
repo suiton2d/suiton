@@ -96,6 +96,9 @@ public abstract class Renderer extends Component {
     }
 
     public Rectangle getBoundingBox() {
+        if (texture == null)
+            return null;
+
         float x = parent.getPosition().x  -  (getBoundingWidth() / 2.0f);
         float y = parent.getPosition().y - (getBoundingHeight() / 2.0f);
 
@@ -140,13 +143,16 @@ public abstract class Renderer extends Component {
     public JPanel forgeComponentContentPanel(final ComponentsDialog parent) {
 
         final ImagePanel imagePanel = new ImagePanel();
+
         final JButton addButton = new JButton("Add");
         final JButton removeButton = new JButton("Remove");
         removeButton.setEnabled(false);
         final JTextField imageTf = new JTextField(20);
 
-        if (texture != null)
+        if (texture != null) {
             imageTf.setText(texture.getPath());
+            imagePanel.setImage(getTexture().getPath());
+        }
         final JButton browseBtn = new JButton("...");
         browseBtn.addActionListener(new ActionListener() {
             @Override
@@ -243,6 +249,7 @@ public abstract class Renderer extends Component {
 
         nameTf.setText(name);
         final JCheckBox enabledCb = new JCheckBox("Enabled");
+        enabledCb.setSelected(enabled);
         enabledCb.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

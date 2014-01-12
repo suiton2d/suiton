@@ -40,6 +40,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         this.isMouseDown = false;
     }
     //endregion
+
     //region public methods
     public void setEnabled(boolean enabled) {
         getCanvas().setEnabled(enabled);
@@ -62,9 +63,6 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) gameObjects.nextElement();
                 if (node instanceof GameObject) {
                     GameObject g = (GameObject) node;
-                    Vector2 scale = g.getScale();
-                    int w = g.getRenderer().getBoundingWidth();
-                    int h = g.getRenderer().getBoundingHeight();
                     Camera cam = adapter.getCamera();
                     System.out.println(g.getName());
 
@@ -78,10 +76,8 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
                         }
                     }
                 }
-
             }
         }
-
 
         return res;
     }
@@ -100,6 +96,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     }
 
     protected void scaleObject(Point mousePos) {
+        System.out.println("Scaling object");
         int dx = mousePos.x - lastPoint.x;
         int dy = mousePos.y - lastPoint.y;
 
