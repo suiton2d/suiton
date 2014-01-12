@@ -74,6 +74,7 @@ public class NewAnimationPopup extends JPopupMenu {
 
                     errorMsg.setVisible(false);
                     NewAnimationDialog.this.animation.setName(name);
+                    NewAnimationDialog.this.animation.init();
                     renderer.addAnimation(NewAnimationDialog.this.animation);
                     listModel.addElement(NewAnimationDialog.this.animation);
                     dispose();

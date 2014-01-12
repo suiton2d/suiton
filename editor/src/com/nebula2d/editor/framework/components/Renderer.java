@@ -1,7 +1,9 @@
 package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Texture;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.ui.ImagePanel;

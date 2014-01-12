@@ -30,34 +30,24 @@ public class PanelRenderer extends Renderer {
     @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         if (texture != null) {
+
+            if (currentAnim != -1) {
+                getCurrentAnimation().renderStill(batcher, parent, cam);
+                return;
+            }
             float halfw = getBoundingWidth() / 2.0f;
             float halfh = getBoundingHeight() / 2.0f;
-            if (currentAnim == -1) {
-                batcher.draw(new TextureRegion(texture.getTexture()),
-                        parent.getPosition().x - halfw - cam.position.x,
-                        parent.getPosition().y - halfh - cam.position.y,
-                        halfw,
-                        halfh,
-                        texture.getTexture().getWidth(),
-                        texture.getTexture().getHeight(),
-                        parent.getScale().x,
-                        parent.getScale().y,
-                        parent.getRotation());
 
-            } else if (getCurrentAnimation() instanceof KeyFrameAnimation) {
-                KeyFrameAnimation anim = (KeyFrameAnimation)getCurrentAnimation();
-                TextureRegion frame = anim.getStartFrame();
-                batcher.draw(frame,
-                        parent.getPosition().x - halfw - cam.position.x,
-                        parent.getPosition().y - halfh - cam.position.y,
-                        parent.getPosition().x - halfw - cam.position.x,
-                        parent.getPosition().y - halfh - cam.position.y,
-                        frame.getRegionWidth(),
-                        frame.getRegionHeight(),
-                        parent.getScale().x,
-                        parent.getScale().y,
-                        parent.getRotation());
-            }
+            batcher.draw(new TextureRegion(texture.getTexture()),
+                    parent.getPosition().x - halfw - cam.position.x,
+                    parent.getPosition().y - halfh - cam.position.y,
+                    halfw,
+                    halfh,
+                    texture.getTexture().getWidth(),
+                    texture.getTexture().getHeight(),
+                    parent.getScale().x,
+                    parent.getScale().y,
+                    parent.getRotation());
         }
     }
 
