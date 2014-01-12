@@ -39,7 +39,7 @@ public class PanelRenderer extends Renderer {
                         parent.getScale().y,
                         parent.getRotation());
 
-            } else {
+            } else if (getCurrentAnimation() instanceof KeyFrameAnimation) {
                 KeyFrameAnimation anim = (KeyFrameAnimation)getCurrentAnimation();
                 TextureRegion frame = anim.getStartFrame();
                 batcher.draw(frame,
