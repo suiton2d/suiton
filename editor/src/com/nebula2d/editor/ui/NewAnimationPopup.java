@@ -1,5 +1,6 @@
 package com.nebula2d.editor.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.assets.Texture;
 import com.nebula2d.editor.framework.components.Animation;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
@@ -18,10 +19,17 @@ public class NewAnimationPopup extends JPopupMenu {
     private DefaultListModel<Animation> listModel;
     private Texture tex;
 
-    public NewAnimationPopup(Renderer renderer, DefaultListModel<Animation> listModel, String texturePath) {
+    public NewAnimationPopup(Renderer renderer, DefaultListModel<Animation> listModel, final String texturePath) {
         this.renderer = renderer;
         this.listModel = listModel;
-        tex = new Texture(texturePath);
+
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                tex = new Texture(texturePath);
+            }
+        });
+
 
         JMenuItem kfAnimMenuItem = add("KeyFrameAnimation");
         kfAnimMenuItem.addActionListener(new ActionListener() {
