@@ -9,6 +9,7 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 public class Project implements ISaveable, ILoadable{
@@ -160,9 +161,10 @@ public class Project implements ISaveable, ILoadable{
     }
 
     private void loadScene(Scene scene) {
-        for (Layer layer : scene.getLayers()) {
-            SceneGraph graph = MainFrame.getSceneGraph();
-            graph.addLayer(layer);
+        SceneGraph graph = MainFrame.getSceneGraph();
+        Enumeration layers = scene.children();
+        while (layers.hasMoreElements()) {
+            graph.addLayer((Layer) layers.nextElement());
         }
     }
     //endregion

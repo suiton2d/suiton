@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
 import com.nebula2d.editor.framework.components.*;
+import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 

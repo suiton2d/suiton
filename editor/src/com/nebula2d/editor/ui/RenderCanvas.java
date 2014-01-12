@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
 import com.nebula2d.editor.framework.Scene;
@@ -57,23 +58,22 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         List<GameObject> res = new ArrayList<GameObject>();
 
         Scene scene = MainFrame.getProject().getCurrentScene();
-        for (Layer l : scene.getLayers()) {
-            Enumeration gameObjects = l.depthFirstEnumeration();
-            while (gameObjects.hasMoreElements()) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) gameObjects.nextElement();
-                if (node instanceof GameObject) {
-                    GameObject g = (GameObject) node;
-                    Camera cam = adapter.getCamera();
-                    System.out.println(g.getName());
+        Enumeration nodes = scene.depthFirstEnumeration();
 
-                    if (g.getRenderer() != null) {
-                        System.out.println("renderer is not null");
-                        System.out.println("center: " + g.getPosition().x + " " + g.getPosition().y);
+        while (nodes.hasMoreElements()) {
+            BaseSceneNode currentNode = (BaseSceneNode) nodes.nextElement();
+            if (currentNode instanceof GameObject) {
+                GameObject g = (GameObject) currentNode;
+                Camera cam = adapter.getCamera();
+                System.out.println(g.getName());
 
-                        Rectangle boundingBox = g.getRenderer().getBoundingBox();
-                        if (boundingBox.contains(new Vector2(x + cam.position.x, (getCanvas().getHeight() - y) + cam.position.y))) {
-                            res.add(g);
-                        }
+                if (g.getRenderer() != null) {
+                    System.out.println("renderer is not null");
+                    System.out.println("center: " + g.getPosition().x + " " + g.getPosition().y);
+
+                    Rectangle boundingBox = g.getRenderer().getBoundingBox();
+                    if (boundingBox.contains(new Vector2(x + cam.position.x, (getCanvas().getHeight() - y) + cam.position.y))) {
+                        res.add(g);
                     }
                 }
             }

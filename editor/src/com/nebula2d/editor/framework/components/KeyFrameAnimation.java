@@ -82,6 +82,8 @@ public class KeyFrameAnimation extends Animation {
         return speed;
     }
 
+    public TextureRegion getStartFrame() { return frames[startFrame]; }
+
     public void setNumRows(int rows) {
         numRows = rows;
     }

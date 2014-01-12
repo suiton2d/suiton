@@ -9,63 +9,37 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
-public class Scene implements ISaveable, ILoadable {
+public class Scene extends BaseSceneNode implements ISaveable, ILoadable {
 
     //region members
-    protected String name;
     protected int id;
-
-    protected List<Layer> layers;
     //endregion
 
     //region constructors
     public Scene(String name) {
-        this.name = name;
+        super(name);
         id = 0;
-        layers = new ArrayList<Layer>();
     }
     //endregion
 
     //region accessors
-    public String getName() {
-        return this.name;
-    }
-
     public int getId() {
         return this.id;
-    }
-
-    public List<Layer> getLayers() {
-        return this.layers;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void addLayer(Layer l) {
-        layers.add(l);
-    }
-
-    public void removeLayer(Layer l) {
-        layers.remove(l);
-    }
-
-    public void removeLayer(int idx) {
-        layers.remove(idx);
-    }
-
     public Layer getLayer(String name) {
-        for (Layer l : layers) {
-            if (l.getName().equals(name)) {
-                return l;
-            }
+        Enumeration children = children();
+        while (children.hasMoreElements()) {
+            Layer layer = (Layer) children.nextElement();
+            if (layer.getName().equals(name))
+                return layer;
         }
 
         return null;
@@ -74,8 +48,10 @@ public class Scene implements ISaveable, ILoadable {
 
     //region public methods
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
-        for (Layer l : layers) {
-            l.render(selectedObject, batcher, cam);
+        Enumeration layers = children();
+
+        while (layers.hasMoreElements()) {
+            ((Layer) layers.nextElement()).render(selectedObject, batcher, cam);
         }
     }
     //endregion
@@ -89,18 +65,18 @@ public class Scene implements ISaveable, ILoadable {
         for (int i = 0; i < size; ++i) {
             Layer layer = new Layer("tmp");
             layer.load(fr);
-            addLayer(layer);
+            add(layer);
         }
     }
 
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
-        fw.writeIntLine(layers.size());
+        fw.writeIntLine(getChildCount());
 
-        for (Layer l : layers) {
-            l.save(fw);
-        }
+        Enumeration layers = children();
+        while (layers.hasMoreElements())
+            ((Layer) layers.nextElement()).save(fw);
     }
     //endregion
 }

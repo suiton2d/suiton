@@ -7,6 +7,8 @@ import com.nebula2d.editor.framework.Layer;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -21,9 +23,14 @@ public class SceneGraph extends JTree {
     private DefaultMutableTreeNode root;
 
     public SceneGraph() {
-
         setRootVisible(false);
-        root = new DefaultMutableTreeNode("SceneGraph");
+        setModel(new DefaultTreeModel(new DefaultMutableTreeNode()));
+    }
+
+    public void init() {
+
+
+        root = MainFrame.getProject().getCurrentScene();
 
         //We need to create our own tree model so that we can override some default behaviour.
         DefaultTreeModel model = new DefaultTreeModel(root);
@@ -77,6 +84,31 @@ public class SceneGraph extends JTree {
         setEditable(true);
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         //hideTreeIcons();
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mouseClicked(e);
+                SceneGraph graph = SceneGraph.this;
+                TreePath clickedPath = graph.getClosestPathForLocation(e.getPoint().x, e.getPoint().y);
+                BaseSceneNode clickedNode = (BaseSceneNode) clickedPath.getLastPathComponent();
+                graph.setSelectedNode(clickedNode);
+                if (e.isPopupTrigger()) {
+                    new SceneNodePopup(clickedNode).show(graph, e.getPoint().x, e.getPoint().y);
+                }
+
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    new SceneNodePopup((BaseSceneNode) SceneGraph.this.
+                            getSelectionPath().getLastPathComponent()).
+                            show(SceneGraph.this, e.getPoint().x, e.getPoint().y);
+                }
+            }
+        });
     }
 
     /**
@@ -106,7 +138,7 @@ public class SceneGraph extends JTree {
      */
     public void addLayer(Layer layer) {
         root.add(layer);
-        MainFrame.getProject().getCurrentScene().addLayer(layer);
+        MainFrame.getProject().getCurrentScene().add(layer);
         refresh();
     }
 

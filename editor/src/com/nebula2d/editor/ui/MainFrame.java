@@ -69,6 +69,7 @@ public class MainFrame extends JFrame {
         renderCanvas.setEnabled(true);
         menuBar.getSceneMenu().setEnabled(true);
         toolbar.setRendererWidgetsEnabled(true);
+        sceneGraph.init();
     }
     //endregion
 }

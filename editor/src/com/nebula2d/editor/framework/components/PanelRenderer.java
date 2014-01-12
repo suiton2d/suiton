@@ -41,7 +41,7 @@ public class PanelRenderer extends Renderer {
 
             } else {
                 KeyFrameAnimation anim = (KeyFrameAnimation)getCurrentAnimation();
-                TextureRegion frame = anim.getFrames()[0];
+                TextureRegion frame = anim.getStartFrame();
                 batcher.draw(frame,
                         parent.getPosition().x - halfw - cam.position.x,
                         parent.getPosition().y - halfh - cam.position.y,

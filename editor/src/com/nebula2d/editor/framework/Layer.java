@@ -32,12 +32,6 @@ public class Layer extends BaseSceneNode implements ISaveable, ILoadable {
         return null;
     }
 
-    @Override
-    public void remove() {
-        MainFrame.getProject().getCurrentScene().removeLayer(this);
-        super.remove();
-    }
-
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
 
         Enumeration children = depthFirstEnumeration();
