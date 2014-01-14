@@ -21,6 +21,7 @@ public class StillKeyFrameAnimationCanvas extends JPanel {
     public StillKeyFrameAnimationCanvas(KeyFrameAnimation animation) {
         this.animation = animation;
         Texture tex = animation.getTexture();
+        init();
         setBackground(Color.WHITE);
         setPreferredSize(new Dimension(tex.getWidth(), tex.getHeight()));
     }

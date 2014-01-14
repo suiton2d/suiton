@@ -37,7 +37,7 @@ public class AnimationRenderAdapter implements ApplicationListener {
     public void render() {
         Gdx.graphics.getGL20().glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //camera.update();
+        camera.update();
         SpriteBatch badger = new SpriteBatch();
 
         badger.begin();

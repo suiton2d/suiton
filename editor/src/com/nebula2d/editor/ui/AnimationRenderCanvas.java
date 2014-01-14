@@ -11,13 +11,13 @@ public class AnimationRenderCanvas extends LwjglAWTCanvas {
     private AnimationRenderAdapter adapter;
 
     public AnimationRenderCanvas(AnimationRenderAdapter adapter) {
-        super(adapter, true);
+        super(adapter, true, MainFrame.getRenderCanvas());
         this.adapter = adapter;
         Texture tex = adapter.getAnimation().getTexture();
         getCanvas().setPreferredSize(new Dimension(tex.getWidth(), tex.getHeight()));
     }
 
-    public void initCamera(int w, int h) {
-        adapter.initCamera(w, h);
+    public void initCamera() {
+        adapter.initCamera(getCanvas().getSize().width, getCanvas().getSize().height);
     }
 }

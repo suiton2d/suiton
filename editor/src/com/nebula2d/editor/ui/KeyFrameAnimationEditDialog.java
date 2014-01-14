@@ -117,6 +117,8 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         add(inputPanel, BorderLayout.CENTER);
         add(rightPanel, BorderLayout.EAST);
         setSize(new Dimension(800, 600));
+        validate();
+        animatedCanvas.initCamera();
     }
 
     public boolean validateFloats(String text) {

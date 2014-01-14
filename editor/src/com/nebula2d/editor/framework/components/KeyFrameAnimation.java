@@ -24,6 +24,8 @@ public class KeyFrameAnimation extends Animation {
     protected int endFrame;
     protected float speed;
     protected Texture tex;
+    protected com.badlogic.gdx.graphics.g2d.Animation animation;
+    protected float stateTime;
     //endregion
 
     //region constructors
@@ -34,6 +36,8 @@ public class KeyFrameAnimation extends Animation {
     public KeyFrameAnimation(String name, Texture tex) {
         super(name);
         this.tex = tex;
+        this.startFrame = -1;
+        this.endFrame = -1;
     }
 
     /**
@@ -138,13 +142,12 @@ public class KeyFrameAnimation extends Animation {
 
     @Override
     public void renderAnimated(SpriteBatch batch, Camera cam) {
-
+//        System.out.println("rendering...");
         if (frames != null) {
-            float dt = Gdx.graphics.getDeltaTime();
-            TextureRegion currentFrame = new com.badlogic.gdx.graphics.
-                    g2d.Animation(speed, frames).getKeyFrame(dt);
 
-            batch.draw(currentFrame, 0, 0, cam.viewportWidth, cam.viewportHeight);
+            stateTime += Gdx.graphics.getDeltaTime();
+            TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
+            batch.draw(currentFrame, 0, 0);
         }
     }
 
@@ -153,8 +156,9 @@ public class KeyFrameAnimation extends Animation {
 
     @Override
     public void init() {
-
-        if (frameWidth > 0 && frameHeight > 0 && startFrame > 0 && endFrame > 0 && endFrame > startFrame) {
+        System.out.println("init called!");
+        if (frameWidth > 0 && frameHeight > 0 && startFrame >= 0 && endFrame >= 0 &&
+                endFrame >= startFrame && speed > 0) {
             com.badlogic.gdx.graphics.Texture tmpTexture = tex.getTexture();
             TextureRegion[][] tmpRegions = TextureRegion.split(tmpTexture, frameWidth, frameHeight);
 
@@ -170,7 +174,10 @@ public class KeyFrameAnimation extends Animation {
                 }
             }
 
-            frames = Arrays.copyOfRange(frames, startFrame, endFrame);
+            frames = Arrays.copyOfRange(frames, startFrame, endFrame + 1);
+            System.out.println("" + frames.length);
+            animation = new com.badlogic.gdx.graphics.g2d.Animation(speed, frames);
+            System.out.println("" + frames == null);
         }
     }
     //endregion
