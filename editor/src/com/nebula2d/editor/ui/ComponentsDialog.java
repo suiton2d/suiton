@@ -86,18 +86,19 @@ public class ComponentsDialog extends JDialog {
         componentList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting())
+                    return;
+
                 Component component = componentList.getSelectedValue();
 
                 removeButton.setEnabled(component != null);
 
                 if (component != null) {
                     System.out.println("component is not null!");
-                    rightPanel = component.forgeComponentContentPanel(ComponentsDialog.this);
-                    getLayout().removeLayoutComponent(rightPanel);
                     mainPanel.remove(rightPanel);
+                    rightPanel = component.forgeComponentContentPanel(ComponentsDialog.this);
                     mainPanel.add(rightPanel);
                     revalidate();
-                    //pack();
                 }
             }
         });

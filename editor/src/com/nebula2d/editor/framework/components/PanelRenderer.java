@@ -119,9 +119,11 @@ public class PanelRenderer extends Renderer {
         animationList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                Animation anim = animationList.getSelectedValue();
 
-                removeButton.setEnabled(anim != null);
+                if (!e.getValueIsAdjusting()) {
+                    Animation anim = animationList.getSelectedValue();
+                    removeButton.setEnabled(anim != null);
+                }
             }
         });
 
@@ -146,6 +148,7 @@ public class PanelRenderer extends Renderer {
         final JLabel imageLbl = new JLabel("Texture:");
         final JLabel nameLbl = new JLabel("Name:");
         final JTextField nameTf = new JTextField(20);
+        nameTf.setText(name);
         nameTf.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -171,7 +174,6 @@ public class PanelRenderer extends Renderer {
             }
         });
 
-        nameTf.setText(name);
         final JCheckBox enabledCb = new JCheckBox("Enabled");
         enabledCb.setSelected(enabled);
         enabledCb.addChangeListener(new ChangeListener() {
