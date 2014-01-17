@@ -1,6 +1,5 @@
 package com.nebula2d.editor.ui;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.nebula2d.editor.framework.assets.Texture;
 

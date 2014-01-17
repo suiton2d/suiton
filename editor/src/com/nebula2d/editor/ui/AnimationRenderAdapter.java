@@ -26,8 +26,6 @@ public class AnimationRenderAdapter implements ApplicationListener {
     public void initCamera(int w, int h) {
         this.w = w;
         this.h = h;
-        System.out.println(w);
-        System.out.println(h);
         camera = new OrthographicCamera(w, h);
     }
 

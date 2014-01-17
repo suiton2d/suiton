@@ -4,8 +4,6 @@ import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.components.Component;
 
 import javax.swing.*;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
@@ -94,7 +92,6 @@ public class ComponentsDialog extends JDialog {
                 removeButton.setEnabled(component != null);
 
                 if (component != null) {
-                    System.out.println("component is not null!");
                     mainPanel.remove(rightPanel);
                     rightPanel = component.forgeComponentContentPanel(ComponentsDialog.this);
                     mainPanel.add(rightPanel);

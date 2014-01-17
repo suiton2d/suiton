@@ -26,6 +26,7 @@ public class KeyFrameAnimation extends Animation {
     protected Texture tex;
     protected com.badlogic.gdx.graphics.g2d.Animation animation;
     protected float stateTime;
+    protected boolean wrap;
     //endregion
 
     //region constructors
@@ -36,8 +37,7 @@ public class KeyFrameAnimation extends Animation {
     public KeyFrameAnimation(String name, Texture tex) {
         super(name);
         this.tex = tex;
-        this.startFrame = -1;
-        this.endFrame = -1;
+        wrap = false;
     }
 
     /**
@@ -55,6 +55,7 @@ public class KeyFrameAnimation extends Animation {
         this.speed = speed;
         this.startFrame = startFrame;
         this.endFrame = endFrame;
+        wrap = false;
 
         init();
     }
@@ -82,6 +83,8 @@ public class KeyFrameAnimation extends Animation {
 
     public TextureRegion getStartFrame() { return frames[startFrame]; }
 
+    public boolean wrap() { return wrap; }
+
     public void setFrameWidth(int frameWidth) {
         this.frameWidth = frameWidth;
     }
@@ -95,6 +98,10 @@ public class KeyFrameAnimation extends Animation {
     public void setStartFrameIndex(int startFrame) { this.startFrame = startFrame; }
 
     public void setEndFrameIndex(int endFrame) { this.endFrame = endFrame; }
+
+    public void setStateTime(float stateTime) { this.stateTime = stateTime; }
+
+    public void setWrap(boolean wrap) { this.wrap = wrap; }
     //endregion
 
     //region overridden methods from Animation
@@ -146,7 +153,7 @@ public class KeyFrameAnimation extends Animation {
         if (frames != null) {
 
             stateTime += Gdx.graphics.getDeltaTime();
-            TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
+            TextureRegion currentFrame = animation.getKeyFrame(stateTime, wrap);
             float imgW = currentFrame.getRegionWidth();
             float imgH = currentFrame.getRegionHeight();
 
@@ -172,6 +179,7 @@ public class KeyFrameAnimation extends Animation {
     public void init() {
         if (frameWidth > 0 && frameHeight > 0 && startFrame >= 0 && endFrame >= 0 &&
                 endFrame >= startFrame && speed > 0) {
+            stateTime = 0;
             com.badlogic.gdx.graphics.Texture tmpTexture = tex.getTexture();
             TextureRegion[][] tmpRegions = TextureRegion.split(tmpTexture, frameWidth, frameHeight);
 
@@ -188,9 +196,9 @@ public class KeyFrameAnimation extends Animation {
             }
 
             frames = Arrays.copyOfRange(frames, startFrame, endFrame + 1);
-            System.out.println("" + frames.length);
             animation = new com.badlogic.gdx.graphics.g2d.Animation(speed, frames);
-            System.out.println("" + frames == null);
+            System.out.println("" + animation.getPlayMode());
+            System.out.println("" + com.badlogic.gdx.graphics.g2d.Animation.LOOP);
         }
     }
     //endregion

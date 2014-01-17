@@ -4,18 +4,30 @@ import com.nebula2d.editor.framework.components.KeyFrameAnimation;
 import com.nebula2d.editor.util.IntKfAnimPropertyDocumentListener;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class KeyFrameAnimationEditDialog extends JDialog {
 
 
 
     private KeyFrameAnimation animation;
+    private AnimationRenderCanvas animatedCanvas;
     public KeyFrameAnimationEditDialog(KeyFrameAnimation animation) {
         this.animation = animation;
         create();
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                animatedCanvas.stop();
+            }
+        });
     }
 
     private void create() {
@@ -25,14 +37,11 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         JLabel endFrameLbl = new JLabel("End Frame:");
         JLabel speedLbl = new JLabel("Speed:");
 
-        JTextField frameWidthTf = new JTextField(10);
-
-        JTextField frameHeightTf = new JTextField(10);
-        JTextField startFrameTf = new JTextField(10);
-        JTextField endFrameTf = new JTextField(10);
-        final JTextField speedTf = new JTextField(10);
-
-
+        JTextField frameWidthTf = new JTextField(Integer.toString(animation.getFrameWidth()), 3);
+        JTextField frameHeightTf = new JTextField(Integer.toString(animation.getFrameHeight()), 3);
+        JTextField startFrameTf = new JTextField(Integer.toString(animation.getStartFrameIndex()), 3);
+        JTextField endFrameTf = new JTextField(Integer.toString(animation.getEndFrameIndex()), 3);
+        final JTextField speedTf = new JTextField(Float.toString(animation.getSpeed()), 3);
 
         DocumentListener floatDocumentListener = new DocumentListener() {
             @Override
@@ -78,6 +87,15 @@ public class KeyFrameAnimationEditDialog extends JDialog {
 
         speedTf.getDocument().addDocumentListener(floatDocumentListener);
 
+        final JCheckBox wrapCb = new JCheckBox("Wrap", animation.wrap());
+        wrapCb.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                KeyFrameAnimationEditDialog.this.animation.setStateTime(0);
+                KeyFrameAnimationEditDialog.this.animation.setWrap(wrapCb.isSelected());
+            }
+        });
+
         JPanel inputPanel = new JPanel();
         GroupLayout groupLayout = new GroupLayout(inputPanel);
         inputPanel.setLayout(groupLayout);
@@ -88,7 +106,7 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         GroupLayout.SequentialGroup hGroup = groupLayout.createSequentialGroup();
         hGroup.addGroup(groupLayout.createParallelGroup().addComponent(frameWidthLbl).
                 addComponent(frameHeightLbl).addComponent(startFrameLbl).addComponent(endFrameLbl).
-                addComponent(speedLbl));
+                addComponent(speedLbl).addComponent(wrapCb));
         hGroup.addGroup(groupLayout.createParallelGroup().addComponent(frameWidthTf).
                 addComponent(frameHeightTf).addComponent(startFrameTf).addComponent(endFrameTf).
                 addComponent(speedTf));
@@ -105,11 +123,13 @@ public class KeyFrameAnimationEditDialog extends JDialog {
                 addComponent(endFrameLbl).addComponent(endFrameTf));
         vGroup.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).
                 addComponent(speedLbl).addComponent(speedTf));
+        vGroup.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).
+                addComponent(wrapCb));
         groupLayout.setVerticalGroup(vGroup);
 
         JPanel rightPanel = new JPanel(new GridLayout(2, 1));
         StillKeyFrameAnimationCanvas stillCanvas = new StillKeyFrameAnimationCanvas(animation);
-        AnimationRenderCanvas animatedCanvas = new AnimationRenderCanvas(new AnimationRenderAdapter(animation));
+        animatedCanvas = new AnimationRenderCanvas(new AnimationRenderAdapter(animation));
         rightPanel.add(stillCanvas);
         rightPanel.add(animatedCanvas.getCanvas());
         setLayout(new BorderLayout());
