@@ -16,7 +16,6 @@ public class KeyFrameAnimationEditDialog extends JDialog {
     public KeyFrameAnimationEditDialog(KeyFrameAnimation animation) {
         this.animation = animation;
         create();
-        setVisible(true);
     }
 
     private void create() {
@@ -118,6 +117,7 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         add(rightPanel, BorderLayout.EAST);
         setSize(new Dimension(800, 600));
         validate();
+        setVisible(true);
         animatedCanvas.initCamera();
     }
 

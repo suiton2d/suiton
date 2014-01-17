@@ -37,8 +37,9 @@ public class MainFrame extends JFrame {
         setSize(1200, 768);
 
         validate();
-        renderCanvas.initCamera(renderCanvas.getCanvas().getWidth(), renderCanvas.getCanvas().getHeight());
+
         setVisible(true);
+        renderCanvas.initCamera(renderCanvas.getCanvas().getWidth(), renderCanvas.getCanvas().getHeight());
     }
     //endregion
 

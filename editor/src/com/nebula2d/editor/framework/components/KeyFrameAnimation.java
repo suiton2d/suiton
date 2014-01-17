@@ -141,13 +141,27 @@ public class KeyFrameAnimation extends Animation {
     }
 
     @Override
-    public void renderAnimated(SpriteBatch batch, Camera cam) {
-//        System.out.println("rendering...");
+    public void renderAnimated(SpriteBatch batch, Camera cam, int canvasW, int canvasH) {
+
         if (frames != null) {
 
             stateTime += Gdx.graphics.getDeltaTime();
             TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
-            batch.draw(currentFrame, 0, 0);
+            float imgW = currentFrame.getRegionWidth();
+            float imgH = currentFrame.getRegionHeight();
+
+            if (imgW > imgH) {
+                imgW *= canvasH / imgH;
+                imgH = canvasH;
+            } else if (imgH > imgW) {
+                imgH *= canvasW / imgW;
+                imgW = canvasW;
+            } else {
+                imgW = canvasW;
+                imgH = canvasH;
+            }
+
+            batch.draw(currentFrame, canvasW/2.0f - imgW / 2.0f, canvasH/2.0f - imgH/2.0f, imgW, imgH);
         }
     }
 
@@ -156,7 +170,6 @@ public class KeyFrameAnimation extends Animation {
 
     @Override
     public void init() {
-        System.out.println("init called!");
         if (frameWidth > 0 && frameHeight > 0 && startFrame >= 0 && endFrame >= 0 &&
                 endFrame >= startFrame && speed > 0) {
             com.badlogic.gdx.graphics.Texture tmpTexture = tex.getTexture();

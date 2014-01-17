@@ -18,6 +18,6 @@ public class AnimationRenderCanvas extends LwjglAWTCanvas {
     }
 
     public void initCamera() {
-        adapter.initCamera(getCanvas().getSize().width, getCanvas().getSize().height);
+        adapter.initCamera(getCanvas().getWidth(), getCanvas().getHeight());
     }
 }

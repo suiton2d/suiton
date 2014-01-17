@@ -66,6 +66,16 @@ public class PanelRenderer extends Renderer {
             imageTf.setText(texture.getPath());
             imagePanel.setImage(getTexture().getPath());
         }
+
+        final DefaultListModel<Animation> listModel = new DefaultListModel<Animation>();
+        for (Animation anim : getAnimations()) {
+            listModel.addElement(anim);
+        }
+        final JList<Animation> animationList = new JList<Animation>();
+        animationList.setModel(listModel);
+        final JScrollPane sp = new JScrollPane(animationList);
+        sp.setPreferredSize(new Dimension(200, 300));
+
         final JButton browseBtn = new JButton("...");
         browseBtn.addActionListener(new ActionListener() {
             @Override
@@ -84,19 +94,12 @@ public class PanelRenderer extends Renderer {
                             PanelRenderer.this.texture = new Texture(path);
                         }
                     });
+                    listModel.clear();
+                    animations.clear();
                     imagePanel.getParent().revalidate();
                 }
             }
         });
-
-        final DefaultListModel<Animation> listModel = new DefaultListModel<Animation>();
-        for (Animation anim : getAnimations()) {
-            listModel.addElement(anim);
-        }
-        final JList<Animation> animationList = new JList<Animation>();
-        animationList.setModel(listModel);
-        final JScrollPane sp = new JScrollPane(animationList);
-        sp.setPreferredSize(new Dimension(200, 300));
 
         addButton.addActionListener(new ActionListener() {
             @Override

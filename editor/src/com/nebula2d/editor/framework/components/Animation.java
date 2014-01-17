@@ -51,7 +51,7 @@ public abstract class Animation implements ISaveable, ILoadable{
 
     public abstract void renderStill(SpriteBatch batch, GameObject gameObject, Camera cam);
 
-    public abstract void renderAnimated(SpriteBatch batch, Camera cam);
+    public abstract void renderAnimated(SpriteBatch batch, Camera cam, int canvasW, int canvasH);
 
     public abstract void init();
 
