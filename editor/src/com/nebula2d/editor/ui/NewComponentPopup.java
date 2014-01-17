@@ -78,16 +78,11 @@ public class NewComponentPopup extends JPopupMenu {
                     NewComponentDialog.this.component.setName(name);
                     gameObject.addComponent(NewComponentDialog.this.component);
 
-                    //There is an NPE here that is seemingly harmless. Just ignore it for now.
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            listModel.addElement(NewComponentDialog.this.component);
-                            list.setSelectedValue(NewComponentDialog.this.component, true);
-                        }
-                    });
-
+                    listModel.addElement(NewComponentDialog.this.component);
                     dispose();
+                    list.setSelectedValue(NewComponentDialog.this.component, true);
+
+
                 }
             });
             JButton cancelBtn = new JButton("Cancel");
