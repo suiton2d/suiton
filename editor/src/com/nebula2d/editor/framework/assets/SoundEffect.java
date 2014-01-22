@@ -9,7 +9,7 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
-public class SoundEffect extends Asset {
+public class SoundEffect extends AbstractSound {
 
     //region members
     private  Sound sound;
@@ -28,6 +28,7 @@ public class SoundEffect extends Asset {
     //endregion
 
     //region playback controls
+    @Override
     public void play() {
         if (!isPlaying) {
             if (loop)
@@ -37,12 +38,23 @@ public class SoundEffect extends Asset {
         }
     }
 
+    @Override
     public void stop() {
         sound.stop();
     }
+
+    @Override
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
+    @Override
+    public boolean isLooping() {
+        return loop;
+    }
     //endregion
 
-    //region interface ovverrides
+    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         loop = fr.readBooleanLine();

@@ -8,7 +8,7 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
-public class Music extends Asset {
+public class Music extends AbstractSound {
 
     //region members
     private com.badlogic.gdx.audio.Music music;
@@ -18,6 +18,11 @@ public class Music extends Asset {
 
     //region constructor
     public Music(String path) {
+        super(path);
+        music = Gdx.audio.newMusic(new FileHandle(new File(path)));
+    }
+
+    public Music(String path, float volume) {
         super(path);
         music = Gdx.audio.newMusic(new FileHandle(new File(path)));
         music.setVolume(volume);
@@ -36,17 +41,17 @@ public class Music extends Asset {
     public void pause() {
         music.pause();
     }
-    //endregion
 
-    //region accessors
     public boolean isLooping() {
         return music.isLooping();
     }
 
-    public void setLooping(boolean loop) {
+    public void setLoop(boolean loop) {
         music.setLooping(loop);
     }
+    //endregion
 
+    //region accessors
     public float getVolume() {
         return this.volume;
     }
