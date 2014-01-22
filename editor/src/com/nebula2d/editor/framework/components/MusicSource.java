@@ -50,7 +50,7 @@ public class MusicSource extends Component {
         final JLabel filePathLbl = new JLabel("");
         final JTextField nameTf = new JTextField(name, 20);
         final JCheckBox enabledCb = new JCheckBox("Enabled", enabled);
-        final JCheckBox loopCb = new JCheckBox("Loop", music.isLooping());
+        final JCheckBox loopCb = new JCheckBox("Loop", music != null && music.isLooping());
         final JButton browseBtn = new JButton("...");
         final JButton mediaBtn = new JButton("Play");
         mediaBtn.setEnabled(music != null);

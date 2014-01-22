@@ -3,7 +3,9 @@ package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.components.Component;
+import com.nebula2d.editor.framework.components.MusicSource;
 import com.nebula2d.editor.framework.components.PanelRenderer;
+import com.nebula2d.editor.framework.components.SoundEffectSource;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,8 +25,33 @@ public class NewComponentPopup extends JPopupMenu {
         this.gameObject = gameObject;
         this.listModel = (DefaultListModel<Component>) list.getModel();
 
+        create();
+    }
+
+    private void create() {
         JMenu rendererMenu = new JMenu("Renderer");
         JMenuItem panelRendererMenuItem = rendererMenu.add("PanelRenderer");
+
+        JMenu audioMenu = new JMenu("Audio");
+        JMenuItem musicSourceMenuItem = audioMenu.add("MusicSource");
+        JMenuItem soundEffectSourceMenuItem = audioMenu.add("SoundEffectSource");
+
+        musicSourceMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MusicSource musicSource = new MusicSource("");
+                new NewComponentDialog(musicSource);
+            }
+        });
+
+        soundEffectSourceMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SoundEffectSource soundEffectSource = new SoundEffectSource("");
+                new NewComponentDialog(soundEffectSource);
+            }
+        });
+
         panelRendererMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,6 +67,7 @@ public class NewComponentPopup extends JPopupMenu {
         });
 
         add(rendererMenu);
+        add(audioMenu);
 
         addFocusListener(new FocusAdapter() {
             @Override
