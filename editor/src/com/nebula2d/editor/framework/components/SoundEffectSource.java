@@ -1,18 +1,13 @@
 package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.assets.Music;
 import com.nebula2d.editor.framework.assets.SoundEffect;
 import com.nebula2d.editor.ui.ComponentsDialog;
 
-import javax.media.ControllerEvent;
-import javax.media.ControllerListener;
-import javax.media.MediaLocator;
-import javax.media.StopEvent;
-import javax.media.bean.playerbean.MediaPlayer;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -49,7 +44,7 @@ public class SoundEffectSource extends Component {
         final JLabel filePathLbl = new JLabel(soundEffect != null ? soundEffect.getPath() : "");
         final JTextField nameTf = new JTextField(name, 20);
         final JCheckBox enabledCb = new JCheckBox("Enabled", enabled);
-        final JCheckBox loopCb = new JCheckBox("Loop", soundEffect.isLooping());
+        final JCheckBox loopCb = new JCheckBox("Loop", soundEffect != null && soundEffect.isLooping());
         final JButton browseBtn = new JButton("...");
         final JButton mediaBtn = new JButton("Play");
         mediaBtn.setEnabled(soundEffect != null);
@@ -67,6 +62,7 @@ public class SoundEffectSource extends Component {
                         @Override
                         public void run() {
                             SoundEffectSource.this.soundEffect = new SoundEffect(path);
+                            mediaBtn.setEnabled(true);
                         }
                     });
                 }
@@ -86,12 +82,18 @@ public class SoundEffectSource extends Component {
                 soundEffect.setLoop(loopCb.isSelected());
             }
         });
-
+        final Music.OnCompletionListener onSfxCompleteListener =
+                new com.badlogic.gdx.audio.Music.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(com.badlogic.gdx.audio.Music music) {
+                        mediaBtn.setEnabled(true);
+                    }
+                };
         mediaBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mediaBtn.setEnabled(false);
-                playSoundEffect(filePathLbl.getText(), mediaBtn);
+                playSoundEffect(onSfxCompleteListener);
             }
         });
 
@@ -122,26 +124,13 @@ public class SoundEffectSource extends Component {
         return panel;
     }
 
-    private void playSoundEffect(String path, final JButton mediaBtn) {
-        File mediaFile = new File(path);
-        URL mediaUrl;
-        try {
-            mediaUrl = mediaFile.toURI().toURL();
-        } catch (MalformedURLException e1) {
-            return;
-        }
-
-        MediaLocator mediaLocator = new MediaLocator(mediaUrl);
-        final MediaPlayer mp = new MediaPlayer();
-        mp.setMediaLocator(mediaLocator);
-        mp.addControllerListener(new ControllerListener() {
+    private void playSoundEffect(final Music.OnCompletionListener listener) {
+        Gdx.app.postRunnable(new Runnable() {
             @Override
-            public void controllerUpdate(ControllerEvent controllerEvent) {
-                if (controllerEvent instanceof StopEvent) {
-                    mediaBtn.setEnabled(true);
-                }
+            public void run() {
+            soundEffect.play();
+            soundEffect.setOnCompleteListener(listener);
             }
         });
-        mp.start();
     }
 }

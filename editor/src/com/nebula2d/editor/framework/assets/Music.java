@@ -12,7 +12,6 @@ public class Music extends AbstractSound {
 
     //region members
     private com.badlogic.gdx.audio.Music music;
-
     private float volume;
     //endregion
 
@@ -72,6 +71,10 @@ public class Music extends AbstractSound {
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
         fw.writeFloatLine(volume);
+    }
+
+    public void setOnCompleteListener(com.badlogic.gdx.audio.Music.OnCompletionListener listener) {
+        music.setOnCompletionListener(listener);
     }
     //endregion
 }
