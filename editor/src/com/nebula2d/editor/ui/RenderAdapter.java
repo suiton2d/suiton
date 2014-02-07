@@ -1,6 +1,23 @@
+/*
+ * Nebula2D is a cross-platform, 2D game engine for PC, Mac, & Linux
+ * Copyright (c) 2014 Jon Bonazza
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.nebula2d.editor.ui;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -11,9 +28,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Project;
-import com.nebula2d.editor.framework.assets.Texture;
-import com.nebula2d.editor.framework.components.PanelRenderer;
-import com.nebula2d.editor.framework.components.Renderer;
 
 
 public class RenderAdapter implements ApplicationListener {
@@ -54,12 +68,14 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void render() {
+        if (!enabled)
+            return;
 
         Gdx.graphics.getGL20().glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (camera == null)
-            return;;
+            return;
 
         camera.update();
         SpriteBatch batcher = new SpriteBatch();
@@ -110,7 +126,6 @@ public class RenderAdapter implements ApplicationListener {
     }
 
     public void setEnabled(boolean enabled) {
-        //this.enabled = enabled;
-        this.enabled = true;
+        this.enabled = enabled;
     }
 }
