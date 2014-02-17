@@ -19,6 +19,10 @@ public class Script extends Asset {
         super(path);
     }
 
+    public String getContents() {
+        return contents;
+    }
+
     @Override
     protected void onLoad() {
         FileHandle fileHandle = Gdx.files.internal(path);
