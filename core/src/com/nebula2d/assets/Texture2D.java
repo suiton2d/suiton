@@ -53,5 +53,6 @@ public class Texture2D extends Asset {
     @Override
     protected void onUnload() {
         texture.dispose();
+        texture = null;
     }
 }

@@ -59,4 +59,8 @@ public class AssetManager {
         for (Asset asset : assets)
             asset.unload();
     }
+
+    public void loadFromData() {
+        //TODO: implement
+    }
 }
