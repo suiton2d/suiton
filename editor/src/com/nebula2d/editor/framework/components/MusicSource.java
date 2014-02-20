@@ -25,21 +25,15 @@ import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.ui.ComponentsDialog;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class MusicSource extends Component {
 
     private MusicTrack musicTrack;
-    private Clip clip;
     public MusicSource(String name) {
         super(name);
     }
@@ -70,7 +64,6 @@ public class MusicSource extends Component {
         mediaBtn.setEnabled(musicTrack != null);
         if (musicTrack != null) {
             filePathLbl.setText(musicTrack.getPath());
-            setMedia(musicTrack.getPath());
         }
         browseBtn.addActionListener(new ActionListener() {
             @Override
@@ -84,7 +77,6 @@ public class MusicSource extends Component {
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
-                            setMedia(path);
                             MusicSource.this.musicTrack = new MusicTrack(path);
                         }
                     });
@@ -125,7 +117,6 @@ public class MusicSource extends Component {
                             musicTrack.setOnCompleteListener(onMusicCompleteListener);
                         }
                     });
-                    //clip.start();
                 } else {
                     btn.setText("Play");
                     Gdx.app.postRunnable(new Runnable() {
@@ -134,7 +125,6 @@ public class MusicSource extends Component {
                             musicTrack.stop();
                         }
                     });
-                    //clip.stop();
                 }
             }
         });
@@ -164,32 +154,5 @@ public class MusicSource extends Component {
         layout.setVerticalGroup(vGroup);
 
         return panel;
-    }
-
-    private void setMedia(String path) {
-        /*File mediaFile = new File(path);
-        URL mediaUrl;
-        try {
-            mediaUrl = mediaFile.toURI().toURL();
-        } catch (MalformedURLException e1) {
-            return;
-        }
-
-        try {
-            if (clip != null)
-                clip.close();
-            clip = AudioSystem.getClip();
-            AudioInputStream ais = AudioSystem.getAudioInputStream(mediaUrl);
-            clip.open(ais);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }*/
-
-
-
     }
 }
