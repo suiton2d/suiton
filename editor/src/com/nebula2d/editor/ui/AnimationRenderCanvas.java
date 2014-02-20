@@ -19,7 +19,7 @@
 package com.nebula2d.editor.ui;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
-import com.nebula2d.editor.framework.assets.Texture;
+import com.nebula2d.editor.framework.assets.Sprite;
 
 import java.awt.*;
 
@@ -30,8 +30,8 @@ public class AnimationRenderCanvas extends LwjglAWTCanvas {
     public AnimationRenderCanvas(AnimationRenderAdapter adapter) {
         super(adapter, true, MainFrame.getRenderCanvas());
         this.adapter = adapter;
-        Texture tex = adapter.getAnimation().getTexture();
-        getCanvas().setPreferredSize(new Dimension(tex.getWidth(), tex.getHeight()));
+        Sprite sprite = adapter.getAnimation().getSprite();
+        getCanvas().setPreferredSize(new Dimension(sprite.getWidth(), sprite.getHeight()));
     }
 
     public void initCamera() {

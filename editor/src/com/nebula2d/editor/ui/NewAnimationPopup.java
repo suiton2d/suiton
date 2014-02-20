@@ -19,7 +19,7 @@
 package com.nebula2d.editor.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.nebula2d.editor.framework.assets.Texture;
+import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.framework.components.Animation;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
 import com.nebula2d.editor.framework.components.Renderer;
@@ -35,7 +35,7 @@ import java.awt.event.FocusEvent;
 public class NewAnimationPopup extends JPopupMenu {
     private Renderer renderer;
     private DefaultListModel<Animation> listModel;
-    private Texture tex;
+    private Sprite sprite;
 
     public NewAnimationPopup(Renderer renderer, DefaultListModel<Animation> listModel, final String texturePath) {
         this.renderer = renderer;
@@ -44,7 +44,7 @@ public class NewAnimationPopup extends JPopupMenu {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                tex = new Texture(texturePath);
+                sprite = new Sprite(texturePath);
             }
         });
 
@@ -53,7 +53,7 @@ public class NewAnimationPopup extends JPopupMenu {
         kfAnimMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                KeyFrameAnimation kfAnim = new KeyFrameAnimation("", tex);
+                KeyFrameAnimation kfAnim = new KeyFrameAnimation("", sprite);
                 new NewAnimationDialog(kfAnim);
             }
         });

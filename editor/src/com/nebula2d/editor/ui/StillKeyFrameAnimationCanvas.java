@@ -18,7 +18,7 @@
 
 package com.nebula2d.editor.ui;
 
-import com.nebula2d.editor.framework.assets.Texture;
+import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
 
 import javax.imageio.ImageIO;
@@ -35,16 +35,16 @@ public class StillKeyFrameAnimationCanvas extends JPanel {
 
     public StillKeyFrameAnimationCanvas(KeyFrameAnimation animation) {
         this.animation = animation;
-        Texture tex = animation.getTexture();
+        Sprite sprite = animation.getSprite();
         init();
         setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(tex.getWidth(), tex.getHeight()));
+        setPreferredSize(new Dimension(sprite.getWidth(), sprite.getHeight()));
     }
 
     public void init() {
-        Texture texture = animation.getTexture();
+        Sprite sprite = animation.getSprite();
         try {
-            this.image = ImageIO.read(new File(texture.getPath()));
+            this.image = ImageIO.read(new File(sprite.getPath()));
         } catch (IOException e) {
             e.printStackTrace();
         }

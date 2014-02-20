@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.assets.Texture;
+import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.ui.KeyFrameAnimationEditDialog;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -41,7 +41,7 @@ public class KeyFrameAnimation extends Animation {
     protected int startFrame;
     protected int endFrame;
     protected float speed;
-    protected Texture tex;
+    protected Sprite sprite;
     protected com.badlogic.gdx.graphics.g2d.Animation animation;
     protected float stateTime;
     protected boolean wrap;
@@ -50,24 +50,26 @@ public class KeyFrameAnimation extends Animation {
     //region constructors
     /**
      * Ctor used for loading animation form disk
-     * @param tex the texture to associate with the animation
+     * @param sprite the {@link com.nebula2d.editor.framework.assets.Sprite} to associate with the animation
      */
-    public KeyFrameAnimation(String name, Texture tex) {
+    public KeyFrameAnimation(String name, Sprite sprite) {
         super(name);
-        this.tex = tex;
+        this.sprite = sprite;
+        this.sprite.setSpriteSheet(true);
         wrap = false;
     }
 
     /**
      * Ctor used for creating a completely new animation
-     * @param tex the texture to associate with the animation
+     * @param sprite the {@link com.nebula2d.editor.framework.assets.Sprite} to associate with the animation
      * @param frameWidth the width of a single frame
      * @param frameHeight the height of a single frame
      * @param speed the speed at which the animaiton should be played back
      */
-    public KeyFrameAnimation(String name, Texture tex, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed) {
+    public KeyFrameAnimation(String name, Sprite sprite, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed) {
         super(name);
-        this.tex = tex;
+        this.sprite = sprite;
+        this.sprite.setSpriteSheet(true);
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.speed = speed;
@@ -151,8 +153,8 @@ public class KeyFrameAnimation extends Animation {
     @Override
     public void renderStill(SpriteBatch batch, GameObject gameObject, Camera cam) {
         TextureRegion frame = getStartFrame();
-        float halfw = tex.getWidth() / 2.0f;
-        float halfh = tex.getHeight() / 2.0f;
+        float halfw = sprite.getWidth() / 2.0f;
+        float halfh = sprite.getHeight() / 2.0f;
         batch.draw(frame,
                 gameObject.getPosition().x - halfw - cam.position.x,
                 gameObject.getPosition().y - halfh - cam.position.y,
@@ -191,14 +193,14 @@ public class KeyFrameAnimation extends Animation {
     }
 
     @Override
-    public Texture getTexture() { return tex; }
+    public Sprite getSprite() { return sprite; }
 
     @Override
     public void init() {
         if (frameWidth > 0 && frameHeight > 0 && startFrame >= 0 && endFrame >= 0 &&
                 endFrame >= startFrame && speed > 0) {
             stateTime = 0;
-            com.badlogic.gdx.graphics.Texture tmpTexture = tex.getTexture();
+            com.badlogic.gdx.graphics.Texture tmpTexture = sprite.getTexture();
             TextureRegion[][] tmpRegions = TextureRegion.split(tmpTexture, frameWidth, frameHeight);
 
             int numRows = tmpRegions.length;

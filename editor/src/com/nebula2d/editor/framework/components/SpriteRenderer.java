@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.assets.Texture;
+import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.ui.ImagePanel;
 import com.nebula2d.editor.ui.NewAnimationPopup;
@@ -36,10 +36,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class PanelRenderer extends Renderer {
+public class SpriteRenderer extends Renderer {
 
     //region constructor
-    public PanelRenderer(String name) {
+    public SpriteRenderer(String name) {
         super(name);
     }
     //endregion
@@ -47,7 +47,7 @@ public class PanelRenderer extends Renderer {
     //region overrided methods from Renderer
     @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
-        if (texture != null) {
+        if (sprite != null) {
 
             if (currentAnim != -1) {
                 getCurrentAnimation().renderStill(batcher, parent, cam);
@@ -56,13 +56,13 @@ public class PanelRenderer extends Renderer {
             float halfw = getBoundingWidth() / 2.0f;
             float halfh = getBoundingHeight() / 2.0f;
 
-            batcher.draw(new TextureRegion(texture.getTexture()),
+            batcher.draw(new TextureRegion(sprite.getTexture()),
                     parent.getPosition().x - halfw - cam.position.x,
                     parent.getPosition().y - halfh - cam.position.y,
                     halfw,
                     halfh,
-                    texture.getTexture().getWidth(),
-                    texture.getTexture().getHeight(),
+                    sprite.getTexture().getWidth(),
+                    sprite.getTexture().getHeight(),
                     parent.getScale().x,
                     parent.getScale().y,
                     parent.getRotation());
@@ -80,8 +80,8 @@ public class PanelRenderer extends Renderer {
         removeButton.setEnabled(false);
         final JTextField imageTf = new JTextField(20);
 
-        if (texture != null) {
-            imageTf.setText(texture.getPath());
+        if (sprite != null) {
+            imageTf.setText(sprite.getPath());
             imagePanel.setImage(getTexture().getPath());
         }
 
@@ -109,7 +109,7 @@ public class PanelRenderer extends Renderer {
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
-                            PanelRenderer.this.texture = new Texture(path);
+                            SpriteRenderer.this.sprite = new Sprite(path);
                         }
                     });
                     listModel.clear();
@@ -122,7 +122,7 @@ public class PanelRenderer extends Renderer {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new NewAnimationPopup(PanelRenderer.this, listModel, imageTf.getText()).
+                new NewAnimationPopup(SpriteRenderer.this, listModel, imageTf.getText()).
                         show(addButton, -1, addButton.getHeight());
 
             }

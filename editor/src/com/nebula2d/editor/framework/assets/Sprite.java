@@ -19,19 +19,22 @@
 package com.nebula2d.editor.framework.assets;
 
 import com.nebula2d.editor.util.FullBufferedReader;
+import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
 
-public class Texture extends Asset {
+public class Sprite extends Asset {
 
     //region members
     protected com.badlogic.gdx.graphics.Texture texture;
+    protected boolean spriteSheet;
     //endregion
 
     //region constructor
-    public Texture(String path) {
+    public Sprite(String path) {
         super(path);
         texture = new com.badlogic.gdx.graphics.Texture(path);
+        spriteSheet = false;
     }
     //endregion
 
@@ -44,8 +47,12 @@ public class Texture extends Asset {
         return this.texture.getHeight();
     }
 
-    public void bind() {
-        this.texture.bind();
+    public boolean isSpriteSheet() {
+        return spriteSheet;
+    }
+
+    public void setSpriteSheet(boolean spriteSheet) {
+        this.spriteSheet = spriteSheet;
     }
 
     public com.badlogic.gdx.graphics.Texture getTexture() {
@@ -55,8 +62,16 @@ public class Texture extends Asset {
 
     //region interface overrides
     @Override
+    public void save(FullBufferedWriter fw) throws IOException {
+        String type = isSpriteSheet() ? "SpriteSheet" : "Sprite";
+        fw.write(type);
+    }
+
+    @Override
     public void load(FullBufferedReader fr) throws IOException {
-        //Noop!
+        String type = fr.readLine();
+        if (type.equalsIgnoreCase("spritesheet"))
+            setSpriteSheet(true);
     }
     //endregion
 }

@@ -20,6 +20,7 @@ package com.nebula2d.editor.framework.assets;
 
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
+import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.BufferedWriter;
@@ -33,7 +34,6 @@ public abstract class Asset implements ISaveable, ILoadable{
 
     //region members
     protected String path;
-    protected int type;
     protected String name;
     protected boolean isExtra;
     //endregion
@@ -49,10 +49,6 @@ public abstract class Asset implements ISaveable, ILoadable{
     //region accessors
     public String getPath() {
         return this.path;
-    }
-
-    public int getType() {
-        return this.type;
     }
 
     public String getName() {
@@ -76,7 +72,6 @@ public abstract class Asset implements ISaveable, ILoadable{
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(path);
-        fw.writeIntLine(type);
     }
     //endregion
 }

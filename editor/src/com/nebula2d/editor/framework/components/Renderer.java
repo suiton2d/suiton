@@ -18,22 +18,11 @@
 
 package com.nebula2d.editor.framework.components;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.assets.Texture;
-import com.nebula2d.editor.ui.ComponentsDialog;
-import com.nebula2d.editor.ui.ImagePanel;
-import com.nebula2d.editor.ui.NewAnimationPopup;
+import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +30,7 @@ import java.util.List;
 public abstract class Renderer extends Component {
 
     //region members
-    protected Texture texture;
+    protected Sprite sprite;
 
     protected List<Animation> animations;
 
@@ -103,20 +92,20 @@ public abstract class Renderer extends Component {
         }
     }
 
-    public Texture getTexture() {
-        return texture;
+    public Sprite getTexture() {
+        return sprite;
     }
 
     public int getBoundingWidth() {
-        return texture.getWidth();
+        return sprite.getWidth();
     }
 
     public int getBoundingHeight() {
-        return texture.getHeight();
+        return sprite.getHeight();
     }
 
     public Rectangle getBoundingBox() {
-        if (texture == null)
+        if (sprite == null)
             return null;
 
         float x = parent.getPosition().x  -  (getBoundingWidth() / 2.0f);
@@ -125,8 +114,8 @@ public abstract class Renderer extends Component {
         return new Rectangle(x, y, getBoundingWidth(), getBoundingHeight());
     }
 
-    public void setTexture(Texture tex) {
-        this.texture = tex;
+    public void setTexture(Sprite sprite) {
+        this.sprite = sprite;
     }
     //endregion
 
@@ -135,11 +124,11 @@ public abstract class Renderer extends Component {
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
 
-        if (texture == null) {
+        if (sprite == null) {
             fw.writeLine("0");
         } else {
             fw.writeLine("1");
-            fw.writeLine(texture.getPath());
+            fw.writeLine(sprite.getPath());
         }
 
         fw.writeIntLine(currentAnim);
@@ -152,7 +141,7 @@ public abstract class Renderer extends Component {
         int tmp = fr.readIntLine();
 
         if (tmp == 1) {
-            texture = new Texture(fr.readLine());
+            sprite = new Sprite(fr.readLine());
         }
 
         currentAnim = fr.readIntLine();

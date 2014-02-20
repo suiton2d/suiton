@@ -23,7 +23,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.ISaveable;
 import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.assets.Texture;
+import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import javax.swing.*;
@@ -46,7 +46,7 @@ public abstract class Animation implements ISaveable, ILoadable{
         return name;
     }
 
-    public abstract Texture getTexture();
+    public abstract Sprite getSprite();
 
     public void setName(String name) {
         this.name = name;

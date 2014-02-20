@@ -22,8 +22,8 @@ package com.nebula2d.editor.ui;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.components.Component;
 import com.nebula2d.editor.framework.components.MusicSource;
-import com.nebula2d.editor.framework.components.PanelRenderer;
 import com.nebula2d.editor.framework.components.SoundEffectSource;
+import com.nebula2d.editor.framework.components.SpriteRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,8 +79,7 @@ public class NewComponentPopup extends JPopupMenu {
                     return;
                 }
 
-                PanelRenderer panelRenderer = new PanelRenderer("");
-                new NewComponentDialog(panelRenderer);
+                new NewComponentDialog(new SpriteRenderer(""));
             }
         });
 

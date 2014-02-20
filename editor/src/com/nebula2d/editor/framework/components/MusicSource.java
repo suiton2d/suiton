@@ -22,7 +22,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.assets.Music;
+import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.ui.ComponentsDialog;
 
 import javax.sound.sampled.*;
@@ -38,18 +38,18 @@ import java.net.URL;
 
 public class MusicSource extends Component {
 
-    private Music music;
+    private MusicTrack musicTrack;
     private Clip clip;
     public MusicSource(String name) {
         super(name);
     }
 
-    public Music getMusic() {
-        return music;
+    public MusicTrack getMusicTrack() {
+        return musicTrack;
     }
 
-    public void setMusic(Music music) {
-        this.music = music;
+    public void setMusic(MusicTrack musicTrack) {
+        this.musicTrack = musicTrack;
     }
 
     @Override
@@ -64,13 +64,13 @@ public class MusicSource extends Component {
         final JLabel filePathLbl = new JLabel("");
         final JTextField nameTf = new JTextField(name, 20);
         final JCheckBox enabledCb = new JCheckBox("Enabled", enabled);
-        final JCheckBox loopCb = new JCheckBox("Loop", music != null && music.isLooping());
+        final JCheckBox loopCb = new JCheckBox("Loop", musicTrack != null && musicTrack.isLooping());
         final JButton browseBtn = new JButton("...");
         final JButton mediaBtn = new JButton("Play");
-        mediaBtn.setEnabled(music != null);
-        if (music != null) {
-            filePathLbl.setText(music.getPath());
-            setMedia(music.getPath());
+        mediaBtn.setEnabled(musicTrack != null);
+        if (musicTrack != null) {
+            filePathLbl.setText(musicTrack.getPath());
+            setMedia(musicTrack.getPath());
         }
         browseBtn.addActionListener(new ActionListener() {
             @Override
@@ -85,7 +85,7 @@ public class MusicSource extends Component {
                         @Override
                         public void run() {
                             setMedia(path);
-                            MusicSource.this.music = new Music(path);
+                            MusicSource.this.musicTrack = new MusicTrack(path);
                         }
                     });
                     mediaBtn.setEnabled(true);
@@ -109,7 +109,7 @@ public class MusicSource extends Component {
         loopCb.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                music.setLoop(loopCb.isSelected());
+                musicTrack.setLoop(loopCb.isSelected());
             }
         });
         mediaBtn.addActionListener(new ActionListener() {
@@ -121,8 +121,8 @@ public class MusicSource extends Component {
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
-                            music.play();
-                            music.setOnCompleteListener(onMusicCompleteListener);
+                            musicTrack.play();
+                            musicTrack.setOnCompleteListener(onMusicCompleteListener);
                         }
                     });
                     //clip.start();
@@ -131,7 +131,7 @@ public class MusicSource extends Component {
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
-                            music.stop();
+                            musicTrack.stop();
                         }
                     });
                     //clip.stop();
