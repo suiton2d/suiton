@@ -26,7 +26,7 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
-public class Music extends AbstractSound {
+public class MusicTrack extends AbstractSound {
 
     //region members
     private com.badlogic.gdx.audio.Music music;
@@ -34,12 +34,12 @@ public class Music extends AbstractSound {
     //endregion
 
     //region constructor
-    public Music(String path) {
+    public MusicTrack(String path) {
         super(path);
         music = Gdx.audio.newMusic(new FileHandle(new File(path)));
     }
 
-    public Music(String path, float volume) {
+    public MusicTrack(String path, float volume) {
         super(path);
         music = Gdx.audio.newMusic(new FileHandle(new File(path)));
         music.setVolume(volume);
