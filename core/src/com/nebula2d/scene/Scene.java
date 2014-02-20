@@ -18,6 +18,8 @@
 
 package com.nebula2d.scene;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
@@ -38,12 +40,18 @@ public class Scene {
         this.name = name;
         this.layers = new ArrayList<Layer>();
         this.stage = new Stage();
+        this.stage.setCamera(new OrthographicCamera());
     }
 
     //region accessors
     public String getName() {
         return name;
     }
+
+    public Camera getCamera() {
+        return stage.getCamera();
+    }
+
 
     public List<Layer> getLayers() {
         return layers;
@@ -84,6 +92,13 @@ public class Scene {
     }
 
     public void update(float dt) {
+        Camera cam = stage.getCamera();
+
+        if (cam == null)
+            return;
+
+        cam.update();
+
         for (Layer l : layers)
             l.update(dt);
     }

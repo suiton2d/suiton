@@ -70,5 +70,5 @@ public abstract class Renderer extends Component {
         }
     }
 
-    public abstract void render(SpriteBatch batch, Camera cam, float dt);
+    public abstract void render(SpriteBatch batch, float dt);
 }

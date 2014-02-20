@@ -18,6 +18,8 @@
 
 package com.nebula2d.scene;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -109,9 +111,9 @@ public class GameObject extends Group {
     }
 
     @Override
-    public void draw(SpriteBatch batch, float parentAlpha) {
+    public void draw(Batch batch, float parentAlpha) {
         if (renderer != null)
-            renderer.render(batch);
+            renderer.render((SpriteBatch)batch, Gdx.graphics.getDeltaTime());
 
         drawChildren(batch, parentAlpha);
     }

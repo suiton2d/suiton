@@ -7,6 +7,8 @@ import sun.org.mozilla.javascript.internal.Function;
 import sun.org.mozilla.javascript.internal.Scriptable;
 import sun.org.mozilla.javascript.internal.ScriptableObject;
 
+import java.util.Objects;
+
 /**
  * Behavior is a {@link com.nebula2d.components.Component} for executing
  * {@link com.nebula2d.assets.Script} assets, providing custom functionality to
@@ -36,7 +38,8 @@ public class Behavior extends Component {
     public void start() {
         Object f = scope.get("start", scope);
         if (f instanceof Function) {
-            ((Function) f).call(context, scope, scope, null);
+            Object[] args = new Object[] { gameObject };
+            ((Function) f).call(context, scope, scope, args);
         }
     }
 
@@ -44,7 +47,7 @@ public class Behavior extends Component {
     public void update(float dt) {
         Object f = scope.get("update", scope);
         if (f instanceof Function) {
-            Object[] args = new Object[] { dt };
+            Object[] args = new Object[] { gameObject, dt };
             ((Function) f).call(context, scope, scope, args);
         }
     }
