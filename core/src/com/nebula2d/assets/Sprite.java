@@ -22,14 +22,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
- * Texture2D is a wrapper class around libGdx's Texture class
+ * Sprite is a wrapper class around libGdx's Texture class
  * for 2D textures
  */
-public class Texture2D extends Asset {
+public class Sprite extends Asset {
 
     private Texture texture;
 
-    public Texture2D(String path) {
+    public Sprite(String path) {
         super(path);
     }
 

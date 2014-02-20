@@ -18,16 +18,57 @@
 
 package com.nebula2d.components;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Renderer is an abstract base class for rendering components
+ *
+ * @author      Jon Bonazza <jonbonazza@gmail.com>
  */
 public abstract class Renderer extends Component {
 
+    protected List<Animation> animations;
+    protected Animation currentAnimation;
+
     public Renderer(String name) {
         super(name);
+        animations = new ArrayList<Animation>();
     }
 
-    public abstract void render(SpriteBatch batch);
+    public Animation getAnimation(String name) {
+        for (Animation anim : animations) {
+            if (anim.getName().equals(name)) {
+                return anim;
+            }
+        }
+
+        return null;
+    }
+
+    public void addAnimation(Animation anim) {
+        animations.add(anim);
+    }
+
+    public void removeAnimation(Animation anim) {
+        animations.remove(anim);
+    }
+
+    public void setCurrentAnimation(String name) {
+
+        if (name == null) {
+            currentAnimation = null;
+            return;
+        }
+
+        for (Animation anim : animations) {
+            if (anim.getName().equals(name))
+                currentAnimation = anim;
+        }
+    }
+
+    public abstract void render(SpriteBatch batch, Camera cam, float dt);
 }

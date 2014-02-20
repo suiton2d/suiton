@@ -18,14 +18,21 @@
 
 package com.nebula2d.components;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.nebula2d.scene.Transform;
+
 /**
  * Animation is an abstract base class for animations
  *
  * @author Jon Bonazza <jonbonazza@gmail.com></jonbonazza@gmail.com>
  */
-public class Animation {
+public abstract class Animation {
 
     protected String name;
+    protected boolean isPlaying;
+    protected boolean isPaused;
 
     public Animation(String name) {
         this.name = name;
@@ -35,8 +42,24 @@ public class Animation {
     public String getName() {
         return name;
     }
-
-
     //endregion
 
+    public void play() {
+        isPlaying = true;
+        isPaused = false;
+    }
+
+    public void stop() {
+        isPlaying = false;
+        isPaused = false;
+    }
+
+    public void pause() {
+        if (isPlaying)
+            isPaused = true;
+    }
+
+    protected abstract TextureRegion update(float dt);
+
+    public abstract void render(Transform transform, SpriteBatch batch, Camera cam, float dt);
 }
