@@ -27,7 +27,7 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class Sprite extends Asset {
 
-    private Texture texture;
+    protected Texture texture;
 
     public Sprite(String path) {
         super(path);
