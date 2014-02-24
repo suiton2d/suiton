@@ -16,61 +16,62 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nebula2d.editor.framework.components;
+package com.nebula2d.editor.framework.assets;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.nebula2d.editor.common.ILoadable;
-import com.nebula2d.editor.common.ISaveable;
-import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.assets.Sprite;
+import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
-import javax.swing.*;
 import java.io.IOException;
 
-public abstract class Animation implements ISaveable, ILoadable{
+public class Sprite extends Asset {
 
     //region members
-    protected String name;
+    protected com.badlogic.gdx.graphics.Texture texture;
+    protected boolean spriteSheet;
     //endregion
 
     //region constructor
-    public Animation(String name) {
-        this.name = name;
+    public Sprite(String path) {
+        super(path);
+        texture = new com.badlogic.gdx.graphics.Texture(path);
+        spriteSheet = false;
     }
     //endregion
 
     //region Accessors
-    public String getName() {
-        return name;
+    public int getWidth() {
+        return this.texture.getWidth();
     }
 
-    public abstract Sprite getSprite();
+    public int getHeight() {
+        return this.texture.getHeight();
+    }
 
-    public void setName(String name) {
-        this.name = name;
+    public boolean isSpriteSheet() {
+        return spriteSheet;
+    }
+
+    public void setSpriteSheet(boolean spriteSheet) {
+        this.spriteSheet = spriteSheet;
+    }
+
+    public com.badlogic.gdx.graphics.Texture getTexture() {
+        return texture;
     }
     //endregion
 
     //region interface overrides
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
-        fw.writeLine(name);
+        String type = isSpriteSheet() ? "SpriteSheet" : "Sprite";
+        fw.write(type);
     }
-    //endregion
 
     @Override
-    public String toString() {
-        return name;
+    public void load(FullBufferedReader fr) throws IOException {
+        String type = fr.readLine();
+        if (type.equalsIgnoreCase("spritesheet"))
+            setSpriteSheet(true);
     }
-
-    public abstract void showAnimationEditDialog();
-
-    public abstract void renderStill(SpriteBatch batch, GameObject gameObject, Camera cam);
-
-    public abstract void renderAnimated(SpriteBatch batch, Camera cam, int canvasW, int canvasH);
-
-    public abstract void init();
-
+    //endregion
 }

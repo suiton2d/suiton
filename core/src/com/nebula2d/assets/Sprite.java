@@ -16,47 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nebula2d.editor.framework.assets;
+package com.nebula2d.assets;
 
-import com.nebula2d.editor.util.FullBufferedReader;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
-import java.io.IOException;
+/**
+ * Sprite is a wrapper class around libGdx's Texture class
+ * for 2D textures
+ */
+public class Sprite extends Asset {
 
-public class Texture extends Asset {
+    protected Texture texture;
 
-    //region members
-    protected com.badlogic.gdx.graphics.Texture texture;
-    //endregion
-
-    //region constructor
-    public Texture(String path) {
+    public Sprite(String path) {
         super(path);
-        texture = new com.badlogic.gdx.graphics.Texture(path);
     }
-    //endregion
 
-    //region Accessors
+    public Texture getTexture() {
+        return texture;
+    }
+
     public int getWidth() {
-        return this.texture.getWidth();
+        return texture.getWidth();
     }
 
     public int getHeight() {
-        return this.texture.getHeight();
+        return texture.getHeight();
     }
 
-    public void bind() {
-        this.texture.bind();
-    }
-
-    public com.badlogic.gdx.graphics.Texture getTexture() {
-        return texture;
-    }
-    //endregion
-
-    //region interface overrides
     @Override
-    public void load(FullBufferedReader fr) throws IOException {
-        //Noop!
+    protected void onLoad() {
+        texture = new Texture(Gdx.files.internal(path));
     }
-    //endregion
+
+    @Override
+    protected void onUnload() {
+        texture.dispose();
+        texture = null;
+    }
 }
