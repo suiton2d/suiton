@@ -1,4 +1,5 @@
-import com.badlogic.gdx.Gdx;
+package com.nebula2d.editor;
+
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.util.PlatformUtil;
 
