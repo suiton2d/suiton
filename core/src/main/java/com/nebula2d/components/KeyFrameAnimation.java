@@ -1,11 +1,9 @@
 package com.nebula2d.components;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.assets.SpriteSheet;
-import com.nebula2d.scene.GameObject;
 import com.nebula2d.scene.Transform;
 
 /**
@@ -31,9 +29,8 @@ public class KeyFrameAnimation extends Animation {
      * @param spriteSheet the {@link com.nebula2d.assets.SpriteSheet} used for the animation
      */
     public KeyFrameAnimation(String name, SpriteSheet spriteSheet) {
-        super(name);
+        this(name, spriteSheet, 0, 0, 0.0f);
         wrap = false;
-        this.spriteSheet = spriteSheet;
 
         init();
     }
@@ -57,9 +54,6 @@ public class KeyFrameAnimation extends Animation {
         init();
     }
 
-    /**
-     * initializes the animation
-     */
     private void init() {
         TextureRegion[] frames = spriteSheet.getFrames(startFrame, endFrame);
         animation = new com.badlogic.gdx.graphics.g2d.Animation(speed, frames);

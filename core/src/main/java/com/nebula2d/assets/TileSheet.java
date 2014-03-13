@@ -1,8 +1,5 @@
 package com.nebula2d.assets;
 
-/**
- * Created by bonazza on 2/22/14.
- */
 public class TileSheet extends Sprite {
 
     protected int tileWidth;

@@ -43,6 +43,7 @@ public class GameObject extends Group {
     //region constructors
     public GameObject(String name) {
         setName(name);
+        this.transform = new Transform(this);
         this.components = new ArrayList<Component>();
     }
     //endregion
@@ -74,9 +75,9 @@ public class GameObject extends Group {
     //region component ops
 
     /**
-     * Retrieves the {@link Component} from the GameObject with the given name
-     * @param name the name of the Component to retrieve
-     * @return the target Component
+     * Retrieves the {@link Component} from the GameObject with the given name.
+     * @param name The name of the Component to retrieve.
+     * @return The target Component.
      */
     public Component getComponent(String name) {
         for (Component c : components) {
@@ -88,8 +89,8 @@ public class GameObject extends Group {
     }
 
     /**
-     * Adds a Component to the GameObject
-     * @param component the Component to add
+     * Adds a Component to the GameObject.
+     * @param component The Component to add.
      */
     public void addComponent(Component component) {
         components.add(component);
@@ -99,8 +100,8 @@ public class GameObject extends Group {
     }
 
     /**
-     * Removes a Component from the GameObject
-     * @param component the Component to remove
+     * Removes a Component from the GameObject.
+     * @param component The Component to remove.
      */
     public void removeComponent(Component component) {
         components.remove(component);

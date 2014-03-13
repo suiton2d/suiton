@@ -18,14 +18,23 @@ public class MusicSource extends Component {
         musicTrack = new MusicTrack(trackPath);
     }
 
+    /**
+     * Plays the {@link com.nebula2d.assets.MusicTrack}.
+     */
     public void play() {
         musicTrack.play();
     }
 
+    /**
+     * Stops the MusicTrack.
+     */
     public void stop() {
         musicTrack.stop();
     }
 
+    /**
+     * Pauses the MusicTrack.
+     */
     public void pause() {
         musicTrack.pause();
     }
@@ -56,6 +65,10 @@ public class MusicSource extends Component {
 
     }
 
+    /**
+     * Sets a callback that is fired whenever MusicTrack playback completes.
+     * @param listener The callback that will be fired on playback completion.
+     */
     public void setOnCompletionListener(Music.OnCompletionListener listener) {
         musicTrack.getTrack().setOnCompletionListener(listener);
     }

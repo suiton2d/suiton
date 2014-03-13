@@ -36,7 +36,7 @@ public class Scene {
     private List<Layer> layers;
     private Stage stage;
 
-    public Scene(String name, int index) {
+    public Scene(String name) {
         this.name = name;
         this.layers = new ArrayList<Layer>();
         this.stage = new Stage();
@@ -61,9 +61,9 @@ public class Scene {
     //region layer ops
 
     /**
-     * Retreives the {@link Layer} in the Scene with the given name
-     * @param name the name of the Layer to retrieve
-     * @return the target Layer
+     * Retrieves the {@link Layer} in the Scene with the given name.
+     * @param name The name of the Layer to retrieve.
+     * @return the target Layer.
      */
     public Layer getLayer(String name) {
         for (Layer l : layers) {
@@ -77,8 +77,8 @@ public class Scene {
 
 
     /**
-     * Removes a Layer from the Scene
-     * @param layer the Layer to remove
+     * Removes a Layer from the Scene.
+     * @param layer The Layer to remove.
      */
     public void remove(Layer layer) {
         layers.remove(layer);

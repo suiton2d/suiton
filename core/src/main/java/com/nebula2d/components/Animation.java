@@ -24,7 +24,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.scene.Transform;
 
 /**
- * Animation is an abstract base class for animations
+ * Animation is an abstract base class for animations.
  *
  * @author Jon Bonazza <jonbonazza@gmail.com></jonbonazza@gmail.com>
  */
@@ -44,16 +44,25 @@ public abstract class Animation {
     }
     //endregion
 
+    /**
+     * Plays the animation.
+     */
     public void play() {
         isPlaying = true;
         isPaused = false;
     }
 
+    /**
+     * Stops the animation.
+     */
     public void stop() {
         isPlaying = false;
         isPaused = false;
     }
 
+    /**
+     * Pauses the animation.
+     */
     public void pause() {
         if (isPlaying)
             isPaused = true;
@@ -61,5 +70,12 @@ public abstract class Animation {
 
     protected abstract TextureRegion update(float dt);
 
+    /**
+     * Abstract method to render the Animation
+     * @param transform The {@link com.nebula2d.scene.Transform} of the associated {@link com.nebula2d.scene.GameObject}.
+     * @param batch The SpriteBatch instance to use for rendering
+     * @param cam The Camera for the current scene.
+     * @param dt The time since the last frame update.
+     */
     public abstract void render(Transform transform, SpriteBatch batch, Camera cam, float dt);
 }

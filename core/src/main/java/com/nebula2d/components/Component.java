@@ -58,9 +58,16 @@ public abstract class Component {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+    //endregion
 
+    /**
+     * Abstract callback method called exactly once at the start of the {@link com.nebula2d.scene.Scene}.
+     */
     public abstract void start();
 
+    /**
+     * Abstract callback method called once per frame.
+     * @param dt The time since the last frame update.
+     */
     public abstract void update(float dt);
-    //endregion
 }

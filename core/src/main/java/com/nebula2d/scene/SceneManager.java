@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * SceneManager is a singleton class used to manage the game's various {@link Scene}s
+ * SceneManager is a singleton class used to manage the game's various {@link Scene}s.
  *
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
@@ -41,7 +41,7 @@ public class SceneManager {
     /**
      * Retrieves the singleton instance of SceneManager. SceneManager should
      * only ever have once instance at any given time.
-     * @return singleton SceneManager instance
+     * @return Singleton SceneManager instance.
      */
     public static synchronized SceneManager getInstance() {
         if (instance == null)
@@ -59,17 +59,17 @@ public class SceneManager {
     //region scene ops
 
     /**
-     * Retrieves the {@link Scene} with the given name
-     * @param name the name of the Scene to retrieve
-     * @return the target Scene
+     * Retrieves the {@link Scene} with the given name.
+     * @param name The name of the Scene to retrieve.
+     * @return The target Scene.
      */
     public Scene getScene(String name) {
         return sceneMap.get(name);
     }
 
     /**
-     * Adds a Scene to the scene manager
-     * @param scene the Scene to add
+     * Adds a Scene to the scene manager.
+     * @param scene The Scene to add.
      */
     public void addScene(Scene scene) {
         sceneMap.put(scene.getName(), scene);
@@ -77,8 +77,8 @@ public class SceneManager {
 
     /**
      * Changes the current scene, unloading the currently loaded
-     * assets and loading in the assets for the new scene
-     * @param name the name of the Scene to load
+     * assets and loading in the assets for the new scene.
+     * @param name The name of the Scene to load.
      */
     public void setCurrentScene(String name) {
 

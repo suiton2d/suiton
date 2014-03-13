@@ -31,11 +31,11 @@ public class TileMap extends Asset {
         layers.add(tileLayer.getZOrder(), tileLayer);
     }
 
-    public void remove(TileLayer tileLayer) {
+    public void removeLayer(TileLayer tileLayer) {
         layers.remove(tileLayer);
     }
 
-    public void remove(int z) {
+    public void removeLayer(int z) {
         layers.remove(z);
     }
 
@@ -96,6 +96,9 @@ public class TileMap extends Asset {
 
     }
 
+    /**
+     * A Tile is a single cell in a TileMap.
+     */
     public class Tile {
         public int x;
         public int y;

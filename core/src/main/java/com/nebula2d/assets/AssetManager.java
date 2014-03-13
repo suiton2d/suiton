@@ -48,12 +48,20 @@ public class AssetManager {
         return instance;
     }
 
+    /**
+     * Loads the assets for the {@link com.nebula2d.scene.Scene} with the given name into memory.
+     * @param sceneName the name of the Scene whose assets should be loaded.
+     */
     public void loadAssets(String sceneName) {
         List<Asset> assets = assetMap.get(sceneName);
         for (Asset asset : assets)
             asset.load();
     }
 
+    /**
+     * Unloads the assets for the Scene with the given name from memory.
+     * @param sceneName the name of the Scene whose assets should be unloaded.
+     */
     public void unloadAssets(String sceneName) {
         List<Asset> assets = assetMap.get(sceneName);
         for (Asset asset : assets)

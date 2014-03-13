@@ -18,11 +18,7 @@
 
 package com.nebula2d.scene;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.SnapshotArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,9 +69,9 @@ public class Layer {
     //region game object ops
 
     /**
-     * retrieves the GameObject in the layer with the given name
-     * @param name the name of the GameObject to retrieve.
-     * @return the target GameObject
+     * Retrieves the GameObject in the layer with the given name.
+     * @param name The name of the GameObject to retrieve.
+     * @return The target GameObject.
      */
     public GameObject getGameObject(String name) {
         for (GameObject go : gameObjects) {
@@ -88,8 +84,8 @@ public class Layer {
     }
 
     /**
-     * Adds a GameObject to the Layer
-     * @param gameObject the GameObject to add
+     * Adds a GameObject to the Layer.
+     * @param gameObject The GameObject to add.
      */
     public void addGameObject(GameObject gameObject) {
         gameObjects.add(gameObject);
@@ -97,8 +93,8 @@ public class Layer {
     }
 
     /**
-     * Removes a GameObject from the Layer
-     * @param gameObject the GameObject to remove
+     * Removes a GameObject from the Layer.
+     * @param gameObject The GameObject to remove.
      */
     public void removeGameObject(GameObject gameObject) {
         gameObjects.remove(gameObject);

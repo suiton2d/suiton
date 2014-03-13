@@ -83,25 +83,25 @@ public class Transform {
     //region math ops
 
     /**
-     * translates the position of the transform
-     * @param other a Vector2 containing the delta to translate
+     * Translates the position of the transform.
+     * @param other A Vector2 containing the delta to translate.
      */
     public void translate(Vector2 other) {
         gameObject.addAction(Actions.moveBy(other.x, other.y));
     }
 
     /**
-     * translates the position of the transform
-     * @param dx the amount to translate the x coordinate
-     * @param dy the amount to translate the y coordinate
+     * Translates the position of the transform.
+     * @param dx The amount to translate the x coordinate.
+     * @param dy The amount to translate the y coordinate.
      */
     public void translate(float dx, float dy) {
         gameObject.addAction(Actions.moveBy(dx, dy));
     }
 
     /**
-     * rotates the transform
-     * @param theta the amount to rotate in degrees
+     * Rotates the transform.
+     * @param theta The amount to rotate in degrees.
      */
     public void rotate(float theta) {
         gameObject.addAction(Actions.rotateBy(theta));

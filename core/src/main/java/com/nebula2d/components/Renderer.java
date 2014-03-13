@@ -18,7 +18,6 @@
 
 package com.nebula2d.components;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -39,6 +38,11 @@ public abstract class Renderer extends Component {
         animations = new ArrayList<Animation>();
     }
 
+    /**
+     * Finds the {@link com.nebula2d.components.Animation} attached to the Renderer with the given name.
+     * @param name The name of the animation to find.
+     * @return The target animation if it exists, else null.
+     */
     public Animation getAnimation(String name) {
         for (Animation anim : animations) {
             if (anim.getName().equals(name)) {
@@ -57,6 +61,11 @@ public abstract class Renderer extends Component {
         animations.remove(anim);
     }
 
+    /**
+     * Sets the animation that will be used during rendering.
+     * @param name The name of the animation to set as active. Can be null. If an Animation with
+     *             the given name cannot be found, the current animation will not be updated.
+     */
     public void setCurrentAnimation(String name) {
 
         if (name == null) {
@@ -70,5 +79,10 @@ public abstract class Renderer extends Component {
         }
     }
 
+    /**
+     * Abstract method used for rendering.
+     * @param batch The SpriteBatch instance to use for rendering.
+     * @param dt The time since the last frame update.
+     */
     public abstract void render(SpriteBatch batch, float dt);
 }

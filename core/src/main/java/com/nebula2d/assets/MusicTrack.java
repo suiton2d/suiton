@@ -21,14 +21,23 @@ public class MusicTrack extends Asset {
         return track;
     }
 
+    /**
+     * Plays the MusicSource.
+     */
     public void play() {
         track.play();
     }
 
+    /**
+     * Stops playback of the MusicSource.
+     */
     public void stop() {
         track.stop();
     }
 
+    /**
+     * Pauses playback of the MusicSource.
+     */
     public void pause() {
         track.pause();
     }
