@@ -23,7 +23,7 @@
 	<parent>
 		<groupId>com.nebula2d</groupId>
 		<artifactId>n2d-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 
 	<artifactId>n2d-editor</artifactId>
