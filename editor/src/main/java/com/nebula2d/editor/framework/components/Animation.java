@@ -26,7 +26,6 @@ import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public abstract class Animation implements ISaveable, ILoadable{

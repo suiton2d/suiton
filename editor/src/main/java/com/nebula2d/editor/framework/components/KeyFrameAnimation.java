@@ -28,7 +28,6 @@ import com.nebula2d.editor.ui.KeyFrameAnimationEditDialog;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -109,7 +108,7 @@ public class KeyFrameAnimation extends Animation {
         this.frameWidth = frameWidth;
     }
 
-    public void setFrameHeight(int frameHeight) { this.frameHeight = frameHeight; };
+    public void setFrameHeight(int frameHeight) { this.frameHeight = frameHeight; }
 
     public void setSpeed(float speed) {
         this.speed = speed;
@@ -209,9 +208,9 @@ public class KeyFrameAnimation extends Animation {
 
             //FIXME: This can be optimized, but I can't be assed with it at the moment.
             int index = 0;
-            for (int i = 0; i < numRows; ++i) {
+            for (TextureRegion[] tmpRegion : tmpRegions) {
                 for (int j = 0; j < numCols; ++j) {
-                    frames[index++] = tmpRegions[i][j];
+                    frames[index++] = tmpRegion[j];
                 }
             }
 

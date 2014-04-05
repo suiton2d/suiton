@@ -31,7 +31,6 @@ import java.io.IOException;
  */
 public class ImagePanel extends JPanel {
 
-    private ImageIcon icon;
     private JLabel emptyLbl;
     public ImagePanel() {
         emptyLbl = new JLabel("No image selected", SwingConstants.CENTER);
@@ -39,18 +38,14 @@ public class ImagePanel extends JPanel {
         add(emptyLbl, BorderLayout.CENTER);
     }
 
-    public void setImage(String path) {
-        try {
-            BufferedImage img = ImageIO.read(new File(path));
-            Dimension newSize = calculateNewSize(img);
-            Image scaledImage = resizeImage(img, newSize.width, newSize.height);
+    public void setImage(String path) throws IOException {
+        BufferedImage img = ImageIO.read(new File(path));
+        Dimension newSize = calculateNewSize(img);
+        Image scaledImage = resizeImage(img, newSize.width, newSize.height);
 
-            icon = new ImageIcon(scaledImage);
-            emptyLbl.setText("");
-            emptyLbl.setIcon(icon);
-        } catch (IOException e) {
-
-        }
+        ImageIcon icon = new ImageIcon(scaledImage);
+        emptyLbl.setText("");
+        emptyLbl.setIcon(icon);
     }
 
     private Image resizeImage(Image og, int w, int h) {

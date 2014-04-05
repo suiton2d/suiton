@@ -20,7 +20,6 @@ package com.nebula2d.editor.common;
 
 import com.nebula2d.editor.util.FullBufferedWriter;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 
 /**
