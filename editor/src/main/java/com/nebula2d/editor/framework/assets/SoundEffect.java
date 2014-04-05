@@ -26,13 +26,11 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
-public class SoundEffect extends AbstractSound {
+public class SoundEffect extends Asset {
 
     //region members
     //LibGDX Sound doesnt support on completion listeners which we need for GUI, so we will use Music here.
     private com.badlogic.gdx.audio.Music sound;
-    private boolean isPlaying;
-    private boolean isPaused;
     private boolean loop;
     private float volume;
     //endregion
@@ -41,7 +39,6 @@ public class SoundEffect extends AbstractSound {
     public SoundEffect(String path) {
         super(path);
         sound = Gdx.audio.newMusic(new FileHandle(new File(path)));
-        isPlaying = isPaused = loop = false;
     }
     //endregion
 

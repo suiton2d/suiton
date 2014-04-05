@@ -16,16 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nebula2d.editor.framework.assets;
+package com.nebula2d.editor.common;
 
-public abstract class AbstractSound extends Asset {
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.nebula2d.editor.framework.GameObject;
 
-    public AbstractSound(String path) {
-        super(path);
-    }
+/**
+ * IRenderable is an interface used for rendering to the scene.
+ * Created by bonazza on 4/4/2014.
+ */
+public interface IRenderable {
 
-    public abstract void play();
-    public abstract void stop();
-    public abstract void setLoop(boolean loop);
-    public abstract boolean isLooping();
+    /**
+     * abstract method for rendering a component in the scene
+     * @param selectedObject the selected object in the render canvas
+     * @param batcher the sprite batcher used for rendering
+     */
+    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam);
 }

@@ -19,7 +19,6 @@
 package com.nebula2d.editor.framework.assets;
 
 import com.nebula2d.editor.util.FullBufferedReader;
-import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.*;
 

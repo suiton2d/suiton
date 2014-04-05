@@ -19,9 +19,6 @@
 package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.ui.ComponentsDialog;
 
@@ -44,10 +41,6 @@ public class MusicSource extends Component {
 
     public void setMusic(MusicTrack musicTrack) {
         this.musicTrack = musicTrack;
-    }
-
-    @Override
-    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
     }
 
     @Override

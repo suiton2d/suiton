@@ -26,12 +26,24 @@ import java.io.File;
  */
 public class PlatformUtil {
 
+    /**
+     * Finds the index of the platform specific file separator character in the provided string.
+     *
+     * @param base The string for which to find the character.
+     * @return The index of the platform specific file separator. If no instance of the separator exists in the string,
+     * -1 is returned.
+     */
     public static int findSlashChar(String base) {
         int slash = base.indexOf(File.separator);
 
         return slash;
     }
 
+    /**
+     * Determines whether or not the app is running on a Mac computer.
+     *
+     * @return Whether or not the app is running on a mac computer.
+     */
     public static boolean isMac() {
         return System.getProperty("os.name").toLowerCase().contains("mac");
     }

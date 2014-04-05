@@ -18,9 +18,6 @@
 
 package com.nebula2d.editor.framework.components;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Script;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -52,11 +49,6 @@ public class Behaviour extends Component {
     //endregion
 
     //region overrided methods from Component
-    @Override
-    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
-        //Noop!
-    }
-
     @Override
     public JPanel forgeComponentContentPanel(final ComponentsDialog parent) {
         return null;

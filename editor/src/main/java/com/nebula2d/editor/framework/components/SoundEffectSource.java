@@ -20,9 +20,6 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.SoundEffect;
 import com.nebula2d.editor.ui.ComponentsDialog;
 
@@ -31,9 +28,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class SoundEffectSource extends Component {
 
@@ -49,10 +43,6 @@ public class SoundEffectSource extends Component {
 
     public void setSoundEffect(SoundEffect soundEffect) {
         this.soundEffect = soundEffect;
-    }
-
-    @Override
-    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
     }
 
     @Override

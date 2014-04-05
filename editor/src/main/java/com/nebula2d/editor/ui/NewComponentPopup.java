@@ -48,7 +48,7 @@ public class NewComponentPopup extends JPopupMenu {
 
     private void create() {
         JMenu rendererMenu = new JMenu("Renderer");
-        JMenuItem panelRendererMenuItem = rendererMenu.add("PanelRenderer");
+        JMenuItem panelRendererMenuItem = rendererMenu.add("SpriteRenderer");
 
         JMenu audioMenu = new JMenu("Audio");
         JMenuItem musicSourceMenuItem = audioMenu.add("MusicSource");

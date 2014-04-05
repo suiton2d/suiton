@@ -19,14 +19,12 @@
 package com.nebula2d.editor.framework;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.nebula2d.editor.common.ILoadable;
+import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.common.ISaveable;
 import com.nebula2d.editor.framework.components.*;
-import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
@@ -186,8 +184,8 @@ public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
 
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         for (Component c : components) {
-            if (c.isEnabled()) {
-                c.render(selectedObject, batcher, cam);
+            if (c.isEnabled() && c instanceof IRenderable) {
+                ((IRenderable) c).render(selectedObject, batcher, cam);
             }
         }
 

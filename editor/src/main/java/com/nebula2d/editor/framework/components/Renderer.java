@@ -19,6 +19,7 @@
 package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -27,7 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Renderer extends Component {
+public abstract class Renderer extends Component implements IRenderable {
 
     //region members
     protected Sprite sprite;
@@ -119,7 +120,7 @@ public abstract class Renderer extends Component {
     }
     //endregion
 
-    //region overrided methods from Component
+    //region overridden methods from Component
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);

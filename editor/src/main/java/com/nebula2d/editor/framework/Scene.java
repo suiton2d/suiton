@@ -26,9 +26,7 @@ import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 
 public class Scene extends BaseSceneNode implements ISaveable, ILoadable {
 

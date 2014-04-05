@@ -26,7 +26,7 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
-public class MusicTrack extends AbstractSound {
+public class MusicTrack extends Asset {
 
     //region members
     private com.badlogic.gdx.audio.Music music;
