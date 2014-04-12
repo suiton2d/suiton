@@ -57,6 +57,6 @@
     <modules>
         <module>core</module>
         <module>editor</module>
-        <module>script-editor</module>
+        <module>avocado</module>
     </modules>
 </project>
