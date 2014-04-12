@@ -1,5 +1,4 @@
-/*
- * Nebula2D is a cross-platform, 2D game engine for PC, Mac, & Linux
+/* Nebula2D is a cross-platform, 2D game engine for PC, Mac, & Linux
  * Copyright (c) 2014 Jon Bonazza
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,21 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.nebula2d.editor.common;
 
+import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
 
 /**
- * Interface used for output serialization
+ * Interface used for serialization
+ *
+ * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public interface ISaveable {
+public interface ISerializable {
 
-    /**
-     * save
-     * @return whether or not the save was successful
-     */
+    public void load(FullBufferedReader fr) throws IOException;
+
     public void save(FullBufferedWriter fw) throws IOException;
 }

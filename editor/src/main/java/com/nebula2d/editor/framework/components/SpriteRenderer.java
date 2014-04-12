@@ -35,6 +35,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class SpriteRenderer extends Renderer {
 
@@ -82,7 +83,11 @@ public class SpriteRenderer extends Renderer {
 
         if (sprite != null) {
             imageTf.setText(sprite.getPath());
-            imagePanel.setImage(getTexture().getPath());
+            try {
+                imagePanel.setImage(getTexture().getPath());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(parent, "Failed to render image.");
+            }
         }
 
         final DefaultListModel<Animation> listModel = new DefaultListModel<Animation>();
@@ -104,7 +109,11 @@ public class SpriteRenderer extends Renderer {
                 if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     final String path = fc.getSelectedFile().getAbsolutePath();
                     imageTf.setText(path);
-                    imagePanel.setImage(path);
+                    try {
+                        imagePanel.setImage(path);
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(parent, "Failed to render image.");
+                    }
                     addButton.setEnabled(true);
                     Gdx.app.postRunnable(new Runnable() {
                         @Override

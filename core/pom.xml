@@ -31,11 +31,6 @@
 	<name>Nebula2D Core</name>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.badlogicgames.gdx</groupId>
-			<artifactId>gdx</artifactId>
-			<version>${gdx.version}</version>
-		</dependency>
         <dependency>
             <groupId>org.mozilla</groupId>
             <artifactId>rhino</artifactId>

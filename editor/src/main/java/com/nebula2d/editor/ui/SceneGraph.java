@@ -129,9 +129,6 @@ public class SceneGraph extends JTree {
         });
     }
 
-    /**
-     * hides the icons on the JTree nodes
-     */
     private void hideTreeIcons() {
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) getCellRenderer();
         renderer.setLeafIcon(null);
@@ -158,10 +155,6 @@ public class SceneGraph extends JTree {
         root.add(layer);
         MainFrame.getProject().getCurrentScene().add(layer);
         refresh();
-    }
-
-    public void updateSelection(GameObject go, Object rootData) {
-
     }
 
     public int getGameObjectCount() {
