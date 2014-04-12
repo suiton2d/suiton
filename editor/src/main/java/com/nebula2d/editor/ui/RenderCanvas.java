@@ -39,8 +39,6 @@ import java.util.List;
 public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, MouseMotionListener{
 
     //region members
-    protected float camXOffset, camYOffset;
-
     protected RenderAdapter adapter;
 
     protected Point lastPoint;
@@ -130,14 +128,6 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     //endregion
 
     //region accessors
-    public float getCamXOffset() {
-        return camXOffset;
-    }
-
-    public float getCamYOffset() {
-        return camYOffset;
-    }
-
     public GameObject getSelectedObject() {
         return adapter.getSelectedObject();
     }

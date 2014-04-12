@@ -20,15 +20,14 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.nebula2d.editor.common.ILoadable;
-import com.nebula2d.editor.common.ISaveable;
+import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
 
-public abstract class Animation implements ISaveable, ILoadable{
+public abstract class Animation implements ISerializable {
 
     //region members
     protected String name;

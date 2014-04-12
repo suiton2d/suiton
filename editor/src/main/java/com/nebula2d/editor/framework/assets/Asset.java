@@ -18,8 +18,7 @@
 
 package com.nebula2d.editor.framework.assets;
 
-import com.nebula2d.editor.common.ILoadable;
-import com.nebula2d.editor.common.ISaveable;
+import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.File;
@@ -28,7 +27,7 @@ import java.io.IOException;
 /**
  * Abstract base class for assets
  */
-public abstract class Asset implements ISaveable, ILoadable{
+public abstract class Asset implements ISerializable {
 
     //region members
     protected String path;

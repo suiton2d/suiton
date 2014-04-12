@@ -21,9 +21,8 @@ package com.nebula2d.editor.framework;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.nebula2d.editor.common.ILoadable;
 import com.nebula2d.editor.common.IRenderable;
-import com.nebula2d.editor.common.ISaveable;
+import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.components.*;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -33,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class GameObject extends BaseSceneNode implements ISaveable, ILoadable{
+public class GameObject extends BaseSceneNode implements ISerializable {
 
     protected Vector2 pos;
     protected  Vector2 scale;

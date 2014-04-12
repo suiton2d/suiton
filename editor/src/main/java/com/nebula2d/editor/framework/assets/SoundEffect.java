@@ -47,14 +47,6 @@ public class SoundEffect extends Asset {
         sound.play();
     }
 
-    public void stop() {
-        sound.stop();
-    }
-
-    public void pause() {
-        sound.pause();
-    }
-
     public boolean isLooping() {
         return sound.isLooping();
     }

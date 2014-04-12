@@ -37,11 +37,11 @@ public class Script extends Asset {
 
     //region internal methods
     protected void init() {
-        BufferedReader br = null;
+        BufferedReader br;
         StringBuilder sb = new StringBuilder();
         try {
             br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(path))));
-            String tmp = "";
+            String tmp;
             while((tmp = br.readLine()) != null) {
                 sb.append(tmp);
             }
