@@ -48,6 +48,7 @@ public class Script extends Asset {
             String tmp;
             while((tmp = br.readLine()) != null) {
                 sb.append(tmp);
+                sb.append("\n");
             }
 
             content = sb.toString();
