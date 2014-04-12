@@ -57,35 +57,9 @@ public class KeyFrameAnimation extends Animation {
         this.sprite.setSpriteSheet(true);
         wrap = false;
     }
-
-    /**
-     * Ctor used for creating a completely new animation
-     * @param sprite the {@link com.nebula2d.editor.framework.assets.Sprite} to associate with the animation
-     * @param frameWidth the width of a single frame
-     * @param frameHeight the height of a single frame
-     * @param speed the speed at which the animaiton should be played back
-     */
-    public KeyFrameAnimation(String name, Sprite sprite, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed) {
-        super(name);
-        this.sprite = sprite;
-        this.sprite.setSpriteSheet(true);
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-        this.speed = speed;
-        this.startFrame = startFrame;
-        this.endFrame = endFrame;
-        wrap = false;
-
-        init();
-    }
     //endregion
 
     //region accessors
-
-    public TextureRegion[] getFrames() {
-        return frames;
-    }
-
     public int getFrameWidth() { return frameWidth; }
 
     public int getFrameHeight() {

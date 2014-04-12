@@ -1,6 +1,6 @@
 /*
  * Nebula2D is a cross-platform, 2D game engine for PC, Mac, & Linux
- * Copyright (c) 2014 Jon Bonazza
+ * Copyright (c) $date.year Jon Bonazza
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nebula2d.editor.common;
+package com.nebula2d.avocado;
 
-import com.nebula2d.editor.util.FullBufferedReader;
-
-import java.io.IOException;
+import org.fife.ui.autocomplete.DefaultCompletionProvider;
 
 /**
- * Interface used for input serialization
+ * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public interface ILoadable {
+public class AvocadoCompletionProvider extends DefaultCompletionProvider {
 
-    public void load(FullBufferedReader fr) throws IOException;
+    public AvocadoCompletionProvider() {
+        //TODO: add completions
+    }
 }

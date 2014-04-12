@@ -18,8 +18,7 @@
 
 package com.nebula2d.editor.framework.components;
 
-import com.nebula2d.editor.common.ILoadable;
-import com.nebula2d.editor.common.ISaveable;
+import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -33,7 +32,7 @@ import java.io.IOException;
  * core of N2D's component-based entity (CBE) system. and define
  * the functionality of a game object
  */
-public abstract class Component implements ISaveable, ILoadable {
+public abstract class Component implements ISerializable {
 
     //region constants
     public static final int COMPONENT_TYPE_RENDER = 0;

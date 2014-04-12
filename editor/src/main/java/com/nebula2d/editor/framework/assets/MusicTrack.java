@@ -38,12 +38,6 @@ public class MusicTrack extends Asset {
         super(path);
         music = Gdx.audio.newMusic(new FileHandle(new File(path)));
     }
-
-    public MusicTrack(String path, float volume) {
-        super(path);
-        music = Gdx.audio.newMusic(new FileHandle(new File(path)));
-        music.setVolume(volume);
-    }
     //endregion
 
     //region playback controls
@@ -55,27 +49,12 @@ public class MusicTrack extends Asset {
         music.stop();
     }
 
-    public void pause() {
-        music.pause();
-    }
-
     public boolean isLooping() {
         return music.isLooping();
     }
 
     public void setLoop(boolean loop) {
         music.setLooping(loop);
-    }
-    //endregion
-
-    //region accessors
-    public float getVolume() {
-        return this.volume;
-    }
-
-    public void setVolume(float v) {
-        this.volume = v;
-        music.setVolume(v);
     }
     //endregion
 

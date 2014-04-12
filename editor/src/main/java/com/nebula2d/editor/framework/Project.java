@@ -18,8 +18,7 @@
 
 package com.nebula2d.editor.framework;
 
-import com.nebula2d.editor.common.ILoadable;
-import com.nebula2d.editor.common.ISaveable;
+import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class Project implements ISaveable, ILoadable{
+public class Project implements ISerializable {
 
     //region members
     private List<Scene> scenes;
