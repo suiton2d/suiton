@@ -18,12 +18,16 @@
 
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.Gdx;
+import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.framework.assets.Script;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class Behaviour extends Component {
@@ -51,6 +55,25 @@ public class Behaviour extends Component {
     //region overrided methods from Component
     @Override
     public JPanel forgeComponentContentPanel(final ComponentsDialog parent) {
+        final JLabel nameLbl = new JLabel("Name:");
+        final JLabel fileLbl = new JLabel("File:");
+        final JLabel filePathLbl = new JLabel("");
+        final JTextField nameTf = new JTextField(name, 20);
+        final JCheckBox enabledCb = new JCheckBox("Enabled", enabled);
+        final JButton browseBtn = new JButton("...");
+
+        browseBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final JFileChooser fc = new JFileChooser();
+                fc.setDialogTitle("Select a file.");
+
+                if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    final String path = fc.getSelectedFile().getAbsolutePath();
+                    filePathLbl.setText(path);
+                }
+            }
+        });
         return null;
     }
 
