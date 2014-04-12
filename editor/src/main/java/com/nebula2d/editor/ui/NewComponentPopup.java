@@ -20,10 +20,8 @@ package com.nebula2d.editor.ui;
 
 
 import com.nebula2d.editor.framework.GameObject;
+import com.nebula2d.editor.framework.components.*;
 import com.nebula2d.editor.framework.components.Component;
-import com.nebula2d.editor.framework.components.MusicSource;
-import com.nebula2d.editor.framework.components.SoundEffectSource;
-import com.nebula2d.editor.framework.components.SpriteRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +51,16 @@ public class NewComponentPopup extends JPopupMenu {
         JMenu audioMenu = new JMenu("Audio");
         JMenuItem musicSourceMenuItem = audioMenu.add("MusicSource");
         JMenuItem soundEffectSourceMenuItem = audioMenu.add("SoundEffectSource");
+
+        JMenuItem behaviorMenuItem = new JMenuItem("Behavior");
+
+        behaviorMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Behaviour behaviour = new Behaviour();
+                new NewComponentDialog(behaviour);
+            }
+        });
 
         musicSourceMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -85,6 +93,7 @@ public class NewComponentPopup extends JPopupMenu {
 
         add(rendererMenu);
         add(audioMenu);
+        add(behaviorMenuItem);
 
         addFocusListener(new FocusAdapter() {
             @Override

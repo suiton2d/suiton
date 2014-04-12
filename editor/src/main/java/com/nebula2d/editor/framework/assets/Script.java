@@ -23,7 +23,7 @@ import com.nebula2d.editor.util.FullBufferedReader;
 import java.io.*;
 
 public class Script extends Asset {
-
+    public static final String NEW_SCRIPT_CONTENT = "\n\nfunction start(me) {\n}\n\nfunction update(me, dt){\n}";
     //region members
     protected String content;
     //endregion
@@ -33,6 +33,10 @@ public class Script extends Asset {
         super(path);
         init();
     }
+
+    public Script() {
+        super("");
+    }
     //endregion
 
     //region internal methods
@@ -40,10 +44,11 @@ public class Script extends Asset {
         BufferedReader br;
         StringBuilder sb = new StringBuilder();
         try {
-            br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(path))));
+            br = new BufferedReader(new FileReader(path));
             String tmp;
             while((tmp = br.readLine()) != null) {
                 sb.append(tmp);
+                sb.append("\n");
             }
 
             content = sb.toString();
@@ -58,6 +63,10 @@ public class Script extends Asset {
     //region accessors
     public String getContent() {
         return this.content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
     //endregion
 

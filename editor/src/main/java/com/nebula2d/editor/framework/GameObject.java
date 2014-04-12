@@ -147,8 +147,10 @@ public class GameObject extends BaseSceneNode implements ISerializable {
 
             }
 
-            component.load(fr);
-            addComponent(component);
+            if (component != null) {
+                component.load(fr);
+                addComponent(component);
+            }
         }
 
         int childCount = fr.readIntLine();
@@ -187,13 +189,5 @@ public class GameObject extends BaseSceneNode implements ISerializable {
                 ((IRenderable) c).render(selectedObject, batcher, cam);
             }
         }
-
-        /*if (renderer == null && selectedObject == this) {
-            ShapeRenderer shape = new ShapeRenderer();
-            shape.setColor(Color.GREEN);
-            shape.begin(ShapeRenderer.ShapeType.Filled);
-            shape.circle(100, 100, 2);
-            shape.end();
-        }*/
     }
 }

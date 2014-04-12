@@ -18,7 +18,6 @@
 
 package com.nebula2d.avocado;
 
-import com.google.common.base.Function;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -26,10 +25,15 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
@@ -37,17 +41,27 @@ import java.awt.event.KeyEvent;
 public class ScriptEditor extends JDialog {
 
     private RSyntaxTextArea rSyntaxTextArea;
-    private Function<Void, Void> saveCallback;
+    private SaveListener saveCallback;
+    private File path;
 
-    public ScriptEditor(String name, String content, Function<Void, Void> saveCallback) {
-        this(name, new RSyntaxTextArea(content), saveCallback);
+    public ScriptEditor(String name, String content) {
+        this(name, null, content);
     }
 
-    private ScriptEditor(String name, RSyntaxTextArea rSyntaxTextArea,
-                         Function<Void, Void> saveCallback) {
+    public ScriptEditor(String name, String path, String content) {
+        this(name, path, new RSyntaxTextArea(), content);
+    }
+
+    private ScriptEditor(String name, String path, RSyntaxTextArea rSyntaxTextArea, String content) {
         this.rSyntaxTextArea = rSyntaxTextArea;
-        this.saveCallback = saveCallback;
+        this.rSyntaxTextArea.setText(content);
+        if (path != null)
+            this.path = new File(path);
         init(name);
+    }
+
+    public void setSaveCallback(SaveListener saveCallback) {
+        this.saveCallback = saveCallback;
     }
 
     private void init(String name) {
@@ -70,6 +84,7 @@ public class ScriptEditor extends JDialog {
 
         setupMenuBar();
         pack();
+        setSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
     }
 
@@ -81,12 +96,39 @@ public class ScriptEditor extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("saved!");
-                saveCallback.apply(null);
+                try {
+                    save();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(ScriptEditor.this, "Failed saving file. Please try again.");
+                }
             }
         });
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         setJMenuBar(menuBar);
+    }
+
+    private void writeToFile() throws IOException {
+        String content = rSyntaxTextArea.getText();
+        BufferedWriter bw = new BufferedWriter(new FileWriter(path));
+        bw.write(content);
+        bw.close();
+    }
+
+    private void save() throws IOException {
+        if (path == null) {
+            JFileChooser fc = new JFileChooser();
+
+            if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                path = fc.getSelectedFile();
+                setTitle(fc.getSelectedFile().getName());
+
+            }
+        }
+
+        writeToFile();
+        if (saveCallback != null)
+            saveCallback.onSave(rSyntaxTextArea.getText(), path.getAbsolutePath());
     }
 }
