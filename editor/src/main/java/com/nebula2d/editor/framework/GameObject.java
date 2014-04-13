@@ -66,8 +66,20 @@ public class GameObject extends BaseSceneNode implements ISerializable {
     }
 
     public void setPosition(float x, float y) {
-        pos.x = x;
-        pos.y = y;
+        float dx = x - pos.x;
+        float dy = y - pos.y;
+        translate(dx, dy);
+    }
+
+    public void translate(float dx, float dy) {
+        pos.x += dx;
+        pos.y += dy;
+
+        Enumeration children = children();
+        while(children.hasMoreElements()) {
+            GameObject go = (GameObject) children.nextElement();
+            go.translate(dx, dy);
+        }
     }
 
     public void setScale(float x, float y) {
