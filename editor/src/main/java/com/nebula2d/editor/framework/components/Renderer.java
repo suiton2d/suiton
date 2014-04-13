@@ -18,8 +18,10 @@
 
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.nebula2d.editor.common.IRenderable;
+import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -28,7 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Renderer extends Component implements IRenderable {
+public abstract class Renderer extends Component {
 
     //region members
     protected Sprite sprite;
@@ -59,10 +61,6 @@ public abstract class Renderer extends Component implements IRenderable {
         animations.remove(anim);
     }
 
-    public void removeAnimation(int idx) {
-        animations.remove(idx);
-    }
-
     public Animation getAnimation(String name) {
         for (Animation anim : animations) {
             if (anim.getName().equals(name)) {
@@ -71,10 +69,6 @@ public abstract class Renderer extends Component implements IRenderable {
         }
 
         return null;
-    }
-
-    public Animation getAnimation(int idx) {
-        return animations.get(idx);
     }
 
     public Animation getCurrentAnimation() {
@@ -114,10 +108,6 @@ public abstract class Renderer extends Component implements IRenderable {
 
         return new Rectangle(x, y, getBoundingWidth(), getBoundingHeight());
     }
-
-    public void setTexture(Sprite sprite) {
-        this.sprite = sprite;
-    }
     //endregion
 
     //region overridden methods from Component
@@ -148,4 +138,6 @@ public abstract class Renderer extends Component implements IRenderable {
         currentAnim = fr.readIntLine();
     }
     //endregion
+
+    public abstract void render(GameObject selectedObject, SpriteBatch batcher, Camera cam);
 }

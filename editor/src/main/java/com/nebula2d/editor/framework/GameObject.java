@@ -110,13 +110,6 @@ public class GameObject extends BaseSceneNode implements ISerializable {
             renderer = null;
     }
 
-    public void removeComponent(int idx) {
-        Component component = components.get(idx);
-        components.remove(component);
-        if (renderer == component)
-            renderer = null;
-    }
-
     public Component getComponent(String name) {
         for (Component c : components) {
             if (c.getName().equals(name)) {
