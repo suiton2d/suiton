@@ -19,6 +19,7 @@
 package com.nebula2d.editor.framework.assets;
 
 import com.nebula2d.editor.common.ISerializable;
+import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.File;
@@ -61,6 +62,7 @@ public abstract class Asset implements ISerializable {
     //endregion
 
     //region interface overrides
+
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(path);

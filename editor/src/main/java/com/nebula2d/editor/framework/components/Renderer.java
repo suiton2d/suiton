@@ -18,8 +18,10 @@
 
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.nebula2d.editor.common.IRenderable;
+import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -28,19 +30,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Renderer extends Component implements IRenderable {
-
+public abstract class Renderer extends Component {
+    public static enum RendererType {
+        SPRITE_RENDERER
+    }
     //region members
     protected Sprite sprite;
 
     protected List<Animation> animations;
 
     protected int currentAnim;
+
+    protected RendererType rendererType;
     //endregion
 
     //region constructor
     public Renderer(String name) {
         super(name);
+        componentType = ComponentType.RENDER;
         animations = new ArrayList<Animation>();
         currentAnim = -1;
     }
@@ -59,10 +66,6 @@ public abstract class Renderer extends Component implements IRenderable {
         animations.remove(anim);
     }
 
-    public void removeAnimation(int idx) {
-        animations.remove(idx);
-    }
-
     public Animation getAnimation(String name) {
         for (Animation anim : animations) {
             if (anim.getName().equals(name)) {
@@ -71,10 +74,6 @@ public abstract class Renderer extends Component implements IRenderable {
         }
 
         return null;
-    }
-
-    public Animation getAnimation(int idx) {
-        return animations.get(idx);
     }
 
     public Animation getCurrentAnimation() {
@@ -114,10 +113,6 @@ public abstract class Renderer extends Component implements IRenderable {
 
         return new Rectangle(x, y, getBoundingWidth(), getBoundingHeight());
     }
-
-    public void setTexture(Sprite sprite) {
-        this.sprite = sprite;
-    }
     //endregion
 
     //region overridden methods from Component
@@ -125,27 +120,49 @@ public abstract class Renderer extends Component implements IRenderable {
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
 
+        fw.writeLine(rendererType.name());
         if (sprite == null) {
-            fw.writeLine("0");
+            fw.writeIntLine(0);
         } else {
-            fw.writeLine("1");
-            fw.writeLine(sprite.getPath());
+            fw.writeIntLine(1);
+            sprite.save(fw);
         }
+
+        fw.writeIntLine(animations.size());
+        for (Animation anim : animations)
+            anim.save(fw);
 
         fw.writeIntLine(currentAnim);
     }
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        super.load(fr);
 
         int tmp = fr.readIntLine();
 
         if (tmp == 1) {
             sprite = new Sprite(fr.readLine());
+            sprite.load(fr);
         }
 
+        int size = fr.readIntLine();
+        for (int i = 0; i < size; ++i) {
+            String animName = fr.readLine();
+            Animation.AnimationType animType = Animation.AnimationType.valueOf(fr.readLine());
+            Animation animation = null;
+            if (animType == Animation.AnimationType.KEY_FRAME)
+                animation = new KeyFrameAnimation(name, sprite);
+
+            if (animation == null) {
+                throw new IOException("Failed to load project.");
+            }
+
+            animation.load(fr);
+            animations.add(animation);
+        }
         currentAnim = fr.readIntLine();
     }
     //endregion
+
+    public abstract void render(GameObject selectedObject, SpriteBatch batcher, Camera cam);
 }

@@ -33,8 +33,8 @@ public class PlatformUtil {
      * @return The index of the platform specific file separator. If no instance of the separator exists in the string,
      * -1 is returned.
      */
-    public static int findSlashChar(String base) {
-        int slash = base.indexOf(File.separator);
+    public static int findLastSlashChar(String base) {
+        int slash = base.lastIndexOf(File.separator);
 
         return slash;
     }

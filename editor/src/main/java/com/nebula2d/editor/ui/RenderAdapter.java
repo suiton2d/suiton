@@ -68,11 +68,10 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-        if (!enabled)
-            return;
-
         Gdx.graphics.getGL20().glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (!enabled)
+            return;
 
         if (camera == null)
             return;
@@ -81,7 +80,7 @@ public class RenderAdapter implements ApplicationListener {
         SpriteBatch batcher = new SpriteBatch();
         batcher.begin();
         Project p = MainFrame.getProject();
-        if (p != null) {
+        if (p != null && p.getCurrentScene() != null) {
             p.getCurrentScene().render(selectedObject, batcher, camera);
         }
         batcher.end();

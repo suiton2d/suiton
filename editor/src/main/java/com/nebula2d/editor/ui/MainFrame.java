@@ -81,11 +81,14 @@ public class MainFrame extends JFrame {
 
     public static void setProject(Project project) {
         MainFrame.project = project;
-        sceneGraph.setEnabled(true);
-        renderCanvas.setEnabled(true);
-        menuBar.getSceneMenu().setEnabled(true);
-        toolbar.setRendererWidgetsEnabled(true);
-        sceneGraph.init();
+        sceneGraph.setEnabled(project != null);
+        renderCanvas.setEnabled(project != null);
+        menuBar.getSceneMenu().setEnabled(project != null);
+        toolbar.setRendererWidgetsEnabled(project != null);
+        menuBar.getSaveMenuItem().setEnabled(project != null);
+
+        if (project != null)
+            sceneGraph.init();
     }
     //endregion
 }

@@ -35,16 +35,20 @@ import java.io.IOException;
 public abstract class Component implements ISerializable {
 
     //region constants
-    public static final int COMPONENT_TYPE_RENDER = 0;
-    public static final int COMPONENT_TYPE_AUDIO = 1;
-    public static final int COMPONENT_TYPE_BEHAVE = 2;
-    public static final int COMPONENT_TYPE_RIGID_BODY = 3;
+    public static enum ComponentType {
+        RENDER,
+        MUSIC,
+        SFX,
+        BEHAVE,
+        RIGID_BODY
+    }
     //endregion
 
     //region members
     protected String name;
     protected GameObject parent;
     protected boolean enabled;
+    protected ComponentType componentType;
     //endregion
 
     //region constructor
@@ -93,12 +97,9 @@ public abstract class Component implements ISerializable {
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
-        fw.writeBoolLine(enabled);
-    }
+        fw.writeLine(componentType.name());
 
-    @Override
-    public void load(FullBufferedReader fr) throws IOException {
-        enabled = fr.readBooleanLine();
+        fw.writeBoolLine(enabled);
     }
     //endregion
 

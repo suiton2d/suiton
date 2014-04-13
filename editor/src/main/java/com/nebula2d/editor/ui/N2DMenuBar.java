@@ -21,11 +21,13 @@ package com.nebula2d.editor.ui;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
+import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 /**
@@ -37,6 +39,7 @@ public class N2DMenuBar extends JMenuBar {
     private JMenu gameObjectMenu;
 
     private JMenuItem newMenuItem;
+    private JMenuItem saveMenuItem;
     private JMenuItem openMenuItem;
     private JMenuItem exitMenuItem;
 
@@ -50,6 +53,9 @@ public class N2DMenuBar extends JMenuBar {
         JMenu fileMenu = new JMenu("File");
 
         newMenuItem = fileMenu.add("New Project");
+        saveMenuItem = fileMenu.add("Save");
+        saveMenuItem.setAccelerator(KeyStroke.getKeyStroke("control S"));
+        saveMenuItem.setEnabled(false);
         openMenuItem = fileMenu.add("Open Project");
 
         //Don't need exit menu item on Mac
@@ -85,10 +91,35 @@ public class N2DMenuBar extends JMenuBar {
             }
         });
 
+        saveMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    MainFrame.getProject().saveProject();
+                    System.out.println("Saved!");
+                } catch (IOException e1) {
+                    JOptionPane.showMessageDialog(null, "Failed to save project.");
+                }
+            }
+        });
+
         openMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: implement
+                JFileChooser fc = new JFileChooser();
+                if (fc.showOpenDialog(N2DMenuBar.this) == JFileChooser.APPROVE_OPTION) {
+                    MainFrame.getSceneGraph().wipe();
+                    MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
+
+                    try {
+                        MainFrame.getProject().loadProject();
+                        MainFrame.getSceneGraph().init();
+                        MainFrame.getProject().loadCurrentScene();
+                    } catch (IOException e1) {
+                        MainFrame.setProject(null);
+                        JOptionPane.showMessageDialog(N2DMenuBar.this, e1.getMessage());
+                    }
+                }
             }
         });
 
@@ -143,6 +174,10 @@ public class N2DMenuBar extends JMenuBar {
 
     public JMenu getGameObjectMenu() {
         return gameObjectMenu;
+    }
+
+    public JMenuItem getSaveMenuItem() {
+        return saveMenuItem;
     }
     //endregion
 }

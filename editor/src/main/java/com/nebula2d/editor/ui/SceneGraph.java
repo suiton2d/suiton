@@ -153,7 +153,6 @@ public class SceneGraph extends JTree {
      */
     public void addLayer(Layer layer) {
         root.add(layer);
-        MainFrame.getProject().getCurrentScene().add(layer);
         refresh();
     }
 
@@ -175,8 +174,10 @@ public class SceneGraph extends JTree {
     }
 
     public void wipe() {
-        root.removeAllChildren();
-        ((DefaultTreeModel)getModel()).nodeStructureChanged(root);
+        if (root != null) {
+            root.removeAllChildren();
+            ((DefaultTreeModel)getModel()).nodeStructureChanged(root);
+        }
     }
 
     public List<Layer> getAllLayers() {
@@ -192,20 +193,20 @@ public class SceneGraph extends JTree {
 
     public List<String> getAllLayerNames() {
         List<String> layerNames = new ArrayList<String>();
-        Enumeration<DefaultMutableTreeNode> children = root.children();
+        Enumeration children = root.children();
 
         while(children.hasMoreElements()) {
-            layerNames.add(((Layer)children.nextElement().getUserObject()).getName());
+            layerNames.add(((BaseSceneNode)children.nextElement()).getName());
         }
 
         return layerNames;
     }
 
     public Layer getLayer(String name) {
-        Enumeration<DefaultMutableTreeNode> children = root.children();
+        Enumeration children = root.children();
 
         while (children.hasMoreElements()) {
-            Layer layer = (Layer)children.nextElement().getUserObject();
+            Layer layer = (Layer)children.nextElement();
 
             if (layer.getName().equals(name))
                 return layer;

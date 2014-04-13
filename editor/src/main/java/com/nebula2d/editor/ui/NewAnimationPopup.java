@@ -40,15 +40,7 @@ public class NewAnimationPopup extends JPopupMenu {
     public NewAnimationPopup(Renderer renderer, DefaultListModel<Animation> listModel, final String texturePath) {
         this.renderer = renderer;
         this.listModel = listModel;
-
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                sprite = new Sprite(texturePath);
-            }
-        });
-
-
+        sprite = new Sprite(texturePath);
         JMenuItem kfAnimMenuItem = add("KeyFrameAnimation");
         kfAnimMenuItem.addActionListener(new ActionListener() {
             @Override

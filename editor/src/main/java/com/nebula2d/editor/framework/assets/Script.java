@@ -20,7 +20,10 @@ package com.nebula2d.editor.framework.assets;
 
 import com.nebula2d.editor.util.FullBufferedReader;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Script extends Asset {
     public static final String NEW_SCRIPT_CONTENT = "\n\nfunction start(me) {\n}\n\nfunction update(me, dt){\n}";
@@ -68,12 +71,10 @@ public class Script extends Asset {
     public void setContent(String content) {
         this.content = content;
     }
-    //endregion
 
-    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        //Noop!
+        //No need to do anything here.
     }
     //endregion
 }

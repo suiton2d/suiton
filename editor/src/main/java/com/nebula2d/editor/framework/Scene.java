@@ -74,11 +74,11 @@ public class Scene extends BaseSceneNode implements ISerializable {
     //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        name = fr.readLine();
         int size = fr.readIntLine();
 
         for (int i = 0; i < size; ++i) {
-            Layer layer = new Layer("tmp");
+            String name = fr.readLine();
+            Layer layer = new Layer(name);
             layer.load(fr);
             add(layer);
         }
@@ -88,7 +88,6 @@ public class Scene extends BaseSceneNode implements ISerializable {
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
         fw.writeIntLine(getChildCount());
-
         Enumeration layers = children();
         while (layers.hasMoreElements())
             ((Layer) layers.nextElement()).save(fw);
