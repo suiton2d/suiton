@@ -126,11 +126,15 @@ public class GameObject extends Group {
         }
     }
 
-    public void update(float dt) {
+    @Override
+    public void act(float dt) {
+
         for (Component c : components) {
-            if (c.isEnabled())
+            if (!(c instanceof Renderer) && c.isEnabled())
                 c.update(dt);
         }
+
+        super.act(dt);
     }
     //endregion
 }
