@@ -21,7 +21,6 @@ package com.nebula2d.editor.framework;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.components.*;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -184,10 +183,7 @@ public class GameObject extends BaseSceneNode implements ISerializable {
     }
 
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
-        for (Component c : components) {
-            if (c.isEnabled() && c instanceof IRenderable) {
-                ((IRenderable) c).render(selectedObject, batcher, cam);
-            }
-        }
+        if (renderer != null && renderer.isEnabled())
+            renderer.render(selectedObject, batcher, cam);
     }
 }
