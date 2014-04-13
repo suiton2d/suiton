@@ -29,8 +29,12 @@ import java.io.IOException;
 
 public abstract class Animation implements ISerializable {
 
+    public static enum AnimationType {
+        KEY_FRAME
+    }
     //region members
     protected String name;
+    protected AnimationType animationType;
     //endregion
 
     //region constructor
@@ -55,6 +59,7 @@ public abstract class Animation implements ISerializable {
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
+        fw.writeLine(animationType.name());
     }
     //endregion
 

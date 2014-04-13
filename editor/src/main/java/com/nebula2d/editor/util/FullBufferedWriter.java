@@ -37,19 +37,18 @@ public class FullBufferedWriter extends BufferedWriter {
     }
 
     public void writeIntLine(int i) throws IOException {
-        write(i);
-        write('\n');
+        try {
+            writeLine(Integer.toString(i));
+        } catch (NumberFormatException e) {
+            throw new IOException();
+        }
     }
 
     public void writeFloatLine(float f) throws IOException {
-        String fstr;
-
         try {
-            fstr = Float.toString(f);
+            writeLine(Float.toString(f));
         } catch (NumberFormatException ex) {
             throw new IOException();
         }
-
-        writeLine(fstr);
     }
 }

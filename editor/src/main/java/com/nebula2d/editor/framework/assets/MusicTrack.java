@@ -28,15 +28,17 @@ import java.io.IOException;
 
 public class MusicTrack extends Asset {
 
-    //region members
     private com.badlogic.gdx.audio.Music music;
-    private float volume;
-    //endregion
 
     //region constructor
-    public MusicTrack(String path) {
+    public MusicTrack(final String path) {
         super(path);
-        music = Gdx.audio.newMusic(new FileHandle(new File(path)));
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                music = Gdx.audio.newMusic(new FileHandle(new File(path)));
+            }
+        });
     }
     //endregion
 
@@ -61,13 +63,13 @@ public class MusicTrack extends Asset {
     //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        volume = fr.readFloatLine();
+        music.setVolume(fr.readFloatLine());
     }
 
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
-        fw.writeFloatLine(volume);
+        fw.writeFloatLine(music.getVolume());
     }
 
     public void setOnCompleteListener(com.badlogic.gdx.audio.Music.OnCompletionListener listener) {

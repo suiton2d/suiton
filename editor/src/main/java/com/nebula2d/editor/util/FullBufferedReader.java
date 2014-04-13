@@ -32,7 +32,7 @@ public class FullBufferedReader extends BufferedReader {
         try {
             return Integer.parseInt(readLine());
         } catch (NumberFormatException ex) {
-            throw new IOException();
+            throw new IOException("Failed to read int.");
         }
     }
 
@@ -40,7 +40,7 @@ public class FullBufferedReader extends BufferedReader {
         try {
             return Float.parseFloat(readLine());
         } catch (NumberFormatException ex) {
-            throw new IOException();
+            throw new IOException("Failed to read float");
         }
     }
 

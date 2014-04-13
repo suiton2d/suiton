@@ -62,10 +62,10 @@ public class Layer extends BaseSceneNode implements ISerializable {
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        name = fr.readLine();
         int size = fr.readIntLine();
         for (int i = 0; i < size; ++i) {
-            GameObject go = new GameObject("tmp");
+            String name = fr.readLine();
+            GameObject go = new GameObject(name);
             go.load(fr);
             add(go);
         }
@@ -73,6 +73,7 @@ public class Layer extends BaseSceneNode implements ISerializable {
 
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
+        System.out.println("name: " + name);
         fw.writeLine(name);
         fw.writeIntLine(getChildCount());
         Enumeration children = children();

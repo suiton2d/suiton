@@ -42,6 +42,7 @@ public class SpriteRenderer extends Renderer {
     //region constructor
     public SpriteRenderer(String name) {
         super(name);
+        rendererType = RendererType.SPRITE_RENDERER;
     }
     //endregion
 
@@ -115,12 +116,9 @@ public class SpriteRenderer extends Renderer {
                         JOptionPane.showMessageDialog(parent, "Failed to render image.");
                     }
                     addButton.setEnabled(true);
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            SpriteRenderer.this.sprite = new Sprite(path);
-                        }
-                    });
+
+                    SpriteRenderer.this.sprite = new Sprite(path);
+
                     listModel.clear();
                     animations.clear();
                     imagePanel.getParent().revalidate();
