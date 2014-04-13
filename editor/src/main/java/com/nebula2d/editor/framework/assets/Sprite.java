@@ -18,6 +18,7 @@
 
 package com.nebula2d.editor.framework.assets;
 
+import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
@@ -31,9 +32,14 @@ public class Sprite extends Asset {
     //endregion
 
     //region constructor
-    public Sprite(String path) {
+    public Sprite(final String path) {
         super(path);
-        texture = new com.badlogic.gdx.graphics.Texture(path);
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                texture = new com.badlogic.gdx.graphics.Texture(path);
+            }
+        });
         spriteSheet = false;
     }
     //endregion
@@ -63,8 +69,9 @@ public class Sprite extends Asset {
     //region interface overrides
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
+        super.save(fw);
         String type = isSpriteSheet() ? "SpriteSheet" : "Sprite";
-        fw.write(type);
+        fw.writeLine(type);
     }
 
     @Override

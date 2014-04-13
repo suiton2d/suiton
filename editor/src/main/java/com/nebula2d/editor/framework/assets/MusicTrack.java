@@ -31,9 +31,14 @@ public class MusicTrack extends Asset {
     private com.badlogic.gdx.audio.Music music;
 
     //region constructor
-    public MusicTrack(String path) {
+    public MusicTrack(final String path) {
         super(path);
-        music = Gdx.audio.newMusic(new FileHandle(new File(path)));
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                music = Gdx.audio.newMusic(new FileHandle(new File(path)));
+            }
+        });
     }
     //endregion
 

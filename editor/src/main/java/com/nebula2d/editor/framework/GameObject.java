@@ -123,8 +123,8 @@ public class GameObject extends BaseSceneNode implements ISerializable {
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        pos.x = fr.readIntLine();
-        pos.y = fr.readIntLine();
+        pos.x = fr.readFloatLine();
+        pos.y = fr.readFloatLine();
         scale.x = fr.readFloatLine();
         scale.y = fr.readFloatLine();
         rot = fr.readFloatLine();
@@ -133,6 +133,7 @@ public class GameObject extends BaseSceneNode implements ISerializable {
         for (int i = 0; i < size; ++i) {
             String name = fr.readLine();
             Component.ComponentType type = Component.ComponentType.valueOf(fr.readLine());
+            boolean enabled = fr.readBooleanLine();
             Component component = null;
             if (type == Component.ComponentType.RENDER) {
                 Renderer.RendererType rendererType = Renderer.RendererType.valueOf(fr.readLine());
@@ -151,14 +152,17 @@ public class GameObject extends BaseSceneNode implements ISerializable {
                 throw new IOException("Failed to load project.");
 
             component.load(fr);
+            component.setEnabled(enabled);
             addComponent(component);
         }
 
         int childCount = fr.readIntLine();
 
         for (int i = 0; i < childCount; ++i) {
-            GameObject go = new GameObject("tmp");
+            String name = fr.readLine();
+            GameObject go = new GameObject(name);
             go.load(fr);
+            add(go);
         }
     }
 
@@ -187,11 +191,5 @@ public class GameObject extends BaseSceneNode implements ISerializable {
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         if (renderer != null && renderer.isEnabled())
             renderer.render(selectedObject, batcher, cam);
-
-        Enumeration children = children();
-        while (children.hasMoreElements()) {
-            GameObject child = (GameObject) children.nextElement();
-            child.render(selectedObject, batcher, cam);
-        }
     }
 }

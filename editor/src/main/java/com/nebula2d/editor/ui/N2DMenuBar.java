@@ -21,6 +21,7 @@ package com.nebula2d.editor.ui;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
+import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
@@ -105,7 +106,20 @@ public class N2DMenuBar extends JMenuBar {
         openMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: implement
+                JFileChooser fc = new JFileChooser();
+                if (fc.showOpenDialog(N2DMenuBar.this) == JFileChooser.APPROVE_OPTION) {
+                    MainFrame.getSceneGraph().wipe();
+                    MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
+
+                    try {
+                        MainFrame.getProject().loadProject();
+                        MainFrame.getSceneGraph().init();
+                        MainFrame.getProject().loadCurrentScene();
+                    } catch (IOException e1) {
+                        MainFrame.setProject(null);
+                        JOptionPane.showMessageDialog(N2DMenuBar.this, e1.getMessage());
+                    }
+                }
             }
         });
 

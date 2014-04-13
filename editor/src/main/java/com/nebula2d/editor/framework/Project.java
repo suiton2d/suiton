@@ -23,6 +23,7 @@ import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
+import com.nebula2d.editor.util.PlatformUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -42,6 +43,14 @@ public class Project implements ISerializable {
     public Project(String dir, String name) {
         this.projectDir = dir;
         this.projectName = name;
+        this.currentSceneIdx = 0;
+        scenes = new ArrayList<Scene>();
+    }
+
+    public Project(String path) {
+        File file = new File(path);
+        this.projectDir = file.getParent();
+        this.projectName = file.getName();
         this.currentSceneIdx = 0;
         scenes = new ArrayList<Scene>();
     }
@@ -139,9 +148,6 @@ public class Project implements ISerializable {
         FullBufferedReader fr = new FullBufferedReader(new FileReader(getPath()));
 
         load(fr);
-        loadExtraAssets(fr);
-
-        loadScene(currentSceneIdx);
     }
 
     public void saveProject() throws IOException {
@@ -156,9 +162,8 @@ public class Project implements ISerializable {
         return true;
     }
 
-    public boolean loadExtraAssets(FullBufferedReader fr) throws IOException {
-        //TODO: Implement
-        return true;
+    public void loadCurrentScene() {
+        loadScene(currentSceneIdx);
     }
 
     public void loadScene(int idx) {

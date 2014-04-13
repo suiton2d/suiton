@@ -137,7 +137,6 @@ public abstract class Renderer extends Component {
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        super.load(fr);
 
         int tmp = fr.readIntLine();
 

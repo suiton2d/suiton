@@ -64,12 +64,7 @@ public class MusicSource extends Component {
                 if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     final String path = fc.getSelectedFile().getAbsolutePath();
                     filePathLbl.setText(path);
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            MusicSource.this.musicTrack = new MusicTrack(path);
-                        }
-                    });
+                    MusicSource.this.musicTrack = new MusicTrack(path);
                     mediaBtn.setEnabled(true);
                 }
             }
@@ -148,7 +143,6 @@ public class MusicSource extends Component {
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        super.load(fr);
 
         int tmp = fr.readIntLine();
         if (tmp != 0) {

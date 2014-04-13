@@ -20,7 +20,6 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.framework.assets.SoundEffect;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -63,13 +62,8 @@ public class SoundEffectSource extends Component {
                 if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     final String path = fc.getSelectedFile().getAbsolutePath();
                     filePathLbl.setText(path);
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            SoundEffectSource.this.soundEffect = new SoundEffect(path);
-                            mediaBtn.setEnabled(true);
-                        }
-                    });
+                    SoundEffectSource.this.soundEffect = new SoundEffect(path);
+                    mediaBtn.setEnabled(true);
                 }
             }
         });
@@ -141,7 +135,6 @@ public class SoundEffectSource extends Component {
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        super.load(fr);
 
         int tmp = fr.readIntLine();
         if (tmp != 0) {

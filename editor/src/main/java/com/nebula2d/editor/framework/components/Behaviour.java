@@ -159,7 +159,6 @@ public class Behaviour extends Component {
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        super.load(fr);
 
         int tmp = fr.readIntLine();
         if (tmp != 0) {

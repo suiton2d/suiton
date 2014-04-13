@@ -80,7 +80,7 @@ public class RenderAdapter implements ApplicationListener {
         SpriteBatch batcher = new SpriteBatch();
         batcher.begin();
         Project p = MainFrame.getProject();
-        if (p != null) {
+        if (p != null && p.getCurrentScene() != null) {
             p.getCurrentScene().render(selectedObject, batcher, camera);
         }
         batcher.end();

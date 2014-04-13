@@ -35,9 +35,14 @@ public class SoundEffect extends Asset {
     //endregion
 
     //region constructor
-    public SoundEffect(String path) {
+    public SoundEffect(final String path) {
         super(path);
-        sound = Gdx.audio.newMusic(new FileHandle(new File(path)));
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                sound = Gdx.audio.newMusic(new FileHandle(new File(path)));
+            }
+        });
     }
     //endregion
 

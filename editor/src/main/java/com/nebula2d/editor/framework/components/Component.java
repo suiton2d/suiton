@@ -101,11 +101,6 @@ public abstract class Component implements ISerializable {
 
         fw.writeBoolLine(enabled);
     }
-
-    @Override
-    public void load(FullBufferedReader fr) throws IOException {
-        enabled = fr.readBooleanLine();
-    }
     //endregion
 
     @Override
