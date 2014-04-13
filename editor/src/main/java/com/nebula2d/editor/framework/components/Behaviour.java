@@ -41,7 +41,7 @@ public class Behaviour extends Component {
     //region constructor
     public Behaviour(String name) {
         super(name);
-        type = ComponentType.BEHAVE;
+        componentType = ComponentType.BEHAVE;
     }
 
     public Behaviour() {

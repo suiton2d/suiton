@@ -34,7 +34,7 @@ public abstract class Animation implements ISerializable {
     }
     //region members
     protected String name;
-    protected AnimationType type;
+    protected AnimationType animationType;
     //endregion
 
     //region constructor
@@ -59,7 +59,7 @@ public abstract class Animation implements ISerializable {
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
-        fw.writeLine(type.name());
+        fw.writeLine(animationType.name());
     }
     //endregion
 

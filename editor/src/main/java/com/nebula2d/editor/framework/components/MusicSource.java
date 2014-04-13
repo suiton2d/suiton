@@ -37,7 +37,7 @@ public class MusicSource extends Component {
 
     public MusicSource(String name) {
         super(name);
-        type = ComponentType.MUSIC;
+        componentType = ComponentType.MUSIC;
     }
 
     @Override

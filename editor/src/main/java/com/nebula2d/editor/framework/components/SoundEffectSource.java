@@ -39,6 +39,7 @@ public class SoundEffectSource extends Component {
 
     public SoundEffectSource(String name) {
         super(name);
+        componentType = ComponentType.SFX;
     }
 
     @Override

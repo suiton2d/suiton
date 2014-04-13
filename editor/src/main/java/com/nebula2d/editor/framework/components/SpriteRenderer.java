@@ -42,7 +42,7 @@ public class SpriteRenderer extends Renderer {
     //region constructor
     public SpriteRenderer(String name) {
         super(name);
-        type = RendererType.SPRITE_RENDERER;
+        rendererType = RendererType.SPRITE_RENDERER;
     }
     //endregion
 

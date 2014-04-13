@@ -48,7 +48,7 @@ public abstract class Component implements ISerializable {
     protected String name;
     protected GameObject parent;
     protected boolean enabled;
-    protected ComponentType type;
+    protected ComponentType componentType;
     //endregion
 
     //region constructor
@@ -97,7 +97,7 @@ public abstract class Component implements ISerializable {
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
-        fw.writeLine(type.name());
+        fw.writeLine(componentType.name());
 
         fw.writeBoolLine(enabled);
     }

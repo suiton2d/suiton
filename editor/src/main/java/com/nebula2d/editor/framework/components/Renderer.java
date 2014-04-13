@@ -23,11 +23,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
-import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,12 +41,13 @@ public abstract class Renderer extends Component {
 
     protected int currentAnim;
 
-    protected RendererType type;
+    protected RendererType rendererType;
     //endregion
 
     //region constructor
     public Renderer(String name) {
         super(name);
+        componentType = ComponentType.RENDER;
         animations = new ArrayList<Animation>();
         currentAnim = -1;
     }
@@ -121,7 +120,7 @@ public abstract class Renderer extends Component {
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
 
-        fw.writeLine(type.name());
+        fw.writeLine(rendererType.name());
         if (sprite == null) {
             fw.writeIntLine(0);
         } else {

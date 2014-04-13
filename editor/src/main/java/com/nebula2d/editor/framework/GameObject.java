@@ -187,5 +187,11 @@ public class GameObject extends BaseSceneNode implements ISerializable {
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         if (renderer != null && renderer.isEnabled())
             renderer.render(selectedObject, batcher, cam);
+
+        Enumeration children = children();
+        while (children.hasMoreElements()) {
+            GameObject child = (GameObject) children.nextElement();
+            child.render(selectedObject, batcher, cam);
+        }
     }
 }

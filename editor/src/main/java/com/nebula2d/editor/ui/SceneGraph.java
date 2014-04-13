@@ -41,7 +41,7 @@ public class SceneGraph extends JTree {
     private DefaultMutableTreeNode root;
 
     public SceneGraph() {
-        //setRootVisible(false);
+        setRootVisible(false);
         setModel(new DefaultTreeModel(new DefaultMutableTreeNode()));
     }
 
