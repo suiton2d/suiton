@@ -70,7 +70,7 @@ public class Sprite extends Asset {
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         String type = fr.readLine();
-        if (type.equalsIgnoreCase("spritesheet"))
+        if (type.equalsIgnoreCase("Spritesheet"))
             setSpriteSheet(true);
     }
     //endregion

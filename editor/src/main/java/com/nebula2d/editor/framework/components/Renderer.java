@@ -23,21 +23,27 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
+import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Renderer extends Component {
-
+    public static enum RendererType {
+        SPRITE_RENDERER
+    }
     //region members
     protected Sprite sprite;
 
     protected List<Animation> animations;
 
     protected int currentAnim;
+
+    protected RendererType type;
     //endregion
 
     //region constructor
@@ -115,12 +121,17 @@ public abstract class Renderer extends Component {
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
 
+        fw.writeLine(type.name());
         if (sprite == null) {
-            fw.writeLine("0");
+            fw.writeIntLine(0);
         } else {
-            fw.writeLine("1");
-            fw.writeLine(sprite.getPath());
+            fw.writeIntLine(1);
+            sprite.save(fw);
         }
+
+        fw.writeIntLine(animations.size());
+        for (Animation anim : animations)
+            anim.save(fw);
 
         fw.writeIntLine(currentAnim);
     }
@@ -133,8 +144,24 @@ public abstract class Renderer extends Component {
 
         if (tmp == 1) {
             sprite = new Sprite(fr.readLine());
+            sprite.load(fr);
         }
 
+        int size = fr.readIntLine();
+        for (int i = 0; i < size; ++i) {
+            String animName = fr.readLine();
+            Animation.AnimationType animType = Animation.AnimationType.valueOf(fr.readLine());
+            Animation animation = null;
+            if (animType == Animation.AnimationType.KEY_FRAME)
+                animation = new KeyFrameAnimation(name, sprite);
+
+            if (animation == null) {
+                throw new IOException("Failed to load project.");
+            }
+
+            animation.load(fr);
+            animations.add(animation);
+        }
         currentAnim = fr.readIntLine();
     }
     //endregion

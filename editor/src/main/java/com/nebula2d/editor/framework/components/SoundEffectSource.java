@@ -20,14 +20,18 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.framework.assets.SoundEffect;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.util.FullBufferedReader;
+import com.nebula2d.editor.util.FullBufferedWriter;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class SoundEffectSource extends Component {
 
@@ -35,14 +39,6 @@ public class SoundEffectSource extends Component {
 
     public SoundEffectSource(String name) {
         super(name);
-    }
-
-    public SoundEffect getSoundEffect() {
-        return soundEffect;
-    }
-
-    public void setSoundEffect(SoundEffect soundEffect) {
-        this.soundEffect = soundEffect;
     }
 
     @Override
@@ -140,5 +136,29 @@ public class SoundEffectSource extends Component {
             soundEffect.setOnCompleteListener(listener);
             }
         });
+    }
+
+    @Override
+    public void load(FullBufferedReader fr) throws IOException {
+        super.load(fr);
+
+        int tmp = fr.readIntLine();
+        if (tmp != 0) {
+            String path = fr.readLine();
+            soundEffect = new SoundEffect(path);
+            soundEffect.load(fr);
+        }
+    }
+
+    @Override
+    public void save(FullBufferedWriter fw) throws IOException {
+        super.save(fw);
+
+        if (soundEffect == null) {
+            fw.writeIntLine(0);
+        } else {
+            fw.writeIntLine(1);
+            soundEffect.save(fw);
+        }
     }
 }

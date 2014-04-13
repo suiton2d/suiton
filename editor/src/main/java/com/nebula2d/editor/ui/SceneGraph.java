@@ -41,7 +41,7 @@ public class SceneGraph extends JTree {
     private DefaultMutableTreeNode root;
 
     public SceneGraph() {
-        setRootVisible(false);
+        //setRootVisible(false);
         setModel(new DefaultTreeModel(new DefaultMutableTreeNode()));
     }
 
@@ -153,7 +153,6 @@ public class SceneGraph extends JTree {
      */
     public void addLayer(Layer layer) {
         root.add(layer);
-        MainFrame.getProject().getCurrentScene().add(layer);
         refresh();
     }
 

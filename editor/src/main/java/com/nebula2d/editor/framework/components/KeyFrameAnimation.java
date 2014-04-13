@@ -56,6 +56,7 @@ public class KeyFrameAnimation extends Animation {
         this.sprite = sprite;
         this.sprite.setSpriteSheet(true);
         wrap = false;
+        type = AnimationType.KEY_FRAME;
     }
     //endregion
 

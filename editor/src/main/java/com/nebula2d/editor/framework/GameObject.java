@@ -119,15 +119,10 @@ public class GameObject extends BaseSceneNode implements ISerializable {
 
         return null;
     }
-
-    public Component getComponent(int idx) {
-        return components.get(idx);
-    }
     //endregion
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
-        name = fr.readLine();
         pos.x = fr.readIntLine();
         pos.y = fr.readIntLine();
         scale.x = fr.readFloatLine();
@@ -137,24 +132,26 @@ public class GameObject extends BaseSceneNode implements ISerializable {
 
         for (int i = 0; i < size; ++i) {
             String name = fr.readLine();
-            int type = fr.readIntLine();
+            Component.ComponentType type = Component.ComponentType.valueOf(fr.readLine());
             Component component = null;
-            if (type == Component.COMPONENT_TYPE_RENDER) {
-                //TODO: implement
-            } else if (type == Component.COMPONENT_TYPE_AUDIO) {
-                //component = new AudioSource(name);
-            } else if (type == Component.COMPONENT_TYPE_BEHAVE) {
+            if (type == Component.ComponentType.RENDER) {
+                Renderer.RendererType rendererType = Renderer.RendererType.valueOf(fr.readLine());
+                if (rendererType == Renderer.RendererType.SPRITE_RENDERER)
+                    component = new SpriteRenderer(name);
+
+            } else if (type == Component.ComponentType.MUSIC) {
+                component = new MusicSource(name);
+            } else if (type == Component.ComponentType.SFX) {
+                component = new SoundEffectSource(name);
+            } else if (type == Component.ComponentType.BEHAVE) {
                 component = new Behaviour(name);
-            } else if (type == Component.COMPONENT_TYPE_RIGID_BODY) {
-
-            } else {
-
             }
 
-            if (component != null) {
-                component.load(fr);
-                addComponent(component);
-            }
+            if (component == null)
+                throw new IOException("Failed to load project.");
+
+            component.load(fr);
+            addComponent(component);
         }
 
         int childCount = fr.readIntLine();
@@ -173,8 +170,8 @@ public class GameObject extends BaseSceneNode implements ISerializable {
         fw.writeFloatLine(scale.x);
         fw.writeFloatLine(scale.y);
         fw.writeFloatLine(rot);
-        fw.writeIntLine(components.size());
 
+        fw.writeIntLine(components.size());
         for (Component c : components) {
             c.save(fw);
         }

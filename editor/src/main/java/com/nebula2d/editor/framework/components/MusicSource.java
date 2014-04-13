@@ -21,26 +21,23 @@ package com.nebula2d.editor.framework.components;
 import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.util.FullBufferedReader;
+import com.nebula2d.editor.util.FullBufferedWriter;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class MusicSource extends Component {
 
     private MusicTrack musicTrack;
+
     public MusicSource(String name) {
         super(name);
-    }
-
-    public MusicTrack getMusicTrack() {
-        return musicTrack;
-    }
-
-    public void setMusic(MusicTrack musicTrack) {
-        this.musicTrack = musicTrack;
+        type = ComponentType.MUSIC;
     }
 
     @Override
@@ -147,5 +144,29 @@ public class MusicSource extends Component {
         layout.setVerticalGroup(vGroup);
 
         return panel;
+    }
+
+    @Override
+    public void load(FullBufferedReader fr) throws IOException {
+        super.load(fr);
+
+        int tmp = fr.readIntLine();
+        if (tmp != 0) {
+            String path = fr.readLine();
+            musicTrack = new MusicTrack(path);
+            musicTrack.load(fr);
+        }
+    }
+
+    @Override
+    public void save(FullBufferedWriter fw) throws IOException {
+        super.save(fw);
+
+        if (musicTrack == null) {
+            fw.writeIntLine(0);
+        } else {
+            fw.writeIntLine(1);
+            musicTrack.save(fw);
+        }
     }
 }

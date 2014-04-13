@@ -148,6 +148,7 @@ public class Project implements ISerializable {
         FullBufferedWriter fw = new FullBufferedWriter(new FileWriter(getPath()));
         save(fw);
         saveExtraAssets(fw);
+        fw.close();
     }
 
     public boolean saveExtraAssets(FullBufferedWriter fw) throws IOException {
@@ -192,7 +193,8 @@ public class Project implements ISerializable {
         int size = fr.readIntLine();
 
         for (int i = 0; i < size; ++i) {
-            Scene s = new Scene("tmp");
+            String name = fr.readLine();
+            Scene s = new Scene(name);
             s.load(fr);
             addScene(s);
         }
@@ -203,7 +205,6 @@ public class Project implements ISerializable {
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeIntLine(scenes.size());
-
         for (Scene scene : scenes) {
             scene.save(fw);
         }

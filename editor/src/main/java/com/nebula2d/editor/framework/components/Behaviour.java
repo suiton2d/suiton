@@ -41,20 +41,11 @@ public class Behaviour extends Component {
     //region constructor
     public Behaviour(String name) {
         super(name);
+        type = ComponentType.BEHAVE;
     }
 
     public Behaviour() {
-        super("");
-    }
-    //endregion
-
-    //region accessors
-    public Script getScript() {
-        return script;
-    }
-
-    public void setScript(Script script) {
-        this.script = script;
+        this("");
     }
     //endregion
 
@@ -169,10 +160,12 @@ public class Behaviour extends Component {
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         super.load(fr);
+
         int tmp = fr.readIntLine();
         if (tmp != 0) {
             String path = fr.readLine();
             script = new Script(path);
+            script.load(fr);
         }
     }
 
@@ -181,10 +174,10 @@ public class Behaviour extends Component {
         super.save(fw);
 
         if (script == null) {
-            fw.writeLine("0");
+            fw.writeIntLine(0);
         } else {
-            fw.writeLine("1");
-            fw.writeLine(script.getPath());
+            fw.writeIntLine(1);
+            script.save(fw);
         }
     }
     //endregion
