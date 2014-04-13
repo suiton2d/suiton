@@ -18,6 +18,7 @@
 
 package com.nebula2d.scene;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
@@ -105,10 +106,5 @@ public class Layer {
     public void start(Stage stage) {
         for (GameObject go : gameObjects)
             go.start(stage);
-    }
-
-    public void update(float dt) {
-        for (GameObject go : gameObjects)
-            go.update(dt);
     }
 }

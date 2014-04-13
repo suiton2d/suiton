@@ -98,8 +98,7 @@ public class Scene {
             return;
 
         cam.update();
-
-        for (Layer l : layers)
-            l.update(dt);
+        stage.act(dt);
+        stage.draw();
     }
 }
