@@ -65,6 +65,21 @@ public class MusicSource extends Component {
 
     }
 
+    @Override
+    public void finish() {
+
+    }
+
+    @Override
+    public void beginCollision(Collider c1, Collider c2) {
+
+    }
+
+    @Override
+    public void endCollision(Collider c1, Collider c2) {
+
+    }
+
     /**
      * Sets a callback that is fired whenever MusicTrack playback completes.
      * @param listener The callback that will be fired on playback completion.

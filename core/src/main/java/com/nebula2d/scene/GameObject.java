@@ -136,5 +136,10 @@ public class GameObject extends Group {
 
         super.act(dt);
     }
+
+    public void finish() {
+        for (Component c : components)
+            c.finish();
+    }
     //endregion
 }

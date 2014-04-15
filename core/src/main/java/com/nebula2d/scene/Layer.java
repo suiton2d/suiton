@@ -107,4 +107,9 @@ public class Layer {
         for (GameObject go : gameObjects)
             go.start(stage);
     }
+
+    public void finish() {
+        for (GameObject go : gameObjects)
+            go.finish();
+    }
 }

@@ -85,4 +85,18 @@ public abstract class Renderer extends Component {
      * @param dt The time since the last frame update.
      */
     public abstract void render(SpriteBatch batch, float dt);
+
+    public void finish() {
+
+    }
+
+    @Override
+    public void beginCollision(Collider c1, Collider c2) {
+
+    }
+
+    @Override
+    public void endCollision(Collider c1, Collider c2) {
+
+    }
 }

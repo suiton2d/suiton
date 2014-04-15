@@ -21,6 +21,9 @@ public class Behavior extends Component {
     private Scriptable scope;
     private Function startFunction;
     private Function updateFunction;
+    private Function finishFunction;
+    private Function beginCollisionFunction;
+    private Function endCollisionFunction;
 
     public Behavior(String name, String scriptPath) {
         super(name);
@@ -38,6 +41,9 @@ public class Behavior extends Component {
             context.evaluateString(scope, script.getContents(), script.getFilename(), 1, null);
             startFunction = (Function) scope.get("start", scope);
             updateFunction = (Function) scope.get("update", scope);
+            finishFunction = (Function) scope.get("finish", scope);
+            beginCollisionFunction = (Function) scope.get("beginCollision", scope);
+            endCollisionFunction = (Function) scope.get("endCollision", scope);
         } finally {
             Context.exit();
         }
@@ -58,6 +64,36 @@ public class Behavior extends Component {
         Context context = Context.enter();
         try {
             updateFunction.call(context, scope, scope, new Object[]{gameObject, dt});
+        } finally {
+            Context.exit();
+        }
+    }
+
+    @Override
+    public void finish() {
+        Context context = Context.enter();
+        try {
+            finishFunction.call(context, scope, scope, null);
+        } finally {
+            Context.exit();
+        }
+    }
+
+    @Override
+    public void beginCollision(Collider c1, Collider c2) {
+        Context context = Context.enter();
+        try {
+            beginCollisionFunction.call(context, scope, scope, new Object[]{c1, c2});
+        } finally {
+            Context.exit();
+        }
+    }
+
+    @Override
+    public void endCollision(Collider c1, Collider c2) {
+        Context context = Context.enter();
+        try {
+            endCollisionFunction.call(context, scope, scope, new Object[]{c1, c2});
         } finally {
             Context.exit();
         }

@@ -66,4 +66,19 @@ public class SoundEffectSource extends Component {
     public void update(float dt) {
 
     }
+
+    @Override
+    public void finish() {
+
+    }
+
+    @Override
+    public void beginCollision(Collider c1, Collider c2) {
+
+    }
+
+    @Override
+    public void endCollision(Collider c1, Collider c2) {
+
+    }
 }
