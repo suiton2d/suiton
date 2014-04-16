@@ -22,7 +22,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.nebula2d.components.Collider;
+import com.nebula2d.scene.GameObject;
 import com.nebula2d.scene.Scene;
 
 /**
@@ -38,18 +38,18 @@ public class CollisionListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        Collider c1 = (Collider) contact.getFixtureA().getUserData();
-        Collider c2 = (Collider) contact.getFixtureB().getUserData();
+        GameObject go1 = (GameObject) contact.getFixtureA().getUserData();
+        GameObject go2 = (GameObject) contact.getFixtureB().getUserData();
 
-        scene.beginCollision(c1, c2);
+        scene.beginCollision(go1, go2);
     }
 
     @Override
     public void endContact(Contact contact) {
-        Collider c1 = (Collider) contact.getFixtureA().getUserData();
-        Collider c2 = (Collider) contact.getFixtureB().getUserData();
+        GameObject go1 = (GameObject) contact.getFixtureA().getUserData();
+        GameObject go2 = (GameObject) contact.getFixtureB().getUserData();
 
-        scene.endCollision(c1, c2);
+        scene.endCollision(go1, go2);
     }
 
     @Override

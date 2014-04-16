@@ -18,7 +18,6 @@
 
 package com.nebula2d.components;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.nebula2d.scene.GameObject;
 
 /**
@@ -77,7 +76,7 @@ public abstract class Component {
      */
     public abstract void finish();
 
-    public abstract void beginCollision(Collider c1, Collider c2);
+    public abstract void beginCollision(GameObject go1, GameObject go2);
 
-    public abstract void endCollision(Collider c1, Collider c2);
+    public abstract void endCollision(GameObject go1, GameObject go2);
 }

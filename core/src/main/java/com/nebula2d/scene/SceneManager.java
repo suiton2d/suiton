@@ -109,6 +109,7 @@ public class SceneManager {
     public void fixedUpdate() {
         World physicalWorld = currentScene.getPhysicalWorld();
         physicalWorld.step(1/45f, 6, 2);
+
         Array<Body> bodies = new Array<Body>();
         physicalWorld.getBodies(bodies);
 

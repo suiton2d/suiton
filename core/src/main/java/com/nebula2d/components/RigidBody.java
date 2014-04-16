@@ -21,6 +21,7 @@ package com.nebula2d.components;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.nebula2d.scene.GameObject;
 import com.nebula2d.scene.SceneManager;
 
 /**
@@ -32,12 +33,15 @@ public class RigidBody extends Component {
     private boolean fixedRotation;
     private boolean isBullet;
     private Body physicsBody;
+    private CollisionShape collisionShape;
 
-    public RigidBody(String name, boolean isKinematic, boolean fixedRotation, boolean isBullet) {
+    public RigidBody(String name, CollisionShape collisionShape, boolean isKinematic,
+                     boolean fixedRotation, boolean isBullet) {
         super(name);
         this.isKinematic = isKinematic;
         this.fixedRotation = fixedRotation;
         this.isBullet = isBullet;
+        this.collisionShape = collisionShape;
     }
 
     @Override
@@ -50,6 +54,8 @@ public class RigidBody extends Component {
         bodyDef.bullet = isBullet;
         physicsBody = SceneManager.getInstance().getCurrentScene().getPhysicalWorld().createBody(bodyDef);
         physicsBody.setUserData(getGameObject());
+        if (collisionShape != null)
+            collisionShape.affixTo(physicsBody, false).setUserData(gameObject);
     }
 
     @Override
@@ -64,12 +70,12 @@ public class RigidBody extends Component {
     }
 
     @Override
-    public void beginCollision(Collider c1, Collider c2) {
+    public void beginCollision(GameObject go1, GameObject go2) {
 
     }
 
     @Override
-    public void endCollision(Collider c1, Collider c2) {
+    public void endCollision(GameObject go1, GameObject go2) {
 
     }
 }

@@ -18,7 +18,6 @@
 
 package com.nebula2d.scene;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
@@ -111,5 +110,15 @@ public class Layer {
     public void finish() {
         for (GameObject go : gameObjects)
             go.finish();
+    }
+
+    public void beginCollision(GameObject go1, GameObject go2) {
+        for (GameObject go : gameObjects)
+            go.beginCollision(go1, go2);
+    }
+
+    public void endCollision(GameObject go1, GameObject go2) {
+        for (GameObject go : gameObjects)
+            go.endCollision(go1, go2);
     }
 }

@@ -2,6 +2,7 @@ package com.nebula2d.components;
 
 import com.badlogic.gdx.audio.Music;
 import com.nebula2d.assets.MusicTrack;
+import com.nebula2d.scene.GameObject;
 
 /**
  * MusicSource is a {@link com.nebula2d.components.Component} used for the playback of
@@ -71,12 +72,12 @@ public class MusicSource extends Component {
     }
 
     @Override
-    public void beginCollision(Collider c1, Collider c2) {
+    public void beginCollision(GameObject go1, GameObject go2) {
 
     }
 
     @Override
-    public void endCollision(Collider c1, Collider c2) {
+    public void endCollision(GameObject go1, GameObject go2) {
 
     }
 

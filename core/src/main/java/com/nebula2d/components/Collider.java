@@ -21,9 +21,7 @@ package com.nebula2d.components;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Shape;
+import com.nebula2d.scene.GameObject;
 import com.nebula2d.scene.SceneManager;
 
 /**
@@ -31,32 +29,24 @@ import com.nebula2d.scene.SceneManager;
  */
 public abstract class Collider extends Component {
 
-    private boolean isSensor;
+    protected boolean isSensor;
+    protected Material material;
+    protected CollisionShape shape;
+    protected Body physicalBody;
 
-    private Body physicalBody;
-    private float density;
-    private float friction;
-    private float restitution;
-
-    public Collider(String name, boolean isSensor, float density, float friction, float restitution) {
+    public Collider(String name, Material material, boolean isSensor) {
         super(name);
         this.isSensor = isSensor;
-        this.density = density;
-        this.friction = friction;
-        this.restitution = restitution;
+        this.material = material;
     }
 
     @Override
     public void start() {
         BodyDef bodyDef = createBodyDef();
-        FixtureDef fixtureDef = createFixtureDef();
         physicalBody = SceneManager.getInstance().getCurrentScene().getPhysicalWorld().createBody(bodyDef);
-        Fixture fixture = physicalBody.createFixture(fixtureDef);
-        fixture.setUserData(this);
         physicalBody.setUserData(getGameObject());
+        shape.affixTo(physicalBody, isSensor).setUserData(gameObject);
     }
-
-    protected abstract Shape getShape();
 
     private BodyDef createBodyDef() {
         BodyDef bodyDef = new BodyDef();
@@ -66,17 +56,6 @@ public abstract class Collider extends Component {
         bodyDef.angle = (float) (getGameObject().getTransform().getRotation() * Math.PI / 180.0f);
 
         return bodyDef;
-    }
-
-    private FixtureDef createFixtureDef() {
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = getShape();
-        fixtureDef.density = density;
-        fixtureDef.friction = friction;
-        fixtureDef.restitution = restitution;
-        fixtureDef.isSensor = isSensor;
-
-        return fixtureDef;
     }
 
     @Override
@@ -90,12 +69,12 @@ public abstract class Collider extends Component {
     }
 
     @Override
-    public void beginCollision(Collider c1, Collider c2) {
+    public void beginCollision(GameObject go1, GameObject go2) {
 
     }
 
     @Override
-    public void endCollision(Collider c1, Collider c2) {
+    public void endCollision(GameObject go1, GameObject go2) {
 
     }
 }

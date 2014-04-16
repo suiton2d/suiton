@@ -2,7 +2,7 @@ package com.nebula2d.components;
 
 import com.nebula2d.assets.AssetManager;
 import com.nebula2d.assets.Script;
-import com.sun.org.omg.SendingContext._CodeBaseStub;
+import com.nebula2d.scene.GameObject;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
@@ -80,20 +80,20 @@ public class Behavior extends Component {
     }
 
     @Override
-    public void beginCollision(Collider c1, Collider c2) {
+    public void beginCollision(GameObject go1, GameObject go2) {
         Context context = Context.enter();
         try {
-            beginCollisionFunction.call(context, scope, scope, new Object[]{c1, c2});
+            beginCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
         } finally {
             Context.exit();
         }
     }
 
     @Override
-    public void endCollision(Collider c1, Collider c2) {
+    public void endCollision(GameObject go1, GameObject go2) {
         Context context = Context.enter();
         try {
-            endCollisionFunction.call(context, scope, scope, new Object[]{c1, c2});
+            endCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
         } finally {
             Context.exit();
         }

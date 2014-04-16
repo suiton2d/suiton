@@ -18,15 +18,28 @@
 
 package com.nebula2d.components;
 
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.nebula2d.scene.Transform;
+
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class BoxCollider extends Collider {
+public class Circle extends CollisionShape {
 
-    public BoxCollider(String name, Material material, boolean isSensor, float density, float friction,
-                       float restitution, float w, float h) {
-        super(name, material, isSensor);
+    private float radius;
 
-        shape = new BoundingBox(material, w, h);
+    public Circle(Material material, float radius) {
+        super(material);
+        this.radius = radius;
+    }
+
+    @Override
+    protected Shape getShape(Transform transform) {
+        CircleShape circleShape = new CircleShape();
+        circleShape.setPosition(transform.getPosition());
+        circleShape.setRadius(radius);
+
+        return circleShape;
     }
 }

@@ -1,6 +1,7 @@
 package com.nebula2d.components;
 
 import com.nebula2d.assets.SoundEffect;
+import com.nebula2d.scene.GameObject;
 
 /**
  * SoundEffectSource is a {@link com.nebula2d.components.Component} used for the
@@ -73,12 +74,12 @@ public class SoundEffectSource extends Component {
     }
 
     @Override
-    public void beginCollision(Collider c1, Collider c2) {
+    public void beginCollision(GameObject go1, GameObject go2) {
 
     }
 
     @Override
-    public void endCollision(Collider c1, Collider c2) {
+    public void endCollision(GameObject go1, GameObject go2) {
 
     }
 }

@@ -21,12 +21,27 @@ package com.nebula2d.components;
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class BoxCollider extends Collider {
+public class Material {
 
-    public BoxCollider(String name, Material material, boolean isSensor, float density, float friction,
-                       float restitution, float w, float h) {
-        super(name, material, isSensor);
+    private float density;
+    private float friction;
+    private float restitution;
 
-        shape = new BoundingBox(material, w, h);
+    public Material(float density, float friction, float restitution) {
+        this.density = density;
+        this.friction = friction;
+        this.restitution = restitution;
+    }
+
+    public float getDensity() {
+        return density;
+    }
+
+    public float getFriction() {
+        return friction;
+    }
+
+    public float getRestitution() {
+        return restitution;
     }
 }
