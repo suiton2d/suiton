@@ -32,16 +32,18 @@ public class RigidBody extends Component {
     private boolean isKinematic;
     private boolean fixedRotation;
     private boolean isBullet;
+    private float mass;
     private Body physicsBody;
     private CollisionShape collisionShape;
 
     public RigidBody(String name, CollisionShape collisionShape, boolean isKinematic,
-                     boolean fixedRotation, boolean isBullet) {
+                     float mass, boolean fixedRotation, boolean isBullet) {
         super(name);
         this.isKinematic = isKinematic;
         this.fixedRotation = fixedRotation;
         this.isBullet = isBullet;
         this.collisionShape = collisionShape;
+        this.mass = mass;
     }
 
     @Override
@@ -50,12 +52,37 @@ public class RigidBody extends Component {
         bodyDef.type = isKinematic ? BodyDef.BodyType.KinematicBody : BodyDef.BodyType.DynamicBody;
         Vector2 pos = getGameObject().getTransform().getPosition();
         bodyDef.position.set(pos);
+        bodyDef.angle = getGameObject().getTransform().getRotation();
         bodyDef.fixedRotation = fixedRotation;
         bodyDef.bullet = isBullet;
+
         physicsBody = SceneManager.getInstance().getCurrentScene().getPhysicalWorld().createBody(bodyDef);
         physicsBody.setUserData(getGameObject());
+        physicsBody.getMassData().mass = mass;
+
         if (collisionShape != null)
             collisionShape.affixTo(physicsBody, false).setUserData(gameObject);
+    }
+
+    public void applyForce(Vector2 force, Vector2 point, boolean wake) {
+        physicsBody.applyForce(force, point, wake);
+    }
+
+    public void applyLinearImpulse(Vector2 impulse, Vector2 point, boolean wake) {
+        physicsBody.applyLinearImpulse(impulse, point, wake);
+    }
+
+    public void applyAngularImpulse(float impulse, boolean wake) {
+        physicsBody.applyAngularImpulse(impulse, wake);
+    }
+
+    public void applyTorque(float torque, boolean wake) {
+        physicsBody.applyTorque(torque, wake);
+    }
+
+    public void setMass(float mass) {
+        this.mass = mass;
+        physicsBody.getMassData().mass = mass;
     }
 
     @Override
