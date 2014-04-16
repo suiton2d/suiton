@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.nebula2d.components.Component;
 import com.nebula2d.components.Renderer;
+import com.nebula2d.components.RigidBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class GameObject extends Group {
     protected List<Component> components;
     protected Layer layer;
     protected Renderer renderer;
+    protected RigidBody rigidBody;
 
     //region constructors
     public GameObject(String name) {
@@ -63,6 +65,10 @@ public class GameObject extends Group {
 
     public Renderer getRenderer() {
         return renderer;
+    }
+
+    public RigidBody getRigidBody() {
+        return rigidBody;
     }
 
     public void setLayer(Layer layer) {
@@ -97,6 +103,8 @@ public class GameObject extends Group {
         component.setGameObject(this);
         if (component instanceof Renderer)
             renderer = (Renderer) component;
+        else if (component instanceof RigidBody)
+            rigidBody = (RigidBody) component;
     }
 
     /**
@@ -122,7 +130,8 @@ public class GameObject extends Group {
         this.transform = new Transform(this);
         stage.addActor(this);
         for (Component c : components) {
-            c.start();
+            if (c.isEnabled())
+                c.start();
         }
     }
 
@@ -135,6 +144,27 @@ public class GameObject extends Group {
         }
 
         super.act(dt);
+    }
+
+    public void finish() {
+        for (Component c : components) {
+            if (c.isEnabled())
+                c.finish();
+        }
+    }
+
+    public void beginCollision(GameObject go1, GameObject go2) {
+        for (Component c : components) {
+            if (c.isEnabled())
+                c.beginCollision(go1, go2);
+        }
+    }
+
+    public void endCollision(GameObject go1, GameObject go2) {
+        for (Component c : components) {
+            if (c.isEnabled())
+                c.endCollision(go1, go2);
+        }
     }
     //endregion
 }

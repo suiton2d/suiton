@@ -18,6 +18,9 @@
 
 package com.nebula2d.assets;
 
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ScriptableObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +34,16 @@ public class AssetManager {
 
     private static AssetManager instance;
     private Map<String, List<Asset>> assetMap;
+    private ScriptableObject globalScriptScope;
 
     private AssetManager() {
         this.assetMap = new HashMap<String, List<Asset>>();
+        Context context = Context.enter();
+        try {
+            globalScriptScope = context.initStandardObjects();
+        } finally {
+            Context.exit();
+        }
     }
 
     /**
@@ -46,6 +56,10 @@ public class AssetManager {
             instance = new AssetManager();
 
         return instance;
+    }
+
+    public ScriptableObject getGlobalScriptScope() {
+        return globalScriptScope;
     }
 
     /**
