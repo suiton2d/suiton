@@ -2,6 +2,7 @@ package com.nebula2d.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.google.common.io.BaseEncoding;
 
 
 /**
@@ -26,7 +27,7 @@ public class Script extends Asset {
     @Override
     protected void onLoad() {
         FileHandle fileHandle = Gdx.files.internal(path);
-        contents = new String(fileHandle.readBytes());
+        contents = BaseEncoding.base64().encode(fileHandle.readBytes());
     }
 
     @Override

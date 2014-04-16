@@ -18,7 +18,6 @@
 
 package com.nebula2d.components;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.nebula2d.scene.GameObject;
 
 /**
@@ -70,4 +69,14 @@ public abstract class Component {
      * @param dt The time since the last frame update.
      */
     public abstract void update(float dt);
+
+    /**
+     * Abstract callback method called exactly once immediately before a {@link com.nebula2d.scene.Scene}
+     * is changed or ended otherwise.
+     */
+    public abstract void finish();
+
+    public abstract void beginCollision(GameObject go1, GameObject go2);
+
+    public abstract void endCollision(GameObject go1, GameObject go2);
 }

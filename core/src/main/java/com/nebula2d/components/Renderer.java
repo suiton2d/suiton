@@ -19,6 +19,7 @@
 package com.nebula2d.components;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.nebula2d.scene.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,4 +86,18 @@ public abstract class Renderer extends Component {
      * @param dt The time since the last frame update.
      */
     public abstract void render(SpriteBatch batch, float dt);
+
+    public void finish() {
+
+    }
+
+    @Override
+    public void beginCollision(GameObject go1, GameObject go2) {
+
+    }
+
+    @Override
+    public void endCollision(GameObject go1, GameObject go2) {
+
+    }
 }

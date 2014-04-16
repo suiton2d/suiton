@@ -20,7 +20,10 @@ package com.nebula2d.scene;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.nebula2d.util.CollisionListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +38,11 @@ public class Scene {
     private String name;
     private List<Layer> layers;
     private Stage stage;
+    private World physicalWorld;
 
-    public Scene(String name) {
+    public Scene(String name, Vector2 gravity, boolean sleepPhysics) {
+        physicalWorld = new World(gravity, sleepPhysics);
+        physicalWorld.setContactListener(new CollisionListener(this));
         this.name = name;
         this.layers = new ArrayList<Layer>();
         this.stage = new Stage();
@@ -52,6 +58,17 @@ public class Scene {
         return stage.getCamera();
     }
 
+    public World getPhysicalWorld() {
+        return physicalWorld;
+    }
+
+    public Vector2 getGravity() {
+        return physicalWorld.getGravity();
+    }
+
+    public void setGravity(int x, int y) {
+        physicalWorld.setGravity(new Vector2(x, y));
+    }
 
     public List<Layer> getLayers() {
         return layers;
@@ -100,5 +117,20 @@ public class Scene {
         cam.update();
         stage.act(dt);
         stage.draw();
+    }
+
+    public void finish() {
+        for (Layer layer : layers)
+            layer.finish();
+    }
+
+    public void beginCollision(GameObject go1, GameObject go2) {
+        for (Layer layer : layers)
+            layer.beginCollision(go1, go2);
+    }
+
+    public void endCollision(GameObject go1, GameObject go2) {
+        for (Layer layer : layers)
+            layer.endCollision(go1, go2);
     }
 }

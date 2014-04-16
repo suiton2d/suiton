@@ -18,6 +18,10 @@
 
 package com.nebula2d.scene;
 
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.nebula2d.assets.AssetManager;
 
 import java.util.HashMap;
@@ -83,8 +87,10 @@ public class SceneManager {
     public void setCurrentScene(String name) {
 
         if (sceneMap.containsKey(name)) {
-            if (currentScene != null)
+            if (currentScene != null) {
+                currentScene.finish();
                 AssetManager.getInstance().unloadAssets(currentScene.getName());
+            }
             currentScene = getScene(name);
             AssetManager.getInstance().loadAssets(name);
             currentScene.start();
@@ -92,11 +98,28 @@ public class SceneManager {
     }
 
     public void start() {
+
         currentScene.start();
     }
 
     public void update(float dt) {
         currentScene.update(dt);
+    }
+
+    public void fixedUpdate() {
+        World physicalWorld = currentScene.getPhysicalWorld();
+        physicalWorld.step(1/45f, 6, 2);
+
+        Array<Body> bodies = new Array<Body>();
+        physicalWorld.getBodies(bodies);
+
+        for (Body body : bodies) {
+            if (body.getType() != BodyDef.BodyType.StaticBody) {
+                GameObject go = (GameObject) body.getUserData();
+                go.getTransform().setPosition(body.getPosition());
+                go.getTransform().setRotation((float) (body.getAngle() * 180.0f / Math.PI));
+            }
+        }
     }
     //endregion
 }
