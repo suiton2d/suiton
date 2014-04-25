@@ -20,7 +20,6 @@ package com.nebula2d.scene;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -37,21 +36,19 @@ import java.util.List;
  * @author      Jon Bonazza <jonbonazza@gmail.com>
  */
 public class GameObject extends Group {
+
     protected Transform transform;
     protected List<Component> components;
     protected Layer layer;
     protected Renderer renderer;
     protected RigidBody rigidBody;
 
-    //region constructors
     public GameObject(String name) {
         setName(name);
         this.transform = new Transform(this);
         this.components = new ArrayList<Component>();
     }
-    //endregion
 
-    //region accessors
     public Transform getTransform() {
        return transform;
     }
@@ -77,9 +74,6 @@ public class GameObject extends Group {
         for (Actor actor : getChildren())
             ((GameObject) actor).setLayer(layer);
     }
-    //endregion
-
-    //region component ops
 
     /**
      * Retrieves the {@link Component} from the GameObject with the given name.
@@ -167,5 +161,4 @@ public class GameObject extends Group {
                 c.endCollision(go1, go2);
         }
     }
-    //endregion
 }

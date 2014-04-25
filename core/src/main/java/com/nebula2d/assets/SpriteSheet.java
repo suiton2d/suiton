@@ -32,9 +32,9 @@ public class SpriteSheet extends Sprite {
 
             //FIXME: This can be optimized, but I can't be assed with it at the moment.
             int index = 0;
-            for (int i = 0; i < numRows; ++i) {
+            for (TextureRegion[] tmpRegion : tmpRegions) {
                 for (int j = 0; j < numCols; ++j) {
-                    frames[index++] = tmpRegions[i][j];
+                    frames[index++] = tmpRegion[j];
                 }
             }
         }

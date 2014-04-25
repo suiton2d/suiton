@@ -54,13 +54,9 @@ public class SceneManager {
         return instance;
     }
 
-    //region accessors
     public Scene getCurrentScene() {
         return currentScene;
     }
-    //endregion
-
-    //region scene ops
 
     /**
      * Retrieves the {@link Scene} with the given name.
@@ -121,5 +117,4 @@ public class SceneManager {
             }
         }
     }
-    //endregion
 }

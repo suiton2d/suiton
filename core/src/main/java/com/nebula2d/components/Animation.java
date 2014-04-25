@@ -38,11 +38,9 @@ public abstract class Animation {
         this.name = name;
     }
 
-    //region accessors
     public String getName() {
         return name;
     }
-    //endregion
 
     /**
      * Plays the animation.

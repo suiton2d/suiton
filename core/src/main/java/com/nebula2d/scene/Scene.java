@@ -19,11 +19,9 @@
 package com.nebula2d.scene;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.nebula2d.util.CollisionListener;
 
 import java.util.ArrayList;
@@ -48,7 +46,6 @@ public class Scene {
         this.layers = new ArrayList<Layer>();
     }
 
-    //region accessors
     public String getName() {
         return name;
     }
@@ -81,9 +78,6 @@ public class Scene {
     public List<Layer> getLayers() {
         return layers;
     }
-    //endregion
-
-    //region layer ops
 
     /**
      * Retrieves the {@link Layer} in the Scene with the given name.
@@ -99,8 +93,6 @@ public class Scene {
         return null;
     }
 
-
-
     /**
      * Removes a Layer from the Scene.
      * @param layer The Layer to remove.
@@ -109,7 +101,6 @@ public class Scene {
         layers.remove(layer);
         layer.setScene(null);
     }
-    //endregion
 
     public void start() {
         for (Layer l : layers)

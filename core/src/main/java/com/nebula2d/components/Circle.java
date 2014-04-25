@@ -29,8 +29,8 @@ public class Circle extends CollisionShape {
 
     private float radius;
 
-    public Circle(Material material, float radius) {
-        super(material);
+    public Circle(PhysicsMaterial physicsMaterial, float radius) {
+        super(physicsMaterial);
         this.radius = radius;
     }
 

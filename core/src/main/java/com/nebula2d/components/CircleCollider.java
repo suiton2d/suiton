@@ -23,8 +23,8 @@ package com.nebula2d.components;
  */
 public class CircleCollider extends Collider {
 
-    public CircleCollider(String name, Material material1, boolean isSensor, float radius) {
-        super(name, material1, isSensor);
-        shape = new Circle(material1, radius);
+    public CircleCollider(String name, PhysicsMaterial physicsMaterial, boolean isSensor, float radius) {
+        super(name, physicsMaterial, isSensor);
+        shape = new Circle(physicsMaterial, radius);
     }
 }

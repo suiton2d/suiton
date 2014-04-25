@@ -44,7 +44,6 @@ public class Layer {
         gameObjects = new ArrayList<GameObject>();
     }
 
-    //region accessors
     public String getName() {
         return name;
     }
@@ -64,9 +63,6 @@ public class Layer {
     public void setScene(Scene scene) {
         this.scene = scene;
     }
-    //endregion
-
-    //region game object ops
 
     /**
      * Retrieves the GameObject in the layer with the given name.
@@ -100,7 +96,6 @@ public class Layer {
         gameObjects.remove(gameObject);
         gameObject.setLayer(null);
     }
-    //endregion
 
     public void start(Stage stage) {
         for (GameObject go : gameObjects)

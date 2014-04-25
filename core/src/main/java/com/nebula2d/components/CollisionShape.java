@@ -30,10 +30,10 @@ import com.nebula2d.scene.Transform;
  */
 public abstract class CollisionShape {
 
-    private Material material;
+    private PhysicsMaterial physicsMaterial;
 
-    public CollisionShape(Material material) {
-        this.material = material;
+    public CollisionShape(PhysicsMaterial physicsMaterial) {
+        this.physicsMaterial = physicsMaterial;
     }
 
     public Fixture affixTo(Body body, boolean isSensor) {
@@ -47,9 +47,9 @@ public abstract class CollisionShape {
     private FixtureDef createFixtureDef(Transform transform, boolean isSensor) {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = getShape(transform);
-        fixtureDef.density = material.getDensity();
-        fixtureDef.friction = material.getFriction();
-        fixtureDef.restitution = material.getRestitution();
+        fixtureDef.density = physicsMaterial.getDensity();
+        fixtureDef.friction = physicsMaterial.getFriction();
+        fixtureDef.restitution = physicsMaterial.getRestitution();
         fixtureDef.isSensor = isSensor;
 
         return fixtureDef;
