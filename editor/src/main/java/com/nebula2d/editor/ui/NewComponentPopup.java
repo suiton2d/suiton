@@ -154,6 +154,7 @@ public class NewComponentPopup extends JPopupMenu {
             add(buttonPanel, BorderLayout.SOUTH);
             add(namePanel);
             pack();
+            setLocationRelativeTo(null);
             setVisible(true);
         }
 

@@ -22,8 +22,8 @@ import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.framework.Scene;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,75 +31,41 @@ import java.awt.event.ActionListener;
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class NewSceneDialog extends JDialog {
+public class ChangeSceneDialog extends JDialog {
 
-    private JTextField nameTf;
-
-    public NewSceneDialog() {
-        setTitle("New Scene");
+    public ChangeSceneDialog() {
+        setTitle("Change Scene");
         setupContents();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
     private void setupContents() {
-        nameTf = new JTextField(20);
-
-        final Project project = MainFrame.getProject();
-        final Color defaultFg = nameTf.getForeground();
-        final JLabel nameLbl = new JLabel("Scene Name: ");
+        final DefaultListModel<Scene> model = createListModel();
+        final JList<Scene> sceneListBox = new JList<Scene>(model);
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
 
-        final JPanel namePanel = new JPanel();
-        final JPanel btnPanel = new JPanel();
-
-        nameTf.setText("Untitled Scene " + project.getScenes().size());
-
-        namePanel.add(nameLbl);
-        namePanel.add(nameTf);
-
+        JPanel btnPanel = new JPanel();
         btnPanel.add(okBtn);
         btnPanel.add(cancelBtn);
 
-        nameTf.getDocument().addDocumentListener(new DocumentListener() {
+        sceneListBox.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-                if (!validateText()) {
-                    nameTf.setForeground(Color.RED);
-                    okBtn.setEnabled(false);
-                } else {
-                    nameTf.setForeground(defaultFg);
-                    okBtn.setEnabled(true);
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    okBtn.setEnabled(!sceneListBox.isSelectionEmpty());
                 }
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if (!validateText()) {
-                    nameTf.setForeground(Color.RED);
-                    okBtn.setEnabled(false);
-                } else {
-                    nameTf.setForeground(defaultFg);
-                    okBtn.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-
             }
         });
 
         okBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String newSceneName = nameTf.getText();
-                Scene scene = new Scene(newSceneName);
-                SceneGraph sceneGraph = MainFrame.getSceneGraph();
+                Scene scene = sceneListBox.getSelectedValue();
                 Project project = MainFrame.getProject();
-                project.addScene(scene);
-                project.setCurrentScene(newSceneName);
+                SceneGraph sceneGraph = MainFrame.getSceneGraph();
+                project.setCurrentScene(scene.getName());
                 sceneGraph.init();
                 project.loadCurrentScene();
                 sceneGraph.refresh();
@@ -115,13 +81,19 @@ public class NewSceneDialog extends JDialog {
         });
 
         add(btnPanel, BorderLayout.SOUTH);
-        add(namePanel, BorderLayout.CENTER);
+        add(new JScrollPane(sceneListBox), BorderLayout.CENTER);
+
+        setMinimumSize(new Dimension(300, 100));
         pack();
     }
 
-    private boolean validateText() {
-        String txt = nameTf.getText();
+    private DefaultListModel<Scene> createListModel() {
         Project project = MainFrame.getProject();
-        return !txt.isEmpty() && !project.containsSceneWithName(txt);
+        DefaultListModel<Scene> sceneList = new DefaultListModel<Scene>();
+        for (Scene scene : project.getScenes()) {
+            sceneList.addElement(scene);
+        }
+
+        return sceneList;
     }
 }

@@ -23,7 +23,6 @@ import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
-import com.nebula2d.editor.util.PlatformUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -32,14 +31,11 @@ import java.util.List;
 
 public class Project implements ISerializable {
 
-    //region members
     private List<Scene> scenes;
     private int currentSceneIdx;
     private String projectDir;
     private String projectName;
-    //endregion
 
-    //region constructors
     public Project(String dir, String name) {
         this.projectDir = dir;
         this.projectName = name;
@@ -54,48 +50,13 @@ public class Project implements ISerializable {
         this.currentSceneIdx = 0;
         scenes = new ArrayList<Scene>();
     }
-    //endregion
-
-    //region accessors
-    public String getProjectName() {
-        return this.projectName;
-    }
-
-    public String getProjectDir() {
-        return this.projectDir;
-    }
 
     public List<Scene> getScenes() {
         return this.scenes;
     }
 
-    public int getCurrentSceneIdx() {
-        return this.currentSceneIdx;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
     public void addScene(Scene scene) {
         scenes.add(scene);
-    }
-
-    public void removeScene(Scene scene) {
-        scenes.remove(scene);
-    }
-
-    public void removeScene(int idx) {
-        scenes.remove(idx);
-    }
-
-    public Scene getScene(String name) {
-        for (Scene scene : scenes) {
-            if (scene.getName().equals(name))
-                return scene;
-        }
-
-        return null;
     }
 
     public Scene getScene(int idx) {
@@ -114,14 +75,8 @@ public class Project implements ISerializable {
         for (int i = 0; i < scenes.size(); ++i) {
             if (scenes.get(i).getName().equals(name)) {
                 currentSceneIdx = i;
-                loadScene(i);
             }
         }
-    }
-
-    public void setCurrentScene(int idx) {
-        currentSceneIdx = idx;
-        loadScene(idx);
     }
 
     public String getPath() {
@@ -140,9 +95,7 @@ public class Project implements ISerializable {
 
         return projectName.substring(0, projectName.length() - ext.length());
     }
-    //endregion
 
-    //region public methods
     public void loadProject() throws IOException {
         scenes.clear();
         FullBufferedReader fr = new FullBufferedReader(new FileReader(getPath()));
@@ -169,24 +122,15 @@ public class Project implements ISerializable {
         loadScene(scene);
     }
 
-    public void loadScene(String name) {
-        Scene scene = getScene(name);
-        if (scene == null)
-            return;
-
-        loadScene(scene);
-    }
-
     private void loadScene(Scene scene) {
         SceneGraph graph = MainFrame.getSceneGraph();
         Enumeration layers = scene.children();
         while (layers.hasMoreElements()) {
             graph.addLayer((Layer) layers.nextElement());
         }
+        graph.refresh();
     }
-    //endregion
 
-    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         int size = fr.readIntLine();
@@ -210,5 +154,13 @@ public class Project implements ISerializable {
 
         fw.writeIntLine(currentSceneIdx);
     }
-    //endregion
+
+    public boolean containsSceneWithName(String name) {
+        for (Scene scene : scenes) {
+            if (scene.getName().equals(name))
+                return true;
+        }
+
+        return false;
+    }
 }

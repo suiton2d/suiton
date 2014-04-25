@@ -143,7 +143,7 @@ public class N2DMenuBar extends JMenuBar {
         changeSceneMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: implement
+                new ChangeSceneDialog();
             }
         });
 
