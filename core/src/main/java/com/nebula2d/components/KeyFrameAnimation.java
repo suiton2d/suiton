@@ -1,7 +1,7 @@
 package com.nebula2d.components;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.assets.SpriteSheet;
 import com.nebula2d.scene.Transform;
@@ -78,7 +78,7 @@ public class KeyFrameAnimation extends Animation {
     }
 
     @Override
-    public void render(Transform transform, SpriteBatch batch, Camera cam, float dt) {
+    public void render(Transform transform, Batch batch, Camera cam, float dt) {
 
         TextureRegion currentFrame = update(dt);
         float halfw = currentFrame.getRegionWidth() / 2.0f;

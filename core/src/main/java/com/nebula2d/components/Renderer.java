@@ -18,7 +18,7 @@
 
 package com.nebula2d.components;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.nebula2d.scene.GameObject;
 
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public abstract class Renderer extends Component {
      * @param batch The SpriteBatch instance to use for rendering.
      * @param dt The time since the last frame update.
      */
-    public abstract void render(SpriteBatch batch, float dt);
+    public abstract void render(Batch batch, float dt);
 
     public void finish() {
 

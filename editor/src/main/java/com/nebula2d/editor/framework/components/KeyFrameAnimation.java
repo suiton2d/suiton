@@ -191,8 +191,6 @@ public class KeyFrameAnimation extends Animation {
 
             frames = Arrays.copyOfRange(frames, startFrame, endFrame + 1);
             animation = new com.badlogic.gdx.graphics.g2d.Animation(speed, frames);
-            System.out.println("" + animation.getPlayMode());
-            System.out.println("" + com.badlogic.gdx.graphics.g2d.Animation.LOOP);
         }
     }
     //endregion
