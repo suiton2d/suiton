@@ -42,7 +42,6 @@ public class Transform {
         this.scale = new Vector2(1, 1);
     }
 
-    //region accessors
     public Vector2 getPosition() {
         float x = gameObject.getX() + gameObject.getWidth() / 2.0f;
         float y = gameObject.getY() + gameObject.getHeight() / 2.0f;
@@ -78,9 +77,6 @@ public class Transform {
     public void setRotation(float rotation) {
         gameObject.addAction(Actions.rotateTo(rotation));
     }
-    //endregion
-
-    //region math ops
 
     /**
      * Translates the position of the transform.
@@ -106,5 +102,4 @@ public class Transform {
     public void rotate(float theta) {
         gameObject.addAction(Actions.rotateBy(theta));
     }
-    //endregion
 }

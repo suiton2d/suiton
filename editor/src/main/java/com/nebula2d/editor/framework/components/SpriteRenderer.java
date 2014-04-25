@@ -18,7 +18,6 @@
 
 package com.nebula2d.editor.framework.components;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -39,14 +38,11 @@ import java.io.IOException;
 
 public class SpriteRenderer extends Renderer {
 
-    //region constructor
     public SpriteRenderer(String name) {
         super(name);
         rendererType = RendererType.SPRITE_RENDERER;
     }
-    //endregion
 
-    //region overrided methods from Renderer
     @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         if (sprite != null) {
@@ -165,6 +161,7 @@ public class SpriteRenderer extends Renderer {
                 super.mouseClicked(e);
             }
         });
+
         final JPanel addRemoveBtnPanel = new JPanel();
         addRemoveBtnPanel.add(addButton);
         addRemoveBtnPanel.add(removeButton);
@@ -198,7 +195,6 @@ public class SpriteRenderer extends Renderer {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                //To change body of implemented methods use File | Settings | File Templates.
             }
         });
 
@@ -221,9 +217,7 @@ public class SpriteRenderer extends Renderer {
         hGroup.addGroup(layout.createParallelGroup().addComponent(nameLbl).
                 addComponent(imageLbl).addComponent(enabledCb));
         hGroup.addGroup(layout.createParallelGroup().addComponent(nameTf).addComponent(imageTf));//.
-        //addComponent(imagePanel));
         hGroup.addGroup(layout.createParallelGroup().addComponent(browseBtn));
-        //hGroup.addGroup(layout.createParallelGroup().addComponent(animationPanel));
         layout.setHorizontalGroup(hGroup);
 
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
@@ -232,8 +226,6 @@ public class SpriteRenderer extends Renderer {
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(imageLbl).
                 addComponent(imageTf).addComponent(browseBtn));
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(enabledCb));
-        //vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(imagePanel).
-        //        addComponent(animationPanel));
         layout.setVerticalGroup(vGroup);
         final JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(Box.createRigidArea(new Dimension(100, 0)));
@@ -246,5 +238,4 @@ public class SpriteRenderer extends Renderer {
         mainPanel.add(bottomPanel);
         return mainPanel;
     }
-    //endregion
 }

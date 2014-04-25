@@ -38,7 +38,6 @@ public abstract class Asset {
         this.loaded = false;
     }
 
-    //region accessors
     public String getFilename() {
         return filename;
     }
@@ -54,7 +53,6 @@ public abstract class Asset {
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
-    //endregion
 
     /**
      * Loads the Asset into memory

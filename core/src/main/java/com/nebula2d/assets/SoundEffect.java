@@ -86,8 +86,4 @@ public class SoundEffect extends Asset {
         sound.dispose();
         sound = null;
     }
-
-    public Sound getSound() {
-        return sound;
-    }
 }

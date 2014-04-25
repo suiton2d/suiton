@@ -47,7 +47,7 @@ public class RenderAdapter implements ApplicationListener {
     public OrthographicCamera getCamera() {
         return camera;
     }
-    //region accessors
+
     public GameObject getSelectedObject() {
         return selectedObject;
     }
@@ -55,7 +55,7 @@ public class RenderAdapter implements ApplicationListener {
     public void setSelectedObject(GameObject selectedObject) {
         this.selectedObject = selectedObject;
     }
-    //endregion
+
     @Override
     public void create() {
 

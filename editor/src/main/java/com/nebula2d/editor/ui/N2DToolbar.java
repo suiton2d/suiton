@@ -45,7 +45,6 @@ public class N2DToolbar extends JToolBar {
         setRendererWidgetsEnabled(false);
     }
 
-    //region accessors
     public int getSelectedRendererWidget() {
         return selectedRendererWidget;
     }
@@ -53,7 +52,6 @@ public class N2DToolbar extends JToolBar {
     public JButton getComponentsButton() {
         return componentsButton;
     }
-    //endregion
 
     private void addButtons() {
         renderWidgets = forgeRendererWidgetButtons();

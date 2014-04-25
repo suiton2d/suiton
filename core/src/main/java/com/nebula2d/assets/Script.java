@@ -2,12 +2,7 @@ package com.nebula2d.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.google.common.base.Charsets;
-import com.google.common.io.BaseEncoding;
 import com.nebula2d.util.ByteUtils;
-
-import java.nio.charset.Charset;
-
 
 /**
  * Script is an {@link com.nebula2d.assets.Asset} representing

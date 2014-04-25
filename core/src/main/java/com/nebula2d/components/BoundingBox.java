@@ -18,12 +18,8 @@
 
 package com.nebula2d.components;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.nebula2d.scene.GameObject;
-import com.nebula2d.scene.SceneManager;
 import com.nebula2d.scene.Transform;
 
 /**
@@ -43,8 +39,8 @@ public class BoundingBox extends CollisionShape {
 
     private Extents extents;
 
-    public BoundingBox(Material material, float w, float h) {
-        super(material);
+    public BoundingBox(PhysicsMaterial physicsMaterial, float w, float h) {
+        super(physicsMaterial);
         extents = new Extents(w/2.0f, h/2.0f);
     }
 

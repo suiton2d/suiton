@@ -23,10 +23,9 @@ package com.nebula2d.components;
  */
 public class BoxCollider extends Collider {
 
-    public BoxCollider(String name, Material material, boolean isSensor, float density, float friction,
-                       float restitution, float w, float h) {
-        super(name, material, isSensor);
+    public BoxCollider(String name, PhysicsMaterial physicsMaterial, boolean isSensor, float w, float h) {
+        super(name, physicsMaterial, isSensor);
 
-        shape = new BoundingBox(material, w, h);
+        shape = new BoundingBox(physicsMaterial, w, h);
     }
 }

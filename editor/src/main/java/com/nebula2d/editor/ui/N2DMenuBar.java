@@ -22,7 +22,6 @@ import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
 import com.nebula2d.editor.framework.Project;
-import com.nebula2d.editor.framework.Scene;
 import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;

@@ -21,13 +21,13 @@ package com.nebula2d.components;
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class Material {
+public class PhysicsMaterial {
 
     private float density;
     private float friction;
     private float restitution;
 
-    public Material(float density, float friction, float restitution) {
+    public PhysicsMaterial(float density, float friction, float restitution) {
         this.density = density;
         this.friction = friction;
         this.restitution = restitution;

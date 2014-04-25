@@ -26,12 +26,9 @@ import java.io.IOException;
 
 public class Sprite extends Asset {
 
-    //region members
     protected com.badlogic.gdx.graphics.Texture texture;
     protected boolean spriteSheet;
-    //endregion
 
-    //region constructor
     public Sprite(final String path) {
         super(path);
         Gdx.app.postRunnable(new Runnable() {
@@ -42,9 +39,7 @@ public class Sprite extends Asset {
         });
         spriteSheet = false;
     }
-    //endregion
 
-    //region Accessors
     public int getWidth() {
         return this.texture.getWidth();
     }
@@ -64,9 +59,7 @@ public class Sprite extends Asset {
     public com.badlogic.gdx.graphics.Texture getTexture() {
         return texture;
     }
-    //endregion
 
-    //region interface overrides
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
@@ -80,5 +73,4 @@ public class Sprite extends Asset {
         if (type.equalsIgnoreCase("Spritesheet"))
             setSpriteSheet(true);
     }
-    //endregion
 }

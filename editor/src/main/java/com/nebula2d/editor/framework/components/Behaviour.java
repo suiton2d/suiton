@@ -34,11 +34,8 @@ import java.io.IOException;
 
 public class Behaviour extends Component {
 
-    //region members
     protected Script script;
-    //endregion
 
-    //region constructor
     public Behaviour(String name) {
         super(name);
         componentType = ComponentType.BEHAVE;
@@ -47,9 +44,7 @@ public class Behaviour extends Component {
     public Behaviour() {
         this("");
     }
-    //endregion
 
-    //region overrided methods from Component
     @Override
     public JPanel forgeComponentContentPanel(final ComponentsDialog parent) {
         final JLabel nameLbl = new JLabel("Name:");
@@ -179,5 +174,4 @@ public class Behaviour extends Component {
             script.save(fw);
         }
     }
-    //endregion
 }
