@@ -109,6 +109,8 @@ public class SceneGraph extends JTree {
                 super.mouseClicked(e);
                 SceneGraph graph = SceneGraph.this;
                 TreePath clickedPath = graph.getClosestPathForLocation(e.getPoint().x, e.getPoint().y);
+                if (clickedPath == null)
+                    return;
                 BaseSceneNode clickedNode = (BaseSceneNode) clickedPath.getLastPathComponent();
                 graph.setSelectedNode(clickedNode);
                 if (e.isPopupTrigger()) {

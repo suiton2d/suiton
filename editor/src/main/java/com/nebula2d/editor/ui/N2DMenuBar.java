@@ -22,6 +22,7 @@ import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
 import com.nebula2d.editor.framework.Project;
+import com.nebula2d.editor.framework.Scene;
 import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ import java.io.IOException;
 
 
 /**
- * Custome JMenuBar implementation
+ * Custom JMenuBar implementation
  */
 public class N2DMenuBar extends JMenuBar {
 
@@ -80,9 +81,6 @@ public class N2DMenuBar extends JMenuBar {
         bindMenuItems();
     }
 
-    /**
-     * binds click events to menu items
-     */
     private void bindMenuItems() {
         newMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -127,8 +125,10 @@ public class N2DMenuBar extends JMenuBar {
             exitMenuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //TODO: Prompt on exit
-                    System.exit(0);
+                    if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
+                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        System.exit(0);
+                    }
                 }
             });
         }
@@ -136,14 +136,14 @@ public class N2DMenuBar extends JMenuBar {
         newSceneMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: implement
+                new NewSceneDialog();
             }
         });
 
         changeSceneMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: implement
+                new ChangeSceneDialog();
             }
         });
 
@@ -158,7 +158,7 @@ public class N2DMenuBar extends JMenuBar {
         newEmptyGameObjectMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //If this memnu item is enabled, we know 100% that something is selected, so no check is necessary. =)
+                //If this menu item is enabled, we know 100% that something is selected, so no check is necessary. =)
                 BaseSceneNode selectedNode = (BaseSceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
 
                 GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
@@ -167,7 +167,6 @@ public class N2DMenuBar extends JMenuBar {
         });
     }
 
-    //region accessors
     public JMenu getSceneMenu() {
         return sceneMenu;
     }
@@ -179,5 +178,4 @@ public class N2DMenuBar extends JMenuBar {
     public JMenuItem getSaveMenuItem() {
         return saveMenuItem;
     }
-    //endregion
 }

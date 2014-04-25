@@ -23,18 +23,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
-
-    //region static members
+    private static MainFrame instance;
     private static RenderCanvas renderCanvas = new RenderCanvas(new RenderAdapter());
     private static SceneGraph sceneGraph = new SceneGraph();
     private static N2DToolbar toolbar = new N2DToolbar();
     private static N2DMenuBar menuBar;
     private static Project project;
-    //endregion
 
-    //region constructor
     public MainFrame() {
         super("Nebula2D");
+        instance = this;
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JScrollPane sp = new JScrollPane(sceneGraph);
         sp.setPreferredSize(new Dimension(300, 600));
@@ -52,13 +50,11 @@ public class MainFrame extends JFrame {
         setSize(1200, 768);
 
         validate();
-
+        setLocationRelativeTo(null);
         setVisible(true);
         renderCanvas.initCamera(renderCanvas.getCanvas().getWidth(), renderCanvas.getCanvas().getHeight());
     }
-    //endregion
 
-    //region static accessors
     public static RenderCanvas getRenderCanvas() {
         return renderCanvas;
     }
@@ -87,8 +83,11 @@ public class MainFrame extends JFrame {
         toolbar.setRendererWidgetsEnabled(project != null);
         menuBar.getSaveMenuItem().setEnabled(project != null);
 
-        if (project != null)
+        if (project != null) {
             sceneGraph.init();
+            instance.setTitle("Nebula2D - " + project.getNameWithoutExt());
+        } else {
+            instance.setTitle("Nebual2D");
+        }
     }
-    //endregion
 }

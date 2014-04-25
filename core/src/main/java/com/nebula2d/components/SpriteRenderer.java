@@ -1,7 +1,7 @@
 package com.nebula2d.components;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.assets.Sprite;
 import com.nebula2d.scene.Transform;
@@ -22,7 +22,7 @@ public class SpriteRenderer extends Renderer {
     }
 
     @Override
-    public void render(SpriteBatch batch,  float dt) {
+    public void render(Batch batch,  float dt) {
         Camera cam = gameObject.getLayer().getScene().getCamera();
         Transform transform = gameObject.getTransform();
         if (currentAnimation != null) {
