@@ -21,7 +21,6 @@ package com.nebula2d.editor.framework.components;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.ui.ComponentsDialog;
-import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import javax.swing.*;
@@ -34,36 +33,24 @@ import java.io.IOException;
  */
 public abstract class Component implements ISerializable {
 
-    //region constants
     public static enum ComponentType {
         RENDER,
         MUSIC,
         SFX,
         BEHAVE,
-        RIGID_BODY
     }
-    //endregion
 
-    //region members
     protected String name;
     protected GameObject parent;
     protected boolean enabled;
     protected ComponentType componentType;
-    //endregion
 
-    //region constructor
     public Component(String name) {
         this.name = name;
     }
-    //endregion
 
-    //region Accessors
     public String getName() {
         return this.name;
-    }
-
-    public GameObject getParent() {
-        return this.parent;
     }
 
     public boolean isEnabled() {
@@ -82,18 +69,12 @@ public abstract class Component implements ISerializable {
         this.enabled = enabled;
     }
 
-    //endregion
-
-    //region public methods
-
     /**
      * abstract method for creating the content JPanel used in the component dialog for this component
      * @return a panel containing the common top panel and the component specific controls
      */
     public abstract JPanel forgeComponentContentPanel(final ComponentsDialog parent);
-    //endregion
 
-    //region interface overrides
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
@@ -101,7 +82,6 @@ public abstract class Component implements ISerializable {
 
         fw.writeBoolLine(enabled);
     }
-    //endregion
 
     @Override
     public String toString() {

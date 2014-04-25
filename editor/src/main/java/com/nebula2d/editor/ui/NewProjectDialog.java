@@ -29,15 +29,12 @@ import java.io.File;
 
 public class NewProjectDialog extends JDialog {
 
-    //region members
     private JTextField projNameTf;
     private JTextField parentDirTf;
     private JButton browseBtn;
     private JButton createBtn;
     private JButton cancelBtn;
-    //endregion members
 
-    //region constructors
     public NewProjectDialog() {
         setTitle("New Project");
 
@@ -86,9 +83,7 @@ public class NewProjectDialog extends JDialog {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    //endregion
 
-    //region internal methods
     private void bindButtons() {
         cancelBtn.addActionListener(new ActionListener() {
             @Override
@@ -137,6 +132,4 @@ public class NewProjectDialog extends JDialog {
 
         return parentDir.exists() && parentDir.isDirectory();
     }
-
-    //endregion
 }

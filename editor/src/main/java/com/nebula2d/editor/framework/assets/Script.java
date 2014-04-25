@@ -27,11 +27,9 @@ import java.io.IOException;
 
 public class Script extends Asset {
     public static final String NEW_SCRIPT_CONTENT = "\n\nfunction start(me) {\n}\n\nfunction update(me, dt){\n}";
-    //region members
-    protected String content;
-    //endregion
 
-    //region constructor
+    protected String content;
+
     public Script(String path) {
         super(path);
         init();
@@ -40,9 +38,7 @@ public class Script extends Asset {
     public Script() {
         super("");
     }
-    //endregion
 
-    //region internal methods
     protected void init() {
         BufferedReader br;
         StringBuilder sb = new StringBuilder();
@@ -61,9 +57,7 @@ public class Script extends Asset {
             System.out.println("Failed to read file at path: " + path);
         }
     }
-    //endregion
 
-    //region accessors
     public String getContent() {
         return this.content;
     }
@@ -76,5 +70,4 @@ public class Script extends Asset {
     public void load(FullBufferedReader fr) throws IOException {
         //No need to do anything here.
     }
-    //endregion
 }

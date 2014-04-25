@@ -31,10 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Renderer extends Component {
+
     public static enum RendererType {
         SPRITE_RENDERER
     }
-    //region members
+
     protected Sprite sprite;
 
     protected List<Animation> animations;
@@ -42,18 +43,14 @@ public abstract class Renderer extends Component {
     protected int currentAnim;
 
     protected RendererType rendererType;
-    //endregion
 
-    //region constructor
     public Renderer(String name) {
         super(name);
         componentType = ComponentType.RENDER;
         animations = new ArrayList<Animation>();
         currentAnim = -1;
     }
-    //endregion
 
-    //region Accessors
     public List<Animation> getAnimations() {
         return animations;
     }
@@ -66,30 +63,8 @@ public abstract class Renderer extends Component {
         animations.remove(anim);
     }
 
-    public Animation getAnimation(String name) {
-        for (Animation anim : animations) {
-            if (anim.getName().equals(name)) {
-                return anim;
-            }
-        }
-
-        return null;
-    }
-
     public Animation getCurrentAnimation() {
         return currentAnim != -1 ? animations.get(currentAnim) : null;
-    }
-
-    public void setCurrentAnim(Animation anim) {
-        int idx = 0;
-        for (Animation a : animations) {
-            if (a == anim) {
-                currentAnim = idx;
-                return;
-            }
-
-            idx++;
-        }
     }
 
     public Sprite getTexture() {
@@ -113,9 +88,7 @@ public abstract class Renderer extends Component {
 
         return new Rectangle(x, y, getBoundingWidth(), getBoundingHeight());
     }
-    //endregion
 
-    //region overridden methods from Component
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
@@ -151,7 +124,7 @@ public abstract class Renderer extends Component {
             Animation.AnimationType animType = Animation.AnimationType.valueOf(fr.readLine());
             Animation animation = null;
             if (animType == Animation.AnimationType.KEY_FRAME)
-                animation = new KeyFrameAnimation(name, sprite);
+                animation = new KeyFrameAnimation(animName, sprite);
 
             if (animation == null) {
                 throw new IOException("Failed to load project.");
@@ -162,7 +135,6 @@ public abstract class Renderer extends Component {
         }
         currentAnim = fr.readIntLine();
     }
-    //endregion
 
     public abstract void render(GameObject selectedObject, SpriteBatch batcher, Camera cam);
 }

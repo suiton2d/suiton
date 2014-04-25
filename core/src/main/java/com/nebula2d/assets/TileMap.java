@@ -12,7 +12,6 @@ public class TileMap extends Asset {
     protected List<TileLayer> layers;
     protected TileSheet tileSheet;
 
-
     public TileMap(String path, TileSheet tileSheet) {
         super(path);
         this.tileSheet = tileSheet;

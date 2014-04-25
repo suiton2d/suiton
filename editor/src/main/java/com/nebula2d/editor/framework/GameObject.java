@@ -48,7 +48,6 @@ public class GameObject extends BaseSceneNode implements ISerializable {
         rot = 0;
     }
 
-    //region accessors
     public Vector2 getPosition() {
         return pos;
     }
@@ -109,17 +108,6 @@ public class GameObject extends BaseSceneNode implements ISerializable {
         if (renderer == comp)
             renderer = null;
     }
-
-    public Component getComponent(String name) {
-        for (Component c : components) {
-            if (c.getName().equals(name)) {
-                return c;
-            }
-        }
-
-        return null;
-    }
-    //endregion
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {

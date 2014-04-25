@@ -18,7 +18,6 @@
 
 package com.nebula2d.editor.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.framework.components.Animation;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;

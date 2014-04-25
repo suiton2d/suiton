@@ -30,7 +30,6 @@ public class BaseSceneNode extends DefaultMutableTreeNode {
         this.name = name;
     }
 
-    //region accessors
     public String getName() {
         return name;
     }
@@ -38,7 +37,6 @@ public class BaseSceneNode extends DefaultMutableTreeNode {
     public void setName(String name) {
         this.name = name;
     }
-    //endregion
 
     public void addGameObject(GameObject go) {
         add(go);

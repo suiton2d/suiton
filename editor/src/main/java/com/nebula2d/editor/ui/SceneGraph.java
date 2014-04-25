@@ -27,9 +27,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 
 /**
  * The SceneGraph shows a visual representation of the current scene's Entity Hierarchy. Every direct decendant of
@@ -101,7 +99,7 @@ public class SceneGraph extends JTree {
 
         setEditable(true);
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        //hideTreeIcons();
+        hideTreeIcons();
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -136,10 +134,6 @@ public class SceneGraph extends JTree {
         renderer.setLeafIcon(null);
         renderer.setClosedIcon(null);
         renderer.setOpenIcon(null);
-    }
-
-    public DefaultMutableTreeNode getRoot() {
-        return this.root;
     }
 
     public void setSelectedNode(DefaultMutableTreeNode node) {
@@ -180,41 +174,6 @@ public class SceneGraph extends JTree {
             root.removeAllChildren();
             ((DefaultTreeModel)getModel()).nodeStructureChanged(root);
         }
-    }
-
-    public List<Layer> getAllLayers() {
-        List<Layer> layers = new ArrayList<Layer>();
-        Enumeration<DefaultMutableTreeNode> children = root.children();
-
-        while(children.hasMoreElements()) {
-            layers.add((Layer)children.nextElement().getUserObject());
-        }
-
-        return layers;
-    }
-
-    public List<String> getAllLayerNames() {
-        List<String> layerNames = new ArrayList<String>();
-        Enumeration children = root.children();
-
-        while(children.hasMoreElements()) {
-            layerNames.add(((BaseSceneNode)children.nextElement()).getName());
-        }
-
-        return layerNames;
-    }
-
-    public Layer getLayer(String name) {
-        Enumeration children = root.children();
-
-        while (children.hasMoreElements()) {
-            Layer layer = (Layer)children.nextElement();
-
-            if (layer.getName().equals(name))
-                return layer;
-        }
-
-        return null;
     }
 
     public void refresh() {

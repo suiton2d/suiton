@@ -38,15 +38,12 @@ import java.util.List;
 
 public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, MouseMotionListener{
 
-    //region members
     protected RenderAdapter adapter;
 
     protected Point lastPoint;
 
     protected boolean isMouseDown;
-    //endregion
 
-    //region constructors
     public RenderCanvas(RenderAdapter adapter) {
         super(adapter);
         this.adapter = adapter;
@@ -54,19 +51,16 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         this.getCanvas().addMouseMotionListener(this);
         this.isMouseDown = false;
     }
-    //endregion
 
-    //region public methods
     public void setEnabled(boolean enabled) {
         getCanvas().setEnabled(enabled);
         adapter.setEnabled(enabled);
     }
-    //endregion
 
     public OrthographicCamera getCamera() {
         return adapter.getCamera();
     }
-    //region internal methods
+
     protected List<GameObject> getSelectedGameObjects(int x, int y) {
 
         List<GameObject> res = new ArrayList<GameObject>();
@@ -125,19 +119,11 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         float newY = adapter.getSelectedObject().getRotation() + dy * 0.5f;
         adapter.getSelectedObject().setRotation(newY);
     }
-    //endregion
-
-    //region accessors
-    public GameObject getSelectedObject() {
-        return adapter.getSelectedObject();
-    }
 
     public void setSelectedObject(GameObject go) {
         this.adapter.setSelectedObject(go);
     }
-    //endregion
 
-    //region overrided methods from MouseListener
     @Override
     public void mouseClicked(MouseEvent e) {}
 
@@ -164,9 +150,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
 
     @Override
     public void mouseReleased(MouseEvent e) {}
-    //endregion
 
-    //region overrided methods from MouseMotionListener
     @Override
     public void mouseEntered(MouseEvent e) {}
 
@@ -180,11 +164,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         if (e.isControlDown()) {
             int dx = (pos.x - lastPoint.x) / 2;
             int dy = -(pos.y - lastPoint.y) / 2;
-            /*camXOffset += dx;
-            camYOffset += dy;*/
-            System.out.println("test");
             getCamera().translate(dx, dy);
-            System.out.println("x: " + dx + " | y: " + dy);
 
 
         } else if (selectedObject != null) {
@@ -207,5 +187,4 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
 
     @Override
     public void mouseMoved(MouseEvent e) {}
-    //endregion
 }

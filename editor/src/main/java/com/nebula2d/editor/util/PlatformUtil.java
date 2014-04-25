@@ -34,9 +34,7 @@ public class PlatformUtil {
      * -1 is returned.
      */
     public static int findLastSlashChar(String base) {
-        int slash = base.lastIndexOf(File.separator);
-
-        return slash;
+        return base.lastIndexOf(File.separator);
     }
 
     /**
