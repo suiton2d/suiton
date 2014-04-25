@@ -49,6 +49,7 @@ public class ComponentsDialog extends JDialog {
         add(mainPanel);
         setSize(new Dimension(800, 600));
         setResizable(false);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 

@@ -155,6 +155,7 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         add(rightPanel, BorderLayout.EAST);
         setSize(new Dimension(800, 600));
         validate();
+        setLocationRelativeTo(null);
         setVisible(true);
         animatedCanvas.initCamera();
     }

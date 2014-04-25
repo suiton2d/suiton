@@ -45,9 +45,7 @@ public class NewProjectDialog extends JDialog {
         JLabel parentDirLbl = new JLabel("Parent Directory:");
 
         projNameTf = new JTextField(20);
-        //projNameTf.setMinimumSize(new Dimension(200, 5));
         parentDirTf = new JTextField(20);
-        //parentDirTf.setMinimumSize(new Dimension(200, 5));
 
         browseBtn = new JButton("...");
         createBtn = new JButton("Create");
@@ -85,7 +83,7 @@ public class NewProjectDialog extends JDialog {
         pack();
         setModal(true);
         bindButtons();
-        //setSize(new Dimension(400, 300));
+        setLocationRelativeTo(null);
         setVisible(true);
     }
     //endregion

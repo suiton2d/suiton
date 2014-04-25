@@ -153,13 +153,7 @@ public class Project implements ISerializable {
     public void saveProject() throws IOException {
         FullBufferedWriter fw = new FullBufferedWriter(new FileWriter(getPath()));
         save(fw);
-        saveExtraAssets(fw);
         fw.close();
-    }
-
-    public boolean saveExtraAssets(FullBufferedWriter fw) throws IOException {
-        //TODO: Implement
-        return true;
     }
 
     public void loadCurrentScene() {
