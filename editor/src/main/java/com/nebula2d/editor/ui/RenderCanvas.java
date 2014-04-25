@@ -48,7 +48,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
 
     //region constructors
     public RenderCanvas(RenderAdapter adapter) {
-        super(adapter, true);
+        super(adapter);
         this.adapter = adapter;
         this.getCanvas().addMouseListener(this);
         this.getCanvas().addMouseMotionListener(this);

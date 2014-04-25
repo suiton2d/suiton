@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.nebula2d.util.CollisionListener;
 
 import java.util.ArrayList;
@@ -45,13 +46,20 @@ public class Scene {
         physicalWorld.setContactListener(new CollisionListener(this));
         this.name = name;
         this.layers = new ArrayList<Layer>();
-        this.stage = new Stage();
-        this.stage.setCamera(new OrthographicCamera());
     }
 
     //region accessors
     public String getName() {
         return name;
+    }
+
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public Camera getCamera() {

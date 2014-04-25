@@ -28,7 +28,7 @@ public class AnimationRenderCanvas extends LwjglAWTCanvas {
     private AnimationRenderAdapter adapter;
 
     public AnimationRenderCanvas(AnimationRenderAdapter adapter) {
-        super(adapter, true, MainFrame.getRenderCanvas());
+        super(adapter, MainFrame.getRenderCanvas());
         this.adapter = adapter;
         Sprite sprite = adapter.getAnimation().getSprite();
         getCanvas().setPreferredSize(new Dimension(sprite.getWidth(), sprite.getHeight()));

@@ -19,7 +19,7 @@
 package com.nebula2d.components;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.scene.Transform;
 
@@ -77,5 +77,5 @@ public abstract class Animation {
      * @param cam The Camera for the current scene.
      * @param dt The time since the last frame update.
      */
-    public abstract void render(Transform transform, SpriteBatch batch, Camera cam, float dt);
+    public abstract void render(Transform transform, Batch batch, Camera cam, float dt);
 }
