@@ -32,18 +32,13 @@ public abstract class Animation implements ISerializable {
     public static enum AnimationType {
         KEY_FRAME
     }
-    //region members
     protected String name;
     protected AnimationType animationType;
-    //endregion
 
-    //region constructor
     public Animation(String name) {
         this.name = name;
     }
-    //endregion
 
-    //region Accessors
     public String getName() {
         return name;
     }
@@ -53,15 +48,12 @@ public abstract class Animation implements ISerializable {
     public void setName(String name) {
         this.name = name;
     }
-    //endregion
 
-    //region interface overrides
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
         fw.writeLine(animationType.name());
     }
-    //endregion
 
     @Override
     public String toString() {
@@ -75,5 +67,4 @@ public abstract class Animation implements ISerializable {
     public abstract void renderAnimated(SpriteBatch batch, Camera cam, int canvasW, int canvasH);
 
     public abstract void init();
-
 }

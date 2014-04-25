@@ -30,7 +30,6 @@ public class MusicTrack extends Asset {
 
     private com.badlogic.gdx.audio.Music music;
 
-    //region constructor
     public MusicTrack(final String path) {
         super(path);
         Gdx.app.postRunnable(new Runnable() {
@@ -40,9 +39,7 @@ public class MusicTrack extends Asset {
             }
         });
     }
-    //endregion
 
-    //region playback controls
     public void play() {
         music.play();
     }
@@ -58,9 +55,7 @@ public class MusicTrack extends Asset {
     public void setLoop(boolean loop) {
         music.setLooping(loop);
     }
-    //endregion
 
-    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         music.setVolume(fr.readFloatLine());
@@ -75,5 +70,4 @@ public class MusicTrack extends Asset {
     public void setOnCompleteListener(com.badlogic.gdx.audio.Music.OnCompletionListener listener) {
         music.setOnCompletionListener(listener);
     }
-    //endregion
 }

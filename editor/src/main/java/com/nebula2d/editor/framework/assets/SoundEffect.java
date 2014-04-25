@@ -28,13 +28,10 @@ import java.io.IOException;
 
 public class SoundEffect extends Asset {
 
-    //region members
     //LibGDX Sound doesn't support on completion listeners which we need for GUI, so we will use Music here.
     private com.badlogic.gdx.audio.Music sound;
     private boolean loop;
-    //endregion
 
-    //region constructor
     public SoundEffect(final String path) {
         super(path);
         Gdx.app.postRunnable(new Runnable() {
@@ -44,9 +41,7 @@ public class SoundEffect extends Asset {
             }
         });
     }
-    //endregion
 
-    //region playback controls
     public void play() {
         sound.play();
     }
@@ -58,9 +53,7 @@ public class SoundEffect extends Asset {
     public void setLoop(boolean loop) {
         sound.setLooping(loop);
     }
-    //endregion
 
-    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         loop = fr.readBooleanLine();
@@ -77,5 +70,4 @@ public class SoundEffect extends Asset {
     public void setOnCompleteListener(com.badlogic.gdx.audio.Music.OnCompletionListener listener) {
         sound.setOnCompletionListener(listener);
     }
-    //endregion
 }

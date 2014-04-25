@@ -33,7 +33,6 @@ import java.util.Arrays;
 
 public class KeyFrameAnimation extends Animation {
 
-    //region members
     protected TextureRegion[] frames;
     protected int frameWidth;
     protected int frameHeight;
@@ -44,9 +43,7 @@ public class KeyFrameAnimation extends Animation {
     protected com.badlogic.gdx.graphics.g2d.Animation animation;
     protected float stateTime;
     protected boolean wrap;
-    //endregion
 
-    //region constructors
     /**
      * Ctor used for loading animation form disk
      * @param sprite the {@link com.nebula2d.editor.framework.assets.Sprite} to associate with the animation
@@ -58,9 +55,7 @@ public class KeyFrameAnimation extends Animation {
         wrap = false;
         animationType = AnimationType.KEY_FRAME;
     }
-    //endregion
 
-    //region accessors
     public int getFrameWidth() { return frameWidth; }
 
     public int getFrameHeight() {
@@ -96,9 +91,7 @@ public class KeyFrameAnimation extends Animation {
     public void setStateTime(float stateTime) { this.stateTime = stateTime; }
 
     public void setWrap(boolean wrap) { this.wrap = wrap; }
-    //endregion
 
-    //region overridden methods from Animation
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         this.frameWidth = fr.readIntLine();
@@ -193,5 +186,4 @@ public class KeyFrameAnimation extends Animation {
             animation = new com.badlogic.gdx.graphics.g2d.Animation(speed, frames);
         }
     }
-    //endregion
 }

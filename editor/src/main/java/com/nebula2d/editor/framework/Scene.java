@@ -29,18 +29,13 @@ import java.util.Enumeration;
 
 public class Scene extends BaseSceneNode implements ISerializable {
 
-    //region members
     protected int id;
-    //endregion
 
-    //region constructors
     public Scene(String name) {
         super(name);
         id = 0;
     }
-    //endregion
 
-    //region accessors
     public int getId() {
         return this.id;
     }
@@ -59,9 +54,7 @@ public class Scene extends BaseSceneNode implements ISerializable {
 
         return null;
     }
-    //endregion
 
-    //region public methods
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         Enumeration layers = children();
 
@@ -69,9 +62,7 @@ public class Scene extends BaseSceneNode implements ISerializable {
             ((Layer) layers.nextElement()).render(selectedObject, batcher, cam);
         }
     }
-    //endregion
 
-    //region interface overrides
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         int size = fr.readIntLine();
@@ -92,5 +83,4 @@ public class Scene extends BaseSceneNode implements ISerializable {
         while (layers.hasMoreElements())
             ((Layer) layers.nextElement()).save(fw);
     }
-    //endregion
 }
