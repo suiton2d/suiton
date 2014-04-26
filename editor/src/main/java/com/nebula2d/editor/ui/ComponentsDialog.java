@@ -20,6 +20,9 @@ package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.components.Component;
+import com.nebula2d.editor.ui.controls.N2DLabel;
+import com.nebula2d.editor.ui.controls.N2DList;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -33,19 +36,20 @@ import java.awt.event.ActionListener;
  */
 public class ComponentsDialog extends JDialog {
 
-    private JPanel rightPanel;
+    private N2DPanel rightPanel;
     private GameObject gameObject;
-    private JPanel mainPanel;
-    private JList<Component> componentList;
+    private N2DPanel mainPanel;
+    private N2DList<Component> componentList;
 
     public ComponentsDialog(GameObject gameObject) {
         this.gameObject = gameObject;
 
-        JPanel componentListPanel = forgeComponentsListPanel();
+        N2DPanel componentListPanel = forgeComponentsListPanel();
         rightPanel = forgeEmptyPanel();
-        mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new N2DPanel(new BorderLayout());
         mainPanel.add(componentListPanel, BorderLayout.WEST);
         mainPanel.add(rightPanel);
+
         add(mainPanel);
         setSize(new Dimension(800, 600));
         setResizable(false);
@@ -53,20 +57,20 @@ public class ComponentsDialog extends JDialog {
         setVisible(true);
     }
 
-    public JList<Component> getComponentList() {
+    public N2DList<Component> getComponentList() {
         return componentList;
     }
 
-    private JPanel forgeEmptyPanel() {
-        JPanel panel = new JPanel();
-        JLabel emptyLbl = new JLabel("No component currently selected.");
+    private N2DPanel forgeEmptyPanel() {
+        N2DPanel panel = new N2DPanel();
+        N2DLabel emptyLbl = new N2DLabel("No component currently selected.");
         panel.add(emptyLbl);
 
         return panel;
     }
 
-    private JPanel forgeComponentsListPanel() {
-        componentList = new JList<Component>();
+    private N2DPanel forgeComponentsListPanel() {
+        componentList = new N2DList<Component>();
         final DefaultListModel<Component> model = new DefaultListModel<Component>();
         componentList.setModel(model);
 
@@ -96,7 +100,7 @@ public class ComponentsDialog extends JDialog {
         });
         removeButton.setEnabled(false);
 
-        JPanel buttonPanel = new JPanel();
+        N2DPanel buttonPanel = new N2DPanel();
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
 
@@ -119,14 +123,15 @@ public class ComponentsDialog extends JDialog {
             }
         });
 
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        N2DPanel mainPanel = new N2DPanel(new BorderLayout());
+
         mainPanel.add(buttonPanel, BorderLayout.NORTH);
         mainPanel.add(sp);
 
         return mainPanel;
     }
 
-    private void populateComponentList(JList<Component> listBox) {
+    private void populateComponentList(N2DList<Component> listBox) {
         DefaultListModel<Component> model = (DefaultListModel<Component>) listBox.getModel();
         for (Component component : gameObject.getComponents()) {
             model.addElement(component);

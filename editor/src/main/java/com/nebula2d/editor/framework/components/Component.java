@@ -21,9 +21,9 @@ package com.nebula2d.editor.framework.components;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
-import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -73,7 +73,7 @@ public abstract class Component implements ISerializable {
      * abstract method for creating the content JPanel used in the component dialog for this component
      * @return a panel containing the common top panel and the component specific controls
      */
-    public abstract JPanel forgeComponentContentPanel(final ComponentsDialog parent);
+    public abstract N2DPanel forgeComponentContentPanel(final ComponentsDialog parent);
 
     @Override
     public void save(FullBufferedWriter fw) throws IOException {

@@ -18,15 +18,14 @@
 
 package com.nebula2d.editor.ui;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Scene;
-
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

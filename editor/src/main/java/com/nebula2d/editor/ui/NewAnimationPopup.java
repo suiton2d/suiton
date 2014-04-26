@@ -22,7 +22,8 @@ import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.framework.components.Animation;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
 import com.nebula2d.editor.framework.components.Renderer;
-
+import com.nebula2d.editor.ui.controls.N2DLabel;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,12 +63,12 @@ public class NewAnimationPopup extends JPopupMenu {
 
         public NewAnimationDialog(Animation animation) {
             this.animation = animation;
-            final JLabel errorMsg = new JLabel("You must enter a valid name for the animation.");
+            final N2DLabel errorMsg = new N2DLabel("You must enter a valid name for the animation.");
             errorMsg.setForeground(Color.RED);
             errorMsg.setVisible(false);
-            final JLabel nameLbl = new JLabel("Name:");
+            final N2DLabel nameLbl = new N2DLabel("Name:");
             final JTextField nameTf = new JTextField(20);
-            final JPanel namePanel = new JPanel();
+            final N2DPanel namePanel = new N2DPanel();
             namePanel.add(nameLbl);
             namePanel.add(nameTf);
 
@@ -97,7 +98,7 @@ public class NewAnimationPopup extends JPopupMenu {
                 }
             });
 
-            final JPanel buttonPanel = new JPanel();
+            final N2DPanel buttonPanel = new N2DPanel();
             buttonPanel.add(okBtn);
             buttonPanel.add(cancelBtn);
 

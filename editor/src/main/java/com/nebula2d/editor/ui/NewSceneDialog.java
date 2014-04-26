@@ -20,6 +20,8 @@ package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.framework.Scene;
+import com.nebula2d.editor.ui.controls.N2DLabel;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -47,12 +49,12 @@ public class NewSceneDialog extends JDialog {
 
         final Project project = MainFrame.getProject();
         final Color defaultFg = nameTf.getForeground();
-        final JLabel nameLbl = new JLabel("Scene Name: ");
+        final N2DLabel nameLbl = new N2DLabel("Scene Name: ");
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
 
-        final JPanel namePanel = new JPanel();
-        final JPanel btnPanel = new JPanel();
+        final N2DPanel namePanel = new N2DPanel();
+        final N2DPanel btnPanel = new N2DPanel();
 
         nameTf.setText("Untitled Scene " + project.getScenes().size());
 
