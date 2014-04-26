@@ -24,8 +24,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.ui.ComponentsDialog;
-import com.nebula2d.editor.ui.ImagePanel;
 import com.nebula2d.editor.ui.NewAnimationPopup;
+import com.nebula2d.editor.ui.controls.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -68,10 +68,9 @@ public class SpriteRenderer extends Renderer {
     }
 
     @Override
-    public JPanel forgeComponentContentPanel(final ComponentsDialog parent) {
+    public N2DPanel forgeComponentContentPanel(final ComponentsDialog parent) {
 
         final ImagePanel imagePanel = new ImagePanel();
-
         final JButton addButton = new JButton("Add");
         addButton.setEnabled(false);
         final JButton removeButton = new JButton("Remove");
@@ -91,7 +90,7 @@ public class SpriteRenderer extends Renderer {
         for (Animation anim : getAnimations()) {
             listModel.addElement(anim);
         }
-        final JList<Animation> animationList = new JList<Animation>();
+        final N2DList<Animation> animationList = new N2DList<Animation>();
         animationList.setModel(listModel);
         final JScrollPane sp = new JScrollPane(animationList);
         sp.setPreferredSize(new Dimension(200, 300));
@@ -162,16 +161,16 @@ public class SpriteRenderer extends Renderer {
             }
         });
 
-        final JPanel addRemoveBtnPanel = new JPanel();
+        final N2DPanel addRemoveBtnPanel = new N2DPanel();
         addRemoveBtnPanel.add(addButton);
         addRemoveBtnPanel.add(removeButton);
 
-        final JPanel animationPanel = new JPanel(new BorderLayout());
+        final N2DPanel animationPanel = new N2DPanel(new BorderLayout());
         animationPanel.add(addRemoveBtnPanel, BorderLayout.NORTH);
         animationPanel.add(sp);
 
-        final JLabel imageLbl = new JLabel("Texture:");
-        final JLabel nameLbl = new JLabel("Name:");
+        final N2DLabel imageLbl = new N2DLabel("Texture:");
+        final N2DLabel nameLbl = new N2DLabel("Name:");
         final JTextField nameTf = new JTextField(20);
         nameTf.setText(name);
         nameTf.getDocument().addDocumentListener(new DocumentListener() {
@@ -198,7 +197,7 @@ public class SpriteRenderer extends Renderer {
             }
         });
 
-        final JCheckBox enabledCb = new JCheckBox("Enabled");
+        final N2DCheckBox enabledCb = new N2DCheckBox("Enabled");
         enabledCb.setSelected(enabled);
         enabledCb.addChangeListener(new ChangeListener() {
             @Override
@@ -206,7 +205,7 @@ public class SpriteRenderer extends Renderer {
                 enabled = enabledCb.isSelected();
             }
         });
-        JPanel leftPanel = new JPanel();
+        N2DPanel leftPanel = new N2DPanel();
         GroupLayout layout = new GroupLayout(leftPanel);
         leftPanel.setLayout(layout);
 
@@ -227,12 +226,12 @@ public class SpriteRenderer extends Renderer {
                 addComponent(imageTf).addComponent(browseBtn));
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(enabledCb));
         layout.setVerticalGroup(vGroup);
-        final JPanel bottomPanel = new JPanel(new BorderLayout());
+        final N2DPanel bottomPanel = new N2DPanel(new BorderLayout());
         bottomPanel.add(Box.createRigidArea(new Dimension(100, 0)));
         bottomPanel.add(animationPanel, BorderLayout.EAST);
         bottomPanel.add(imagePanel);
 
-        final JPanel mainPanel = new JPanel(new BorderLayout());
+        final N2DPanel mainPanel = new N2DPanel(new BorderLayout());
 
         mainPanel.add(leftPanel, BorderLayout.NORTH);
         mainPanel.add(bottomPanel);

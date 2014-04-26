@@ -68,7 +68,7 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-        Gdx.graphics.getGL20().glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        Gdx.graphics.getGL20().glClearColor(.17f, .17f, .17f, 1.0f);
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
         if (!enabled)
             return;

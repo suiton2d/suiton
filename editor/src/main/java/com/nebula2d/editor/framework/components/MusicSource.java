@@ -21,6 +21,9 @@ package com.nebula2d.editor.framework.components;
 import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.ui.controls.N2DCheckBox;
+import com.nebula2d.editor.ui.controls.N2DLabel;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
@@ -41,14 +44,14 @@ public class MusicSource extends Component {
     }
 
     @Override
-    public JPanel forgeComponentContentPanel(ComponentsDialog parent) {
+    public N2DPanel forgeComponentContentPanel(ComponentsDialog parent) {
 
-        final JLabel nameLbl = new JLabel("Name:");
-        final JLabel fileLbl = new JLabel("File:");
-        final JLabel filePathLbl = new JLabel("");
+        final N2DLabel nameLbl = new N2DLabel("Name:");
+        final N2DLabel fileLbl = new N2DLabel("File:");
+        final N2DLabel filePathLbl = new N2DLabel("");
         final JTextField nameTf = new JTextField(name, 20);
-        final JCheckBox enabledCb = new JCheckBox("Enabled", enabled);
-        final JCheckBox loopCb = new JCheckBox("Loop", musicTrack != null && musicTrack.isLooping());
+        final N2DCheckBox enabledCb = new N2DCheckBox("Enabled", enabled);
+        final N2DCheckBox loopCb = new N2DCheckBox("Loop", musicTrack != null && musicTrack.isLooping());
         final JButton browseBtn = new JButton("...");
         final JButton mediaBtn = new JButton("Play");
         mediaBtn.setEnabled(musicTrack != null);
@@ -114,7 +117,7 @@ public class MusicSource extends Component {
             }
         });
 
-        JPanel panel = new JPanel();
+        N2DPanel panel = new N2DPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
 

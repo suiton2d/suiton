@@ -19,6 +19,9 @@
 package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
+import com.nebula2d.editor.ui.controls.N2DCheckBox;
+import com.nebula2d.editor.ui.controls.N2DLabel;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 import com.nebula2d.editor.util.IntKfAnimPropertyDocumentListener;
 
 import javax.swing.*;
@@ -49,11 +52,11 @@ public class KeyFrameAnimationEditDialog extends JDialog {
     }
 
     private void create() {
-        JLabel frameWidthLbl = new JLabel("Frame Width:");
-        JLabel frameHeightLbl = new JLabel("Frame height:");
-        JLabel startFrameLbl = new JLabel("Start Frame:");
-        JLabel endFrameLbl = new JLabel("End Frame:");
-        JLabel speedLbl = new JLabel("Speed:");
+        N2DLabel frameWidthLbl = new N2DLabel("Frame Width:");
+        N2DLabel frameHeightLbl = new N2DLabel("Frame height:");
+        N2DLabel startFrameLbl = new N2DLabel("Start Frame:");
+        N2DLabel endFrameLbl = new N2DLabel("End Frame:");
+        N2DLabel speedLbl = new N2DLabel("Speed:");
 
         JTextField frameWidthTf = new JTextField(Integer.toString(animation.getFrameWidth()), 3);
         JTextField frameHeightTf = new JTextField(Integer.toString(animation.getFrameHeight()), 3);
@@ -105,7 +108,7 @@ public class KeyFrameAnimationEditDialog extends JDialog {
 
         speedTf.getDocument().addDocumentListener(floatDocumentListener);
 
-        final JCheckBox wrapCb = new JCheckBox("Wrap", animation.wrap());
+        final N2DCheckBox wrapCb = new N2DCheckBox("Wrap", animation.wrap());
         wrapCb.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -114,7 +117,7 @@ public class KeyFrameAnimationEditDialog extends JDialog {
             }
         });
 
-        JPanel inputPanel = new JPanel();
+        N2DPanel inputPanel = new N2DPanel();
         GroupLayout groupLayout = new GroupLayout(inputPanel);
         inputPanel.setLayout(groupLayout);
 
@@ -145,12 +148,13 @@ public class KeyFrameAnimationEditDialog extends JDialog {
                 addComponent(wrapCb));
         groupLayout.setVerticalGroup(vGroup);
 
-        JPanel rightPanel = new JPanel(new GridLayout(2, 1));
+        N2DPanel rightPanel = new N2DPanel(new GridLayout(2, 1));
         StillKeyFrameAnimationCanvas stillCanvas = new StillKeyFrameAnimationCanvas(animation);
         animatedCanvas = new AnimationRenderCanvas(new AnimationRenderAdapter(animation));
         rightPanel.add(stillCanvas);
         rightPanel.add(animatedCanvas.getCanvas());
         setLayout(new BorderLayout());
+
         add(inputPanel, BorderLayout.CENTER);
         add(rightPanel, BorderLayout.EAST);
         setSize(new Dimension(800, 600));

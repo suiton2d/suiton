@@ -22,6 +22,9 @@ import com.nebula2d.avocado.SaveListener;
 import com.nebula2d.avocado.ScriptEditor;
 import com.nebula2d.editor.framework.assets.Script;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.ui.controls.N2DCheckBox;
+import com.nebula2d.editor.ui.controls.N2DLabel;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
@@ -46,12 +49,12 @@ public class Behaviour extends Component {
     }
 
     @Override
-    public JPanel forgeComponentContentPanel(final ComponentsDialog parent) {
-        final JLabel nameLbl = new JLabel("Name:");
-        final JLabel fileLbl = new JLabel("File:");
-        final JLabel filePathLbl = new JLabel("");
+    public N2DPanel forgeComponentContentPanel(final ComponentsDialog parent) {
+        final N2DLabel nameLbl = new N2DLabel("Name:");
+        final N2DLabel fileLbl = new N2DLabel("File:");
+        final N2DLabel filePathLbl = new N2DLabel("");
         final JTextField nameTf = new JTextField(name, 20);
-        final JCheckBox enabledCb = new JCheckBox("Enabled", enabled);
+        final N2DCheckBox enabledCb = new N2DCheckBox("Enabled", enabled);
         final JButton browseBtn = new JButton("...");
         final JButton editBtn = new JButton("edit");
         editBtn.setEnabled(false);
@@ -120,7 +123,7 @@ public class Behaviour extends Component {
 
         enabledCb.setSelected(enabled);
 
-        JPanel panel = new JPanel();
+        N2DPanel panel = new N2DPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
 

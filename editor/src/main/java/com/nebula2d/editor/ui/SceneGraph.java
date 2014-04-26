@@ -21,10 +21,17 @@ package com.nebula2d.editor.ui;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
+import com.nebula2d.editor.ui.controls.N2DTree;
 
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
@@ -34,18 +41,20 @@ import java.util.Enumeration;
  * the root node is GUARANTEED to be a <i>Layer</i> object, while other children are guaranteed to be <i>Game Object</i>
  * objects.
  */
-public class SceneGraph extends JTree {
+public class SceneGraph extends N2DTree {
 
     private DefaultMutableTreeNode root;
 
     public SceneGraph() {
         setRootVisible(false);
         setModel(new DefaultTreeModel(new DefaultMutableTreeNode()));
+//        Border outterBorder = new MatteBorder(0, 0, 0, 0, new Color(40, 40, 40));
+//        Border innerBorder = new MatteBorder(0, 0, 0, 0, new Color(80, 80, 80));
+//        setBorder(BorderFactory.createCompoundBorder(outterBorder, innerBorder));
+        setBorder(null);
     }
 
     public void init() {
-
-
         root = MainFrame.getProject().getCurrentScene();
 
         //We need to create our own tree model so that we can override some default behaviour.

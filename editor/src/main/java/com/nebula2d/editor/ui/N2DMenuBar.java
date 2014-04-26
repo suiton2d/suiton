@@ -25,6 +25,7 @@ import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class N2DMenuBar extends JMenuBar {
         saveMenuItem.setAccelerator(KeyStroke.getKeyStroke("control S"));
         saveMenuItem.setEnabled(false);
         openMenuItem = fileMenu.add("Open Project");
-
+        setBorder(BorderFactory.createEmptyBorder());
         //Don't need exit menu item on Mac
         if (!PlatformUtil.isMac())
             exitMenuItem = fileMenu.add("Exit Nebula2D");
