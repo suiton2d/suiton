@@ -20,6 +20,8 @@ package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.framework.Scene;
+import com.nebula2d.editor.ui.controls.N2DList;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -42,11 +44,11 @@ public class ChangeSceneDialog extends JDialog {
 
     private void setupContents() {
         final DefaultListModel<Scene> model = createListModel();
-        final JList<Scene> sceneListBox = new JList<Scene>(model);
+        final N2DList<Scene> sceneListBox = new N2DList<Scene>(model);
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
 
-        JPanel btnPanel = new JPanel();
+        N2DPanel btnPanel = new N2DPanel();
         btnPanel.add(okBtn);
         btnPanel.add(cancelBtn);
 

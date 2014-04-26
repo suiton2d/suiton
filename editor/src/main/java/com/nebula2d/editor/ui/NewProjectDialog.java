@@ -20,6 +20,8 @@ package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.framework.Scene;
+import com.nebula2d.editor.ui.controls.N2DLabel;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,8 +40,8 @@ public class NewProjectDialog extends JDialog {
     public NewProjectDialog() {
         setTitle("New Project");
 
-        JLabel projNameLbl = new JLabel("Project Name:");
-        JLabel parentDirLbl = new JLabel("Parent Directory:");
+        N2DLabel projNameLbl = new N2DLabel("Project Name:");
+        N2DLabel parentDirLbl = new N2DLabel("Parent Directory:");
 
         projNameTf = new JTextField(20);
         parentDirTf = new JTextField(20);
@@ -48,12 +50,12 @@ public class NewProjectDialog extends JDialog {
         createBtn = new JButton("Create");
         cancelBtn = new JButton("Cancel");
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        N2DPanel buttonPanel = new N2DPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(createBtn);
         buttonPanel.add(cancelBtn);
 
 
-        JPanel mainPanel = new JPanel();
+        N2DPanel mainPanel = new N2DPanel();
         GroupLayout layout = new GroupLayout(mainPanel);
         mainPanel.setLayout(layout);
 
@@ -77,6 +79,7 @@ public class NewProjectDialog extends JDialog {
 
         add(mainPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.SOUTH);
+
         pack();
         setModal(true);
         bindButtons();

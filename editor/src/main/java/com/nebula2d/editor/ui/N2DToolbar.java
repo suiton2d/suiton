@@ -21,6 +21,9 @@ package com.nebula2d.editor.ui;
 import com.nebula2d.editor.framework.GameObject;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.MatteBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -42,6 +45,10 @@ public class N2DToolbar extends JToolBar {
     public N2DToolbar() {
         selectedRendererWidget = 0;
         addButtons();
+
+        Border innerBorder = new MatteBorder(1, 0, 0, 0, new Color(80, 80, 80));
+        Border outterBorder = new MatteBorder(1, 0, 0, 0, new Color(40, 40, 40));
+        setBorder(BorderFactory.createCompoundBorder(outterBorder, innerBorder));
         setRendererWidgetsEnabled(false);
     }
 

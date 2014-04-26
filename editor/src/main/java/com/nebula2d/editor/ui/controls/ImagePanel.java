@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nebula2d.editor.ui;
+package com.nebula2d.editor.ui.controls;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,11 +29,11 @@ import java.io.IOException;
 /**
  * Custom JPanel that displays an image
  */
-public class ImagePanel extends JPanel {
+public class ImagePanel extends N2DPanel {
 
-    private JLabel emptyLbl;
+    private N2DLabel emptyLbl;
     public ImagePanel() {
-        emptyLbl = new JLabel("No image selected", SwingConstants.CENTER);
+        emptyLbl = new N2DLabel("No image selected", SwingConstants.CENTER);
         setLayout(new BorderLayout());
         add(emptyLbl, BorderLayout.CENTER);
     }

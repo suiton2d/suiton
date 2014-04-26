@@ -22,6 +22,8 @@ package com.nebula2d.editor.ui;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.components.*;
 import com.nebula2d.editor.framework.components.Component;
+import com.nebula2d.editor.ui.controls.N2DLabel;
+import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,13 +110,13 @@ public class NewComponentPopup extends JPopupMenu {
 
         public NewComponentDialog(Component component) {
             this.component = component;
-            final JLabel errorMessage = new JLabel("You must enter a valid name for the component.");
+            final N2DLabel errorMessage = new N2DLabel("You must enter a valid name for the component.");
             errorMessage.setForeground(Color.red);
             errorMessage.setVisible(false);
 
-            final JLabel nameLbl = new JLabel("Name:");
+            final N2DLabel nameLbl = new N2DLabel("Name:");
             final JTextField nameTf = new JTextField(20);
-            JPanel namePanel = new JPanel();
+            N2DPanel namePanel = new N2DPanel();
             namePanel.add(nameLbl);
             namePanel.add(nameTf);
 
@@ -146,7 +148,7 @@ public class NewComponentPopup extends JPopupMenu {
                     dispose();
                 }
             });
-            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            N2DPanel buttonPanel = new N2DPanel(new FlowLayout(FlowLayout.LEFT));
             buttonPanel.add(okBtn);
             buttonPanel.add(cancelBtn);
 
