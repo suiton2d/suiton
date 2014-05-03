@@ -70,7 +70,12 @@ public class KeyFrameAnimation extends Animation {
 
     public int getEndFrameIndex() { return endFrame; }
 
-    public TextureRegion getStartFrame() { return frames[startFrame]; }
+    public TextureRegion getStartFrame() {
+        if (frames == null)
+            init();
+
+        return frames[startFrame];
+    }
 
     public boolean wrap() { return wrap; }
 
@@ -99,7 +104,6 @@ public class KeyFrameAnimation extends Animation {
         this.speed = fr.readFloatLine();
         this.startFrame = fr.readIntLine();
         this.endFrame = fr.readIntLine();
-        init();
     }
 
     @Override
@@ -185,5 +189,11 @@ public class KeyFrameAnimation extends Animation {
             frames = Arrays.copyOfRange(frames, startFrame, endFrame + 1);
             animation = new com.badlogic.gdx.graphics.g2d.Animation(speed, frames);
         }
+    }
+
+    @Override
+    public boolean isRenderable() {
+        boolean framesValid = startFrame > 0 ? endFrame > startFrame : endFrame > 0;
+        return frameWidth > 0 && frameHeight > 0 && framesValid;
     }
 }
