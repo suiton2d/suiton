@@ -52,7 +52,6 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     }
 
     public void setEnabled(boolean enabled) {
-        getCanvas().setEnabled(enabled);
         adapter.setEnabled(enabled);
     }
 

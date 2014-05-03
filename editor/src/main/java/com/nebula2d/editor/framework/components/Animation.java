@@ -67,4 +67,10 @@ public abstract class Animation implements ISerializable {
     public abstract void renderAnimated(SpriteBatch batch, Camera cam, int canvasW, int canvasH);
 
     public abstract void init();
+
+    public abstract boolean isRenderable();
+
+    public abstract int getBoundingWidth();
+
+    public abstract int getBoundingHeight();
 }

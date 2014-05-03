@@ -37,6 +37,7 @@ public class Sprite extends Asset {
                 texture = new com.badlogic.gdx.graphics.Texture(path);
             }
         });
+
         spriteSheet = false;
     }
 
