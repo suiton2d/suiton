@@ -22,6 +22,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.ui.KeyFrameAnimationEditDialog;
@@ -124,8 +125,8 @@ public class KeyFrameAnimation extends Animation {
     @Override
     public void renderStill(SpriteBatch batch, GameObject gameObject, Camera cam) {
         TextureRegion frame = getStartFrame();
-        float halfw = sprite.getWidth() / 2.0f;
-        float halfh = sprite.getHeight() / 2.0f;
+        float halfw = frame.getRegionWidth() / 2.0f;
+        float halfh = frame.getRegionHeight() / 2.0f;
         batch.draw(frame,
                 gameObject.getPosition().x - halfw - cam.position.x,
                 gameObject.getPosition().y - halfh - cam.position.y,
@@ -148,19 +149,25 @@ public class KeyFrameAnimation extends Animation {
             float imgW = currentFrame.getRegionWidth();
             float imgH = currentFrame.getRegionHeight();
 
-            if (imgW > imgH) {
-                imgW *= canvasH / imgH;
-                imgH = canvasH;
-            } else if (imgH > imgW) {
-                imgH *= canvasW / imgW;
-                imgW = canvasW;
-            } else {
-                imgW = canvasW;
-                imgH = canvasH;
-            }
+            Vector2 dim = getScaledImgDimensions(imgW, imgH, canvasW, canvasH);
 
-            batch.draw(currentFrame, canvasW/2.0f - imgW / 2.0f, canvasH/2.0f - imgH/2.0f, imgW, imgH);
+            batch.draw(currentFrame, canvasW/2.0f - dim.x / 2.0f, canvasH/2.0f - dim.y/2.0f, dim.x, dim.y);
         }
+    }
+
+    private Vector2 getScaledImgDimensions(float imgW, float imgH, int canvasW, int canvasH) {
+        if (imgW > imgH) {
+            imgW *= canvasH / imgH;
+            imgH = canvasH;
+        } else if (imgH > imgW) {
+            imgH *= canvasW / imgW;
+            imgW = canvasW;
+        } else {
+            imgW = canvasW;
+            imgH = canvasH;
+        }
+
+        return new Vector2(imgW, imgH);
     }
 
     @Override
@@ -195,5 +202,15 @@ public class KeyFrameAnimation extends Animation {
     public boolean isRenderable() {
         boolean framesValid = startFrame > 0 ? endFrame > startFrame : endFrame > 0;
         return frameWidth > 0 && frameHeight > 0 && framesValid;
+    }
+
+    @Override
+    public int getBoundingWidth() {
+        return frameWidth;
+    }
+
+    @Override
+    public int getBoundingHeight() {
+        return frameHeight;
     }
 }

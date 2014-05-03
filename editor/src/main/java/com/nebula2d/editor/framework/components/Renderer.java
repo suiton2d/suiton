@@ -67,16 +67,20 @@ public abstract class Renderer extends Component {
         return currentAnim != -1 ? animations.get(currentAnim) : null;
     }
 
+    public void setCurrentAnimation(Animation anim) {
+        currentAnim = animations.indexOf(anim);
+    }
+
     public Sprite getTexture() {
         return sprite;
     }
 
     public int getBoundingWidth() {
-        return sprite.getWidth();
+        return currentAnim > -1 ? getCurrentAnimation().getBoundingWidth() : sprite.getWidth();
     }
 
     public int getBoundingHeight() {
-        return sprite.getHeight();
+        return currentAnim > -1 ? getCurrentAnimation().getBoundingHeight() : sprite.getHeight();
     }
 
     public Rectangle getBoundingBox() {
@@ -114,6 +118,7 @@ public abstract class Renderer extends Component {
         int tmp = fr.readIntLine();
 
         if (tmp == 1) {
+            System.out.println("creating sprite");
             sprite = new Sprite(fr.readLine());
             sprite.load(fr);
         }

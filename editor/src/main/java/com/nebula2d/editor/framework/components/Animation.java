@@ -69,4 +69,8 @@ public abstract class Animation implements ISerializable {
     public abstract void init();
 
     public abstract boolean isRenderable();
+
+    public abstract int getBoundingWidth();
+
+    public abstract int getBoundingHeight();
 }
