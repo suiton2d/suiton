@@ -78,12 +78,13 @@ public class SpriteRenderer extends Renderer {
         final JTextField imageTf = new JTextField(20);
 
         if (sprite != null) {
-            imageTf.setText(sprite.getPath());
             try {
                 imagePanel.setImage(getTexture().getPath());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(parent, "Failed to render image.");
             }
+            imageTf.setText(sprite.getPath());
+            addButton.setEnabled(true);
         }
 
         final DefaultListModel<Animation> listModel = new DefaultListModel<Animation>();
@@ -92,6 +93,16 @@ public class SpriteRenderer extends Renderer {
         }
         final N2DList<Animation> animationList = new N2DList<Animation>();
         animationList.setModel(listModel);
+        animationList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                Animation animation = animationList.getSelectedValue();
+                if (animation != null && animation.isRenderable())
+                    setCurrentAnimation(animation);
+            }
+        });
+        if (currentAnim > -1)
+            animationList.setSelectedValue(getCurrentAnimation(), true);
         final JScrollPane sp = new JScrollPane(animationList);
         sp.setPreferredSize(new Dimension(200, 300));
 
@@ -102,7 +113,7 @@ public class SpriteRenderer extends Renderer {
                 final JFileChooser fc = new JFileChooser();
                 fc.setDialogTitle("Select a file.");
 
-                if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                if (fc.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
                     final String path = fc.getSelectedFile().getAbsolutePath();
                     imageTf.setText(path);
                     try {
