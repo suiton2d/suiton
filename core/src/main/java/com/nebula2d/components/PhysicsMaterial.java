@@ -44,4 +44,16 @@ public class PhysicsMaterial {
     public float getRestitution() {
         return restitution;
     }
+
+    public void setDensity(float density) {
+        this.density = density;
+    }
+
+    public void setFriction(float friction) {
+        this.friction = friction;
+    }
+
+    public void setRestitution(float restitution) {
+        this.restitution = restitution;
+    }
 }

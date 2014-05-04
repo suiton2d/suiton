@@ -30,14 +30,21 @@ import com.nebula2d.scene.SceneManager;
 public abstract class Collider extends Component {
 
     protected boolean isSensor;
-    protected PhysicsMaterial physicsMaterial;
     protected CollisionShape shape;
     protected Body physicalBody;
 
-    public Collider(String name, PhysicsMaterial physicsMaterial, boolean isSensor) {
+    public Collider(String name, CollisionShape shape, boolean isSensor) {
         super(name);
         this.isSensor = isSensor;
-        this.physicsMaterial = physicsMaterial;
+        this.shape = shape;
+    }
+
+    public boolean isSensor() {
+        return isSensor;
+    }
+
+    public CollisionShape getShape() {
+        return shape;
     }
 
     @Override

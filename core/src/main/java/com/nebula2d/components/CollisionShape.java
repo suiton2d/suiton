@@ -30,10 +30,21 @@ import com.nebula2d.scene.Transform;
  */
 public abstract class CollisionShape {
 
+    public static enum ShapeType {
+        BOX,
+        CIRCLE
+    }
+
     private PhysicsMaterial physicsMaterial;
+
+    protected ShapeType shapeType;
 
     public CollisionShape(PhysicsMaterial physicsMaterial) {
         this.physicsMaterial = physicsMaterial;
+    }
+
+    public ShapeType getShapeType() {
+        return shapeType;
     }
 
     public Fixture affixTo(Body body, boolean isSensor) {
