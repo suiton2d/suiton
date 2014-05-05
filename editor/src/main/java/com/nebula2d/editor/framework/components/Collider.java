@@ -46,13 +46,13 @@ public class Collider extends Component implements IRenderable {
     protected CollisionShape shape;
 
     public Collider(GameObject gameObject) {
-        super("");
+        this("");
         shape = new BoundingBox(gameObject);
-        componentType = ComponentType.COLLIDER;
     }
 
     public Collider(String name) {
         super(name);
+        componentType = ComponentType.COLLIDER;
     }
 
     @Override

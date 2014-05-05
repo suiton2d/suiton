@@ -52,13 +52,13 @@ public class RigidBody extends Component implements IRenderable {
     private CollisionShape shape;
 
     public RigidBody(GameObject gameObject) {
-        super("");
+        this("");
         shape = new BoundingBox(gameObject);
-        componentType = ComponentType.RIGID_BODY;
     }
 
     public RigidBody(String name) {
         super(name);
+        componentType = ComponentType.RIGID_BODY;
     }
 
     @Override
@@ -151,10 +151,12 @@ public class RigidBody extends Component implements IRenderable {
 
                 switch (shapeType) {
                     case BOX:
-                        shape = new BoundingBox(RigidBody.this.parent);
+                        if (!(shape instanceof BoundingBox))
+                            shape = new BoundingBox(RigidBody.this.parent);
                         break;
                     case CIRCLE:
-                        shape = new Circle(RigidBody.this.parent);
+                        if (!(shape instanceof Circle))
+                            shape = new Circle(RigidBody.this.parent);
                         break;
                 }
 
