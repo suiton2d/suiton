@@ -42,6 +42,7 @@ public class BoundingBox extends CollisionShape {
     public BoundingBox(PhysicsMaterial physicsMaterial, float w, float h) {
         super(physicsMaterial);
         extents = new Extents(w/2.0f, h/2.0f);
+        shapeType = ShapeType.BOX;
     }
 
     @Override

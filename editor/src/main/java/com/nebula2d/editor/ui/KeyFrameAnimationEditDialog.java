@@ -23,6 +23,7 @@ import com.nebula2d.editor.ui.controls.N2DCheckBox;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
 import com.nebula2d.editor.util.IntKfAnimPropertyDocumentListener;
+import com.nebula2d.editor.util.StringUtil;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -67,20 +68,28 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         DocumentListener floatDocumentListener = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-
-                if (!validateFloats(speedTf.getText())) {
+                Float speed = StringUtil.toFloat(speedTf.getText());
+                if (speed == null) {
                     String text = speedTf.getText();
                     speedTf.setText(text.substring(0, text.length() - 1));
                     return;
                 }
 
-                animation.setSpeed(Float.parseFloat(speedTf.getText()));
+                animation.setSpeed(speed);
                 animation.init();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
+                Float speed = StringUtil.toFloat(speedTf.getText());
+                if (speed == null) {
+                    String text = speedTf.getText();
+                    speedTf.setText(text.substring(0, text.length() - 1));
+                    return;
+                }
 
+                animation.setSpeed(speed);
+                animation.init();
             }
 
             @Override
@@ -165,14 +174,5 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         animatedCanvas.initCamera();
     }
 
-    public boolean validateFloats(String text) {
 
-        try {
-            Float.parseFloat(text);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        return true;
-    }
 }

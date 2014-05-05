@@ -16,22 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nebula2d.components;
+package com.nebula2d.editor.framework.components;
+
+import com.nebula2d.editor.common.ISerializable;
+import com.nebula2d.editor.util.FullBufferedReader;
+import com.nebula2d.editor.util.FullBufferedWriter;
+
+import java.io.IOException;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class PhysicsMaterial {
+public class PhysicsMaterial implements ISerializable {
 
     private float density;
     private float friction;
     private float restitution;
-
-    public PhysicsMaterial(float density, float friction, float restitution) {
-        this.density = density;
-        this.friction = friction;
-        this.restitution = restitution;
-    }
 
     public float getDensity() {
         return density;
@@ -55,5 +55,19 @@ public class PhysicsMaterial {
 
     public void setRestitution(float restitution) {
         this.restitution = restitution;
+    }
+
+    @Override
+    public void load(FullBufferedReader fr) throws IOException {
+        density = fr.readFloatLine();
+        friction = fr.readFloatLine();
+        restitution = fr.readFloatLine();
+    }
+
+    @Override
+    public void save(FullBufferedWriter fw) throws IOException {
+        fw.writeFloatLine(density);
+        fw.writeFloatLine(friction);
+        fw.writeFloatLine(restitution);
     }
 }

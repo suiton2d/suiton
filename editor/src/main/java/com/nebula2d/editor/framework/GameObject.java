@@ -21,6 +21,7 @@ package com.nebula2d.editor.framework;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.components.*;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class GameObject extends BaseSceneNode implements ISerializable {
+public class GameObject extends BaseSceneNode implements ISerializable, IRenderable {
 
     protected Vector2 pos;
     protected  Vector2 scale;
@@ -39,10 +40,13 @@ public class GameObject extends BaseSceneNode implements ISerializable {
 
     protected List<Component> components;
     protected Renderer renderer;
+    protected RigidBody rigidBody;
+    protected List<IRenderable> renderables;
 
     public GameObject(String name) {
         super(name);
         components = new ArrayList<Component>();
+        renderables = new ArrayList<IRenderable>();
         pos = new Vector2();
         scale = new Vector2(1, 1);
         rot = 0;
@@ -62,6 +66,10 @@ public class GameObject extends BaseSceneNode implements ISerializable {
 
     public Renderer getRenderer() {
         return renderer;
+    }
+
+    public RigidBody getRigidBody() {
+        return rigidBody;
     }
 
     public void setPosition(float x, float y) {
@@ -100,13 +108,26 @@ public class GameObject extends BaseSceneNode implements ISerializable {
 
         if (comp instanceof Renderer) {
             renderer = (Renderer) comp;
+            return;
         }
+
+        if (comp instanceof RigidBody) {
+            rigidBody = (RigidBody) comp;
+        }
+
+        if (comp instanceof IRenderable)
+            renderables.add((IRenderable) comp);
     }
 
     public void removeComponent(Component comp) {
         components.remove(comp);
         if (renderer == comp)
             renderer = null;
+        else if (rigidBody == comp)
+            rigidBody = null;
+
+        if (comp instanceof IRenderable)
+            renderables.remove(comp);
     }
 
     @Override
@@ -134,14 +155,17 @@ public class GameObject extends BaseSceneNode implements ISerializable {
                 component = new SoundEffectSource(name);
             } else if (type == Component.ComponentType.BEHAVE) {
                 component = new Behaviour(name);
+            } else if (type == Component.ComponentType.RIGID_BODY) {
+                component = new RigidBody(name);
+            } else if (type == Component.ComponentType.COLLIDER) {
+                component = new Collider(name);
             }
 
             if (component == null)
                 throw new IOException("Failed to load project.");
-
+            addComponent(component);
             component.load(fr);
             component.setEnabled(enabled);
-            addComponent(component);
         }
 
         int childCount = fr.readIntLine();
@@ -176,8 +200,14 @@ public class GameObject extends BaseSceneNode implements ISerializable {
         }
     }
 
+    @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         if (renderer != null && renderer.isEnabled())
             renderer.render(selectedObject, batcher, cam);
+        for (IRenderable renderable : renderables) {
+            if (((Component) renderable).isEnabled()) {
+                renderable.render(selectedObject, batcher, cam);
+            }
+        }
     }
 }

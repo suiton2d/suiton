@@ -18,10 +18,12 @@
 
 package com.nebula2d.editor.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
 import com.nebula2d.editor.framework.Project;
+import com.nebula2d.editor.util.ExitAction;
 import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
@@ -61,7 +63,7 @@ public class N2DMenuBar extends JMenuBar {
         setBorder(BorderFactory.createEmptyBorder());
         //Don't need exit menu item on Mac
         if (!PlatformUtil.isMac())
-            exitMenuItem = fileMenu.add("Exit Nebula2D");
+            exitMenuItem = fileMenu.add(new ExitAction());
 
         sceneMenu = new JMenu("Scene");
 
@@ -120,18 +122,6 @@ public class N2DMenuBar extends JMenuBar {
                 }
             }
         });
-
-        if (exitMenuItem != null) {
-            exitMenuItem.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
-                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                        System.exit(0);
-                    }
-                }
-            });
-        }
 
         newSceneMenuItem.addActionListener(new ActionListener() {
             @Override

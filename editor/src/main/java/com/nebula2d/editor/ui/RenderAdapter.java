@@ -89,31 +89,26 @@ public class RenderAdapter implements ApplicationListener {
             Rectangle boundingBox = selectedObject.getRenderer().getBoundingBox();
 
             if (boundingBox != null) {
+                Gdx.gl.glEnable(GL20.GL_BLEND);
+//                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
                 ShapeRenderer shape = new ShapeRenderer();
-                shape.setColor(Color.GREEN);
-                shape.begin(ShapeRenderer.ShapeType.Line);
+                shape.setColor(new Color(0.0f, 1.0f, 0.0f, 0.5f));
+                shape.begin(ShapeRenderer.ShapeType.Filled);
 
                 float x = boundingBox.getX() - camera.position.x;
                 float y = boundingBox.getY() - camera.position.y;
-                float r = x + boundingBox.getWidth();
-                float t = y + boundingBox.getHeight();
 
-
-                shape.line(x, y, x, t);
-
-                shape.line(x, t, r, t);
-
-                shape.line(r, t, r, y);
-
-                shape.line(r, y, x, y);
+                shape.rect(x, y, boundingBox.getWidth(), boundingBox.getHeight());
 
                 shape.end();
+                Gdx.gl.glDisable(GL20.GL_BLEND);
             }
         }
     }
 
     @Override
     public void pause() {
+
     }
 
     @Override
@@ -122,6 +117,7 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
+
     }
 
     public void setEnabled(boolean enabled) {

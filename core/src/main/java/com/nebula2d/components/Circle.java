@@ -32,6 +32,7 @@ public class Circle extends CollisionShape {
     public Circle(PhysicsMaterial physicsMaterial, float radius) {
         super(physicsMaterial);
         this.radius = radius;
+        shapeType = ShapeType.CIRCLE;
     }
 
     @Override
