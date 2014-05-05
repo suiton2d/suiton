@@ -17,10 +17,13 @@
  */
 
 package com.nebula2d.editor.ui;
+import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.Project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
     private static MainFrame instance;
@@ -53,6 +56,17 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         renderCanvas.initCamera(renderCanvas.getCanvas().getWidth(), renderCanvas.getCanvas().getHeight());
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
+                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    System.out.println("exit");
+                    Gdx.app.exit();
+                }
+            }
+        });
     }
 
     public static RenderCanvas getRenderCanvas() {

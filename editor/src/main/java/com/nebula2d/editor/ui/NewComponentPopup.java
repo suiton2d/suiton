@@ -56,6 +56,10 @@ public class NewComponentPopup extends JPopupMenu {
 
         JMenuItem behaviorMenuItem = new JMenuItem("Behavior");
 
+        JMenu physicsMenu = new JMenu("Physics");
+        JMenuItem rigidBodyMenuItm = physicsMenu.add("RigidBody");
+        JMenuItem collider = physicsMenu.add("Collider");
+
         behaviorMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,7 +88,7 @@ public class NewComponentPopup extends JPopupMenu {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (NewComponentPopup.this.gameObject.getRenderer() != null) {
+                if (gameObject.getRenderer() != null) {
                     JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a renderer attached.");
                     return;
                 }
@@ -93,9 +97,29 @@ public class NewComponentPopup extends JPopupMenu {
             }
         });
 
+        rigidBodyMenuItm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (gameObject.getRigidBody() != null) {
+                    JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a RigidBody attached.");
+                    return;
+                }
+
+                new NewComponentDialog(new RigidBody(gameObject));
+            }
+        });
+
+        collider.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new NewComponentDialog(new Collider(gameObject));
+            }
+        });
+
         add(rendererMenu);
         add(audioMenu);
         add(behaviorMenuItem);
+        add(physicsMenu);
 
         addFocusListener(new FocusAdapter() {
             @Override

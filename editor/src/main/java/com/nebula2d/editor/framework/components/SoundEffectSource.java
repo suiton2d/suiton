@@ -31,6 +31,8 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -45,7 +47,7 @@ public class SoundEffectSource extends Component {
     }
 
     @Override
-    public N2DPanel forgeComponentContentPanel(ComponentsDialog parent) {
+    public N2DPanel forgeComponentContentPanel(final ComponentsDialog parent) {
         final N2DLabel nameLbl = new N2DLabel("Name:");
         final N2DLabel fileLbl = new N2DLabel("File:");
         final N2DLabel filePathLbl = new N2DLabel(soundEffect != null ? soundEffect.getPath() : "");
@@ -96,6 +98,30 @@ public class SoundEffectSource extends Component {
             public void actionPerformed(ActionEvent e) {
                 mediaBtn.setEnabled(false);
                 playSoundEffect(onSfxCompleteListener);
+            }
+        });
+
+        nameTf.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = nameTf.getText().trim();
+                if (!text.equals("")) {
+                    name = text;
+                    parent.getComponentList().updateUI();
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = nameTf.getText().trim();
+                if (!text.equals("")) {
+                    name = text;
+                    parent.getComponentList().updateUI();
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
             }
         });
 
