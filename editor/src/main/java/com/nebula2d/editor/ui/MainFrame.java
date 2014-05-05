@@ -17,10 +17,13 @@
  */
 
 package com.nebula2d.editor.ui;
+import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.Project;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
     private static MainFrame instance;
@@ -53,6 +56,15 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         renderCanvas.initCamera(renderCanvas.getCanvas().getWidth(), renderCanvas.getCanvas().getHeight());
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("closing");
+                Gdx.app.exit();
+                System.out.println("closed");
+            }
+        });
     }
 
     public static RenderCanvas getRenderCanvas() {
