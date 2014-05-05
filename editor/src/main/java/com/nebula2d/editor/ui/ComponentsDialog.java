@@ -94,8 +94,10 @@ public class ComponentsDialog extends JDialog {
                 gameObject.removeComponent(selectedComponent);
                 ((DefaultListModel<Component>) componentList.getModel()).removeElement(selectedComponent);
                 mainPanel.remove(rightPanel);
-                mainPanel.add(forgeEmptyPanel());
-                revalidate();
+                rightPanel = forgeEmptyPanel();
+                mainPanel.add(rightPanel);
+                mainPanel.validate();
+                mainPanel.repaint();
             }
         });
         removeButton.setEnabled(false);
@@ -118,7 +120,8 @@ public class ComponentsDialog extends JDialog {
                     mainPanel.remove(rightPanel);
                     rightPanel = component.forgeComponentContentPanel(ComponentsDialog.this);
                     mainPanel.add(rightPanel);
-                    revalidate();
+                    mainPanel.validate();
+                    mainPanel.repaint();
                 }
             }
         });
