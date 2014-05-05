@@ -38,6 +38,8 @@ public abstract class Component implements ISerializable {
         MUSIC,
         SFX,
         BEHAVE,
+        RIGID_BODY,
+        COLLIDER
     }
 
     protected String name;

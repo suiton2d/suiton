@@ -31,6 +31,8 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -119,9 +121,30 @@ public class Behaviour extends Component {
             filePathLbl.setText(script.getPath());
         }
 
-        nameTf.setText(name != null ? name : "");
+        nameTf.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = nameTf.getText().trim();
+                if (!text.equals("")) {
+                    name = text;
+                    parent.getComponentList().updateUI();
+                }
+            }
 
-        enabledCb.setSelected(enabled);
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = nameTf.getText().trim();
+                if (!text.equals("")) {
+                    name = text;
+                    parent.getComponentList().updateUI();
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+
 
         N2DPanel panel = new N2DPanel();
         GroupLayout layout = new GroupLayout(panel);

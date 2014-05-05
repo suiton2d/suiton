@@ -21,6 +21,7 @@ package com.nebula2d.editor.framework.components;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -30,7 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Renderer extends Component {
+public abstract class Renderer extends Component implements IRenderable {
 
     public static enum RendererType {
         SPRITE_RENDERER
@@ -140,6 +141,4 @@ public abstract class Renderer extends Component {
         }
         currentAnim = fr.readIntLine();
     }
-
-    public abstract void render(GameObject selectedObject, SpriteBatch batcher, Camera cam);
 }

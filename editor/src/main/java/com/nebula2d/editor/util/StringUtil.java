@@ -16,15 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nebula2d.components;
+package com.nebula2d.editor.util;
 
 /**
- * @author Jon Bonazza <jonbonazza@gmail.com>
+ *
+ * Created by bonazza on 5/4/14.
  */
-public class CircleCollider extends Collider {
+public class StringUtil {
 
-    public CircleCollider(String name, PhysicsMaterial physicsMaterial, boolean isSensor, float radius) {
-        super(name, physicsMaterial, isSensor);
-        shape = new Circle(physicsMaterial, radius);
+    public static Float toFloat(String text) {
+
+        try {
+            return Float.parseFloat(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }

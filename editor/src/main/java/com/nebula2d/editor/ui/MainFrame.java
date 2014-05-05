@@ -36,7 +36,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         super("Nebula2D");
         instance = this;
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         JScrollPane sp = new JScrollPane(sceneGraph);
         sp.setPreferredSize(new Dimension(300, 600));
 
@@ -60,9 +60,11 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println("closing");
-                Gdx.app.exit();
-                System.out.println("closed");
+                if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
+                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    Gdx.app.exit();
+                    dispose();
+                }
             }
         });
     }

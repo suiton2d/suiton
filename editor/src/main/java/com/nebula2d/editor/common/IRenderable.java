@@ -16,16 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.nebula2d.components;
+package com.nebula2d.editor.common;
+
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.nebula2d.editor.framework.GameObject;
 
 /**
- * @author Jon Bonazza <jonbonazza@gmail.com>
+ * Interface for rendering.
+ *
+ * Created by bonazza on 5/3/14.
  */
-public class BoxCollider extends Collider {
+public interface IRenderable {
 
-    public BoxCollider(String name, PhysicsMaterial physicsMaterial, boolean isSensor, float w, float h) {
-        super(name, physicsMaterial, isSensor);
-
-        shape = new BoundingBox(physicsMaterial, w, h);
-    }
+    /**
+     * Renders the object.
+     * @param selectedObject the currently selected {@link com.nebula2d.editor.framework.GameObject}. Null if no object
+     * is selected.
+     * @param batcher The SpriteBatch to use for rendering.
+     * @param cam The Camera to use for rendering.
+     */
+    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam);
 }
