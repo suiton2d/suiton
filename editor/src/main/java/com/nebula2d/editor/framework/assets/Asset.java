@@ -31,11 +31,13 @@ public abstract class Asset implements ISerializable {
 
     protected String path;
     protected String name;
+    protected boolean isLoaded;
 
     public Asset(String path) {
         this.path = path;
         int slash = path.indexOf(File.pathSeparator);
         name = slash != -1 ? path.substring(slash + 1) : "";
+        isLoaded = false;
     }
 
     public String getPath() {
@@ -46,6 +48,10 @@ public abstract class Asset implements ISerializable {
         return this.name;
     }
 
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -53,6 +59,9 @@ public abstract class Asset implements ISerializable {
     public void setPath(String path) {
         this.path = path;
     }
+
+    public abstract void initialize();
+    public abstract void dispose();
 
     @Override
     public void save(FullBufferedWriter fw) throws IOException {

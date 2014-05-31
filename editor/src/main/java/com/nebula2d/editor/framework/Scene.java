@@ -30,11 +30,13 @@ import java.util.Enumeration;
 
 public class Scene extends BaseSceneNode implements ISerializable, IRenderable {
 
+    private static int sceeneCounter = 0;
+
     protected int id;
 
     public Scene(String name) {
         super(name);
-        id = 0;
+        id = sceeneCounter++;
     }
 
     public int getId() {

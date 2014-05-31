@@ -19,8 +19,10 @@
 package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
+import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
@@ -69,7 +71,9 @@ public class MusicSource extends Component {
                 if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     final String path = fc.getSelectedFile().getAbsolutePath();
                     filePathLbl.setText(path);
-                    MusicSource.this.musicTrack = new MusicTrack(path);
+                    int currScene = MainFrame.getProject().getCurrentSceneIdx();
+                    MusicSource.this.musicTrack = AssetManager.getInstance().
+                            getOrCreateMusicTrack(currScene, path);
                     mediaBtn.setEnabled(true);
                 }
             }
@@ -176,7 +180,8 @@ public class MusicSource extends Component {
         int tmp = fr.readIntLine();
         if (tmp != 0) {
             String path = fr.readLine();
-            musicTrack = new MusicTrack(path);
+            int currScene = MainFrame.getProject().getCurrentSceneIdx();
+            musicTrack = AssetManager.getInstance().getOrCreateMusicTrack(currScene, path);
             musicTrack.load(fr);
         }
     }

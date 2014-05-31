@@ -31,14 +31,32 @@ public class Sprite extends Asset {
 
     public Sprite(final String path) {
         super(path);
+        spriteSheet = false;
+    }
+
+    @Override
+    public void initialize() {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
                 texture = new com.badlogic.gdx.graphics.Texture(path);
+                isLoaded = true;
             }
         });
+    }
 
-        spriteSheet = false;
+    @Override
+    public void dispose() {
+        if (isLoaded) {
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    texture.dispose();
+                    texture = null;
+                    isLoaded = false;
+                }
+            });
+        }
     }
 
     public int getWidth() {

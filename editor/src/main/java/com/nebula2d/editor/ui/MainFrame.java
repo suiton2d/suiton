@@ -19,6 +19,7 @@
 package com.nebula2d.editor.ui;
 import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.Project;
+import com.nebula2d.editor.framework.assets.AssetManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +63,7 @@ public class MainFrame extends JFrame {
             public void windowClosing(WindowEvent e) {
                 if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
                         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    System.out.println("exit");
+                    AssetManager.getInstance().cleanup();
                     Gdx.app.exit();
                 }
             }

@@ -20,8 +20,10 @@ package com.nebula2d.editor.framework.components;
 
 import com.nebula2d.avocado.SaveListener;
 import com.nebula2d.avocado.ScriptEditor;
+import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.Script;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
@@ -110,7 +112,8 @@ public class Behaviour extends Component {
 
                 if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     final String path = fc.getSelectedFile().getAbsolutePath();
-                    script = new Script(path);
+                    int currScene = MainFrame.getProject().getCurrentSceneIdx();
+                    script = AssetManager.getInstance().getOrCreateScript(currScene, path);
                     filePathLbl.setText(path);
                     editBtn.setEnabled(true);
                 }
@@ -184,7 +187,8 @@ public class Behaviour extends Component {
         int tmp = fr.readIntLine();
         if (tmp != 0) {
             String path = fr.readLine();
-            script = new Script(path);
+            int currScene = MainFrame.getProject().getCurrentSceneIdx();
+            script = AssetManager.getInstance().getOrCreateScript(currScene, path);
             script.load(fr);
         }
     }

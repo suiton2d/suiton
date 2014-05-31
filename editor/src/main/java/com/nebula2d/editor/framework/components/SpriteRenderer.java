@@ -22,8 +22,9 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.assets.Sprite;
+import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.NewAnimationPopup;
 import com.nebula2d.editor.ui.controls.*;
 
@@ -45,7 +46,7 @@ public class SpriteRenderer extends Renderer {
 
     @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
-        if (sprite != null) {
+        if (sprite != null && sprite.isLoaded()) {
 
             if (currentAnim != -1) {
                 getCurrentAnimation().renderStill(batcher, parent, cam);
@@ -122,8 +123,8 @@ public class SpriteRenderer extends Renderer {
                         JOptionPane.showMessageDialog(parent, "Failed to render image.");
                     }
                     addButton.setEnabled(true);
-
-                    SpriteRenderer.this.sprite = new Sprite(path);
+                    int currScene = MainFrame.getProject().getCurrentSceneIdx();
+                    SpriteRenderer.this.sprite = AssetManager.getInstance().getOrCreateSprite(currScene, path);
 
                     listModel.clear();
                     animations.clear();
@@ -137,7 +138,6 @@ public class SpriteRenderer extends Renderer {
             public void actionPerformed(ActionEvent e) {
                 new NewAnimationPopup(SpriteRenderer.this, listModel, imageTf.getText()).
                         show(addButton, -1, addButton.getHeight());
-
             }
         });
 

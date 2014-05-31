@@ -18,6 +18,7 @@
 
 package com.nebula2d.editor.ui;
 
+import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.framework.components.Animation;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
@@ -40,7 +41,8 @@ public class NewAnimationPopup extends JPopupMenu {
     public NewAnimationPopup(Renderer renderer, DefaultListModel<Animation> listModel, final String texturePath) {
         this.renderer = renderer;
         this.listModel = listModel;
-        sprite = new Sprite(texturePath);
+        int currScene = MainFrame.getProject().getCurrentScene().getId();
+        sprite = AssetManager.getInstance().getOrCreateSprite(currScene, texturePath);
         JMenuItem kfAnimMenuItem = add("KeyFrameAnimation");
         kfAnimMenuItem.addActionListener(new ActionListener() {
             @Override

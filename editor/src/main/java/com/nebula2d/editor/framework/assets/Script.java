@@ -30,16 +30,16 @@ public class Script extends Asset {
 
     protected String content;
 
-    public Script(String path) {
-        super(path);
-        init();
-    }
-
     public Script() {
         super("");
     }
 
-    protected void init() {
+    public Script(String path) {
+        super(path);
+    }
+
+    @Override
+    public void initialize() {
         BufferedReader br;
         StringBuilder sb = new StringBuilder();
         try {
@@ -51,10 +51,19 @@ public class Script extends Asset {
             }
 
             content = sb.toString();
+            isLoaded = true;
         } catch (FileNotFoundException e) {
             System.out.println("Could not find file at path: " + path);
         } catch (IOException e) {
             System.out.println("Failed to read file at path: " + path);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        if (isLoaded) {
+            content = null;
+            isLoaded = false;
         }
     }
 

@@ -19,6 +19,7 @@
 package com.nebula2d.editor.framework;
 
 import com.nebula2d.editor.common.ISerializable;
+import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -74,12 +75,22 @@ public class Project implements ISerializable {
         return scenes.get(currentSceneIdx);
     }
 
+    public int getCurrentSceneIdx() {
+        return currentSceneIdx;
+    }
+
     public void setCurrentScene(String name) {
         for (int i = 0; i < scenes.size(); ++i) {
             if (scenes.get(i).getName().equals(name)) {
-                currentSceneIdx = i;
+                setCurrentScene(i);
+                break;
             }
         }
+    }
+
+    public void setCurrentScene(int idx) {
+        currentSceneIdx = idx;
+        AssetManager.getInstance().changeScene(currentSceneIdx);
     }
 
     public String getPath() {
@@ -136,8 +147,9 @@ public class Project implements ISerializable {
 
     @Override
     public void load(FullBufferedReader fr) throws IOException {
+        //Need to preset this so that it is available during loading.
+        currentSceneIdx = fr.readIntLine();
         int size = fr.readIntLine();
-
         for (int i = 0; i < size; ++i) {
             String name = fr.readLine();
             Scene s = new Scene(name);
@@ -145,17 +157,16 @@ public class Project implements ISerializable {
             addScene(s);
         }
 
-        currentSceneIdx = fr.readIntLine();
+        AssetManager.getInstance().changeScene(currentSceneIdx);
     }
 
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
+        fw.writeIntLine(currentSceneIdx);
         fw.writeIntLine(scenes.size());
         for (Scene scene : scenes) {
             scene.save(fw);
         }
-
-        fw.writeIntLine(currentSceneIdx);
     }
 
     public boolean containsSceneWithName(String name) {

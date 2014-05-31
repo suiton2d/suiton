@@ -32,12 +32,31 @@ public class MusicTrack extends Asset {
 
     public MusicTrack(final String path) {
         super(path);
+    }
+
+    @Override
+    public void initialize() {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
                 music = Gdx.audio.newMusic(new FileHandle(new File(path)));
+                isLoaded = true;
             }
         });
+    }
+
+    @Override
+    public void dispose() {
+        if (isLoaded) {
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    music.dispose();
+                    music = null;
+                    isLoaded = false;
+                }
+            });
+        }
     }
 
     public void play() {

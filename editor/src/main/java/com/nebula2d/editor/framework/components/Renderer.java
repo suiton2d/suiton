@@ -18,12 +18,11 @@
 
 package com.nebula2d.editor.framework.components;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.nebula2d.editor.common.IRenderable;
-import com.nebula2d.editor.framework.GameObject;
+import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.Sprite;
+import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
@@ -94,6 +93,10 @@ public abstract class Renderer extends Component implements IRenderable {
         return new Rectangle(x, y, getBoundingWidth(), getBoundingHeight());
     }
 
+    public boolean isReady() {
+        return sprite != null && sprite.isLoaded();
+    }
+
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         super.save(fw);
@@ -119,8 +122,9 @@ public abstract class Renderer extends Component implements IRenderable {
         int tmp = fr.readIntLine();
 
         if (tmp == 1) {
-            System.out.println("creating sprite");
-            sprite = new Sprite(fr.readLine());
+            int currScene = MainFrame.getProject().getCurrentSceneIdx();
+            String path = fr.readLine();
+            sprite = AssetManager.getInstance().getOrCreateSprite(currScene, path);
             sprite.load(fr);
         }
 

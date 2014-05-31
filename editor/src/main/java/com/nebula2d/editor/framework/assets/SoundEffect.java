@@ -34,12 +34,32 @@ public class SoundEffect extends Asset {
 
     public SoundEffect(final String path) {
         super(path);
+
+    }
+
+    @Override
+    public void initialize() {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
                 sound = Gdx.audio.newMusic(new FileHandle(new File(path)));
+                isLoaded = true;
             }
         });
+    }
+
+    @Override
+    public void dispose() {
+        if (isLoaded) {
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    sound.dispose();
+                    sound = null;
+                    isLoaded = false;
+                }
+            });
+        }
     }
 
     public void play() {

@@ -85,7 +85,8 @@ public class RenderAdapter implements ApplicationListener {
         }
         batcher.end();
 
-        if (selectedObject != null && selectedObject.getRenderer() != null) {
+        if (selectedObject != null && selectedObject.getRenderer() != null &&
+                selectedObject.getRenderer().isReady()) {
             Rectangle boundingBox = selectedObject.getRenderer().getBoundingBox();
 
             if (boundingBox != null) {

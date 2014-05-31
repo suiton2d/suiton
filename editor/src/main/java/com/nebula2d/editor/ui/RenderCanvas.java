@@ -71,12 +71,8 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
             if (currentNode instanceof GameObject) {
                 GameObject g = (GameObject) currentNode;
                 Camera cam = adapter.getCamera();
-                System.out.println(g.getName());
 
-                if (g.getRenderer() != null) {
-                    System.out.println("renderer is not null");
-                    System.out.println("center: " + g.getPosition().x + " " + g.getPosition().y);
-
+                if (g.getRenderer() != null && g.getRenderer().isReady()) {
                     Rectangle boundingBox = g.getRenderer().getBoundingBox();
                     if (boundingBox.contains(new Vector2(x + cam.position.x, (getCanvas().getHeight() - y) + cam.position.y))) {
                         res.add(g);
@@ -102,7 +98,6 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     }
 
     protected void scaleObject(Point mousePos) {
-        System.out.println("Scaling object");
         int dx = mousePos.x - lastPoint.x;
         int dy = mousePos.y - lastPoint.y;
 
@@ -135,7 +130,6 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
 
             List<GameObject> selectedObjects = getSelectedGameObjects(lastPoint.x, lastPoint.y);
             int size = selectedObjects.size();
-            System.out.println(size);
             if (size > 0) {
                 GameObject selectedObject = selectedObjects.get(size - 1);
                 MainFrame.getSceneGraph().setSelectedNode(selectedObject);

@@ -20,8 +20,10 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.SoundEffect;
 import com.nebula2d.editor.ui.ComponentsDialog;
+import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
@@ -67,7 +69,9 @@ public class SoundEffectSource extends Component {
                 if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     final String path = fc.getSelectedFile().getAbsolutePath();
                     filePathLbl.setText(path);
-                    SoundEffectSource.this.soundEffect = new SoundEffect(path);
+                    int currScene = MainFrame.getProject().getCurrentSceneIdx();
+                    SoundEffectSource.this.soundEffect = AssetManager.getInstance().
+                            getOrCreateSoundEffect(currScene, path);
                     mediaBtn.setEnabled(true);
                 }
             }
@@ -168,7 +172,8 @@ public class SoundEffectSource extends Component {
         int tmp = fr.readIntLine();
         if (tmp != 0) {
             String path = fr.readLine();
-            soundEffect = new SoundEffect(path);
+            int currScene = MainFrame.getProject().getCurrentSceneIdx();
+            soundEffect = AssetManager.getInstance().getOrCreateSoundEffect(currScene, path);
             soundEffect.load(fr);
         }
     }
