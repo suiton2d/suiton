@@ -40,14 +40,11 @@ public class FloatValidatedDocumentListener implements DocumentListener {
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        Float f = StringUtil.toFloat(tf.getText());
-        if (f == null) {
-            String text = tf.getText();
-            tf.setText(text.substring(0, text.length() - 1));
-            return;
+        if (!tf.getText().isEmpty()) {
+            Float f = StringUtil.toFloat(tf.getText());
+            if (f != null)
+                onSuccess.apply(f);
         }
-
-        onSuccess.apply(f);
     }
 
     @Override
@@ -55,19 +52,8 @@ public class FloatValidatedDocumentListener implements DocumentListener {
 
         if (!tf.getText().isEmpty()) {
             Float f = StringUtil.toFloat(tf.getText());
-            if (f == null) {
-                final String text = tf.getText();
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        tf.setText(text.substring(0, text.length() - 1));
-                    }
-                });
-
-                return;
-            }
-
-            onSuccess.apply(f);
+            if (f != null)
+                onSuccess.apply(f);
         }
     }
 

@@ -18,10 +18,12 @@
 
 package com.nebula2d.editor.ui;
 
+import com.google.common.base.Function;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
+import com.nebula2d.editor.util.FloatValidatedDocumentListener;
 import com.nebula2d.editor.util.IntKfAnimPropertyDocumentListener;
 import com.nebula2d.editor.util.StringUtil;
 
@@ -65,39 +67,6 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         JTextField endFrameTf = new JTextField(Integer.toString(animation.getEndFrameIndex()), 3);
         final JTextField speedTf = new JTextField(Float.toString(animation.getSpeed()), 3);
 
-        DocumentListener floatDocumentListener = new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                Float speed = StringUtil.toFloat(speedTf.getText());
-                if (speed == null) {
-                    String text = speedTf.getText();
-                    speedTf.setText(text.substring(0, text.length() - 1));
-                    return;
-                }
-
-                animation.setSpeed(speed);
-                animation.init();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                Float speed = StringUtil.toFloat(speedTf.getText());
-                if (speed == null) {
-                    String text = speedTf.getText();
-                    speedTf.setText(text.substring(0, text.length() - 1));
-                    return;
-                }
-
-                animation.setSpeed(speed);
-                animation.init();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-
-            }
-        };
-
         frameWidthTf.getDocument().addDocumentListener(
                 new IntKfAnimPropertyDocumentListener(frameWidthTf, animation,
                         IntKfAnimPropertyDocumentListener.AnimationPropertyType.FRAME_WIDTH)
@@ -115,7 +84,14 @@ public class KeyFrameAnimationEditDialog extends JDialog {
                         IntKfAnimPropertyDocumentListener.AnimationPropertyType.END_FRAME)
         );
 
-        speedTf.getDocument().addDocumentListener(floatDocumentListener);
+        speedTf.getDocument().addDocumentListener(new FloatValidatedDocumentListener(speedTf, new Function<Float, Void>() {
+            @Override
+            public Void apply(Float input) {
+                animation.setSpeed(input);
+                animation.init();
+                return null;
+            }
+        }));
 
         final N2DCheckBox wrapCb = new N2DCheckBox("Wrap", animation.wrap());
         wrapCb.addChangeListener(new ChangeListener() {
