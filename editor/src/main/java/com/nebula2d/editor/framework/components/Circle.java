@@ -22,7 +22,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.google.common.base.Function;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
@@ -59,17 +58,33 @@ public class Circle extends CollisionShape {
         if (gameObject != null && r % 360 != 0) {
             batcher.end();
             ShapeRenderer shape = new ShapeRenderer();
+            shape.setProjectionMatrix(cam.combined);
             shape.setColor(Color.RED);
             shape.begin(ShapeRenderer.ShapeType.Line);
 
-            float x = gameObject.getPosition().x - cam.position.x;
-            float y = gameObject.getPosition().y - cam.position.y;
+            float x = gameObject.getPosition().x;
+            float y = gameObject.getPosition().y;
 
             shape.circle(x, y, r);
 
             shape.end();
             batcher.begin();
         }
+    }
+
+    @Override
+    public boolean isReady() {
+        return true;
+    }
+
+    @Override
+    public int getBoundingWidth() {
+        return (int) r;
+    }
+
+    @Override
+    public int getBoundingHeight() {
+        return (int) r;
     }
 
     @Override
@@ -94,39 +109,27 @@ public class Circle extends CollisionShape {
         final JTextField restitutionTf = new JTextField(Float.toString(material.getRestitution()), 20);
 
         radiusTf.getDocument().addDocumentListener(new FloatValidatedDocumentListener(radiusTf,
-                new Function<Float, Void>() {
-                    @Override
-                    public Void apply(Float input) {
-                        r = input;
-                        return null;
-                    }
+                input -> {
+                    r = input;
+                    return null;
                 }));
 
         densityTf.getDocument().addDocumentListener(new FloatValidatedDocumentListener(densityTf,
-                new Function<Float, Void>() {
-                    @Override
-                    public Void apply(Float input) {
-                        material.setDensity(input);
-                        return null;
-                    }
+                input -> {
+                    material.setDensity(input);
+                    return null;
                 }));
 
         frictionTf.getDocument().addDocumentListener(new FloatValidatedDocumentListener(frictionTf,
-                new Function<Float, Void>() {
-                    @Override
-                    public Void apply(Float input) {
-                        material.setFriction(input);
-                        return null;
-                    }
+                input -> {
+                    material.setFriction(input);
+                    return null;
                 }));
 
         restitutionTf.getDocument().addDocumentListener(new FloatValidatedDocumentListener(restitutionTf,
-                new Function<Float, Void>() {
-                    @Override
-                    public Void apply(Float input) {
-                        material.setRestitution(input);
-                        return null;
-                    }
+                input -> {
+                    material.setRestitution(input);
+                    return null;
                 }));
 
         N2DPanel panel = new N2DPanel();

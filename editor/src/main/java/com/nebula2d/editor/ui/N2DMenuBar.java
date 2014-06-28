@@ -18,7 +18,6 @@
 
 package com.nebula2d.editor.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
@@ -27,9 +26,6 @@ import com.nebula2d.editor.util.ExitAction;
 import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 
@@ -84,76 +80,49 @@ public class N2DMenuBar extends JMenuBar {
     }
 
     private void bindMenuItems() {
-        newMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new NewProjectDialog();
+        newMenuItem.addActionListener(e -> new NewProjectDialog());
+
+        saveMenuItem.addActionListener(e -> {
+            try {
+                MainFrame.getProject().saveProject();
+                System.out.println("Saved!");
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(null, "Failed to save project.");
             }
         });
 
-        saveMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        openMenuItem.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            if (fc.showOpenDialog(N2DMenuBar.this) == JFileChooser.APPROVE_OPTION) {
+                MainFrame.getSceneGraph().wipe();
+                MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
+
                 try {
-                    MainFrame.getProject().saveProject();
-                    System.out.println("Saved!");
+                    MainFrame.getProject().loadProject();
+                    MainFrame.getSceneGraph().init();
+                    MainFrame.getProject().loadCurrentScene();
                 } catch (IOException e1) {
-                    JOptionPane.showMessageDialog(null, "Failed to save project.");
+                    MainFrame.setProject(null);
+                    JOptionPane.showMessageDialog(N2DMenuBar.this, e1.getMessage());
                 }
             }
         });
 
-        openMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                if (fc.showOpenDialog(N2DMenuBar.this) == JFileChooser.APPROVE_OPTION) {
-                    MainFrame.getSceneGraph().wipe();
-                    MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
+        newSceneMenuItem.addActionListener(e -> new NewSceneDialog());
 
-                    try {
-                        MainFrame.getProject().loadProject();
-                        MainFrame.getSceneGraph().init();
-                        MainFrame.getProject().loadCurrentScene();
-                    } catch (IOException e1) {
-                        MainFrame.setProject(null);
-                        JOptionPane.showMessageDialog(N2DMenuBar.this, e1.getMessage());
-                    }
-                }
-            }
+        changeSceneMenuItem.addActionListener(e -> new ChangeSceneDialog());
+
+        newLayerMenuItem.addActionListener(e -> {
+            Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount());
+            MainFrame.getSceneGraph().addLayer(layer);
         });
 
-        newSceneMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new NewSceneDialog();
-            }
-        });
+        newEmptyGameObjectMenuItem.addActionListener(e -> {
+            //If this menu item is enabled, we know 100% that something is selected, so no check is necessary. =)
+            BaseSceneNode selectedNode = (BaseSceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
 
-        changeSceneMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ChangeSceneDialog();
-            }
-        });
-
-        newLayerMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount());
-                MainFrame.getSceneGraph().addLayer(layer);
-            }
-        });
-
-        newEmptyGameObjectMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //If this menu item is enabled, we know 100% that something is selected, so no check is necessary. =)
-                BaseSceneNode selectedNode = (BaseSceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
-
-                GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
-                selectedNode.addGameObject(go);
-            }
+            GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
+            selectedNode.addGameObject(go);
         });
     }
 

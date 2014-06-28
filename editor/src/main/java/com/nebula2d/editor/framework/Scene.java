@@ -28,7 +28,7 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import java.io.IOException;
 import java.util.Enumeration;
 
-public class Scene extends BaseSceneNode implements ISerializable, IRenderable {
+public class Scene extends BaseSceneNode implements ISerializable {
 
     private static int sceeneCounter = 0;
 
@@ -58,7 +58,6 @@ public class Scene extends BaseSceneNode implements ISerializable, IRenderable {
         return null;
     }
 
-    @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         Enumeration layers = children();
 

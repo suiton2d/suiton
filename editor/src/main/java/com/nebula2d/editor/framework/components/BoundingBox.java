@@ -18,10 +18,9 @@
 
 package com.nebula2d.editor.framework.components;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.google.common.base.Function;
@@ -31,11 +30,8 @@ import com.nebula2d.editor.ui.controls.N2DPanel;
 import com.nebula2d.editor.util.FloatValidatedDocumentListener;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
-import com.nebula2d.editor.util.StringUtil;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.io.IOException;
 
 /**
@@ -74,18 +70,34 @@ public class BoundingBox extends CollisionShape {
             batcher.end();
 
             ShapeRenderer shape = new ShapeRenderer();
+            shape.setProjectionMatrix(cam.combined);
             shape.setColor(Color.RED);
             shape.begin(ShapeRenderer.ShapeType.Line);
             float halfw = w / 2.0f;
             float halfh = h / 2.0f;
 
-            float x = gameObject.getPosition().x - halfw - cam.position.x;
-            float y = gameObject.getPosition().y - halfh - cam.position.y;
+            float x = gameObject.getPosition().x - halfw;
+            float y = gameObject.getPosition().y - halfh;
 
             shape.rect(x, y, w, h);
             shape.end();
             batcher.begin();
         }
+    }
+
+    @Override
+    public boolean isReady() {
+        return true;
+    }
+
+    @Override
+    public int getBoundingWidth() {
+        return (int) getWidth();
+    }
+
+    @Override
+    public int getBoundingHeight() {
+        return (int) getHeight();
     }
 
     @Override

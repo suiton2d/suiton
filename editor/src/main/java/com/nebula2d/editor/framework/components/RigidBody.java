@@ -21,7 +21,6 @@ package com.nebula2d.editor.framework.components;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.google.common.base.Function;
-import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
@@ -42,7 +41,7 @@ import java.io.IOException;
  *
  * Created by bonazza on 5/3/14.
  */
-public class RigidBody extends Component implements IRenderable {
+public class RigidBody extends Component {
 
     private boolean isKinematic;
     private boolean fixedRotation;
@@ -252,7 +251,6 @@ public class RigidBody extends Component implements IRenderable {
         }
     }
 
-    @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         shape.render(selectedObject, batcher, cam);
     }

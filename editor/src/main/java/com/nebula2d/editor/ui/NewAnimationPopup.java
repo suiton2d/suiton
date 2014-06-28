@@ -22,7 +22,7 @@ import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.framework.components.Animation;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
-import com.nebula2d.editor.framework.components.Renderer;
+import com.nebula2d.editor.framework.components.AnimatedRenderer;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
 
@@ -34,12 +34,12 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 public class NewAnimationPopup extends JPopupMenu {
-    private Renderer renderer;
+    private AnimatedRenderer animatedRenderer;
     private DefaultListModel<Animation> listModel;
     private Sprite sprite;
 
-    public NewAnimationPopup(Renderer renderer, DefaultListModel<Animation> listModel, final String texturePath) {
-        this.renderer = renderer;
+    public NewAnimationPopup(AnimatedRenderer animatedRenderer, DefaultListModel<Animation> listModel, final String texturePath) {
+        this.animatedRenderer = animatedRenderer;
         this.listModel = listModel;
         int currScene = MainFrame.getProject().getCurrentScene().getId();
         sprite = AssetManager.getInstance().getOrCreateSprite(currScene, texturePath);
@@ -87,7 +87,7 @@ public class NewAnimationPopup extends JPopupMenu {
                     errorMsg.setVisible(false);
                     NewAnimationDialog.this.animation.setName(name);
                     NewAnimationDialog.this.animation.init();
-                    renderer.addAnimation(NewAnimationDialog.this.animation);
+                    animatedRenderer.addAnimation(NewAnimationDialog.this.animation);
                     listModel.addElement(NewAnimationDialog.this.animation);
                     dispose();
                 }

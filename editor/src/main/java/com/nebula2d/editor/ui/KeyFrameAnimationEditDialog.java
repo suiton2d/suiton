@@ -19,6 +19,7 @@
 package com.nebula2d.editor.ui;
 
 import com.google.common.base.Function;
+import com.nebula2d.editor.framework.components.AnimatedRenderer;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
 import com.nebula2d.editor.ui.controls.N2DLabel;
@@ -42,7 +43,7 @@ public class KeyFrameAnimationEditDialog extends JDialog {
 
     private KeyFrameAnimation animation;
     private AnimationRenderCanvas animatedCanvas;
-    public KeyFrameAnimationEditDialog(KeyFrameAnimation animation) {
+    public KeyFrameAnimationEditDialog(final AnimatedRenderer renderer, final KeyFrameAnimation animation) {
         this.animation = animation;
         create();
 
@@ -50,6 +51,8 @@ public class KeyFrameAnimationEditDialog extends JDialog {
             @Override
             public void windowClosing(WindowEvent e) {
                 animatedCanvas.stop();
+                if (animation.isRenderable())
+                    renderer.setCurrentAnimation(animation);
             }
         });
     }

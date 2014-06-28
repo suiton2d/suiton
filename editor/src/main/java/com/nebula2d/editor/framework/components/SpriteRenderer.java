@@ -20,13 +20,14 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.AssetManager;
+import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.NewAnimationPopup;
 import com.nebula2d.editor.ui.controls.*;
+import com.nebula2d.editor.util.FullBufferedReader;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -37,40 +38,35 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class SpriteRenderer extends Renderer {
+public class SpriteRenderer extends AnimatedRenderer {
 
     public SpriteRenderer(String name) {
-        super(name);
+        super(name, RendererType.SPRITE_RENDERER);
         rendererType = RendererType.SPRITE_RENDERER;
     }
 
     @Override
+    public Sprite getRenderable() {
+        return (Sprite) renderable;
+    }
+
+    @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
+        Sprite sprite = (Sprite) renderable;
         if (sprite != null && sprite.isLoaded()) {
 
             if (currentAnim != -1) {
                 getCurrentAnimation().renderStill(batcher, parent, cam);
                 return;
             }
-            float halfw = getBoundingWidth() / 2.0f;
-            float halfh = getBoundingHeight() / 2.0f;
 
-            batcher.draw(new TextureRegion(sprite.getTexture()),
-                    parent.getPosition().x - halfw - cam.position.x,
-                    parent.getPosition().y - halfh - cam.position.y,
-                    halfw,
-                    halfh,
-                    sprite.getTexture().getWidth(),
-                    sprite.getTexture().getHeight(),
-                    parent.getScale().x,
-                    parent.getScale().y,
-                    parent.getRotation());
+            sprite.render(parent, batcher, cam);
         }
     }
 
     @Override
     public N2DPanel forgeComponentContentPanel(final ComponentsDialog parent) {
-
+        Sprite sprite = (Sprite) renderable;
         final ImagePanel imagePanel = new ImagePanel();
         final JButton addButton = new JButton("Add");
         addButton.setEnabled(false);
@@ -80,7 +76,7 @@ public class SpriteRenderer extends Renderer {
 
         if (sprite != null) {
             try {
-                imagePanel.setImage(getTexture().getPath());
+                imagePanel.setImage(getRenderable().getPath());
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(parent, "Failed to render image.");
             }
@@ -124,7 +120,7 @@ public class SpriteRenderer extends Renderer {
                     }
                     addButton.setEnabled(true);
                     int currScene = MainFrame.getProject().getCurrentSceneIdx();
-                    SpriteRenderer.this.sprite = AssetManager.getInstance().getOrCreateSprite(currScene, path);
+                    SpriteRenderer.this.renderable = AssetManager.getInstance().getOrCreateSprite(currScene, path);
 
                     listModel.clear();
                     animations.clear();
@@ -156,6 +152,10 @@ public class SpriteRenderer extends Renderer {
 
                 if (!e.getValueIsAdjusting()) {
                     Animation anim = animationList.getSelectedValue();
+
+                    if (anim != null && anim.isRenderable())
+                        setCurrentAnimation(anim);
+
                     removeButton.setEnabled(anim != null);
                 }
             }
@@ -166,7 +166,7 @@ public class SpriteRenderer extends Renderer {
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
                     Animation animation = animationList.getSelectedValue();
-                    animation.showAnimationEditDialog();
+                    animation.showAnimationEditDialog(SpriteRenderer.this);
                 }
                 super.mouseClicked(e);
             }
@@ -226,13 +226,13 @@ public class SpriteRenderer extends Renderer {
         GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
         hGroup.addGroup(layout.createParallelGroup().addComponent(nameLbl).
                 addComponent(imageLbl).addComponent(enabledCb));
-        hGroup.addGroup(layout.createParallelGroup().addComponent(nameTf).addComponent(imageTf));//.
+        hGroup.addGroup(layout.createParallelGroup().addComponent(nameTf).addComponent(imageTf));
         hGroup.addGroup(layout.createParallelGroup().addComponent(browseBtn));
         layout.setHorizontalGroup(hGroup);
 
         GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(nameLbl).
-                addComponent(nameTf));//.addComponent(animationPanel));
+                addComponent(nameTf));
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(imageLbl).
                 addComponent(imageTf).addComponent(browseBtn));
         vGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(enabledCb));
@@ -247,5 +247,39 @@ public class SpriteRenderer extends Renderer {
         mainPanel.add(leftPanel, BorderLayout.NORTH);
         mainPanel.add(bottomPanel);
         return mainPanel;
+    }
+
+    @Override
+    public void load(FullBufferedReader fr) throws IOException {
+        int tmp = fr.readIntLine();
+
+        if (tmp == 1) {
+            int currScene = MainFrame.getProject().getCurrentSceneIdx();
+            String path = fr.readLine();
+            renderable = AssetManager.getInstance().getOrCreateSprite(currScene, path);
+            renderable.load(fr);
+        }
+
+        int size = fr.readIntLine();
+        for (int i = 0; i < size; ++i) {
+            String animName = fr.readLine();
+            Animation.AnimationType animType = Animation.AnimationType.valueOf(fr.readLine());
+            Animation animation = null;
+            if (animType == Animation.AnimationType.KEY_FRAME)
+                animation = new KeyFrameAnimation(animName, (Sprite) renderable);
+
+            if (animation == null) {
+                throw new IOException("Failed to load project.");
+            }
+
+            animation.load(fr);
+            animations.add(animation);
+        }
+        currentAnim = fr.readIntLine();
+    }
+
+    @Override
+    public boolean isMoveable() {
+        return true;
     }
 }

@@ -60,7 +60,7 @@ public abstract class Animation implements ISerializable {
         return name;
     }
 
-    public abstract void showAnimationEditDialog();
+    public abstract void showAnimationEditDialog(AnimatedRenderer renderer);
 
     public abstract void renderStill(SpriteBatch batch, GameObject gameObject, Camera cam);
 

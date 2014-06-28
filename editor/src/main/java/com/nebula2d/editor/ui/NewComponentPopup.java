@@ -48,7 +48,8 @@ public class NewComponentPopup extends JPopupMenu {
 
     private void create() {
         JMenu rendererMenu = new JMenu("Renderer");
-        JMenuItem panelRendererMenuItem = rendererMenu.add("SpriteRenderer");
+        JMenuItem spriteRendererMenuItem = rendererMenu.add("SpriteAnimatedRenderer");
+        JMenuItem tileMapRendererMenuItem = rendererMenu.add("TileMapRenderer");
 
         JMenu audioMenu = new JMenu("Audio");
         JMenuItem musicSourceMenuItem = audioMenu.add("MusicSource");
@@ -84,7 +85,7 @@ public class NewComponentPopup extends JPopupMenu {
             }
         });
 
-        panelRendererMenuItem.addActionListener(new ActionListener() {
+        spriteRendererMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -94,6 +95,18 @@ public class NewComponentPopup extends JPopupMenu {
                 }
 
                 new NewComponentDialog(new SpriteRenderer(""));
+            }
+        });
+
+        tileMapRendererMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (gameObject.getRenderer() != null) {
+                    JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a renderer attached.");
+                    return;
+                }
+
+                new NewComponentDialog(new TileMapRenderer(""));
             }
         });
 

@@ -189,8 +189,22 @@ public class Collider extends Component implements IRenderable {
         }
     }
 
-    @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         shape.render(selectedObject, batcher, cam);
+    }
+
+    @Override
+    public boolean isReady() {
+        return shape != null;
+    }
+
+    @Override
+    public int getBoundingWidth() {
+        return shape.getBoundingWidth();
+    }
+
+    @Override
+    public int getBoundingHeight() {
+        return shape.getBoundingHeight();
     }
 }

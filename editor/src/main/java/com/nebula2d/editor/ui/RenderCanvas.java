@@ -23,19 +23,18 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Scene;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, MouseMotionListener{
+public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     protected RenderAdapter adapter;
 
@@ -48,6 +47,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         this.adapter = adapter;
         this.getCanvas().addMouseListener(this);
         this.getCanvas().addMouseMotionListener(this);
+        this.getCanvas().addMouseWheelListener(this);
         this.isMouseDown = false;
     }
 
@@ -70,14 +70,10 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
             BaseSceneNode currentNode = (BaseSceneNode) nodes.nextElement();
             if (currentNode instanceof GameObject) {
                 GameObject g = (GameObject) currentNode;
-                Camera cam = adapter.getCamera();
+                Camera cam = getCamera();
 
-                if (g.getRenderer() != null && g.getRenderer().isReady()) {
-                    Rectangle boundingBox = g.getRenderer().getBoundingBox();
-                    if (boundingBox.contains(new Vector2(x + cam.position.x, (getCanvas().getHeight() - y) + cam.position.y))) {
-                        res.add(g);
-                    }
-                }
+                if (g.isSelected(cam, x, cam.viewportHeight - y))
+                    res.add(g);
             }
         }
 
@@ -92,8 +88,8 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         int dx = mousePos.x - lastPoint.x;
         int dy = mousePos.y - lastPoint.y;
 
-        float newX = adapter.getSelectedObject().getPosition().x + dx;
-        float newY = adapter.getSelectedObject().getPosition().y - dy;
+        float newX = adapter.getSelectedObject().getPosition().x + dx * getCamera().zoom;
+        float newY = adapter.getSelectedObject().getPosition().y - dy * getCamera().zoom;
         adapter.getSelectedObject().setPosition(newX, newY);
     }
 
@@ -157,26 +153,35 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
             int dx = (pos.x - lastPoint.x) / 2;
             int dy = -(pos.y - lastPoint.y) / 2;
             getCamera().translate(dx, dy);
+            getCamera().update();
 
 
-        } else if (selectedObject != null) {
-            switch (MainFrame.getToolbar().getSelectedRendererWidget()) {
-                case N2DToolbar.RENDERER_WIDGET_TRANSLATE:
-                    translateObject(pos);
-                    break;
-                case N2DToolbar.RENDERER_WIDGET_SCALE:
-                    scaleObject(pos);
-                    break;
-                case N2DToolbar.RENDERER_WIDGET_ROTATE:
-                    rotateObject(pos);
-                    break;
-            }
+        } else if (selectedObject != null && selectedObject.isMoveable()) {
+             transformObject(pos);
         }
 
         lastPoint = pos;
+    }
 
+    private void transformObject(Point mousPos) {
+        switch (MainFrame.getToolbar().getSelectedRendererWidget()) {
+            case N2DToolbar.RENDERER_WIDGET_TRANSLATE:
+                translateObject(mousPos);
+                break;
+            case N2DToolbar.RENDERER_WIDGET_SCALE:
+                scaleObject(mousPos);
+                break;
+            case N2DToolbar.RENDERER_WIDGET_ROTATE:
+                rotateObject(mousPos);
+                break;
+        }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {}
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        getCamera().zoom += e.getWheelRotation() * 0.25f;
+    }
 }
