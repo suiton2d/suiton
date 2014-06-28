@@ -27,14 +27,19 @@ import com.nebula2d.editor.framework.GameObject;
  *
  * Created by bonazza on 5/3/14.
  */
-public interface IRenderable {
+public interface IRenderable extends ISerializable {
 
     /**
      * Renders the object.
-     * @param selectedObject the currently selected {@link com.nebula2d.editor.framework.GameObject}. Null if no object
-     * is selected.
+     * @param gameObject this parameter's use changes with context
      * @param batcher The SpriteBatch to use for rendering.
      * @param cam The Camera to use for rendering.
      */
-    public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam);
+    public void render(GameObject gameObject, SpriteBatch batcher, Camera cam);
+
+    public boolean isReady();
+
+    public int getBoundingWidth();
+
+    public int getBoundingHeight();
 }

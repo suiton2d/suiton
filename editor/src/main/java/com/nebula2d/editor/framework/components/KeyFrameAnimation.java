@@ -118,13 +118,14 @@ public class KeyFrameAnimation extends Animation {
     }
 
     @Override
-    public void showAnimationEditDialog() {
-        new KeyFrameAnimationEditDialog(this);
+    public void showAnimationEditDialog(AnimatedRenderer renderer) {
+        new KeyFrameAnimationEditDialog(renderer, this);
     }
     
     @Override
     public void renderStill(SpriteBatch batch, GameObject gameObject, Camera cam) {
         TextureRegion frame = getStartFrame();
+
         float halfw = frame.getRegionWidth() / 2.0f;
         float halfh = frame.getRegionHeight() / 2.0f;
         batch.draw(frame,

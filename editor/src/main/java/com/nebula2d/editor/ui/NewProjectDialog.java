@@ -25,8 +25,6 @@ import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 public class NewProjectDialog extends JDialog {
@@ -88,40 +86,29 @@ public class NewProjectDialog extends JDialog {
     }
 
     private void bindButtons() {
-        cancelBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
+        cancelBtn.addActionListener(e -> dispose());
+
+        createBtn.addActionListener(e -> {
+            if(!validateText()) {
+                JOptionPane.showMessageDialog(NewProjectDialog.this,
+                        "You must provide a valid project name and parent directory.");
+
+                return;
             }
+            Project project = new Project(parentDirTf.getText().trim(), projNameTf.getText().trim());
+            project.addScene(new Scene("Untitled Scene 0"));
+            MainFrame.setProject(project);
+            dispose();
         });
 
-        createBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!validateText()) {
-                    JOptionPane.showMessageDialog(NewProjectDialog.this,
-                            "You must provide a valid project name and parent directory.");
+        browseBtn.addActionListener(e -> {
+            JFileChooser fc = new JFileChooser();
+            fc.setDialogTitle("Select a Directory");
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fc.setAcceptAllFileFilterUsed(false);
 
-                    return;
-                }
-                Project project = new Project(parentDirTf.getText().trim(), projNameTf.getText().trim());
-                project.addScene(new Scene("Untitled Scene 0"));
-                MainFrame.setProject(project);
-                dispose();
-            }
-        });
-
-        browseBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
-                fc.setDialogTitle("Select a Directory");
-                fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fc.setAcceptAllFileFilterUsed(false);
-
-                if (fc.showOpenDialog(NewProjectDialog.this) == JFileChooser.APPROVE_OPTION) {
-                    parentDirTf.setText(fc.getSelectedFile().getAbsolutePath());
-                }
+            if (fc.showOpenDialog(NewProjectDialog.this) == JFileChooser.APPROVE_OPTION) {
+                parentDirTf.setText(fc.getSelectedFile().getAbsolutePath());
             }
         });
     }

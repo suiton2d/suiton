@@ -23,15 +23,14 @@ import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
 import com.nebula2d.editor.ui.controls.N2DTree;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.*;
-import java.awt.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
@@ -86,24 +85,21 @@ public class SceneGraph extends N2DTree {
         });
         setModel(model);
 
-        addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                //Don't want the new game object menu items to be enabled if nothing is selected.
-                MainFrame.getN2DMenuBar().getGameObjectMenu().setEnabled(e.isAddedPath());
+        addTreeSelectionListener(e -> {
+            //Don't want the new game object menu items to be enabled if nothing is selected.
+            MainFrame.getN2DMenuBar().getGameObjectMenu().setEnabled(e.isAddedPath());
 
-                if (e.isAddedPath()) {
-                    DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-                    if (selectedNode instanceof GameObject) {
-                        MainFrame.getRenderCanvas().setSelectedObject((GameObject) selectedNode);
-                        MainFrame.getToolbar().getComponentsButton().setEnabled(true);
-                        return;
-                    }
+            if (e.isAddedPath()) {
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+                if (selectedNode instanceof GameObject) {
+                    MainFrame.getRenderCanvas().setSelectedObject((GameObject) selectedNode);
+                    MainFrame.getToolbar().getComponentsButton().setEnabled(true);
+                    return;
                 }
-
-                MainFrame.getToolbar().getComponentsButton().setEnabled(false);
-                MainFrame.getRenderCanvas().setSelectedObject(null);
             }
+
+            MainFrame.getToolbar().getComponentsButton().setEnabled(false);
+            MainFrame.getRenderCanvas().setSelectedObject(null);
         });
 
         setEditable(true);

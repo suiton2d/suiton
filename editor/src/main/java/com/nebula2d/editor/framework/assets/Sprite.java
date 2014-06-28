@@ -19,12 +19,17 @@
 package com.nebula2d.editor.framework.assets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.nebula2d.editor.common.IRenderable;
+import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
 
-public class Sprite extends Asset {
+public class Sprite extends Asset implements IRenderable {
 
     protected com.badlogic.gdx.graphics.Texture texture;
     protected boolean spriteSheet;
@@ -36,34 +41,30 @@ public class Sprite extends Asset {
 
     @Override
     public void initialize() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                texture = new com.badlogic.gdx.graphics.Texture(path);
-                isLoaded = true;
-            }
+        Gdx.app.postRunnable(() -> {
+            texture = new com.badlogic.gdx.graphics.Texture(path);
+            isLoaded = true;
         });
     }
 
     @Override
     public void dispose() {
         if (isLoaded) {
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    texture.dispose();
-                    texture = null;
-                    isLoaded = false;
-                }
+            Gdx.app.postRunnable(() -> {
+                texture.dispose();
+                texture = null;
+                isLoaded = false;
             });
         }
     }
 
-    public int getWidth() {
+    @Override
+    public int getBoundingWidth() {
         return this.texture.getWidth();
     }
 
-    public int getHeight() {
+    @Override
+    public int getBoundingHeight() {
         return this.texture.getHeight();
     }
 
@@ -89,7 +90,28 @@ public class Sprite extends Asset {
     @Override
     public void load(FullBufferedReader fr) throws IOException {
         String type = fr.readLine();
-        if (type.equalsIgnoreCase("Spritesheet"))
+        if (type.equalsIgnoreCase("SpriteSheet"))
             setSpriteSheet(true);
+    }
+
+    @Override
+    public void render(GameObject parent, SpriteBatch batcher, Camera cam) {
+        float halfw = getBoundingWidth() / 2.0f;
+        float halfh = getBoundingHeight() / 2.0f;
+        batcher.draw(new TextureRegion(getTexture()),
+                parent.getPosition().x - halfw,
+                parent.getPosition().y - halfh,
+                halfw,
+                halfh,
+                getBoundingWidth(),
+                getBoundingHeight(),
+                parent.getScale().x,
+                parent.getScale().y,
+                parent.getRotation());
+    }
+
+    @Override
+    public boolean isReady() {
+        return isLoaded;
     }
 }

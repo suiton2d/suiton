@@ -31,7 +31,7 @@ public class AnimationRenderCanvas extends LwjglAWTCanvas {
         super(adapter, MainFrame.getRenderCanvas());
         this.adapter = adapter;
         Sprite sprite = adapter.getAnimation().getSprite();
-        getCanvas().setPreferredSize(new Dimension(sprite.getWidth(), sprite.getHeight()));
+        getCanvas().setPreferredSize(new Dimension(sprite.getBoundingWidth(), sprite.getBoundingHeight()));
     }
 
     public void initCamera() {

@@ -63,7 +63,9 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
     }
 
     @Override
@@ -76,8 +78,8 @@ public class RenderAdapter implements ApplicationListener {
         if (camera == null)
             return;
 
-        camera.update();
         SpriteBatch batcher = new SpriteBatch();
+        batcher.setProjectionMatrix(camera.projection);
         batcher.begin();
         Project p = MainFrame.getProject();
         if (p != null && p.getCurrentScene() != null) {
@@ -87,7 +89,7 @@ public class RenderAdapter implements ApplicationListener {
 
         if (selectedObject != null && selectedObject.getRenderer() != null &&
                 selectedObject.getRenderer().isReady()) {
-            Rectangle boundingBox = selectedObject.getRenderer().getBoundingBox();
+            Rectangle boundingBox = selectedObject.getRenderer().getBoundingBox(camera);
 
             if (boundingBox != null) {
                 Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -96,9 +98,8 @@ public class RenderAdapter implements ApplicationListener {
                 shape.setColor(new Color(0.0f, 1.0f, 0.0f, 0.5f));
                 shape.begin(ShapeRenderer.ShapeType.Filled);
 
-                float x = boundingBox.getX() - camera.position.x;
-                float y = boundingBox.getY() - camera.position.y;
-
+                float x = boundingBox.getX();
+                float y = boundingBox.getY();
                 shape.rect(x, y, boundingBox.getWidth(), boundingBox.getHeight());
 
                 shape.end();

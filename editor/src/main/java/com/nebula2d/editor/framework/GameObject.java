@@ -18,12 +18,28 @@
 
 package com.nebula2d.editor.framework;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.nebula2d.editor.common.IRenderable;
+import com.nebula2d.editor.common.ISelectable;
 import com.nebula2d.editor.common.ISerializable;
-import com.nebula2d.editor.framework.components.*;
+import com.nebula2d.editor.framework.components.Behaviour;
+import com.nebula2d.editor.framework.components.Collider;
+import com.nebula2d.editor.framework.components.Component;
+import com.nebula2d.editor.framework.components.MusicSource;
+import com.nebula2d.editor.framework.components.Renderer;
+import com.nebula2d.editor.framework.components.RigidBody;
+import com.nebula2d.editor.framework.components.SoundEffectSource;
+import com.nebula2d.editor.framework.components.SpriteRenderer;
+import com.nebula2d.editor.framework.components.TileMapRenderer;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
@@ -32,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class GameObject extends BaseSceneNode implements ISerializable, IRenderable {
+public class GameObject extends BaseSceneNode implements ISerializable {
 
     protected Vector2 pos;
     protected  Vector2 scale;
@@ -41,12 +57,14 @@ public class GameObject extends BaseSceneNode implements ISerializable, IRendera
     protected List<Component> components;
     protected Renderer renderer;
     protected RigidBody rigidBody;
+    protected List<ISelectable> selectables;
     protected List<IRenderable> renderables;
 
     public GameObject(String name) {
         super(name);
-        components = new ArrayList<Component>();
-        renderables = new ArrayList<IRenderable>();
+        components = new ArrayList<>();
+        renderables = new ArrayList<>();
+        selectables = new ArrayList<>();
         pos = new Vector2();
         scale = new Vector2(1, 1);
         rot = 0;
@@ -108,7 +126,6 @@ public class GameObject extends BaseSceneNode implements ISerializable, IRendera
 
         if (comp instanceof Renderer) {
             renderer = (Renderer) comp;
-            return;
         }
 
         if (comp instanceof RigidBody) {
@@ -117,6 +134,9 @@ public class GameObject extends BaseSceneNode implements ISerializable, IRendera
 
         if (comp instanceof IRenderable)
             renderables.add((IRenderable) comp);
+
+        if (comp instanceof ISelectable)
+            selectables.add((ISelectable) comp);
     }
 
     public void removeComponent(Component comp) {
@@ -128,6 +148,9 @@ public class GameObject extends BaseSceneNode implements ISerializable, IRendera
 
         if (comp instanceof IRenderable)
             renderables.remove(comp);
+
+        if (comp instanceof ISelectable)
+            selectables.remove(comp);
     }
 
     @Override
@@ -148,6 +171,8 @@ public class GameObject extends BaseSceneNode implements ISerializable, IRendera
                 Renderer.RendererType rendererType = Renderer.RendererType.valueOf(fr.readLine());
                 if (rendererType == Renderer.RendererType.SPRITE_RENDERER)
                     component = new SpriteRenderer(name);
+                else if (rendererType == Renderer.RendererType.TILE_MAP_RENDERER)
+                    component = new TileMapRenderer(name);
 
             } else if (type == Component.ComponentType.MUSIC) {
                 component = new MusicSource(name);
@@ -200,14 +225,49 @@ public class GameObject extends BaseSceneNode implements ISerializable, IRendera
         }
     }
 
-    @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
-        if (renderer != null && renderer.isEnabled())
+        if (renderer != null && renderer.isEnabled()) {
             renderer.render(selectedObject, batcher, cam);
+        } else {
+            batcher.end();
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            ShapeRenderer shape = new ShapeRenderer();
+            shape.setProjectionMatrix(cam.combined);
+            OrthographicCamera ortho = (OrthographicCamera) cam;
+            shape.begin(ShapeRenderer.ShapeType.Filled);
+            shape.setColor(new Color(0f, 1f, 0f, 0.5f));
+            shape.circle(getPosition().x,
+                    getPosition().y,
+                    4 * ortho.zoom);
+            shape.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+            batcher.begin();
+        }
         for (IRenderable renderable : renderables) {
             if (((Component) renderable).isEnabled()) {
                 renderable.render(selectedObject, batcher, cam);
             }
         }
+    }
+
+    public boolean isSelected(Camera cam, float x, float y) {
+        if (renderer != null && renderer.isReady() && renderer.getBoundingBox(cam).contains(x, y))
+            return true;
+
+        OrthographicCamera ortho = (OrthographicCamera) cam;
+
+        Vector3 proj = cam.project(new Vector3(pos.x, pos.y, 0));
+        System.out.println(ortho.zoom);
+        Circle point = new Circle(proj.x, proj.y, 4);
+        return point.contains(x, y);
+    }
+
+    public boolean isMoveable() {
+        for (ISelectable selectable : selectables) {
+            if (!selectable.isMoveable())
+                return false;
+        }
+
+        return true;
     }
 }
