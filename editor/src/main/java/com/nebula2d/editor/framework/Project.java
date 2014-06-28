@@ -44,7 +44,7 @@ public class Project implements ISerializable {
         this.projectDir = dir;
         this.projectName = name;
         this.currentSceneIdx = 0;
-        scenes = new ArrayList<Scene>();
+        scenes = new ArrayList<>();
     }
 
     public Project(String path) {
@@ -52,7 +52,7 @@ public class Project implements ISerializable {
         this.projectDir = file.getParent();
         this.projectName = file.getName();
         this.currentSceneIdx = 0;
-        scenes = new ArrayList<Scene>();
+        scenes = new ArrayList<>();
     }
 
     public List<Scene> getScenes() {

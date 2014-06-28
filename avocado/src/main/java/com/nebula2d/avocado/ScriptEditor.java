@@ -26,8 +26,6 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -92,15 +90,12 @@ public class ScriptEditor extends JDialog {
         JMenu fileMenu = new JMenu("File");
         JMenuItem saveMenuItem = fileMenu.add("Save");
         saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
-        saveMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("saved!");
-                try {
-                    save();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(ScriptEditor.this, "Failed saving file. Please try again.");
-                }
+        saveMenuItem.addActionListener(e -> {
+            System.out.println("saved!");
+            try {
+                save();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(ScriptEditor.this, "Failed saving file. Please try again.");
             }
         });
 

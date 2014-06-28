@@ -27,8 +27,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
@@ -93,28 +91,20 @@ public class NewSceneDialog extends JDialog {
             }
         });
 
-        okBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String newSceneName = nameTf.getText();
-                Scene scene = new Scene(newSceneName);
-                SceneGraph sceneGraph = MainFrame.getSceneGraph();
-                Project project = MainFrame.getProject();
-                project.addScene(scene);
-                project.setCurrentScene(newSceneName);
-                sceneGraph.init();
-                project.loadCurrentScene();
-                sceneGraph.refresh();
-                dispose();
-            }
+        okBtn.addActionListener(e -> {
+            String newSceneName = nameTf.getText();
+            Scene scene = new Scene(newSceneName);
+            SceneGraph sceneGraph = MainFrame.getSceneGraph();
+            Project project1 = MainFrame.getProject();
+            project1.addScene(scene);
+            project1.setCurrentScene(newSceneName);
+            sceneGraph.init();
+            project1.loadCurrentScene();
+            sceneGraph.refresh();
+            dispose();
         });
 
-        cancelBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        cancelBtn.addActionListener(e -> dispose());
 
         add(btnPanel, BorderLayout.SOUTH);
         add(namePanel, BorderLayout.CENTER);

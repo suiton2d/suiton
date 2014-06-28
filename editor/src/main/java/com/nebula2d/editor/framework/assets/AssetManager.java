@@ -19,7 +19,7 @@ public final class AssetManager {
     private Map<Integer, Map<String, Asset>> assetMap;
 
     private AssetManager() {
-        assetMap = new HashMap<Integer, Map<String, Asset>>();
+        assetMap = new HashMap<>();
     }
 
     public static synchronized AssetManager getInstance() {
@@ -61,11 +61,16 @@ public final class AssetManager {
         return script != null ? script : (Script) addAsset(sceneIdx, new Script(path));
     }
 
+    public TiledTileSheet getOrCreateTiledTileSheet(int sceneIdx, String path) {
+        TiledTileSheet tileSheet = getAsset(sceneIdx, path, TiledTileSheet.class);
+        return tileSheet != null ? tileSheet : (TiledTileSheet) addAsset(sceneIdx, new TiledTileSheet(path));
+    }
+
     public Asset addAsset(int sceneIdx, Asset asset) {
         Map<String, Asset> assets = assetMap.get(sceneIdx);
 
         if (assets == null) {
-            assets = new HashMap<String, Asset>();
+            assets = new HashMap<>();
             assetMap.put(sceneIdx, assets);
         }
 

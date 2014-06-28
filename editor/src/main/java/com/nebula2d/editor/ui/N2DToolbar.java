@@ -24,10 +24,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Enumeration;
 
 /**
@@ -79,13 +75,10 @@ public class N2DToolbar extends JToolBar {
         componentsButton.setEnabled(false);
 
 
-        componentsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GameObject selectedGameObject = (GameObject) MainFrame.getSceneGraph().
-                        getSelectionPath().getLastPathComponent();
-                new ComponentsDialog(selectedGameObject);
-            }
+        componentsButton.addActionListener(e -> {
+            GameObject selectedGameObject = (GameObject) MainFrame.getSceneGraph().
+                    getSelectionPath().getLastPathComponent();
+            new ComponentsDialog(selectedGameObject);
         });
         return componentsButton;
     }
@@ -93,27 +86,12 @@ public class N2DToolbar extends JToolBar {
     private ButtonGroup forgeRendererWidgetButtons() {
         ButtonGroup group = new ButtonGroup();
         JToggleButton translateWidget = new JToggleButton("Translate");
-        translateWidget.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                selectedRendererWidget = RENDERER_WIDGET_TRANSLATE;
-            }
-        });
+        translateWidget.addItemListener(e -> selectedRendererWidget = RENDERER_WIDGET_TRANSLATE);
         translateWidget.setSelected(true);
         JToggleButton scaleWidget = new JToggleButton("Scale");
-        scaleWidget.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                selectedRendererWidget = RENDERER_WIDGET_SCALE;
-            }
-        });
+        scaleWidget.addItemListener(e -> selectedRendererWidget = RENDERER_WIDGET_SCALE);
         JToggleButton rotateWidget = new JToggleButton("Rotate");
-        rotateWidget.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                selectedRendererWidget = RENDERER_WIDGET_ROTATE;
-            }
-        });
+        rotateWidget.addItemListener(e -> selectedRendererWidget = RENDERER_WIDGET_ROTATE);
         group.add(translateWidget);
         group.add(scaleWidget);
         group.add(rotateWidget);

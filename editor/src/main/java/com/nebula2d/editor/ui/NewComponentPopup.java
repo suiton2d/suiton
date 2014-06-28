@@ -20,15 +20,19 @@ package com.nebula2d.editor.ui;
 
 
 import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.components.*;
+import com.nebula2d.editor.framework.components.Behaviour;
+import com.nebula2d.editor.framework.components.Collider;
 import com.nebula2d.editor.framework.components.Component;
+import com.nebula2d.editor.framework.components.MusicSource;
+import com.nebula2d.editor.framework.components.RigidBody;
+import com.nebula2d.editor.framework.components.SoundEffectSource;
+import com.nebula2d.editor.framework.components.SpriteRenderer;
+import com.nebula2d.editor.framework.components.TileMapRenderer;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -48,7 +52,8 @@ public class NewComponentPopup extends JPopupMenu {
 
     private void create() {
         JMenu rendererMenu = new JMenu("Renderer");
-        JMenuItem panelRendererMenuItem = rendererMenu.add("SpriteRenderer");
+        JMenuItem spriteRendererMenuItem = rendererMenu.add("SpriteAnimatedRenderer");
+        JMenuItem tileMapRendererMenuItem = rendererMenu.add("TileMapRenderer");
 
         JMenu audioMenu = new JMenu("Audio");
         JMenuItem musicSourceMenuItem = audioMenu.add("MusicSource");
@@ -60,61 +65,50 @@ public class NewComponentPopup extends JPopupMenu {
         JMenuItem rigidBodyMenuItm = physicsMenu.add("RigidBody");
         JMenuItem collider = physicsMenu.add("Collider");
 
-        behaviorMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Behaviour behaviour = new Behaviour();
-                new NewComponentDialog(behaviour);
-            }
+        behaviorMenuItem.addActionListener(e -> {
+            Behaviour behaviour = new Behaviour();
+            new NewComponentDialog(behaviour);
         });
 
-        musicSourceMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MusicSource musicSource = new MusicSource("");
-                new NewComponentDialog(musicSource);
-            }
+        musicSourceMenuItem.addActionListener(e -> {
+            MusicSource musicSource = new MusicSource("");
+            new NewComponentDialog(musicSource);
         });
 
-        soundEffectSourceMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SoundEffectSource soundEffectSource = new SoundEffectSource("");
-                new NewComponentDialog(soundEffectSource);
-            }
+        soundEffectSourceMenuItem.addActionListener(e -> {
+            SoundEffectSource soundEffectSource = new SoundEffectSource("");
+            new NewComponentDialog(soundEffectSource);
         });
 
-        panelRendererMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        spriteRendererMenuItem.addActionListener(e -> {
 
-                if (gameObject.getRenderer() != null) {
-                    JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a renderer attached.");
-                    return;
-                }
-
-                new NewComponentDialog(new SpriteRenderer(""));
+            if (gameObject.getRenderer() != null) {
+                JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a renderer attached.");
+                return;
             }
+
+            new NewComponentDialog(new SpriteRenderer(""));
         });
 
-        rigidBodyMenuItm.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (gameObject.getRigidBody() != null) {
-                    JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a RigidBody attached.");
-                    return;
-                }
-
-                new NewComponentDialog(new RigidBody(gameObject));
+        tileMapRendererMenuItem.addActionListener(e -> {
+            if (gameObject.getRenderer() != null) {
+                JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a renderer attached.");
+                return;
             }
+
+            new NewComponentDialog(new TileMapRenderer(""));
         });
 
-        collider.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new NewComponentDialog(new Collider(gameObject));
+        rigidBodyMenuItm.addActionListener(e -> {
+            if (gameObject.getRigidBody() != null) {
+                JOptionPane.showMessageDialog(NewComponentPopup.this, "This GameObject already has a RigidBody attached.");
+                return;
             }
+
+            new NewComponentDialog(new RigidBody(gameObject));
         });
+
+        collider.addActionListener(e -> new NewComponentDialog(new Collider(gameObject)));
 
         add(rendererMenu);
         add(audioMenu);
@@ -145,33 +139,25 @@ public class NewComponentPopup extends JPopupMenu {
             namePanel.add(nameTf);
 
             JButton okBtn = new JButton("Ok");
-            okBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String name = nameTf.getText();
-                    if (!validateText(name)) {
-                        errorMessage.setVisible(true);
-                        return;
-                    }
-
-                    errorMessage.setVisible(false);
-                    NewComponentDialog.this.component.setName(name);
-                    gameObject.addComponent(NewComponentDialog.this.component);
-
-                    listModel.addElement(NewComponentDialog.this.component);
-                    dispose();
-                    list.setSelectedValue(NewComponentDialog.this.component, true);
-
-
+            okBtn.addActionListener(e -> {
+                String name = nameTf.getText();
+                if (!validateText(name)) {
+                    errorMessage.setVisible(true);
+                    return;
                 }
+
+                errorMessage.setVisible(false);
+                NewComponentDialog.this.component.setName(name);
+                gameObject.addComponent(NewComponentDialog.this.component);
+
+                listModel.addElement(NewComponentDialog.this.component);
+                dispose();
+                list.setSelectedValue(NewComponentDialog.this.component, true);
+
+
             });
             JButton cancelBtn = new JButton("Cancel");
-            cancelBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                }
-            });
+            cancelBtn.addActionListener(e -> dispose());
             N2DPanel buttonPanel = new N2DPanel(new FlowLayout(FlowLayout.LEFT));
             buttonPanel.add(okBtn);
             buttonPanel.add(cancelBtn);

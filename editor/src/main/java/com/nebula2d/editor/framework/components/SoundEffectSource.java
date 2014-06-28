@@ -31,12 +31,8 @@ import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class SoundEffectSource extends Component {
@@ -60,49 +56,28 @@ public class SoundEffectSource extends Component {
         final JButton mediaBtn = new JButton("Play");
         mediaBtn.setEnabled(soundEffect != null);
 
-        browseBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                final JFileChooser fc = new JFileChooser();
-                fc.setDialogTitle("Select a file.");
+        browseBtn.addActionListener(e -> {
+            final JFileChooser fc = new JFileChooser();
+            fc.setDialogTitle("Select a file.");
 
-                if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    final String path = fc.getSelectedFile().getAbsolutePath();
-                    filePathLbl.setText(path);
-                    int currScene = MainFrame.getProject().getCurrentSceneIdx();
-                    SoundEffectSource.this.soundEffect = AssetManager.getInstance().
-                            getOrCreateSoundEffect(currScene, path);
-                    mediaBtn.setEnabled(true);
-                }
+            if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                final String path = fc.getSelectedFile().getAbsolutePath();
+                filePathLbl.setText(path);
+                int currScene = MainFrame.getProject().getCurrentSceneIdx();
+                SoundEffectSource.this.soundEffect = AssetManager.getInstance().
+                        getOrCreateSoundEffect(currScene, path);
+                mediaBtn.setEnabled(true);
             }
         });
 
-        enabledCb.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                enabled = enabledCb.isSelected();
-            }
-        });
+        enabledCb.addChangeListener(e -> enabled = enabledCb.isSelected());
 
-        loopCb.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                soundEffect.setLoop(loopCb.isSelected());
-            }
-        });
+        loopCb.addChangeListener(e -> soundEffect.setLoop(loopCb.isSelected()));
         final Music.OnCompletionListener onSfxCompleteListener =
-                new com.badlogic.gdx.audio.Music.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(com.badlogic.gdx.audio.Music music) {
-                        mediaBtn.setEnabled(true);
-                    }
-                };
-        mediaBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mediaBtn.setEnabled(false);
-                playSoundEffect(onSfxCompleteListener);
-            }
+                music -> mediaBtn.setEnabled(true);
+        mediaBtn.addActionListener(e -> {
+            mediaBtn.setEnabled(false);
+            playSoundEffect(onSfxCompleteListener);
         });
 
         nameTf.getDocument().addDocumentListener(new DocumentListener() {
@@ -157,12 +132,9 @@ public class SoundEffectSource extends Component {
     }
 
     private void playSoundEffect(final Music.OnCompletionListener listener) {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-            soundEffect.play();
-            soundEffect.setOnCompleteListener(listener);
-            }
+        Gdx.app.postRunnable(() -> {
+        soundEffect.play();
+        soundEffect.setOnCompleteListener(listener);
         });
     }
 

@@ -24,11 +24,7 @@ import com.nebula2d.editor.ui.controls.N2DList;
 import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
@@ -44,7 +40,7 @@ public class ChangeSceneDialog extends JDialog {
 
     private void setupContents() {
         final DefaultListModel<Scene> model = createListModel();
-        final N2DList<Scene> sceneListBox = new N2DList<Scene>(model);
+        final N2DList<Scene> sceneListBox = new N2DList<>(model);
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
 
@@ -52,35 +48,24 @@ public class ChangeSceneDialog extends JDialog {
         btnPanel.add(okBtn);
         btnPanel.add(cancelBtn);
 
-        sceneListBox.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    okBtn.setEnabled(!sceneListBox.isSelectionEmpty());
-                }
+        sceneListBox.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                okBtn.setEnabled(!sceneListBox.isSelectionEmpty());
             }
         });
 
-        okBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Scene scene = sceneListBox.getSelectedValue();
-                Project project = MainFrame.getProject();
-                SceneGraph sceneGraph = MainFrame.getSceneGraph();
-                project.setCurrentScene(scene.getName());
-                sceneGraph.init();
-                project.loadCurrentScene();
-                sceneGraph.refresh();
-                dispose();
-            }
+        okBtn.addActionListener(e -> {
+            Scene scene = sceneListBox.getSelectedValue();
+            Project project = MainFrame.getProject();
+            SceneGraph sceneGraph = MainFrame.getSceneGraph();
+            project.setCurrentScene(scene.getName());
+            sceneGraph.init();
+            project.loadCurrentScene();
+            sceneGraph.refresh();
+            dispose();
         });
 
-        cancelBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        cancelBtn.addActionListener(e -> dispose());
 
         add(btnPanel, BorderLayout.SOUTH);
         add(new JScrollPane(sceneListBox), BorderLayout.CENTER);
@@ -91,7 +76,7 @@ public class ChangeSceneDialog extends JDialog {
 
     private DefaultListModel<Scene> createListModel() {
         Project project = MainFrame.getProject();
-        DefaultListModel<Scene> sceneList = new DefaultListModel<Scene>();
+        DefaultListModel<Scene> sceneList = new DefaultListModel<>();
         for (Scene scene : project.getScenes()) {
             sceneList.addElement(scene);
         }

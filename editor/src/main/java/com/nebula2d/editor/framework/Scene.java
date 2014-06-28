@@ -20,7 +20,6 @@ package com.nebula2d.editor.framework;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -28,7 +27,7 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 import java.io.IOException;
 import java.util.Enumeration;
 
-public class Scene extends BaseSceneNode implements ISerializable, IRenderable {
+public class Scene extends BaseSceneNode implements ISerializable {
 
     private static int sceeneCounter = 0;
 
@@ -58,7 +57,6 @@ public class Scene extends BaseSceneNode implements ISerializable, IRenderable {
         return null;
     }
 
-    @Override
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
         Enumeration layers = children();
 

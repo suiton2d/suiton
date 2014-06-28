@@ -18,18 +18,15 @@
 
 package com.nebula2d.editor.ui;
 
+import com.nebula2d.editor.framework.components.AnimatedRenderer;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
+import com.nebula2d.editor.util.FloatValidatedDocumentListener;
 import com.nebula2d.editor.util.IntKfAnimPropertyDocumentListener;
-import com.nebula2d.editor.util.StringUtil;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -40,7 +37,7 @@ public class KeyFrameAnimationEditDialog extends JDialog {
 
     private KeyFrameAnimation animation;
     private AnimationRenderCanvas animatedCanvas;
-    public KeyFrameAnimationEditDialog(KeyFrameAnimation animation) {
+    public KeyFrameAnimationEditDialog(final AnimatedRenderer renderer, final KeyFrameAnimation animation) {
         this.animation = animation;
         create();
 
@@ -48,6 +45,8 @@ public class KeyFrameAnimationEditDialog extends JDialog {
             @Override
             public void windowClosing(WindowEvent e) {
                 animatedCanvas.stop();
+                if (animation.isRenderable())
+                    renderer.setCurrentAnimation(animation);
             }
         });
     }
@@ -64,39 +63,6 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         JTextField startFrameTf = new JTextField(Integer.toString(animation.getStartFrameIndex()), 3);
         JTextField endFrameTf = new JTextField(Integer.toString(animation.getEndFrameIndex()), 3);
         final JTextField speedTf = new JTextField(Float.toString(animation.getSpeed()), 3);
-
-        DocumentListener floatDocumentListener = new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                Float speed = StringUtil.toFloat(speedTf.getText());
-                if (speed == null) {
-                    String text = speedTf.getText();
-                    speedTf.setText(text.substring(0, text.length() - 1));
-                    return;
-                }
-
-                animation.setSpeed(speed);
-                animation.init();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                Float speed = StringUtil.toFloat(speedTf.getText());
-                if (speed == null) {
-                    String text = speedTf.getText();
-                    speedTf.setText(text.substring(0, text.length() - 1));
-                    return;
-                }
-
-                animation.setSpeed(speed);
-                animation.init();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-
-            }
-        };
 
         frameWidthTf.getDocument().addDocumentListener(
                 new IntKfAnimPropertyDocumentListener(frameWidthTf, animation,
@@ -115,15 +81,16 @@ public class KeyFrameAnimationEditDialog extends JDialog {
                         IntKfAnimPropertyDocumentListener.AnimationPropertyType.END_FRAME)
         );
 
-        speedTf.getDocument().addDocumentListener(floatDocumentListener);
+        speedTf.getDocument().addDocumentListener(new FloatValidatedDocumentListener(speedTf, input -> {
+            animation.setSpeed(input);
+            animation.init();
+            return null;
+        }));
 
         final N2DCheckBox wrapCb = new N2DCheckBox("Wrap", animation.wrap());
-        wrapCb.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                KeyFrameAnimationEditDialog.this.animation.setStateTime(0);
-                KeyFrameAnimationEditDialog.this.animation.setWrap(wrapCb.isSelected());
-            }
+        wrapCb.addChangeListener(e -> {
+            KeyFrameAnimationEditDialog.this.animation.setStateTime(0);
+            KeyFrameAnimationEditDialog.this.animation.setWrap(wrapCb.isSelected());
         });
 
         N2DPanel inputPanel = new N2DPanel();

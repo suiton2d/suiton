@@ -38,7 +38,7 @@ public class StillKeyFrameAnimationCanvas extends JPanel {
         Sprite sprite = animation.getSprite();
         init();
         setBackground(Color.WHITE);
-        setPreferredSize(new Dimension(sprite.getWidth(), sprite.getHeight()));
+        setPreferredSize(new Dimension(sprite.getBoundingWidth(), sprite.getBoundingHeight()));
     }
 
     public void init() {
