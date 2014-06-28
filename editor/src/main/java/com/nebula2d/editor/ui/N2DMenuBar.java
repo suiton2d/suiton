@@ -40,7 +40,6 @@ public class N2DMenuBar extends JMenuBar {
     private JMenuItem newMenuItem;
     private JMenuItem saveMenuItem;
     private JMenuItem openMenuItem;
-    private JMenuItem exitMenuItem;
 
     private JMenuItem newSceneMenuItem;
     private JMenuItem changeSceneMenuItem;
@@ -58,6 +57,7 @@ public class N2DMenuBar extends JMenuBar {
         openMenuItem = fileMenu.add("Open Project");
         setBorder(BorderFactory.createEmptyBorder());
         //Don't need exit menu item on Mac
+        JMenuItem exitMenuItem;
         if (!PlatformUtil.isMac())
             exitMenuItem = fileMenu.add(new ExitAction());
 

@@ -39,25 +39,19 @@ public class SoundEffect extends Asset {
 
     @Override
     public void initialize() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                sound = Gdx.audio.newMusic(new FileHandle(new File(path)));
-                isLoaded = true;
-            }
+        Gdx.app.postRunnable(() -> {
+            sound = Gdx.audio.newMusic(new FileHandle(new File(path)));
+            isLoaded = true;
         });
     }
 
     @Override
     public void dispose() {
         if (isLoaded) {
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    sound.dispose();
-                    sound = null;
-                    isLoaded = false;
-                }
+            Gdx.app.postRunnable(() -> {
+                sound.dispose();
+                sound = null;
+                isLoaded = false;
             });
         }
     }

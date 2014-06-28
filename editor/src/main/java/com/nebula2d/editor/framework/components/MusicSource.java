@@ -30,12 +30,8 @@ import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class MusicSource extends Component {
@@ -62,64 +58,35 @@ public class MusicSource extends Component {
         if (musicTrack != null) {
             filePathLbl.setText(musicTrack.getPath());
         }
-        browseBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                final JFileChooser fc = new JFileChooser();
-                fc.setDialogTitle("Select a file.");
+        browseBtn.addActionListener(e -> {
+            final JFileChooser fc = new JFileChooser();
+            fc.setDialogTitle("Select a file.");
 
-                if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    final String path = fc.getSelectedFile().getAbsolutePath();
-                    filePathLbl.setText(path);
-                    int currScene = MainFrame.getProject().getCurrentSceneIdx();
-                    MusicSource.this.musicTrack = AssetManager.getInstance().
-                            getOrCreateMusicTrack(currScene, path);
-                    mediaBtn.setEnabled(true);
-                }
+            if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                final String path = fc.getSelectedFile().getAbsolutePath();
+                filePathLbl.setText(path);
+                int currScene = MainFrame.getProject().getCurrentSceneIdx();
+                MusicSource.this.musicTrack = AssetManager.getInstance().
+                        getOrCreateMusicTrack(currScene, path);
+                mediaBtn.setEnabled(true);
             }
         });
         final com.badlogic.gdx.audio.Music.OnCompletionListener onMusicCompleteListener =
-                new com.badlogic.gdx.audio.Music.OnCompletionListener() {
-            @Override
-            public void onCompletion(com.badlogic.gdx.audio.Music music) {
-                mediaBtn.setText("Play");
-            }
-        };
+                music -> mediaBtn.setText("Play");
 
-        enabledCb.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                enabled = enabledCb.isSelected();
-            }
-        });
-        loopCb.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                musicTrack.setLoop(loopCb.isSelected());
-            }
-        });
-        mediaBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JButton btn = (JButton) e.getSource();
-                if (btn.getText().equals("Play")) {
-                    btn.setText("Stop");
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            musicTrack.play();
-                            musicTrack.setOnCompleteListener(onMusicCompleteListener);
-                        }
-                    });
-                } else {
-                    btn.setText("Play");
-                    Gdx.app.postRunnable(new Runnable() {
-                        @Override
-                        public void run() {
-                            musicTrack.stop();
-                        }
-                    });
-                }
+        enabledCb.addChangeListener(e -> enabled = enabledCb.isSelected());
+        loopCb.addChangeListener(e -> musicTrack.setLoop(loopCb.isSelected()));
+        mediaBtn.addActionListener(e -> {
+            JButton btn = (JButton) e.getSource();
+            if (btn.getText().equals("Play")) {
+                btn.setText("Stop");
+                Gdx.app.postRunnable(() -> {
+                    musicTrack.play();
+                    musicTrack.setOnCompleteListener(onMusicCompleteListener);
+                });
+            } else {
+                btn.setText("Play");
+                Gdx.app.postRunnable(musicTrack::stop);
             }
         });
 

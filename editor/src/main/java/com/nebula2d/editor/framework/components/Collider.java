@@ -30,10 +30,6 @@ import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
@@ -77,48 +73,35 @@ public class Collider extends Component implements IRenderable {
         final N2DCheckBox enabledCb = new N2DCheckBox("Enabled", enabled);
         final N2DCheckBox isSensorCb = new N2DCheckBox("Sensor", isSensor);
         final N2DLabel shapeLbl = new N2DLabel("Collision Shape: ");
-        final JComboBox<CollisionShape.ShapeType> shapeCombo = new JComboBox<CollisionShape.ShapeType>(
+        final JComboBox<CollisionShape.ShapeType> shapeCombo = new JComboBox<>(
                 CollisionShape.ShapeType.values());
 
         final N2DPanel shapePanel = new N2DPanel();
 
         final N2DPanel panel = new N2DPanel();
 
-        enabledCb.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                enabled = enabledCb.isSelected();
+        enabledCb.addChangeListener(e -> enabled = enabledCb.isSelected());
+
+        isSensorCb.addChangeListener(e -> isSensor = isSensorCb.isSelected());
+
+        shapeCombo.addActionListener(e -> {
+
+            CollisionShape.ShapeType shapeType = (CollisionShape.ShapeType) shapeCombo.getSelectedItem();
+
+            switch (shapeType) {
+                case BOX:
+                    if (!(shape instanceof BoundingBox))
+                        shape = new BoundingBox(Collider.this.parent);
+                    break;
+                case CIRCLE:
+                    if (!(shape instanceof Circle))
+                        shape = new Circle(Collider.this.parent);
+                    break;
             }
-        });
-
-        isSensorCb.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                isSensor = isSensorCb.isSelected();
-            }
-        });
-
-        shapeCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                CollisionShape.ShapeType shapeType = (CollisionShape.ShapeType) shapeCombo.getSelectedItem();
-
-                switch (shapeType) {
-                    case BOX:
-                        if (!(shape instanceof BoundingBox))
-                            shape = new BoundingBox(Collider.this.parent);
-                        break;
-                    case CIRCLE:
-                        if (!(shape instanceof Circle))
-                            shape = new Circle(Collider.this.parent);
-                        break;
-                }
-                shapePanel.removeAll();
-                shapePanel.add(shape.createEditorPanel());
-                shapePanel.validate();
-                shapePanel.repaint();
-            }
+            shapePanel.removeAll();
+            shapePanel.add(shape.createEditorPanel());
+            shapePanel.validate();
+            shapePanel.repaint();
         });
 
         GroupLayout layout = new GroupLayout(panel);

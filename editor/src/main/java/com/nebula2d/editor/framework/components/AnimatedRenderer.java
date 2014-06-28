@@ -18,7 +18,6 @@
 
 package com.nebula2d.editor.framework.components;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
@@ -34,7 +33,7 @@ public abstract class AnimatedRenderer extends Renderer {
 
     public AnimatedRenderer(String name, RendererType rendererType) {
         super(name, rendererType);
-        animations = new ArrayList<Animation>();
+        animations = new ArrayList<>();
         currentAnim = -1;
     }
 

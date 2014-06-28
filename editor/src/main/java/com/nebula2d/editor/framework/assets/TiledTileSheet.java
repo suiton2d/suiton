@@ -1,7 +1,6 @@
 package com.nebula2d.editor.framework.assets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -34,26 +32,23 @@ public class TiledTileSheet extends TileSheet {
     @Override
     public void initialize() {
 
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                if (!isLoaded) {
-                    tileMap = new TmxMapLoader().load(path);
-                    for (MapLayer layer : tileMap.getLayers()) {
-                        TiledMapTileLayer tiledLayer = (TiledMapTileLayer) layer;
-                        int w = (int)(tiledLayer.getWidth() * tiledLayer.getTileWidth());
+        Gdx.app.postRunnable(() -> {
+            if (!isLoaded) {
+                tileMap = new TmxMapLoader().load(path);
+                for (MapLayer layer : tileMap.getLayers()) {
+                    TiledMapTileLayer tiledLayer = (TiledMapTileLayer) layer;
+                    int w = (int)(tiledLayer.getWidth() * tiledLayer.getTileWidth());
 
-                        int h = (int)(tiledLayer.getHeight() * tiledLayer.getTileHeight());
+                    int h = (int)(tiledLayer.getHeight() * tiledLayer.getTileHeight());
 
-                        if (w > width)
-                            width = w;
+                    if (w > width)
+                        width = w;
 
-                        if (h > height)
-                            height = h;
-                    }
-
-                    isLoaded = true;
+                    if (h > height)
+                        height = h;
                 }
+
+                isLoaded = true;
             }
         });
     }

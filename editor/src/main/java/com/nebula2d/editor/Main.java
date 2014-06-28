@@ -24,11 +24,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainFrame();
-            }
-        });
+        SwingUtilities.invokeLater(MainFrame::new);
     }
 }

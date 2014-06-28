@@ -30,11 +30,6 @@ public class SceneNodePopup extends JPopupMenu {
 
         JMenuItem deleteMenuItem = add("Delete");
 
-        deleteMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                node.remove();
-            }
-        });
+        deleteMenuItem.addActionListener(e -> node.remove());
     }
 }

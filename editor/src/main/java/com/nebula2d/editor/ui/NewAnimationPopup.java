@@ -20,16 +20,14 @@ package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.Sprite;
+import com.nebula2d.editor.framework.components.AnimatedRenderer;
 import com.nebula2d.editor.framework.components.Animation;
 import com.nebula2d.editor.framework.components.KeyFrameAnimation;
-import com.nebula2d.editor.framework.components.AnimatedRenderer;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -44,12 +42,9 @@ public class NewAnimationPopup extends JPopupMenu {
         int currScene = MainFrame.getProject().getCurrentScene().getId();
         sprite = AssetManager.getInstance().getOrCreateSprite(currScene, texturePath);
         JMenuItem kfAnimMenuItem = add("KeyFrameAnimation");
-        kfAnimMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                KeyFrameAnimation kfAnim = new KeyFrameAnimation("", sprite);
-                new NewAnimationDialog(kfAnim);
-            }
+        kfAnimMenuItem.addActionListener(e -> {
+            KeyFrameAnimation kfAnim = new KeyFrameAnimation("", sprite);
+            new NewAnimationDialog(kfAnim);
         });
 
         addFocusListener(new FocusAdapter() {
@@ -75,30 +70,22 @@ public class NewAnimationPopup extends JPopupMenu {
             namePanel.add(nameTf);
 
             final JButton okBtn = new JButton("Ok");
-            okBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String name = nameTf.getText();
-                    if (!validateText(name)) {
-                        errorMsg.setVisible(true);
-                        return;
-                    }
-
-                    errorMsg.setVisible(false);
-                    NewAnimationDialog.this.animation.setName(name);
-                    NewAnimationDialog.this.animation.init();
-                    animatedRenderer.addAnimation(NewAnimationDialog.this.animation);
-                    listModel.addElement(NewAnimationDialog.this.animation);
-                    dispose();
+            okBtn.addActionListener(e -> {
+                String name = nameTf.getText();
+                if (!validateText(name)) {
+                    errorMsg.setVisible(true);
+                    return;
                 }
+
+                errorMsg.setVisible(false);
+                NewAnimationDialog.this.animation.setName(name);
+                NewAnimationDialog.this.animation.init();
+                animatedRenderer.addAnimation(NewAnimationDialog.this.animation);
+                listModel.addElement(NewAnimationDialog.this.animation);
+                dispose();
             });
             final JButton cancelBtn = new JButton("Cancel");
-            cancelBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    dispose();
-                }
-            });
+            cancelBtn.addActionListener(e -> dispose());
 
             final N2DPanel buttonPanel = new N2DPanel();
             buttonPanel.add(okBtn);

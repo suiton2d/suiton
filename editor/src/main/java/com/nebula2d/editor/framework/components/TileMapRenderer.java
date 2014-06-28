@@ -2,7 +2,6 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.TileSheet;
@@ -14,13 +13,9 @@ import com.nebula2d.editor.ui.controls.N2DPanel;
 import com.nebula2d.editor.util.FullBufferedReader;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
@@ -90,19 +85,16 @@ public class TileMapRenderer extends Renderer {
         }
 
         final JButton browseBtn = new JButton("...");
-        browseBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                final JFileChooser fc = new JFileChooser();
-                fc.setDialogTitle("Select a file.");
+        browseBtn.addActionListener(e -> {
+            final JFileChooser fc = new JFileChooser();
+            fc.setDialogTitle("Select a file.");
 
-                if (fc.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                    final String path = fc.getSelectedFile().getAbsolutePath();
-                    tileSheetTf.setText(path);
-                    int currScene = MainFrame.getProject().getCurrentSceneIdx();
-                    TileMapRenderer.this.renderable = AssetManager.getInstance().
-                            getOrCreateTiledTileSheet(currScene, path);
-                }
+            if (fc.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                final String path = fc.getSelectedFile().getAbsolutePath();
+                tileSheetTf.setText(path);
+                int currScene = MainFrame.getProject().getCurrentSceneIdx();
+                TileMapRenderer.this.renderable = AssetManager.getInstance().
+                        getOrCreateTiledTileSheet(currScene, path);
             }
         });
 
@@ -135,12 +127,7 @@ public class TileMapRenderer extends Renderer {
 
         final N2DCheckBox enabledCb = new N2DCheckBox("Enabled");
         enabledCb.setSelected(enabled);
-        enabledCb.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                enabled = enabledCb.isSelected();
-            }
-        });
+        enabledCb.addChangeListener(e -> enabled = enabledCb.isSelected());
         N2DPanel topPanel = new N2DPanel();
         GroupLayout layout = new GroupLayout(topPanel);
         topPanel.setLayout(layout);

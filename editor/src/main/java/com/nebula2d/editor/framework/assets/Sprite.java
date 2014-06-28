@@ -22,7 +22,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.util.FullBufferedReader;
@@ -42,25 +41,19 @@ public class Sprite extends Asset implements IRenderable {
 
     @Override
     public void initialize() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                texture = new com.badlogic.gdx.graphics.Texture(path);
-                isLoaded = true;
-            }
+        Gdx.app.postRunnable(() -> {
+            texture = new com.badlogic.gdx.graphics.Texture(path);
+            isLoaded = true;
         });
     }
 
     @Override
     public void dispose() {
         if (isLoaded) {
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    texture.dispose();
-                    texture = null;
-                    isLoaded = false;
-                }
+            Gdx.app.postRunnable(() -> {
+                texture.dispose();
+                texture = null;
+                isLoaded = false;
             });
         }
     }

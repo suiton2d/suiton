@@ -21,15 +21,16 @@ package com.nebula2d.editor.ui;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Scene;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -61,7 +62,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
 
     protected List<GameObject> getSelectedGameObjects(int x, int y) {
 
-        List<GameObject> res = new ArrayList<GameObject>();
+        List<GameObject> res = new ArrayList<>();
 
         Scene scene = MainFrame.getProject().getCurrentScene();
         Enumeration nodes = scene.depthFirstEnumeration();

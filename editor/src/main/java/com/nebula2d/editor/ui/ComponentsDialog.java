@@ -70,8 +70,8 @@ public class ComponentsDialog extends JDialog {
     }
 
     private N2DPanel forgeComponentsListPanel() {
-        componentList = new N2DList<Component>();
-        final DefaultListModel<Component> model = new DefaultListModel<Component>();
+        componentList = new N2DList<>();
+        final DefaultListModel<Component> model = new DefaultListModel<>();
         componentList.setModel(model);
 
         populateComponentList(componentList);
@@ -80,25 +80,17 @@ public class ComponentsDialog extends JDialog {
         sp.setPreferredSize(new Dimension(200, 400));
 
         final JButton addButton = new JButton("Add");
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new NewComponentPopup(gameObject, componentList).show(addButton, -1, addButton.getHeight());
-            }
-        });
+        addButton.addActionListener(e -> new NewComponentPopup(gameObject, componentList).show(addButton, -1, addButton.getHeight()));
         final JButton removeButton = new JButton("Remove");
-        removeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Component selectedComponent = componentList.getSelectedValue();
-                gameObject.removeComponent(selectedComponent);
-                ((DefaultListModel<Component>) componentList.getModel()).removeElement(selectedComponent);
-                mainPanel.remove(rightPanel);
-                rightPanel = forgeEmptyPanel();
-                mainPanel.add(rightPanel);
-                mainPanel.validate();
-                mainPanel.repaint();
-            }
+        removeButton.addActionListener(e -> {
+            Component selectedComponent = componentList.getSelectedValue();
+            gameObject.removeComponent(selectedComponent);
+            ((DefaultListModel<Component>) componentList.getModel()).removeElement(selectedComponent);
+            mainPanel.remove(rightPanel);
+            rightPanel = forgeEmptyPanel();
+            mainPanel.add(rightPanel);
+            mainPanel.validate();
+            mainPanel.repaint();
         });
         removeButton.setEnabled(false);
 
@@ -106,23 +98,20 @@ public class ComponentsDialog extends JDialog {
         buttonPanel.add(addButton);
         buttonPanel.add(removeButton);
 
-        componentList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (e.getValueIsAdjusting())
-                    return;
+        componentList.addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting())
+                return;
 
-                Component component = componentList.getSelectedValue();
+            Component component = componentList.getSelectedValue();
 
-                removeButton.setEnabled(component != null);
+            removeButton.setEnabled(component != null);
 
-                if (component != null) {
-                    mainPanel.remove(rightPanel);
-                    rightPanel = component.forgeComponentContentPanel(ComponentsDialog.this);
-                    mainPanel.add(rightPanel);
-                    mainPanel.validate();
-                    mainPanel.repaint();
-                }
+            if (component != null) {
+                mainPanel.remove(rightPanel);
+                rightPanel = component.forgeComponentContentPanel(ComponentsDialog.this);
+                mainPanel.add(rightPanel);
+                mainPanel.validate();
+                mainPanel.repaint();
             }
         });
 
