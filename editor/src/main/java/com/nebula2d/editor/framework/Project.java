@@ -51,6 +51,9 @@ public class Project implements ISerializable {
         File file = new File(path);
         this.projectDir = file.getParent();
         this.projectName = file.getName();
+        if (this.projectName.endsWith(".n2d"))
+            this.projectName = this.projectName.substring(0, this.projectName.length() - 4);
+
         this.currentSceneIdx = 0;
         scenes = new ArrayList<>();
     }
@@ -94,7 +97,7 @@ public class Project implements ISerializable {
     }
 
     public String getPath() {
-        return projectDir + File.separator + projectName;
+        return projectDir + File.separator + projectName + ".n2d";
     }
 
     public String getNameWithoutExt() {
