@@ -44,6 +44,7 @@ public class N2DMenuBar extends JMenuBar {
 
     private JMenuItem newSceneMenuItem;
     private JMenuItem changeSceneMenuItem;
+    private JMenuItem renameSceneMenuItem;
     private JMenuItem newLayerMenuItem;
 
     private JMenuItem newEmptyGameObjectMenuItem;
@@ -65,6 +66,7 @@ public class N2DMenuBar extends JMenuBar {
 
         newSceneMenuItem = sceneMenu.add("New Scene");
         changeSceneMenuItem = sceneMenu.add("Change Scene");
+        renameSceneMenuItem = sceneMenu.add("Rename Scene");
         newLayerMenuItem = sceneMenu.add("New Layer");
 
         gameObjectMenu = new JMenu("New GameObject");
@@ -113,7 +115,7 @@ public class N2DMenuBar extends JMenuBar {
         newSceneMenuItem.addActionListener(e -> new NewSceneDialog());
 
         changeSceneMenuItem.addActionListener(e -> new ChangeSceneDialog());
-
+        renameSceneMenuItem.addActionListener(e -> new RenameSceneDialog());
         newLayerMenuItem.addActionListener(e -> {
             Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount());
             MainFrame.getSceneGraph().addLayer(layer);
