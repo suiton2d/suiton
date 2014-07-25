@@ -26,6 +26,7 @@ import com.nebula2d.editor.util.ExitAction;
 import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.IOException;
 
 
@@ -57,9 +58,8 @@ public class N2DMenuBar extends JMenuBar {
         openMenuItem = fileMenu.add("Open Project");
         setBorder(BorderFactory.createEmptyBorder());
         //Don't need exit menu item on Mac
-        JMenuItem exitMenuItem;
         if (!PlatformUtil.isMac())
-            exitMenuItem = fileMenu.add(new ExitAction());
+            fileMenu.add(new ExitAction());
 
         sceneMenu = new JMenu("Scene");
 
@@ -93,6 +93,8 @@ public class N2DMenuBar extends JMenuBar {
 
         openMenuItem.addActionListener(e -> {
             JFileChooser fc = new JFileChooser();
+            fc.setFileFilter(new FileNameExtensionFilter("Nebula2D Project File (*.n2d)", "n2d"));
+            fc.setAcceptAllFileFilterUsed(false);
             if (fc.showOpenDialog(N2DMenuBar.this) == JFileChooser.APPROVE_OPTION) {
                 MainFrame.getSceneGraph().wipe();
                 MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
