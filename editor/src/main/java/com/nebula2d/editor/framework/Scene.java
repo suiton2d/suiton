@@ -25,7 +25,9 @@ import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 
 public class Scene extends BaseSceneNode implements ISerializable {
 
@@ -55,6 +57,10 @@ public class Scene extends BaseSceneNode implements ISerializable {
         }
 
         return null;
+    }
+
+    public List<Layer> getLayers() {
+        return Collections.list(children());
     }
 
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
