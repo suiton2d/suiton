@@ -11,3 +11,6 @@
 
 #logs
 *.log
+
+#resources
+src/main/resources
