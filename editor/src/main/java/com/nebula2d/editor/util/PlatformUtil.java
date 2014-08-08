@@ -45,4 +45,21 @@ public class PlatformUtil {
     public static boolean isMac() {
         return System.getProperty("os.name").toLowerCase().contains("mac");
     }
+
+    /**
+     * Joins a number of paths into one path.
+     * @param paths an array of paths.
+     *
+     * @return the conjoined path.
+     */
+    public static String pathJoin(String... paths) {
+        StringBuilder sb = new StringBuilder();
+        for (String path : paths) {
+            if (!path.endsWith(File.pathSeparator))
+                path += File.pathSeparator;
+            sb.append(path);
+        }
+
+        return sb.toString();
+    }
 }

@@ -20,6 +20,7 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.Sprite;
@@ -255,6 +256,16 @@ public class SpriteRenderer extends AnimatedRenderer {
             animations.add(animation);
         }
         currentAnim = fr.readIntLine();
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
+        super.build(sceneXml, assetsXml);
+        Sprite sprite = (Sprite) renderable;
+        sceneXml.attribute("sprite", sprite.getBuildPath());
+        assetsXml.element("asset").attribute("path", sprite.getBuildPath()).
+                attribute("assetType", "SPRITE");
+        assetsXml.pop();
     }
 
     @Override

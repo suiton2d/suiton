@@ -20,6 +20,8 @@ package com.nebula2d.editor.framework;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.XmlWriter;
+import com.nebula2d.editor.common.IBuildable;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -29,15 +31,15 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-public class Scene extends BaseSceneNode implements ISerializable {
+public class Scene extends BaseSceneNode implements ISerializable, IBuildable {
 
-    private static int sceeneCounter = 0;
+    private static int sceneCounter = 0;
 
     protected int id;
 
     public Scene(String name) {
         super(name);
-        id = sceeneCounter++;
+        id = sceneCounter++;
     }
 
     public int getId() {
@@ -90,5 +92,19 @@ public class Scene extends BaseSceneNode implements ISerializable {
         Enumeration layers = children();
         while (layers.hasMoreElements())
             ((Layer) layers.nextElement()).save(fw);
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+        sceneXml.element("scene").
+                attribute("name", name).
+                attribute("id", id);
+
+        Enumeration children = children();
+        while (children.hasMoreElements()) {
+            Layer child = (Layer) children.nextElement();
+            child.build(sceneXml, assetsXml);
+            sceneXml.pop();
+        }
     }
 }

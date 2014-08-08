@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
@@ -95,6 +96,13 @@ public class Circle extends CollisionShape {
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeFloatLine(r);
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+        super.build(sceneXml, assetsXml);
+        sceneXml.attribute("r", r);
+        sceneXml.pop();
     }
 
     @Override

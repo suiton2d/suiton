@@ -20,17 +20,20 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.XmlWriter;
+import com.nebula2d.editor.common.IBuildable;
 import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.GameObject;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  *
  * Created by bonazza on 5/3/14.
  */
-public abstract class CollisionShape implements ISerializable, IRenderable {
+public abstract class CollisionShape implements ISerializable, IRenderable, IBuildable {
     public static enum ShapeType {
         BOX,
         CIRCLE
@@ -62,4 +65,10 @@ public abstract class CollisionShape implements ISerializable, IRenderable {
 
     public abstract JPanel createEditorPanel();
 
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+        sceneXml.element("collisionShape").
+                attribute("shapeType", shapeType.name());
+        material.build(sceneXml, assetsXml);
+    }
 }

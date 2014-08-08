@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.common.ISelectable;
 import com.nebula2d.editor.framework.GameObject;
@@ -78,5 +79,11 @@ public abstract class Renderer extends Component implements ISelectable {
             fw.writeIntLine(1);
             renderable.save(fw);
         }
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
+        super.build(sceneXml, assetsXml);
+        sceneXml.attribute("rendererType", rendererType.name());
     }
 }

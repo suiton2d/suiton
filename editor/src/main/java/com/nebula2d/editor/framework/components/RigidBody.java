@@ -20,6 +20,7 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
@@ -218,6 +219,15 @@ public class RigidBody extends Component {
             }
             shape.load(fr);
         }
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
+        super.build(sceneXml, assetsXml);
+        sceneXml.attribute("isKinematic", isKinematic).
+                attribute("fixedRotation", fixedRotation).
+                attribute("isBullet", isBullet);
+        shape.build(sceneXml, assetsXml);
     }
 
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
