@@ -203,7 +203,7 @@ public class SceneGraph extends N2DTree {
         }
     }
 
-    class TreeDragSource implements DragSourceListener, DragGestureListener {
+    private static class TreeDragSource implements DragSourceListener, DragGestureListener {
 
         private DragSource dragSource;
         private DragGestureRecognizer recognizer;
@@ -261,7 +261,7 @@ public class SceneGraph extends N2DTree {
         }
     }
 
-    class TreeDropTarget implements DropTargetListener {
+    private static class TreeDropTarget implements DropTargetListener {
         private DropTarget target;
 
         private JTree targetTree;
@@ -338,9 +338,9 @@ public class SceneGraph extends N2DTree {
     }
 
 
-    class TransferableTreeNode implements Transferable {
+    private static class TransferableTreeNode implements Transferable {
 
-        public DataFlavor TREE_PATH_FLAVOR = new DataFlavor(TreePath.class,
+        public static DataFlavor TREE_PATH_FLAVOR = new DataFlavor(TreePath.class,
                 "Tree Path");
 
         private DataFlavor[] flavors = { TREE_PATH_FLAVOR };
