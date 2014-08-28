@@ -22,6 +22,7 @@ public class RenameSceneDialog extends JDialog {
     public RenameSceneDialog() {
         setTitle("Rename Current Scene");
         setupContents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }

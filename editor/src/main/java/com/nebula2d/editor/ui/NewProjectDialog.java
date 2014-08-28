@@ -81,6 +81,7 @@ public class NewProjectDialog extends JDialog {
         pack();
         setModal(true);
         bindButtons();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
