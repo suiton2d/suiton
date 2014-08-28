@@ -63,8 +63,8 @@ public class MainFrame extends JFrame {
             public void windowClosing(WindowEvent e) {
                 if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
                         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    dispose();
                     AssetManager.getInstance().cleanup();
+                    dispose();
                     Gdx.app.exit();
                 }
             }

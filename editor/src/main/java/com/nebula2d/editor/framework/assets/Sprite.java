@@ -49,7 +49,7 @@ public class Sprite extends Asset implements IRenderable {
 
     @Override
     public void dispose() {
-        if (isLoaded) {
+        if (texture != null) {
             Gdx.app.postRunnable(() -> {
                 texture.dispose();
                 texture = null;

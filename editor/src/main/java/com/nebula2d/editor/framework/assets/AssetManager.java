@@ -117,6 +117,6 @@ public final class AssetManager {
     }
 
     public void cleanup() {
-        dispose(currentSceneIndex);
+        assetMap.keySet().forEach(this::dispose);
     }
 }
