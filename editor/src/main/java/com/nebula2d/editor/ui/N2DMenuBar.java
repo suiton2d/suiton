@@ -41,6 +41,7 @@ public class N2DMenuBar extends JMenuBar {
     private JMenuItem newMenuItem;
     private JMenuItem saveMenuItem;
     private JMenuItem openMenuItem;
+    private JMenuItem settingsMenuItem;
 
     private JMenuItem newSceneMenuItem;
     private JMenuItem changeSceneMenuItem;
@@ -57,6 +58,7 @@ public class N2DMenuBar extends JMenuBar {
         saveMenuItem.setAccelerator(KeyStroke.getKeyStroke("control S"));
         saveMenuItem.setEnabled(false);
         openMenuItem = fileMenu.add("Open Project");
+        settingsMenuItem = fileMenu.add("Settings");
         setBorder(BorderFactory.createEmptyBorder());
         //Don't need exit menu item on Mac
         if (!PlatformUtil.isMac())
@@ -111,6 +113,8 @@ public class N2DMenuBar extends JMenuBar {
                 }
             }
         });
+
+        settingsMenuItem.addActionListener(e -> new SettingsDialog());
 
         newSceneMenuItem.addActionListener(e -> new NewSceneDialog());
 

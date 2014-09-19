@@ -19,6 +19,7 @@
 package com.nebula2d.editor.util;
 
 import java.io.File;
+import java.util.Locale;
 
 
 /**
@@ -61,5 +62,14 @@ public class PlatformUtil {
         }
 
         return sb.toString();
+    }
+
+    public static String getCommandChainString() {
+        String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+        if (os.contains("win")) {
+            return "&";
+        } else {
+            return "&&";
+        }
     }
 }

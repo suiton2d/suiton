@@ -64,6 +64,11 @@ public class ProgrammaticJarHandler implements JarHandler {
         isOpen = false;
     }
 
+    @Override
+    public void extract(String file, String out) throws IOException {
+        // TODO: Implement this...
+    }
+
     public boolean isOpen() {
         return isOpen;
     }

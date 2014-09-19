@@ -26,4 +26,12 @@ public interface JarHandler {
      * @throws IOException
      */
     public void closeJar() throws IOException;
+
+    /**
+     * Extracts a particular file (or directory of files) from a jar file.
+     * @param file The file (or directory) to extract.
+     * @param out The output directory.
+     * @throws IOException
+     */
+    public void extract(String file, String out) throws IOException;
 }

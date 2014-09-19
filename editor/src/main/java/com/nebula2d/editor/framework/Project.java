@@ -26,6 +26,7 @@ import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
+import com.nebula2d.editor.util.PlatformUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -204,5 +205,14 @@ public class Project implements ISerializable {
 
         sceneFileOut.writeString(sceneStrWriter.toString(), false);
         assetsFileOut.writeString(assetsStrWriter.toString(), false);
+    }
+
+    public String getTempDir() {
+        return PlatformUtil.pathJoin(projectDir, "tmp");
+    }
+
+    public boolean ensureTempDir() {
+        File tmpDir = new File(getTempDir());
+        return tmpDir.exists() || tmpDir.mkdir();
     }
 }
