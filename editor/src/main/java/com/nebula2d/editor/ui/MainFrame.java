@@ -26,6 +26,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainFrame extends JFrame {
@@ -72,6 +73,12 @@ public class MainFrame extends JFrame {
             public void windowClosing(WindowEvent e) {
                 if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
                         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
+                    try {
+                        settings.saveProperties();
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(MainFrame.this, "Failed to save settings.");
+                    }
                     AssetManager.getInstance().cleanup();
                     Gdx.app.exit();
                     dispose();

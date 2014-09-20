@@ -18,6 +18,7 @@
 
 package com.nebula2d.editor.util;
 
+import java.awt.*;
 import java.io.File;
 import java.util.Locale;
 
@@ -71,5 +72,18 @@ public class PlatformUtil {
         } else {
             return "&&";
         }
+    }
+
+    public static Dimension getScreenSize() {
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        return tk.getScreenSize();
+    }
+
+    public static int getScreenWidth() {
+        return getScreenSize().width;
+    }
+
+    public static int getScreenHeight() {
+        return getScreenSize().height;
     }
 }

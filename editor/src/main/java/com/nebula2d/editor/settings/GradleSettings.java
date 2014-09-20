@@ -16,9 +16,14 @@ import java.util.Properties;
 public class GradleSettings implements ISettings {
 
     private String gradleHome = "";
+    private Properties properties;
 
-    public void loadFromProperties(Properties properties) {
-        gradleHome = properties.getProperty("gradle.home");
+    public GradleSettings(Properties properties) {
+        this.properties = properties;
+    }
+
+    public void loadFromProperties() {
+        gradleHome = properties.getProperty("gradle.home", "");
     }
 
     public String getGradleHome() {
@@ -52,6 +57,7 @@ public class GradleSettings implements ISettings {
 
         applyBtn.addActionListener(e -> {
             gradleHome = gradleHomeTf.getText().trim();
+            properties.setProperty("gradle.home", gradleHome);
             applyBtn.setEnabled(false);
         });
 

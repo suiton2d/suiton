@@ -2,8 +2,10 @@ package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.settings.ISettings;
 import com.nebula2d.editor.settings.N2DSettings;
+import com.nebula2d.editor.ui.controls.N2DDialog;
 import com.nebula2d.editor.ui.controls.N2DList;
 import com.nebula2d.editor.ui.controls.N2DPanel;
+import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,18 +14,19 @@ import java.awt.*;
  *
  * Created by bonazza on 8/27/14.
  */
-public class SettingsDialog extends JDialog {
+public class SettingsDialog extends N2DDialog {
 
     private N2DList<ISettings> settingsList;
     private JPanel mainPanel;
     private JPanel rightPanel;
 
     public SettingsDialog() {
-        setTitle("Nebula2D Settings");
+        super("Nebula2D Settings");
         render();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setSize(new Dimension(800, 600));
+        pack();
         setLocationRelativeTo(null);
+        setModalityType(ModalityType.APPLICATION_MODAL);
         setResizable(false);
         setVisible(true);
     }
@@ -34,21 +37,17 @@ public class SettingsDialog extends JDialog {
         mainPanel.add(settingsPanel, BorderLayout.WEST);
         add(mainPanel);
         settingsList.setSelectedIndex(0);
-        pack();
     }
 
     private JScrollPane createSettingsListPanel() {
         settingsList = new N2DList<>();
         final DefaultListModel<ISettings> listModel = new DefaultListModel<>();
         settingsList.setModel(listModel);
+        Dimension windowSize = getPreferredSize();
         populateSettingsList();
 
-        JPanel leftPanel = new N2DPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.add(settingsList);
-
-        JScrollPane sp = new JScrollPane(leftPanel);
-
+        JScrollPane sp = new JScrollPane(settingsList);
+        sp.setPreferredSize(new Dimension(windowSize.width / 4, windowSize.height));
         settingsList.addListSelectionListener(e -> {
             if (e.getValueIsAdjusting())
                 return;

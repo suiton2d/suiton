@@ -1,6 +1,7 @@
 package com.nebula2d.editor.settings;
 
 import javax.swing.*;
+import java.io.IOException;
 
 /**
  *
@@ -9,4 +10,6 @@ import javax.swing.*;
 public interface ISettings {
 
     public JPanel createSettingsPanel(JDialog parent);
+
+    public void loadFromProperties() throws IOException;
 }
