@@ -2,19 +2,9 @@ package com.nebula2d.editor.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.Layer;
 import com.nebula2d.editor.framework.Project;
-import com.nebula2d.editor.framework.Scene;
 
 import java.io.*;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
-import java.util.logging.FileHandler;
 
 /**
  * ProjectBuilder is a helper class for building a Nebula2D Project.
@@ -24,19 +14,19 @@ import java.util.logging.FileHandler;
 public class ProjectBuilder {
 
     public static enum ProjectType {
-        PC("desktop.jar"),
-        MAC("desktop.jar"),
-        LINUX("desktop.jar"),
-        ANDROID("android.jar");
+        PC("desktop"),
+        MAC("desktop"),
+        LINUX("desktop"),
+        ANDROID("android");
 
-        private String jarName;
+        private String sourcePath;
 
-        private ProjectType(String jarName) {
-            this.jarName = jarName;
+        private ProjectType(String sourcePath) {
+            this.sourcePath = sourcePath;
         }
 
-        public String getJarName() {
-            return jarName;
+        public String getSourcePath() {
+            return sourcePath;
         }
     }
     private Project project;
@@ -46,24 +36,22 @@ public class ProjectBuilder {
     }
 
     public void build(int startScene, ProjectType type) throws IOException {
-        FileHandle jarFile = extractJar(type);
-        JarHandler jarHandler = new ExternalJarHandler(jarFile);
+        FileHandle source = extractSource(type);
         String projectTmpDir = project.getTempDir();
         FileHandle sceneFileHandle = Gdx.files.absolute(PlatformUtil.pathJoin(projectTmpDir, "scenes.xml"));
         FileHandle assetsFileHandle = Gdx.files.absolute(PlatformUtil.pathJoin(projectTmpDir, "assets.xml"));
         project.build(startScene, sceneFileHandle, assetsFileHandle);
-        jarHandler.openJar();
-        jarHandler.addToJar("scenes.xml", projectTmpDir);
-        jarHandler.addToJar("assets.xml", projectTmpDir);
-        jarHandler.closeJar();
+        FileHandle dest = Gdx.files.absolute(PlatformUtil.pathJoin(source.path(), "resources"));
+        source.copyTo(dest);
+        GradleExecutor.build(source.path());
     }
 
-    public FileHandle extractJar(ProjectType type) throws IOException {
-        String jarName = type.getJarName();
-        FileHandle dest = Gdx.files.absolute(PlatformUtil.pathJoin(project.getTempDir(), jarName));
+    public FileHandle extractSource(ProjectType type) throws IOException {
+        String sourcePath = type.getSourcePath();
+        FileHandle dest = Gdx.files.absolute(PlatformUtil.pathJoin(project.getTempDir(), sourcePath));
 
-        FileHandle jarHandle = Gdx.files.classpath(PlatformUtil.pathJoin("clients", jarName));
-        jarHandle.copyTo(dest);
+        FileHandle sourceHandle = Gdx.files.classpath(PlatformUtil.pathJoin("clients", sourcePath));
+        sourceHandle.copyTo(dest);
 
         return dest;
     }
