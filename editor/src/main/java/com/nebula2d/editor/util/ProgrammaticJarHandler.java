@@ -49,7 +49,7 @@ public class ProgrammaticJarHandler implements JarHandler {
         }
     }
 
-    public void addToJar(String filePath) throws IOException {
+    public void addToJar(String filePath, String dir) throws IOException {
         JarEntry entry = new JarEntry(filePath);
         FileInputStream fis = new FileInputStream(filePath);
         jos.putNextEntry(entry);

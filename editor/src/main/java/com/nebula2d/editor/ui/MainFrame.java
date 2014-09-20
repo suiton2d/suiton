@@ -115,6 +115,7 @@ public class MainFrame extends JFrame {
         MainFrame.project = project;
         sceneGraph.setEnabled(project != null);
         renderCanvas.setEnabled(project != null);
+        menuBar.getBuildMenuItem().setEnabled(project != null);
         menuBar.getSceneMenu().setEnabled(project != null);
         toolbar.setRendererWidgetsEnabled(project != null);
         menuBar.getSaveMenuItem().setEnabled(project != null);

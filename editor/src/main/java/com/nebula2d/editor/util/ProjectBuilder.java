@@ -48,19 +48,19 @@ public class ProjectBuilder {
     public void build(int startScene, ProjectType type) throws IOException {
         FileHandle jarFile = extractJar(type);
         JarHandler jarHandler = new ExternalJarHandler(jarFile);
-        FileHandle sceneFileHandle = Gdx.files.internal("scenes.xml");
-        FileHandle assetsFileHandle = Gdx.files.internal("assets.xml");
+        String projectTmpDir = project.getTempDir();
+        FileHandle sceneFileHandle = Gdx.files.absolute(PlatformUtil.pathJoin(projectTmpDir, "scenes.xml"));
+        FileHandle assetsFileHandle = Gdx.files.absolute(PlatformUtil.pathJoin(projectTmpDir, "assets.xml"));
         project.build(startScene, sceneFileHandle, assetsFileHandle);
         jarHandler.openJar();
-        jarHandler.addToJar(sceneFileHandle.path());
-        jarHandler.addToJar(assetsFileHandle.path());
+        jarHandler.addToJar("scenes.xml", projectTmpDir);
+        jarHandler.addToJar("assets.xml", projectTmpDir);
         jarHandler.closeJar();
     }
 
     public FileHandle extractJar(ProjectType type) throws IOException {
-        String projectRoot = project.getProjectDir();
         String jarName = type.getJarName();
-        FileHandle dest = Gdx.files.absolute(PlatformUtil.pathJoin(projectRoot, jarName));
+        FileHandle dest = Gdx.files.absolute(PlatformUtil.pathJoin(project.getTempDir(), jarName));
 
         FileHandle jarHandle = Gdx.files.classpath(PlatformUtil.pathJoin("clients", jarName));
         jarHandle.copyTo(dest);

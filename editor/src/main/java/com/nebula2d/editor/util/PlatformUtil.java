@@ -57,8 +57,8 @@ public class PlatformUtil {
     public static String pathJoin(String... paths) {
         StringBuilder sb = new StringBuilder();
         for (String path : paths) {
-            if (!path.endsWith(File.pathSeparator))
-                path += File.pathSeparator;
+            if (!path.endsWith(File.separator))
+                path += File.separator;
             sb.append(path);
         }
 

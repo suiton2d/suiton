@@ -18,8 +18,9 @@ public interface JarHandler {
     /**
      * Add a file to the jar.
      * @param filePath the file path of the file to add.
+     * @param dir the path to switch to before adding the file
      */
-    public void addToJar(String filePath) throws IOException;
+    public void addToJar(String filePath, String dir) throws IOException;
 
     /**
      * Closes the jar file.

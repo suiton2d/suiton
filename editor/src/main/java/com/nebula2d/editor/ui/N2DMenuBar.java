@@ -24,6 +24,7 @@ import com.nebula2d.editor.framework.Layer;
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.util.ExitAction;
 import com.nebula2d.editor.util.PlatformUtil;
+import com.nebula2d.editor.util.ProjectBuilder;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -42,6 +43,7 @@ public class N2DMenuBar extends JMenuBar {
     private JMenuItem saveMenuItem;
     private JMenuItem openMenuItem;
     private JMenuItem settingsMenuItem;
+    private JMenuItem buildMenuItem;
 
     private JMenuItem newSceneMenuItem;
     private JMenuItem changeSceneMenuItem;
@@ -59,6 +61,8 @@ public class N2DMenuBar extends JMenuBar {
         saveMenuItem.setEnabled(false);
         openMenuItem = fileMenu.add("Open Project");
         settingsMenuItem = fileMenu.add("Settings");
+        buildMenuItem = fileMenu.add("Build");
+
         setBorder(BorderFactory.createEmptyBorder());
         //Don't need exit menu item on Mac
         if (!PlatformUtil.isMac())
@@ -76,6 +80,8 @@ public class N2DMenuBar extends JMenuBar {
         newEmptyGameObjectMenuItem = gameObjectMenu.add("Empty GameObject");
 
         sceneMenu.add(gameObjectMenu);
+
+        buildMenuItem.setEnabled(false);
         gameObjectMenu.setEnabled(false);
         sceneMenu.setEnabled(false);
         add(fileMenu);
@@ -116,6 +122,11 @@ public class N2DMenuBar extends JMenuBar {
 
         settingsMenuItem.addActionListener(e -> new SettingsDialog());
 
+        buildMenuItem.addActionListener(e -> {
+            // TODO: Implement
+            JOptionPane.showMessageDialog(getParent(), "Not implemented yet.");
+        });
+
         newSceneMenuItem.addActionListener(e -> new NewSceneDialog());
 
         changeSceneMenuItem.addActionListener(e -> new ChangeSceneDialog());
@@ -132,6 +143,10 @@ public class N2DMenuBar extends JMenuBar {
             GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
             selectedNode.addGameObject(go);
         });
+    }
+
+    public JMenuItem getBuildMenuItem() {
+        return  buildMenuItem;
     }
 
     public JMenu getSceneMenu() {

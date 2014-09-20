@@ -30,10 +30,10 @@ public class ExternalJarHandler implements JarHandler {
     }
 
     @Override
-    public void addToJar(String filePath) throws IOException {
+    public void addToJar(String filePath, String dir) throws IOException {
 
         try {
-            Process p = new ProcessBuilder("jar", "uf", jarFile.path(), filePath).start();
+            Process p = new ProcessBuilder("jar", "uf", jarFile.path(), "-C", dir, filePath).start();
             int rc = p.waitFor();
 
             if (rc != 0)
