@@ -17,6 +17,7 @@
  */
 
 package com.nebula2d.editor.ui;
+
 import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.framework.assets.AssetManager;
@@ -26,7 +27,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainFrame extends JFrame {
@@ -80,8 +80,14 @@ public class MainFrame extends JFrame {
                         JOptionPane.showMessageDialog(MainFrame.this, "Failed to save settings.");
                     }
                     AssetManager.getInstance().cleanup();
-                    Gdx.app.exit();
-                    dispose();
+
+                    Gdx.app.postRunnable(() -> {
+                        renderCanvas.stop();
+                        SwingUtilities.invokeLater(MainFrame.this::dispose);
+                    });
+
+//                    Gdx.app.exit();
+//                    dispose();
                 }
             }
         });

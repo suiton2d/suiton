@@ -35,6 +35,7 @@ public class RenderAdapter implements ApplicationListener {
     private GameObject selectedObject;
     private boolean enabled;
     private OrthographicCamera camera;
+    private SpriteBatch batcher;
 
     public RenderAdapter() {
 
@@ -58,7 +59,7 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void create() {
-
+        batcher = new SpriteBatch();
     }
 
     @Override
@@ -78,7 +79,6 @@ public class RenderAdapter implements ApplicationListener {
         if (camera == null)
             return;
 
-        SpriteBatch batcher = new SpriteBatch();
         batcher.setProjectionMatrix(camera.projection);
         batcher.begin();
         Project p = MainFrame.getProject();
@@ -119,7 +119,7 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
-
+        batcher.dispose();
     }
 
     public void setEnabled(boolean enabled) {
