@@ -18,6 +18,7 @@
 
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.avocado.SaveListener;
 import com.nebula2d.avocado.ScriptEditor;
 import com.nebula2d.editor.framework.assets.AssetManager;
@@ -203,5 +204,13 @@ public class Behaviour extends Component {
             fw.writeIntLine(1);
             script.save(fw);
         }
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
+        super.build(sceneXml, assetsXml);
+        sceneXml.attribute("script", script.getBuildPath());
+        assetsXml.element("asset").attribute("path", script.getBuildPath()).attribute("assetType", "SCRIPT");
+        assetsXml.pop();
     }
 }

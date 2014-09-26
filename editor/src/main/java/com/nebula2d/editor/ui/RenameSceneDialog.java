@@ -1,21 +1,3 @@
-/*
- * Nebula2D is a cross-platform, 2D game engine for PC, Mac, & Linux
- * Copyright (c) $date.year Jon Bonazza
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.Project;
@@ -29,14 +11,16 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 
 /**
- * @author Jon Bonazza <jonbonazza@gmail.com>
+ * Dialog used for renaming the current scene.
+ *
+ * Created by bonazza on 7/24/14.
  */
-public class NewSceneDialog extends JDialog {
+public class RenameSceneDialog extends JDialog {
 
     private JTextField nameTf;
 
-    public NewSceneDialog() {
-        setTitle("New Scene");
+    public RenameSceneDialog() {
+        setTitle("Rename Current Scene");
         setupContents();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -46,7 +30,7 @@ public class NewSceneDialog extends JDialog {
     private void setupContents() {
         nameTf = new JTextField(20);
 
-        final Project project = MainFrame.getProject();
+        final Scene currentScene = MainFrame.getProject().getCurrentScene();
         final Color defaultFg = nameTf.getForeground();
         final N2DLabel nameLbl = new N2DLabel("Scene Name: ");
         final JButton okBtn = new JButton("Ok");
@@ -55,7 +39,7 @@ public class NewSceneDialog extends JDialog {
         final N2DPanel namePanel = new N2DPanel();
         final N2DPanel btnPanel = new N2DPanel();
 
-        nameTf.setText("Untitled Scene " + project.getScenes().size());
+        nameTf.setText(currentScene.getName());
 
         namePanel.add(nameLbl);
         namePanel.add(nameTf);
@@ -94,14 +78,7 @@ public class NewSceneDialog extends JDialog {
 
         okBtn.addActionListener(e -> {
             String newSceneName = nameTf.getText();
-            Scene scene = new Scene(newSceneName);
-            SceneGraph sceneGraph = MainFrame.getSceneGraph();
-            Project project1 = MainFrame.getProject();
-            project1.addScene(scene);
-            project1.setCurrentScene(newSceneName);
-            sceneGraph.init();
-            project1.loadCurrentScene();
-            sceneGraph.refresh();
+            currentScene.setName(newSceneName);
             dispose();
         });
 

@@ -18,17 +18,17 @@
 
 package com.nebula2d.editor.framework;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
+import com.nebula2d.editor.util.PlatformUtil;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -51,6 +51,9 @@ public class Project implements ISerializable {
         File file = new File(path);
         this.projectDir = file.getParent();
         this.projectName = file.getName();
+        if (this.projectName.endsWith(".n2d"))
+            this.projectName = this.projectName.substring(0, this.projectName.length() - 4);
+
         this.currentSceneIdx = 0;
         scenes = new ArrayList<>();
     }
@@ -94,7 +97,11 @@ public class Project implements ISerializable {
     }
 
     public String getPath() {
-        return projectDir + File.separator + projectName;
+        return projectDir + File.separator + projectName + ".n2d";
+    }
+
+    public String getProjectDir() {
+        return projectDir;
     }
 
     public String getNameWithoutExt() {
@@ -176,5 +183,36 @@ public class Project implements ISerializable {
         }
 
         return false;
+    }
+
+    public void build(int startScene, FileHandle sceneFileOut, FileHandle assetsFileOut) throws  IOException {
+        StringWriter sceneStrWriter = new StringWriter();
+        StringWriter assetsStrWriter = new StringWriter();
+        XmlWriter sceneXmlWriter = new XmlWriter(sceneStrWriter);
+        XmlWriter assetsXmlWriter = new XmlWriter(assetsStrWriter);
+
+        sceneXmlWriter.element("project").
+                attribute("name", projectName).
+                attribute("startScene", startScene);
+        assetsXmlWriter.element("assets");
+
+        for (Scene scene : scenes) {
+            scene.build(sceneXmlWriter, assetsXmlWriter);
+            sceneXmlWriter.pop();
+        }
+        sceneXmlWriter.pop();
+        assetsXmlWriter.pop();
+
+        sceneFileOut.writeString(sceneStrWriter.toString(), false);
+        assetsFileOut.writeString(assetsStrWriter.toString(), false);
+    }
+
+    public String getTempDir() {
+        return PlatformUtil.pathJoin(projectDir, "tmp");
+    }
+
+    public boolean ensureTempDir() {
+        File tmpDir = new File(getTempDir());
+        return tmpDir.exists() || tmpDir.mkdir();
     }
 }

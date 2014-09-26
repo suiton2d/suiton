@@ -44,7 +44,7 @@ public class MusicTrack extends Asset {
 
     @Override
     public void dispose() {
-        if (isLoaded) {
+        if (music != null) {
             Gdx.app.postRunnable(() -> {
                 music.dispose();
                 music = null;

@@ -19,6 +19,7 @@
 package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.MusicTrack;
 import com.nebula2d.editor.ui.ComponentsDialog;
@@ -163,5 +164,13 @@ public class MusicSource extends Component {
             fw.writeIntLine(1);
             musicTrack.save(fw);
         }
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
+        super.build(sceneXml, assetsXml);
+        sceneXml.attribute("track", musicTrack.getBuildPath());
+        assetsXml.element("asset").attribute("path", musicTrack.getBuildPath()).attribute("assetType", "MUSIC");
+        assetsXml.pop();
     }
 }

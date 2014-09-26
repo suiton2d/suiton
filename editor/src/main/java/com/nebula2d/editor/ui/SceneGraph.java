@@ -21,7 +21,6 @@ package com.nebula2d.editor.ui;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
-import com.nebula2d.editor.framework.Scene;
 import com.nebula2d.editor.ui.controls.N2DTree;
 
 import javax.swing.*;
@@ -203,171 +202,173 @@ public class SceneGraph extends N2DTree {
             expandRow(i);
         }
     }
-}
 
-class TreeDragSource implements DragSourceListener, DragGestureListener {
+    private static class TreeDragSource implements DragSourceListener, DragGestureListener {
 
-    private DragSource dragSource;
-    private DragGestureRecognizer recognizer;
+        private DragSource dragSource;
+        private DragGestureRecognizer recognizer;
 
-    private TransferableTreeNode transferable;
+        private TransferableTreeNode transferable;
 
-    private DefaultMutableTreeNode oldNode;
+        private DefaultMutableTreeNode oldNode;
 
-    private JTree sourceTree;
+        private JTree sourceTree;
 
-    public TreeDragSource(JTree sourceTree, int actions) {
-        this.sourceTree = sourceTree;
-        dragSource = new DragSource();
-        recognizer = dragSource.createDefaultDragGestureRecognizer(sourceTree,
-                actions, this);
-    }
-
-    @Override
-    public void dragGestureRecognized(DragGestureEvent dge) {
-        TreePath path = sourceTree.getSelectionPath();
-        if ((path == null) || (path.getPathCount() <= 1)) {
-            // We can't move the root node or an empty selection
-            return;
+        public TreeDragSource(JTree sourceTree, int actions) {
+            this.sourceTree = sourceTree;
+            dragSource = new DragSource();
+            recognizer = dragSource.createDefaultDragGestureRecognizer(sourceTree,
+                    actions, this);
         }
-        oldNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        transferable = new TransferableTreeNode(path);
-        dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop, transferable, this);
-    }
 
-    @Override
-    public void dragEnter(DragSourceDragEvent dsde) {
-
-    }
-
-    @Override
-    public void dragOver(DragSourceDragEvent dsde) {
-
-    }
-
-    @Override
-    public void dropActionChanged(DragSourceDragEvent dsde) {
-
-    }
-
-    @Override
-    public void dragExit(DragSourceEvent dse) {
-
-    }
-
-    @Override
-    public void dragDropEnd(DragSourceDropEvent dsde) {
-        if (dsde.getDropSuccess()) {
-            ((DefaultTreeModel) sourceTree.getModel()).removeNodeFromParent(oldNode);
-        }
-    }
-}
-
-class TreeDropTarget implements DropTargetListener {
-    private DropTarget target;
-
-    private JTree targetTree;
-
-    public TreeDropTarget(JTree targetTree) {
-        this.targetTree = targetTree;
-        target = new DropTarget(targetTree, this);
-    }
-
-    private TreeNode getNodeForEvent(DropTargetDragEvent dtde) {
-        Point p = dtde.getLocation();
-        DropTargetContext dtc = dtde.getDropTargetContext();
-        JTree tree = (JTree) dtc.getComponent();
-        TreePath path = tree.getClosestPathForLocation(p.x, p.y);
-        return (TreeNode) path.getLastPathComponent();
-    }
-
-    @Override
-    public void dragEnter(DropTargetDragEvent dtde) {
-        dtde.acceptDrag(dtde.getDropAction());
-    }
-
-    @Override
-    public void dragOver(DropTargetDragEvent dtde) {
-        dtde.acceptDrag(dtde.getDropAction());
-    }
-
-    @Override
-    public void dropActionChanged(DropTargetDragEvent dtde) {
-
-    }
-
-    @Override
-    public void dragExit(DropTargetEvent dte) {
-
-    }
-
-    @Override
-    public void drop(DropTargetDropEvent dtde) {
-        Point pt = dtde.getLocation();
-        DropTargetContext dtc = dtde.getDropTargetContext();
-        SceneGraph sceneGraph = (SceneGraph) dtc.getComponent();
-        TreePath parentpath = sceneGraph.getClosestPathForLocation(pt.x, pt.y);
-        DefaultMutableTreeNode dest = (DefaultMutableTreeNode) parentpath
-                .getLastPathComponent();
-
-        try {
-            Transferable tr = dtde.getTransferable();
-            DataFlavor[] flavors = tr.getTransferDataFlavors();
-            for (DataFlavor flavor : flavors) {
-                if (tr.isDataFlavorSupported(flavor)) {
-                    TreePath p = (TreePath) tr.getTransferData(flavor);
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) p
-                            .getLastPathComponent();
-                    if (node instanceof Layer)
-                        break;
-
-
-                    if (node instanceof GameObject) {
-                        ((BaseSceneNode) dest).addGameObject((GameObject) node);
-                    }
-                    dtde.acceptDrop(dtde.getDropAction());
-                    dtde.dropComplete(true);
-                    return;
-                }
+        @Override
+        public void dragGestureRecognized(DragGestureEvent dge) {
+            TreePath path = sourceTree.getSelectionPath();
+            if ((path == null) || (path.getPathCount() <= 1)) {
+                // We can't move the root node or an empty selection
+                return;
             }
-            dtde.rejectDrop();
-        } catch (Exception e) {
-            e.printStackTrace();
-            dtde.rejectDrop();
-            dtde.dropComplete(false);
+            oldNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+            transferable = new TransferableTreeNode(path);
+            dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop, transferable, this);
+        }
+
+        @Override
+        public void dragEnter(DragSourceDragEvent dsde) {
+
+        }
+
+        @Override
+        public void dragOver(DragSourceDragEvent dsde) {
+
+        }
+
+        @Override
+        public void dropActionChanged(DragSourceDragEvent dsde) {
+
+        }
+
+        @Override
+        public void dragExit(DragSourceEvent dse) {
+
+        }
+
+        @Override
+        public void dragDropEnd(DragSourceDropEvent dsde) {
+            if (dsde.getDropSuccess()) {
+                ((DefaultTreeModel) sourceTree.getModel()).removeNodeFromParent(oldNode);
+            }
+        }
+    }
+
+    private static class TreeDropTarget implements DropTargetListener {
+        private DropTarget target;
+
+        private JTree targetTree;
+
+        public TreeDropTarget(JTree targetTree) {
+            this.targetTree = targetTree;
+            target = new DropTarget(targetTree, this);
+        }
+
+        private TreeNode getNodeForEvent(DropTargetDragEvent dtde) {
+            Point p = dtde.getLocation();
+            DropTargetContext dtc = dtde.getDropTargetContext();
+            JTree tree = (JTree) dtc.getComponent();
+            TreePath path = tree.getClosestPathForLocation(p.x, p.y);
+            return (TreeNode) path.getLastPathComponent();
+        }
+
+        @Override
+        public void dragEnter(DropTargetDragEvent dtde) {
+            dtde.acceptDrag(dtde.getDropAction());
+        }
+
+        @Override
+        public void dragOver(DropTargetDragEvent dtde) {
+            dtde.acceptDrag(dtde.getDropAction());
+        }
+
+        @Override
+        public void dropActionChanged(DropTargetDragEvent dtde) {
+
+        }
+
+        @Override
+        public void dragExit(DropTargetEvent dte) {
+
+        }
+
+        @Override
+        public void drop(DropTargetDropEvent dtde) {
+            Point pt = dtde.getLocation();
+            DropTargetContext dtc = dtde.getDropTargetContext();
+            SceneGraph sceneGraph = (SceneGraph) dtc.getComponent();
+            TreePath parentpath = sceneGraph.getClosestPathForLocation(pt.x, pt.y);
+            DefaultMutableTreeNode dest = (DefaultMutableTreeNode) parentpath
+                    .getLastPathComponent();
+
+            try {
+                Transferable tr = dtde.getTransferable();
+                DataFlavor[] flavors = tr.getTransferDataFlavors();
+                for (DataFlavor flavor : flavors) {
+                    if (tr.isDataFlavorSupported(flavor)) {
+                        TreePath p = (TreePath) tr.getTransferData(flavor);
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) p
+                                .getLastPathComponent();
+                        if (node instanceof Layer)
+                            break;
+
+
+                        if (node instanceof GameObject) {
+                            ((BaseSceneNode) dest).addGameObject((GameObject) node);
+                        }
+                        dtde.acceptDrop(dtde.getDropAction());
+                        dtde.dropComplete(true);
+                        return;
+                    }
+                }
+                dtde.rejectDrop();
+            } catch (Exception e) {
+                e.printStackTrace();
+                dtde.rejectDrop();
+                dtde.dropComplete(false);
+            }
+        }
+    }
+
+
+    private static class TransferableTreeNode implements Transferable {
+
+        public static DataFlavor TREE_PATH_FLAVOR = new DataFlavor(TreePath.class,
+                "Tree Path");
+
+        private DataFlavor[] flavors = { TREE_PATH_FLAVOR };
+
+        private TreePath treePath;
+
+        public TransferableTreeNode(TreePath treePath) {
+            this.treePath = treePath;
+        }
+        @Override
+        public synchronized DataFlavor[] getTransferDataFlavors() {
+            return flavors;
+        }
+
+        @Override
+        public boolean isDataFlavorSupported(DataFlavor flavor) {
+            return flavor.getRepresentationClass() == TreePath.class;
+        }
+
+        @Override
+        public synchronized Object getTransferData(DataFlavor flavor)
+                throws UnsupportedFlavorException, IOException {
+            if (!isDataFlavorSupported(flavor))
+                throw new UnsupportedFlavorException(flavor);
+
+            return treePath;
         }
     }
 }
 
 
-class TransferableTreeNode implements Transferable {
-
-    public static DataFlavor TREE_PATH_FLAVOR = new DataFlavor(TreePath.class,
-            "Tree Path");
-
-    private DataFlavor[] flavors = { TREE_PATH_FLAVOR };
-
-    private TreePath treePath;
-
-    public TransferableTreeNode(TreePath treePath) {
-        this.treePath = treePath;
-    }
-    @Override
-    public synchronized DataFlavor[] getTransferDataFlavors() {
-        return flavors;
-    }
-
-    @Override
-    public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return flavor.getRepresentationClass() == TreePath.class;
-    }
-
-    @Override
-    public synchronized Object getTransferData(DataFlavor flavor)
-            throws UnsupportedFlavorException, IOException {
-        if (!isDataFlavorSupported(flavor))
-            throw new UnsupportedFlavorException(flavor);
-
-        return treePath;
-    }
-}

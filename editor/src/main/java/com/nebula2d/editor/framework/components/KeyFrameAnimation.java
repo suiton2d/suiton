@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
 import com.nebula2d.editor.ui.KeyFrameAnimationEditDialog;
@@ -115,6 +116,18 @@ public class KeyFrameAnimation extends Animation {
         fw.writeFloatLine(this.speed);
         fw.writeIntLine(this.startFrame);
         fw.writeIntLine(this.endFrame);
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+        super.build(sceneXml, assetsXml);
+        sceneXml.attribute("frameWidth", frameWidth).
+                attribute("frameHeight", frameHeight).
+                attribute("startFrame", startFrame).
+                attribute("endFrame", endFrame).
+                attribute("speed", speed).
+                attribute("wrap", wrap);
+        sceneXml.pop();
     }
 
     @Override

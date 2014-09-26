@@ -18,6 +18,8 @@
 
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.utils.XmlWriter;
+import com.nebula2d.editor.common.IBuildable;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.ui.ComponentsDialog;
@@ -31,7 +33,7 @@ import java.io.IOException;
  * core of N2D's component-based entity (CBE) system. and define
  * the functionality of a game object
  */
-public abstract class Component implements ISerializable {
+public abstract class Component implements ISerializable, IBuildable {
 
     public static enum ComponentType {
         RENDER,
@@ -83,6 +85,14 @@ public abstract class Component implements ISerializable {
         fw.writeLine(componentType.name());
 
         fw.writeBoolLine(enabled);
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+        sceneXml.element("component").
+                attribute("name", name).
+                attribute("enabled", enabled).
+                attribute("componentType", componentType.name());
     }
 
     @Override

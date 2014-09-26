@@ -28,6 +28,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.XmlWriter;
+import com.nebula2d.editor.common.IBuildable;
 import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.common.ISelectable;
 import com.nebula2d.editor.common.ISerializable;
@@ -48,7 +50,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-public class GameObject extends BaseSceneNode implements ISerializable {
+public class GameObject extends BaseSceneNode implements ISerializable, IBuildable {
 
     protected Vector2 pos;
     protected  Vector2 scale;
@@ -269,5 +271,33 @@ public class GameObject extends BaseSceneNode implements ISerializable {
         }
 
         return true;
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+        sceneXml.
+            attribute("name", name).
+            element("gameObject").
+                element("pos").
+                    attribute("x", pos.x).
+                    attribute("y", pos.y).
+                pop().
+                element("scale").
+                    attribute("x", scale.x).
+                    attribute("y", scale.y).
+                pop().
+                attribute("rot", rot);
+
+        for (Component component : components) {
+            component.build(sceneXml, assetsXml);
+            sceneXml.pop();
+        }
+
+        Enumeration children = children();
+        while (children.hasMoreElements()) {
+            GameObject childGo = (GameObject) children.nextElement();
+            childGo.build(sceneXml, assetsXml);
+            sceneXml.pop();
+        }
     }
 }

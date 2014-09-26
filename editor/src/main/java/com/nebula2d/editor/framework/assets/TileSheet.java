@@ -24,12 +24,11 @@ public abstract class TileSheet extends Asset implements IRenderable {
 
     @Override
     public void dispose() {
-        if (isLoaded) {
+        if (tileMap != null) {
             Gdx.app.postRunnable(() -> {
                 tileMap.dispose();
                 isLoaded = false;
             });
-
         }
     }
 

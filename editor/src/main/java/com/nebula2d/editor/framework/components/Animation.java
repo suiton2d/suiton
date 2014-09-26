@@ -20,6 +20,8 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.XmlWriter;
+import com.nebula2d.editor.common.IBuildable;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.Sprite;
@@ -27,7 +29,7 @@ import com.nebula2d.editor.util.FullBufferedWriter;
 
 import java.io.IOException;
 
-public abstract class Animation implements ISerializable {
+public abstract class Animation implements ISerializable, IBuildable {
 
     public static enum AnimationType {
         KEY_FRAME
@@ -53,6 +55,13 @@ public abstract class Animation implements ISerializable {
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(name);
         fw.writeLine(animationType.name());
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+        sceneXml.element("animation").
+                attribute("name", name).
+                attribute("animationType", animationType.name());
     }
 
     @Override

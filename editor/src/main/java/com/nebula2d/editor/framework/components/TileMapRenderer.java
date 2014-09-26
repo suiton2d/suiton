@@ -2,9 +2,11 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.TileSheet;
+import com.nebula2d.editor.framework.assets.TiledTileSheet;
 import com.nebula2d.editor.ui.ComponentsDialog;
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.controls.N2DCheckBox;
@@ -72,6 +74,17 @@ public class TileMapRenderer extends Renderer {
 
             renderable.load(fr);
         }
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
+        super.build(sceneXml, assetsXml);
+        TileSheet tileSheet = (TileSheet) renderable;
+        sceneXml.attribute("tileSheet", tileSheet.getBuildPath());
+        assetsXml.element("asset").attribute("path", tileSheet.getBuildPath());
+        if (tileSheet instanceof TiledTileSheet)
+            assetsXml.attribute("assetType", "TILED_TILE_SHEET");
+        assetsXml.pop();
     }
 
     @Override

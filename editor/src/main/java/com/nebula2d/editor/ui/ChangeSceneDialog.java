@@ -34,6 +34,7 @@ public class ChangeSceneDialog extends JDialog {
     public ChangeSceneDialog() {
         setTitle("Change Scene");
         setupContents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
