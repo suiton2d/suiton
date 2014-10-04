@@ -52,7 +52,9 @@ public class Sprite extends Asset {
 
     @Override
     protected void onUnload() {
-        texture.dispose();
-        texture = null;
+        if (texture != null) {
+            texture.dispose();
+            texture = null;
+        }
     }
 }

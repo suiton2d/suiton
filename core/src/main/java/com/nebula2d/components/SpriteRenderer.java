@@ -16,9 +16,9 @@ public class SpriteRenderer extends Renderer {
 
     private Sprite sprite;
 
-    public SpriteRenderer(String name, String spritePath) {
+    public SpriteRenderer(String name, Sprite sprite) {
         super(name);
-        sprite = new Sprite(spritePath);
+        this.sprite = sprite;
     }
 
     @Override

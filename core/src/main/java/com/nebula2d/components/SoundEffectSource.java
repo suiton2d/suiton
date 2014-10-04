@@ -13,9 +13,9 @@ public class SoundEffectSource extends Component {
 
     private SoundEffect soundEffect;
 
-    public SoundEffectSource(String name, String soundEffectPath) {
+    public SoundEffectSource(String name, SoundEffect soundEffect) {
         super(name);
-        soundEffect = new SoundEffect(soundEffectPath);
+        this.soundEffect = soundEffect;
     }
 
     /**

@@ -25,10 +25,9 @@ public class Behavior extends Component {
     private Function beginCollisionFunction;
     private Function endCollisionFunction;
 
-    public Behavior(String name, String scriptPath) {
+    public Behavior(String name, Script script) {
         super(name);
-        script = new Script(scriptPath);
-        initScript();
+        this.script = script;
     }
 
     private void initScript() {
@@ -51,9 +50,12 @@ public class Behavior extends Component {
 
     @Override
     public void start() {
+        initScript();
         Context context = Context.enter();
         try {
-            startFunction.call(context, scope, scope, new Object[]{gameObject});
+            if (startFunction != Scriptable.NOT_FOUND) {
+                startFunction.call(context, scope, scope, new Object[]{gameObject});
+            }
         } finally {
             Context.exit();
         }
@@ -63,7 +65,9 @@ public class Behavior extends Component {
     public void update(float dt) {
         Context context = Context.enter();
         try {
-            updateFunction.call(context, scope, scope, new Object[]{gameObject, dt});
+            if (updateFunction != Scriptable.NOT_FOUND) {
+                updateFunction.call(context, scope, scope, new Object[]{gameObject, dt});
+            }
         } finally {
             Context.exit();
         }
@@ -71,9 +75,17 @@ public class Behavior extends Component {
 
     @Override
     public void finish() {
+        scope = null;
+        startFunction = null;
+        updateFunction = null;
+        finishFunction = null;
+        beginCollisionFunction = null;
+        endCollisionFunction = null;
         Context context = Context.enter();
         try {
-            finishFunction.call(context, scope, scope, null);
+            if (finishFunction != Scriptable.NOT_FOUND) {
+                finishFunction.call(context, scope, scope, null);
+            }
         } finally {
             Context.exit();
         }
@@ -83,7 +95,9 @@ public class Behavior extends Component {
     public void beginCollision(GameObject go1, GameObject go2) {
         Context context = Context.enter();
         try {
-            beginCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
+            if (beginCollisionFunction != Scriptable.NOT_FOUND) {
+                beginCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
+            }
         } finally {
             Context.exit();
         }
@@ -93,7 +107,9 @@ public class Behavior extends Component {
     public void endCollision(GameObject go1, GameObject go2) {
         Context context = Context.enter();
         try {
-            endCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
+            if (endCollisionFunction != Scriptable.NOT_FOUND) {
+                endCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
+            }
         } finally {
             Context.exit();
         }
