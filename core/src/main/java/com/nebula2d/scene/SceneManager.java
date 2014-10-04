@@ -112,8 +112,8 @@ public class SceneManager {
         for (Body body : bodies) {
             if (body.getType() != BodyDef.BodyType.StaticBody) {
                 GameObject go = (GameObject) body.getUserData();
-                go.getTransform().setPosition(body.getPosition());
-                go.getTransform().setRotation((float) (body.getAngle() * 180.0f / Math.PI));
+                go.setPosition(body.getPosition().x, body.getPosition().y);
+                go.setRotation((float) (body.getAngle() * 180.0f / Math.PI));
             }
         }
     }

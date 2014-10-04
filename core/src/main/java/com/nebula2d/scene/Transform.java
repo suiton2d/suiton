@@ -19,7 +19,6 @@
 package com.nebula2d.scene;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 /**
  * Transform is a class representing for position, scale, and rotation
@@ -34,48 +33,50 @@ public class Transform {
      */
     private Vector2 position;
     private Vector2 scale;
-    private GameObject gameObject;
+    private float rotation;
 
     public Transform(GameObject gameObject) {
-        this.gameObject = gameObject;
-        this.position = new Vector2(0, 0);
-        this.scale = new Vector2(1, 1);
+        setPosition(gameObject.getX(), gameObject.getY());
+        setScale(gameObject.getScaleX(), gameObject.getScaleY());
+        setRotation(gameObject.getRotation());
+    }
+
+    public Transform() {
+        setPosition(0, 0);
+        setScale(1.0f, 1.0f);
+        setRotation(0);
     }
 
     public Vector2 getPosition() {
-        float x = gameObject.getX() + gameObject.getWidth() / 2.0f;
-        float y = gameObject.getY() + gameObject.getHeight() / 2.0f;
-        return position.set(x, y);
+        return position;
     }
 
     public Vector2 getScale() {
-        float x = gameObject.getScaleX();
-        float y = gameObject.getScaleY();
-        return scale.set(x, y);
+        return scale;
     }
 
     public float getRotation() {
-        return gameObject.getRotation();
+        return rotation;
     }
 
     public void setPosition(Vector2 position) {
-        gameObject.addAction(Actions.moveTo(position.x, position.y));
+        this.position = position;
     }
 
     public void setPosition(float x, float y) {
-        gameObject.addAction(Actions.moveTo(x, y));
+        this.position = new Vector2(x, y);
     }
 
     public void setScale(Vector2 scale) {
-        gameObject.addAction(Actions.scaleTo(scale.x, scale.y));
+        this.scale = scale;
     }
 
     public void setScale(float x, float y) {
-        gameObject.addAction(Actions.scaleTo(x, y));
+        this.scale = new Vector2(x, y);
     }
 
     public void setRotation(float rotation) {
-        gameObject.addAction(Actions.rotateTo(rotation));
+        this.rotation = rotation;
     }
 
     /**
@@ -83,7 +84,7 @@ public class Transform {
      * @param other A Vector2 containing the delta to translate.
      */
     public void translate(Vector2 other) {
-        gameObject.addAction(Actions.moveBy(other.x, other.y));
+        position.add(other);
     }
 
     /**
@@ -92,7 +93,7 @@ public class Transform {
      * @param dy The amount to translate the y coordinate.
      */
     public void translate(float dx, float dy) {
-        gameObject.addAction(Actions.moveBy(dx, dy));
+        position.add(dx, dy);
     }
 
     /**
@@ -100,6 +101,10 @@ public class Transform {
      * @param theta The amount to rotate in degrees.
      */
     public void rotate(float theta) {
-        gameObject.addAction(Actions.rotateBy(theta));
+        rotation += theta;
+
+        if (rotation >= 360) {
+            rotation -= 360;
+        }
     }
 }

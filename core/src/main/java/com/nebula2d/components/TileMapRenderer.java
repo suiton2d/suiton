@@ -1,12 +1,7 @@
 package com.nebula2d.components;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.assets.TileSheet;
-import com.nebula2d.assets.TiledTileSheet;
-import com.nebula2d.scene.GameObject;
 import com.nebula2d.scene.SceneManager;
 
 /**
