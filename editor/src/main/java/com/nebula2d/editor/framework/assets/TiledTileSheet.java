@@ -24,6 +24,7 @@ public class TiledTileSheet extends TileSheet {
 
     private int width;
     private int height;
+    private OrthogonalTiledMapRenderer renderer;
 
     public TiledTileSheet(String path) {
         super(path, TileSheetType.TILED);
@@ -48,9 +49,17 @@ public class TiledTileSheet extends TileSheet {
                         height = h;
                 }
 
+                renderer = new OrthogonalTiledMapRenderer(getMap());
+
                 isLoaded = true;
             }
         });
+    }
+
+    @Override
+    public void dispose() {
+        if (renderer != null)
+            renderer.dispose();
     }
 
     public float getUnitScale() {
@@ -81,7 +90,6 @@ public class TiledTileSheet extends TileSheet {
     @Override
     public void render(GameObject gameObject, SpriteBatch batcher, Camera cam) {
         OrthographicCamera camera = (OrthographicCamera) cam;
-        OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(getMap());
         camera.translate((getBoundingWidth()/2), (getBoundingHeight()/2));
         camera.update();
         renderer.setView(camera);

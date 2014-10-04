@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.MapRenderer;
 import com.nebula2d.scene.GameObject;
 
 public abstract class TileSheet extends Asset {
@@ -45,7 +46,7 @@ public abstract class TileSheet extends Asset {
         }
     }
 
-    public abstract void render(GameObject gameObject, Batch batcher, Camera cam);
+    public abstract void render(MapRenderer renderer, GameObject gameObject, Batch batcher, Camera cam);
 
     public abstract int getBoundingWidth();
 

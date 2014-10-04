@@ -92,8 +92,8 @@ public class Project implements ISerializable {
     }
 
     public void setCurrentScene(int idx) {
-        currentSceneIdx = idx;
         AssetManager.getInstance().changeScene(currentSceneIdx);
+        currentSceneIdx = idx;
     }
 
     public String getPath() {

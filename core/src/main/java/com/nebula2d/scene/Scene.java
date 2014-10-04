@@ -121,6 +121,12 @@ public class Scene {
     public void finish() {
         for (Layer layer : layers)
             layer.finish();
+
+        if (stage != null)
+            stage.dispose();
+
+        if (physicalWorld != null)
+            physicalWorld.dispose();
     }
 
     public void beginCollision(GameObject go1, GameObject go2) {

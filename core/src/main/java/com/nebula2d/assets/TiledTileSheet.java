@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -66,9 +68,8 @@ public class TiledTileSheet extends TileSheet {
     }
 
     @Override
-    public void render(GameObject gameObject, Batch batcher, Camera cam) {
+    public void render(MapRenderer renderer, GameObject gameObject, Batch batcher, Camera cam) {
         OrthographicCamera camera = (OrthographicCamera) cam;
-        OrthogonalTiledMapRenderer renderer = new OrthogonalTiledMapRenderer(getMap());
         camera.translate((getBoundingWidth()/2), (getBoundingHeight()/2));
         camera.update();
         renderer.setView(camera);
