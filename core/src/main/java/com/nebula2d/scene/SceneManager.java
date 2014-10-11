@@ -18,6 +18,7 @@
 
 package com.nebula2d.scene;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -36,6 +37,7 @@ public class SceneManager {
 
     private static SceneManager instance;
     private Scene currentScene;
+    private String startScene;
     private Map<String, Scene> sceneMap;
 
     private SceneManager() {
@@ -56,6 +58,10 @@ public class SceneManager {
 
     public Scene getCurrentScene() {
         return currentScene;
+    }
+
+    public String getStartScene() {
+        return startScene;
     }
 
     /**
@@ -115,6 +121,16 @@ public class SceneManager {
                 go.setPosition(body.getPosition().x, body.getPosition().y);
                 go.setRotation((float) (body.getAngle() * 180.0f / Math.PI));
             }
+        }
+    }
+
+    public void loadSceneData(FileHandle scenesFile) {
+
+    }
+
+    public void cleanup() {
+        for (Scene scene : sceneMap.values()) {
+            scene.cleanup();
         }
     }
 }
