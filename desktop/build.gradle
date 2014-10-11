@@ -14,5 +14,17 @@ dependencies {
     compile 'com.badlogicgames.gdx:gdx-backend-lwjgl:' + GDX_VERSION
     compile 'com.badlogicgames.gdx:gdx-platform:' + GDX_VERSION + ':natives-desktop'
 
-    compile project(':core')
+//    compile project(':core')
+}
+
+task standalone(type:DefaultTask) {
+    dependencies {
+        compile project(':core')
+    }
+}
+
+task editor(type:DefaultTask) {
+    dependencies {
+        compile fileTree(dir: 'libs', include: ['core*.jar'])
+    }
 }
