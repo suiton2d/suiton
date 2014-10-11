@@ -18,6 +18,7 @@
 
 package com.nebula2d.assets;
 
+import com.badlogic.gdx.files.FileHandle;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 
@@ -80,5 +81,21 @@ public class AssetManager {
         List<Asset> assets = assetMap.get(sceneName);
         for (Asset asset : assets)
             asset.unload();
+    }
+
+    public void installAssets(FileHandle assetsFile) {
+
+    }
+
+    public void cleanup() {
+        for (List<Asset> assetList : assetMap.values()) {
+            for (Asset asset : assetList) {
+                asset.unload();
+            }
+
+            assetList.clear();
+        }
+
+        assetMap.clear();
     }
 }
