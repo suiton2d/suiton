@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ *
  * Created by bonazza on 9/19/14.
  */
 public class N2DDialog extends JDialog {

@@ -22,29 +22,19 @@ dependencies {
 }
 
 // TODO: Re-enabled this when we have some clients implemented.
-//task fixDesktop(dependsOn: ":core:jar", type: Copy) {
-//    def desktopDir = project(":desktop").projectDir
-//    from tasks.getByPath(":core:jar")
-//    into desktopDir + File.separator + "resources"
-//
-//    from desktopDir
-//    into 'src/main/resources/client/desktop'
-//}
-//
-//task fixAndroid(dependsOn: ":core:jar", type: Copy) {
-//    def androidDir = project(":android").projectDir
-//    from tasks.getByPath(":core:jar")
-//    into androidDir + File.separator + "resources"
-//
-//    from androidDir
-//    into 'src/main/resources/client/android'
-//}
-//
-//task unfix(type: Delete) {
-//    delete fixDesktop
-//    delete fixAndroid
-//}
-//
-//build.dependsOn fixDesktop
-//build.dependsOn fixAndroid
-//clean.dependsOn unfix
+task fixDesktop(dependsOn: ":core:jar", type: Copy) {
+    def desktopDir = project(":desktop").projectDir
+    def dest = "$desktopDir${File.separator}resources${File.separator}lib"
+    from tasks.getByPath(":core:jar")
+    into dest
+
+    from desktopDir
+    into 'src/main/resources/client/desktop'
+}
+
+task unfix(type: Delete) {
+    delete fixDesktop
+}
+
+build.dependsOn fixDesktop
+clean.dependsOn unfix
