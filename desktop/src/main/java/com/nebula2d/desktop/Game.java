@@ -4,8 +4,11 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.nebula2d.assets.AssetManager;
+import com.nebula2d.scene.Scene;
 import com.nebula2d.scene.SceneManager;
 
 /**
@@ -25,12 +28,17 @@ public class Game implements ApplicationListener {
         assetManager.installAssets(assetsFile);
         sceneManager.loadSceneData(scenesFile);
 
-        sceneManager.setCurrentScene(sceneManager.getStartScene());
+//        sceneManager.setCurrentScene(sceneManager.getStartScene());
+        sceneManager.addScene(new Scene("test", new Vector2(), true));
+        sceneManager.setCurrentScene("test");
     }
 
     @Override
     public void resize(int width, int height) {
-        sceneManager.getCurrentScene().getStage().getViewport().update(width, height);
+        Scene scene = sceneManager.getCurrentScene();
+        Stage stage = scene.getStage();
+        Viewport viewport = stage.getViewport();
+        viewport.update(width, height);
     }
 
     @Override

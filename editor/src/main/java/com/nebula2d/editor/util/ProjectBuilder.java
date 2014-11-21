@@ -3,6 +3,9 @@ package com.nebula2d.editor.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.nebula2d.editor.framework.Project;
+import com.nebula2d.editor.ui.BuildProgressDialog;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 import java.io.*;
 
@@ -14,10 +17,10 @@ import java.io.*;
 public class ProjectBuilder {
 
     public static enum ProjectType {
-        PC("desktop"),
-        MAC("desktop"),
-        LINUX("desktop"),
-        ANDROID("android");
+        PC("desktop.zip"),
+        MAC("desktop.zip"),
+        LINUX("desktop.zip"),
+        ANDROID("android.zip");
 
         private String sourcePath;
 
@@ -35,24 +38,48 @@ public class ProjectBuilder {
         this.project = project;
     }
 
-    public void build(int startScene, ProjectType type) throws IOException {
+    public void build(int startScene, ProjectType type) throws IOException, ZipException, InterruptedException {
+        switch (type) {
+            case PC:
+                buildPC(startScene);
+                break;
+        }
+    }
+
+    private void buildPC(int startScene) throws IOException, ZipException, InterruptedException {
+        ProjectType type = ProjectType.PC;
         FileHandle source = extractSource(type);
-        String projectTmpDir = project.getTempDir();
-        FileHandle sceneFileHandle = Gdx.files.absolute(PlatformUtil.pathJoin(projectTmpDir, "scenes.xml"));
-        FileHandle assetsFileHandle = Gdx.files.absolute(PlatformUtil.pathJoin(projectTmpDir, "assets.xml"));
-        project.build(startScene, sceneFileHandle, assetsFileHandle);
-        FileHandle dest = Gdx.files.absolute(PlatformUtil.pathJoin(source.path(), "resources"));
-        source.copyTo(dest);
+        FileHandle resourcesDir = source.child("src/main/resources");
+        resourcesDir.mkdirs();
+        FileHandle sceneFileHandle = resourcesDir.child("scenes.xml");
+        FileHandle assetsFileHandle = resourcesDir.child("assets.xml");
+        createConfigFile(resourcesDir);
+
+        BuildProgressDialog buildDialog = new BuildProgressDialog(project.getNameWithoutExt());
+//        buildDialog.setVisible(true);
+        project.build(startScene, sceneFileHandle, assetsFileHandle, buildDialog);
         GradleExecutor.build(source.path());
     }
 
-    public FileHandle extractSource(ProjectType type) throws IOException {
+    private void createConfigFile(FileHandle dir) throws IOException {
+        dir.child("meta.cfg").file().createNewFile();
+    }
+
+    public FileHandle extractSource(ProjectType type) throws IOException, ZipException {
         String sourcePath = type.getSourcePath();
-        FileHandle dest = Gdx.files.absolute(PlatformUtil.pathJoin(project.getTempDir(), sourcePath));
-
-        FileHandle sourceHandle = Gdx.files.classpath(PlatformUtil.pathJoin("clients", sourcePath));
+        project.ensureTempDir();
+        String tmpDir = project.getTempDir();
+        FileHandle dest = Gdx.files.absolute(tmpDir);
+        FileHandle sourceHandle = Gdx.files.classpath("client").child(sourcePath);
         sourceHandle.copyTo(dest);
-
+        FileHandle zipFile = dest.child(sourcePath);
+        new ZipFile(zipFile.path()).extractAll(dest.path());
+        zipFile.delete();
         return dest;
+    }
+
+    public void unzip(FileHandle zipFile) throws ZipException {
+
+
     }
 }

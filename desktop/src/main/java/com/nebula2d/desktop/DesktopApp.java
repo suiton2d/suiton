@@ -15,7 +15,7 @@ import java.util.Properties;
 public class DesktopApp {
 
     public static void main(String[] args) {
-        InputStream is = DesktopApp.class.getResourceAsStream("meta.cfg");
+        InputStream is = DesktopApp.class.getResourceAsStream("/meta.cfg");
         Properties properties = new Properties();
         try {
             properties.load(is);

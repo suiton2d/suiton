@@ -9,8 +9,9 @@ import java.io.IOException;
  */
 public class GradleExecutor {
 
-    public static void build(String dir) throws IOException {
-        ProcessBuilder pb = new ProcessBuilder("gradle", "clean", "editor", "build");
-        pb.directory(new File(dir)).start();
+    public static void build(String dir) throws IOException, InterruptedException {
+        ProcessBuilder pb = new ProcessBuilder("gradle", "clean", "fatJar");
+        int rc = pb.directory(new File(dir)).start().waitFor();
+        System.out.println(rc);
     }
 }

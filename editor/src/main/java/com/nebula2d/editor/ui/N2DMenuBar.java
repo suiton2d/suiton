@@ -18,6 +18,8 @@
 
 package com.nebula2d.editor.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
@@ -123,8 +125,11 @@ public class N2DMenuBar extends JMenuBar {
         settingsMenuItem.addActionListener(e -> new SettingsDialog());
 
         buildMenuItem.addActionListener(e -> {
-            // TODO: Implement
-            JOptionPane.showMessageDialog(getParent(), "Not implemented yet.");
+            try {
+                new ProjectBuilder(MainFrame.getProject()).build(0, ProjectBuilder.ProjectType.PC);
+            } catch (Exception e1) {
+                JOptionPane.showMessageDialog(null, "Failed to build project.");
+            }
         });
 
         newSceneMenuItem.addActionListener(e -> new NewSceneDialog());

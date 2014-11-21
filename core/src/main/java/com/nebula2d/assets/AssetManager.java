@@ -69,8 +69,10 @@ public class AssetManager {
      */
     public void loadAssets(String sceneName) {
         List<Asset> assets = assetMap.get(sceneName);
-        for (Asset asset : assets)
-            asset.load();
+        if (assets != null) {
+            for (Asset asset : assets)
+                asset.load();
+        }
     }
 
     /**

@@ -5,6 +5,16 @@ version = '1.0'
 
 test.scanForTestClasses = false
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -17,4 +27,10 @@ dependencies {
 
     compile 'com.badlogicgames.gdx:gdx:' + GDX_VERSION
     compile 'com.badlogicgames.gdx:gdx-box2d:' + GDX_VERSION
+}
+
+apply plugin: 'eu.appsatori.fatjar'
+
+fatJar {
+
 }
