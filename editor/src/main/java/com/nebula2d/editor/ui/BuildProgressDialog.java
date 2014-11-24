@@ -23,7 +23,6 @@ public class BuildProgressDialog extends N2DDialog implements BuildProgressUpdat
 
     public BuildProgressDialog(String projectName) {
         super(String.format("Building %s...", projectName), false);
-        setResizable(false);
         init();
         addWindowListener(new WindowAdapter() {
             @Override
@@ -54,7 +53,8 @@ public class BuildProgressDialog extends N2DDialog implements BuildProgressUpdat
             nowLoadingLbl.setText(String.format("Compiling scene %s... (%d/%d", scene.getName(), idx+1, size));
             float perc = (idx+1/size)*100.0f;
             progressBar.setValue((int)perc);
-            revalidate();
+            pack();
+            setLocationRelativeTo(null);
         });
     }
 
@@ -62,7 +62,8 @@ public class BuildProgressDialog extends N2DDialog implements BuildProgressUpdat
     public void onProjectCompiled() {
         SwingUtilities.invokeLater(() -> {
             nowLoadingLbl.setText("Project compiled successfully... Building game package.");
-            revalidate();
+            pack();
+            setLocationRelativeTo(null);
         });
     }
 
