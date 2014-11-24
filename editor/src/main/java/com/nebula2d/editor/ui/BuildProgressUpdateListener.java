@@ -9,4 +9,8 @@ import com.nebula2d.editor.framework.Scene;
 public interface BuildProgressUpdateListener {
 
     public void onBuildProgressUpdate(Scene scene, int idx, int size);
+
+    public void onProjectCompiled();
+
+    public void onBuildComplete();
 }

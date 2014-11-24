@@ -7,6 +7,8 @@ import com.nebula2d.editor.ui.BuildProgressDialog;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import java.io.*;
 
 /**
@@ -56,9 +58,17 @@ public class ProjectBuilder {
         createConfigFile(resourcesDir);
 
         BuildProgressDialog buildDialog = new BuildProgressDialog(project.getNameWithoutExt());
-//        buildDialog.setVisible(true);
-        project.build(startScene, sceneFileHandle, assetsFileHandle, buildDialog);
-        GradleExecutor.build(source.path());
+        buildDialog.setVisible(true);
+        new Thread(() -> {
+            try {
+                project.build(startScene, sceneFileHandle, assetsFileHandle, buildDialog);
+                GradleExecutor.build(source.path());
+                buildDialog.onBuildComplete();
+            } catch (Exception e) {
+                SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null,
+                        String.format("Failed to build project %s", project.getNameWithoutExt())));
+            }
+        }).start();
     }
 
     private void createConfigFile(FileHandle dir) throws IOException {
@@ -76,10 +86,5 @@ public class ProjectBuilder {
         new ZipFile(zipFile.path()).extractAll(dest.path());
         zipFile.delete();
         return dest;
-    }
-
-    public void unzip(FileHandle zipFile) throws ZipException {
-
-
     }
 }

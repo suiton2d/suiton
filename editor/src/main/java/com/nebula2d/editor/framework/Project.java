@@ -204,15 +204,17 @@ public class Project implements ISerializable {
 
         for (int i = 0; i < scenes.size(); ++i) {
             Scene scene = scenes.get(i);
-            listener.onBuildProgressUpdate(scene, i, scenes.size());
             scene.build(sceneXmlWriter, assetsXmlWriter);
             sceneXmlWriter.pop();
+            listener.onBuildProgressUpdate(scene, i, scenes.size());
         }
         sceneXmlWriter.pop();
         assetsXmlWriter.pop();
 
         sceneFileOut.writeString(sceneStrWriter.toString(), false);
         assetsFileOut.writeString(assetsStrWriter.toString(), false);
+
+        listener.onProjectCompiled();
     }
 
     public String getTempDir() {
