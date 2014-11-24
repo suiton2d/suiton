@@ -16,15 +16,15 @@ public class SpriteRenderer extends Renderer {
 
     private Sprite sprite;
 
-    public SpriteRenderer(String name, String spritePath) {
+    public SpriteRenderer(String name, Sprite sprite) {
         super(name);
-        sprite = new Sprite(spritePath);
+        this.sprite = sprite;
     }
 
     @Override
     public void render(Batch batch,  float dt) {
         Camera cam = gameObject.getLayer().getScene().getCamera();
-        Transform transform = gameObject.getTransform();
+        Transform transform = new Transform(gameObject);
         if (currentAnimation != null) {
             currentAnimation.render(transform, batch, cam, dt);
         } else {

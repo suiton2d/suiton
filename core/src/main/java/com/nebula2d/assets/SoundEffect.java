@@ -83,7 +83,9 @@ public class SoundEffect extends Asset {
 
     @Override
     protected void onUnload() {
-        sound.dispose();
-        sound = null;
+        if (sound != null) {
+            sound.dispose();
+            sound = null;
+        }
     }
 }

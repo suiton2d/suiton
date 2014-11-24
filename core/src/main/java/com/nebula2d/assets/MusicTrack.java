@@ -57,7 +57,9 @@ public class MusicTrack extends Asset {
 
     @Override
     protected void onUnload() {
-        track.dispose();
-        track = null;
+        if (track != null) {
+            track.dispose();
+            track = null;
+        }
     }
 }

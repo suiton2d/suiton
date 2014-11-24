@@ -22,13 +22,18 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.framework.assets.AssetManager;
+import com.nebula2d.editor.ui.BuildProgressUpdateListener;
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
 import com.nebula2d.editor.util.PlatformUtil;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -92,8 +97,8 @@ public class Project implements ISerializable {
     }
 
     public void setCurrentScene(int idx) {
-        currentSceneIdx = idx;
         AssetManager.getInstance().changeScene(currentSceneIdx);
+        currentSceneIdx = idx;
     }
 
     public String getPath() {
@@ -185,7 +190,8 @@ public class Project implements ISerializable {
         return false;
     }
 
-    public void build(int startScene, FileHandle sceneFileOut, FileHandle assetsFileOut) throws  IOException {
+    public void build(int startScene, FileHandle sceneFileOut, FileHandle assetsFileOut,
+                      BuildProgressUpdateListener listener) throws  IOException {
         StringWriter sceneStrWriter = new StringWriter();
         StringWriter assetsStrWriter = new StringWriter();
         XmlWriter sceneXmlWriter = new XmlWriter(sceneStrWriter);
@@ -196,15 +202,19 @@ public class Project implements ISerializable {
                 attribute("startScene", startScene);
         assetsXmlWriter.element("assets");
 
-        for (Scene scene : scenes) {
+        for (int i = 0; i < scenes.size(); ++i) {
+            Scene scene = scenes.get(i);
             scene.build(sceneXmlWriter, assetsXmlWriter);
             sceneXmlWriter.pop();
+            listener.onBuildProgressUpdate(scene, i, scenes.size());
         }
         sceneXmlWriter.pop();
         assetsXmlWriter.pop();
 
         sceneFileOut.writeString(sceneStrWriter.toString(), false);
         assetsFileOut.writeString(assetsStrWriter.toString(), false);
+
+        listener.onProjectCompiled();
     }
 
     public String getTempDir() {

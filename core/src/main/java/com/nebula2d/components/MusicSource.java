@@ -14,9 +14,9 @@ public class MusicSource extends Component {
 
     private MusicTrack musicTrack;
 
-    public MusicSource(String name, String trackPath) {
+    public MusicSource(String name, MusicTrack musicTrack) {
         super(name);
-        musicTrack = new MusicTrack(trackPath);
+        this.musicTrack = musicTrack;
     }
 
     /**

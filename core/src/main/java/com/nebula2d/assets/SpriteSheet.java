@@ -20,7 +20,6 @@ public class SpriteSheet extends Sprite {
         super(path);
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
-        init();
     }
 
     private void init() {
@@ -40,11 +39,23 @@ public class SpriteSheet extends Sprite {
         }
     }
 
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        init();
+    }
+
     public TextureRegion getFrame(int idx) {
         return frames[idx];
     }
 
     public TextureRegion[] getFrames(int startFrame, int endFrame) {
         return Arrays.copyOfRange(frames, startFrame, endFrame + 1);
+    }
+
+    @Override
+    protected void onUnload() {
+        super.onUnload();
+        frames = null;
     }
 }

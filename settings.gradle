@@ -1,4 +1,4 @@
 
 
-include 'core', 'avocado', 'editor'
+include 'core', 'avocado', 'editor', 'desktop'
 
