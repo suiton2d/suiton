@@ -18,6 +18,8 @@
 
 package com.nebula2d.assets;
 
+import com.badlogic.gdx.utils.Disposable;
+
 import java.io.File;
 
 /**
@@ -26,7 +28,7 @@ import java.io.File;
  *
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public abstract class Asset<T> {
+public abstract class Asset<T> implements Disposable {
 
     protected String filename;
     protected String path;
@@ -59,5 +61,10 @@ public abstract class Asset<T> {
 
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
+    }
+
+    public void dispose() {
+        if (data != null && data instanceof Disposable)
+            ((Disposable) data).dispose();
     }
 }
