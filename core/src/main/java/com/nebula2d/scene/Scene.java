@@ -81,6 +81,16 @@ public class Scene {
         return layers;
     }
 
+    public void addLayer(Layer l) {
+        layers.add(l);
+        l.setScene(this);
+    }
+
+    public void removeLayer(Layer l) {
+        layers.remove(l);
+        l.setScene(null);
+    }
+
     /**
      * Retrieves the {@link Layer} in the Scene with the given name.
      * @param name The name of the Layer to retrieve.
