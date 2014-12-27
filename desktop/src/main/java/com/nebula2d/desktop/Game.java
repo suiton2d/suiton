@@ -10,6 +10,8 @@ import com.nebula2d.assets.AssetManager;
 import com.nebula2d.scene.Scene;
 import com.nebula2d.scene.SceneManager;
 
+import java.io.IOException;
+
 /**
  *
  * Created by bonazza on 10/10/14.
@@ -22,7 +24,13 @@ public class Game implements ApplicationListener {
         FileHandle scenesFile = Gdx.files.internal("scenes.xml");
         AssetManager.init(new ClassPathFileHandleResolver());
 
-        AssetManager.installAssets(assetsFile);
+        try {
+            AssetManager.installAssets(assetsFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Gdx.app.exit();
+        }
+
         SceneManager.loadSceneData(scenesFile);
     }
 
