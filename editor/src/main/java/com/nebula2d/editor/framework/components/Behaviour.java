@@ -207,10 +207,11 @@ public class Behaviour extends Component {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws  IOException {
         super.build(sceneXml, assetsXml);
         sceneXml.attribute("script", script.getBuildPath());
-        assetsXml.element("asset").attribute("path", script.getBuildPath()).attribute("assetType", "SCRIPT");
+        assetsXml.element("asset").attribute("path", script.getBuildPath()).attribute("assetType", "SCRIPT").
+                attribute("sceneIdx", sceneId);
         assetsXml.pop();
     }
 }

@@ -87,10 +87,10 @@ public abstract class AnimatedRenderer extends Renderer {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
-        super.build(sceneXml, assetsXml);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneId);
         sceneXml.attribute("currentAnim", currentAnim);
         for (Animation anim : animations)
-            anim.build(sceneXml, assetsXml);
+            anim.build(sceneXml, assetsXml, sceneId);
     }
 }

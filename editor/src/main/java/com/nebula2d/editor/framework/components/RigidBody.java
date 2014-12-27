@@ -222,12 +222,12 @@ public class RigidBody extends Component {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
-        super.build(sceneXml, assetsXml);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneId);
         sceneXml.attribute("isKinematic", isKinematic).
                 attribute("fixedRotation", fixedRotation).
                 attribute("isBullet", isBullet);
-        shape.build(sceneXml, assetsXml);
+        shape.build(sceneXml, assetsXml, sceneId);
     }
 
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {

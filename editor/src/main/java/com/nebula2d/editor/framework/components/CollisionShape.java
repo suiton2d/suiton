@@ -66,7 +66,7 @@ public abstract class CollisionShape implements ISerializable, IRenderable, IBui
     public abstract JPanel createEditorPanel();
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws IOException {
         sceneXml.element("collisionShape").
                 attribute("shapeType", shapeType.name());
         material.build(sceneXml, assetsXml);

@@ -74,7 +74,7 @@ public class PhysicsMaterial implements ISerializable, IBuildable {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws IOException {
         sceneXml.element("physicsMaterial").
                 attribute("density", density).
                 attribute("friction", friction).

@@ -259,12 +259,12 @@ public class SpriteRenderer extends AnimatedRenderer {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
-        super.build(sceneXml, assetsXml);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneId);
         Sprite sprite = (Sprite) renderable;
         sceneXml.attribute("sprite", sprite.getBuildPath());
         assetsXml.element("asset").attribute("path", sprite.getBuildPath()).
-                attribute("assetType", "SPRITE");
+                attribute("assetType", "SPRITE").attribute("sceneIdx", sceneId);
         assetsXml.pop();
     }
 

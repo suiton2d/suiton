@@ -77,11 +77,11 @@ public class TileMapRenderer extends Renderer {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
-        super.build(sceneXml, assetsXml);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneId);
         TileSheet tileSheet = (TileSheet) renderable;
         sceneXml.attribute("tileSheet", tileSheet.getBuildPath());
-        assetsXml.element("asset").attribute("path", tileSheet.getBuildPath());
+        assetsXml.element("asset").attribute("path", tileSheet.getBuildPath()).attribute("sceneIdx", sceneId);
         if (tileSheet instanceof TiledTileSheet)
             assetsXml.attribute("assetType", "TILED_TILE_SHEET");
         assetsXml.pop();

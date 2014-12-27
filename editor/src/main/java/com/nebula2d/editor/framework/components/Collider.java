@@ -174,10 +174,10 @@ public class Collider extends Component implements IRenderable {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
-        super.build(sceneXml, assetsXml);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneIdx) throws IOException {
+        super.build(sceneXml, assetsXml, sceneIdx);
         sceneXml.attribute("isSensor", isSensor);
-        shape.build(sceneXml, assetsXml);
+        shape.build(sceneXml, assetsXml, sceneIdx);
     }
 
     public void render(GameObject selectedObject, SpriteBatch batcher, Camera cam) {
