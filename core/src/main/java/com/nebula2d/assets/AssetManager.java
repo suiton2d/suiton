@@ -79,6 +79,8 @@ public class AssetManager {
             for (AssetDescriptor asset : assets)
                 manager.load(asset);
         }
+
+        manager.finishLoading();
     }
 
     /**
