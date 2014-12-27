@@ -32,6 +32,7 @@ public class Behavior extends Component {
 
     private void initScript() {
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
             ScriptableObject globalScope = AssetManager.getInstance().getGlobalScriptScope();
             scope = context.newObject(globalScope);
@@ -52,6 +53,7 @@ public class Behavior extends Component {
     public void start() {
         initScript();
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
             if (startFunction != Scriptable.NOT_FOUND) {
                 startFunction.call(context, scope, scope, new Object[]{gameObject});
@@ -64,6 +66,7 @@ public class Behavior extends Component {
     @Override
     public void update(float dt) {
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
             if (updateFunction != Scriptable.NOT_FOUND) {
                 updateFunction.call(context, scope, scope, new Object[]{gameObject, dt});
@@ -82,6 +85,7 @@ public class Behavior extends Component {
         beginCollisionFunction = null;
         endCollisionFunction = null;
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
             if (finishFunction != Scriptable.NOT_FOUND) {
                 finishFunction.call(context, scope, scope, null);
@@ -94,6 +98,7 @@ public class Behavior extends Component {
     @Override
     public void beginCollision(GameObject go1, GameObject go2) {
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
             if (beginCollisionFunction != Scriptable.NOT_FOUND) {
                 beginCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
@@ -106,6 +111,7 @@ public class Behavior extends Component {
     @Override
     public void endCollision(GameObject go1, GameObject go2) {
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
             if (endCollisionFunction != Scriptable.NOT_FOUND) {
                 endCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});

@@ -40,6 +40,7 @@ public class AssetManager {
     private AssetManager() {
         this.assetMap = new HashMap<String, List<Asset>>();
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
             globalScriptScope = context.initStandardObjects();
         } finally {
