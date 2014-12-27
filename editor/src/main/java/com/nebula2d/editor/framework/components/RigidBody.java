@@ -226,7 +226,8 @@ public class RigidBody extends Component {
         super.build(sceneXml, assetsXml, sceneName);
         sceneXml.attribute("isKinematic", isKinematic).
                 attribute("fixedRotation", fixedRotation).
-                attribute("isBullet", isBullet);
+                attribute("isBullet", isBullet).
+                attribute("mass", mass);
         shape.build(sceneXml, assetsXml, sceneName);
     }
 
