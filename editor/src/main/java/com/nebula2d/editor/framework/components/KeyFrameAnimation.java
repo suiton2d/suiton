@@ -119,8 +119,8 @@ public class KeyFrameAnimation extends Animation {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws IOException {
-        super.build(sceneXml, assetsXml, sceneId);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
+        super.build(sceneXml, assetsXml, sceneName);
         sceneXml.attribute("frameWidth", frameWidth).
                 attribute("frameHeight", frameHeight).
                 attribute("startFrame", startFrame).

@@ -11,5 +11,5 @@ import java.io.IOException;
  */
 public interface IBuildable {
 
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws IOException;
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException;
 }

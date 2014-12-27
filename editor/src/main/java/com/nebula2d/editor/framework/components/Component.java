@@ -88,7 +88,7 @@ public abstract class Component implements ISerializable, IBuildable {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws IOException {
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
         sceneXml.element("component").
                 attribute("name", name).
                 attribute("enabled", enabled).

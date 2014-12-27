@@ -58,7 +58,7 @@ public abstract class Animation implements ISerializable, IBuildable {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws IOException {
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
         sceneXml.element("animation").
                 attribute("name", name).
                 attribute("animationType", animationType.name());

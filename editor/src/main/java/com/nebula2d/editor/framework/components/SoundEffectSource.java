@@ -164,11 +164,11 @@ public class SoundEffectSource extends Component {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws  IOException {
-        super.build(sceneXml, assetsXml, sceneId);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneName);
         sceneXml.attribute("sfx", soundEffect.getBuildPath());
         assetsXml.element("asset").attribute("path", soundEffect.getBuildPath()).attribute("assetType", "SFX").
-                attribute("sceneIdx", sceneId);
+                attribute("sceneName", sceneName);
         assetsXml.pop();
     }
 }
