@@ -18,7 +18,10 @@
 
 package com.nebula2d.assets;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
+import com.nebula2d.assets.loaders.*;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 
@@ -33,12 +36,13 @@ import java.util.Map;
  */
 public class AssetManager {
 
-    private static AssetManager instance;
-    private Map<String, List<Asset>> assetMap;
-    private ScriptableObject globalScriptScope;
+    private static Map<String, List<AssetDescriptor>> assetMap = new HashMap<String, List<AssetDescriptor>>();
+    private static ScriptableObject globalScriptScope;
+    private static com.badlogic.gdx.assets.AssetManager manager;
 
-    private AssetManager() {
-        this.assetMap = new HashMap<String, List<Asset>>();
+    public static void init(FileHandleResolver fileHandleResolver) {
+        manager = new com.badlogic.gdx.assets.AssetManager(fileHandleResolver);
+        initLoaders(fileHandleResolver);
         Context context = Context.enter();
         context.setOptimizationLevel(-1);
         try {
@@ -48,31 +52,32 @@ public class AssetManager {
         }
     }
 
-    /**
-     * Gets the singleton instance of AssetManager. Only one instance of
-     * AssetManager should exist at any given time
-     * @return the singleton AssetManager instance
-     */
-    public static synchronized AssetManager getInstance() {
-        if (instance == null)
-            instance = new AssetManager();
-
-        return instance;
+    private static void initLoaders(FileHandleResolver resolver) {
+        manager.setLoader(MusicTrack.class, new MusicTrackLoader(resolver));
+        manager.setLoader(Script.class, new ScriptLoader(resolver));
+        manager.setLoader(SoundEffect.class, new SoundEffectLoader(resolver));
+        manager.setLoader(Sprite.class, new SpriteLoader(resolver));
+        manager.setLoader(SpriteSheet.class, new SpriteSheetLoader(resolver));
+        manager.setLoader(TiledTileSheet.class, new TiledTileSheetLoader(resolver));
     }
 
-    public ScriptableObject getGlobalScriptScope() {
+    public static ScriptableObject getGlobalScriptScope() {
         return globalScriptScope;
+    }
+
+    public static <T> T getAsset(String filename, Class<T> type) {
+        return manager.get(filename, type);
     }
 
     /**
      * Loads the assets for the {@link com.nebula2d.scene.Scene} with the given name into memory.
      * @param sceneName the name of the Scene whose assets should be loaded.
      */
-    public void loadAssets(String sceneName) {
-        List<Asset> assets = assetMap.get(sceneName);
+    public static void loadAssets(String sceneName) {
+        List<AssetDescriptor> assets = assetMap.get(sceneName);
         if (assets != null) {
-            for (Asset asset : assets)
-                asset.load();
+            for (AssetDescriptor asset : assets)
+                manager.load(asset);
         }
     }
 
@@ -80,20 +85,20 @@ public class AssetManager {
      * Unloads the assets for the Scene with the given name from memory.
      * @param sceneName the name of the Scene whose assets should be unloaded.
      */
-    public void unloadAssets(String sceneName) {
-        List<Asset> assets = assetMap.get(sceneName);
-        for (Asset asset : assets)
-            asset.unload();
+    public static void unloadAssets(String sceneName) {
+        List<AssetDescriptor> assets = assetMap.get(sceneName);
+        for (AssetDescriptor asset : assets)
+            manager.unload(asset.fileName);
     }
 
-    public void installAssets(FileHandle assetsFile) {
+    public static void installAssets(FileHandle assetsFile) {
 
     }
 
-    public void cleanup() {
-        for (List<Asset> assetList : assetMap.values()) {
-            for (Asset asset : assetList) {
-                asset.unload();
+    public static void cleanup() {
+        for (List<AssetDescriptor> assetList : assetMap.values()) {
+            for (AssetDescriptor asset : assetList) {
+                manager.unload(asset.fileName);
             }
 
             assetList.clear();

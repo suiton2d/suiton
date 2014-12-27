@@ -51,7 +51,7 @@ public abstract class Collider extends Component {
     @Override
     public void start() {
         BodyDef bodyDef = createBodyDef();
-        physicalBody = SceneManager.getInstance().getCurrentScene().getPhysicalWorld().createBody(bodyDef);
+        physicalBody = SceneManager.getCurrentScene().getPhysicalWorld().createBody(bodyDef);
         physicalBody.setUserData(getGameObject());
         shape.affixTo(physicalBody, isSensor).setUserData(gameObject);
     }
@@ -74,7 +74,7 @@ public abstract class Collider extends Component {
 
     @Override
     public void finish() {
-        SceneManager.getInstance().getCurrentScene().getPhysicalWorld().destroyBody(physicalBody);
+        SceneManager.getCurrentScene().getPhysicalWorld().destroyBody(physicalBody);
     }
 
     @Override

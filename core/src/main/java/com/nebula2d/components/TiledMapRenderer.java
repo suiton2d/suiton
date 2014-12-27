@@ -1,7 +1,9 @@
 package com.nebula2d.components;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.nebula2d.assets.AssetManager;
 import com.nebula2d.assets.TiledTileSheet;
 import com.nebula2d.scene.SceneManager;
 
@@ -10,13 +12,16 @@ import com.nebula2d.scene.SceneManager;
  */
 public class TiledMapRenderer extends Renderer {
 
-    private TiledTileSheet tileSheet;
+    private String filename;
     private OrthogonalTiledMapRenderer renderer;
 
-    public TiledMapRenderer(String name, TiledTileSheet tileSheet) {
+    public TiledMapRenderer(String name, String filename) {
         super(name);
-        this.tileSheet = tileSheet;
-        renderer = new OrthogonalTiledMapRenderer(tileSheet.getMap());
+        this.filename = filename;
+    }
+
+    public TiledTileSheet getTiledTileSheet() {
+        return AssetManager.getAsset(filename, TiledTileSheet.class);
     }
 
     @Override
@@ -31,8 +36,17 @@ public class TiledMapRenderer extends Renderer {
 
     @Override
     public void render(Batch batch, float dt) {
-        if (tileSheet != null && tileSheet.isLoaded())
-            tileSheet.render(renderer, gameObject, batch, SceneManager.getInstance().getCurrentScene().getCamera());
+        if (getTiledTileSheet() != null) {
+            if (renderer == null)
+                renderer = new OrthogonalTiledMapRenderer(getTiledTileSheet().getData());
+            OrthographicCamera camera = (OrthographicCamera) SceneManager.getCurrentScene().getCamera();
+            camera.translate((getBoundingWidth()/2), (getBoundingHeight()/2));
+            camera.update();
+            renderer.setView(camera);
+            renderer.render();
+            camera.translate(-(getBoundingWidth()/2), -(getBoundingHeight()/2));
+            camera.update();
+        }
     }
 
     @Override
@@ -42,10 +56,10 @@ public class TiledMapRenderer extends Renderer {
     }
 
     public int getBoundingWidth() {
-        return tileSheet != null ? tileSheet.getBoundingWidth() : 0;
+        return getTiledTileSheet() != null ? getTiledTileSheet().getBoundingWidth() : 0;
     }
 
     public int getBoundingHeight() {
-        return tileSheet != null ? tileSheet.getBoundingHeight() : 0;
+        return getTiledTileSheet() != null ? getTiledTileSheet().getBoundingHeight() : 0;
     }
 }

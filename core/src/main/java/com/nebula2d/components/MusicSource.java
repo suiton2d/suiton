@@ -1,6 +1,7 @@
 package com.nebula2d.components;
 
 import com.badlogic.gdx.audio.Music;
+import com.nebula2d.assets.AssetManager;
 import com.nebula2d.assets.MusicTrack;
 import com.nebula2d.scene.GameObject;
 
@@ -12,48 +13,51 @@ import com.nebula2d.scene.GameObject;
  */
 public class MusicSource extends Component {
 
-    private MusicTrack musicTrack;
+    private String filename;
 
-    public MusicSource(String name, MusicTrack musicTrack) {
+    public MusicSource(String name, String filename) {
         super(name);
-        this.musicTrack = musicTrack;
+        this.filename = filename;
     }
 
+    public MusicTrack getMusicTrack() {
+        return AssetManager.getAsset(filename, MusicTrack.class);
+    }
     /**
      * Plays the {@link com.nebula2d.assets.MusicTrack}.
      */
     public void play() {
-        musicTrack.play();
+        getMusicTrack().play();
     }
 
     /**
      * Stops the MusicTrack.
      */
     public void stop() {
-        musicTrack.stop();
+        getMusicTrack().stop();
     }
 
     /**
      * Pauses the MusicTrack.
      */
     public void pause() {
-        musicTrack.pause();
+        getMusicTrack().pause();
     }
 
     public boolean isLooping() {
-        return musicTrack.isLooping();
+        return getMusicTrack().isLooping();
     }
 
     public void setLooping(boolean looping) {
-        musicTrack.setLooping(looping);
+        getMusicTrack().setLooping(looping);
     }
 
     public float getVolume() {
-        return musicTrack.getTrack().getVolume();
+        return getMusicTrack().getData().getVolume();
     }
 
     public void setVolume(float volume) {
-        musicTrack.getTrack().setVolume(volume);
+        getMusicTrack().getData().setVolume(volume);
     }
 
     @Override
@@ -86,6 +90,6 @@ public class MusicSource extends Component {
      * @param listener The callback that will be fired on playback completion.
      */
     public void setOnCompletionListener(Music.OnCompletionListener listener) {
-        musicTrack.getTrack().setOnCompletionListener(listener);
+        getMusicTrack().getData().setOnCompletionListener(listener);
     }
 }

@@ -17,7 +17,6 @@ import org.mozilla.javascript.ScriptableObject;
  */
 public class Behavior extends Component {
 
-    private Script script;
     private Scriptable scope;
     private Function startFunction;
     private Function updateFunction;
@@ -25,20 +24,23 @@ public class Behavior extends Component {
     private Function beginCollisionFunction;
     private Function endCollisionFunction;
 
-    public Behavior(String name, Script script) {
+    private String filename;
+
+    public Behavior(String name, String filename) {
         super(name);
-        this.script = script;
+
+        this.filename = filename;
     }
 
     private void initScript() {
         Context context = Context.enter();
         context.setOptimizationLevel(-1);
         try {
-            ScriptableObject globalScope = AssetManager.getInstance().getGlobalScriptScope();
+            ScriptableObject globalScope = AssetManager.getGlobalScriptScope();
             scope = context.newObject(globalScope);
             scope.setPrototype(globalScope);
             scope.setParentScope(null);
-            context.evaluateString(scope, script.getContents(), script.getFilename(), 1, null);
+            context.evaluateString(scope, getScript().getData(), getScript().getFilename(), 1, null);
             startFunction = (Function) scope.get("start", scope);
             updateFunction = (Function) scope.get("update", scope);
             finishFunction = (Function) scope.get("finish", scope);
@@ -47,6 +49,10 @@ public class Behavior extends Component {
         } finally {
             Context.exit();
         }
+    }
+
+    Script getScript() {
+        return AssetManager.getAsset(filename, Script.class);
     }
 
     @Override

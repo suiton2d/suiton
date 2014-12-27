@@ -17,6 +17,8 @@ repositories {
     mavenCentral()
 }
 
+standalone = true;
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
@@ -26,6 +28,8 @@ dependencies {
     compile 'com.badlogicgames.gdx:gdx-box2d:1.4.1'
     compile 'com.badlogicgames.gdx:gdx-box2d-platform:1.4.1:natives-desktop'
     compile fileTree(dir: 'lib', include: ['core*.jar'])
+    if (standalone)
+        compile project(":core");
 }
 
 apply plugin: 'eu.appsatori.fatjar'

@@ -26,16 +26,23 @@ import java.io.File;
  *
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public abstract class Asset {
+public abstract class Asset<T> {
 
     protected String filename;
     protected String path;
     protected boolean loaded;
 
-    public Asset(String path) {
+    protected T data;
+
+    protected Asset(String path, T data) {
         this.path = path;
         this.filename = path.substring(path.lastIndexOf(File.separator));
         this.loaded = false;
+        this.data = data;
+    }
+
+    public T getData() {
+        return data;
     }
 
     public String getFilename() {
@@ -53,34 +60,4 @@ public abstract class Asset {
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
-
-    /**
-     * Loads the Asset into memory
-     */
-    public void load() {
-        if (!loaded) {
-            onLoad();
-            loaded = true;
-        }
-    }
-
-    /**
-     * Unloads the Asset from memory
-     */
-    public void unload() {
-        if (loaded) {
-            onUnload();
-            loaded = false;
-        }
-    }
-
-    /**
-     * Called when the Asset is loaded
-     */
-    protected abstract void onLoad();
-
-    /**
-     * Called when the Asset is unloaded
-     */
-    protected abstract void onUnload();
 }

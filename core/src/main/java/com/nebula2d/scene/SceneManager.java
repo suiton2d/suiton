@@ -35,41 +35,26 @@ import java.util.Map;
  */
 public class SceneManager {
 
-    private static SceneManager instance;
-    private Scene currentScene;
-    private String startScene;
-    private Map<String, Scene> sceneMap;
-
-    private SceneManager() {
-        sceneMap = new HashMap<String, Scene>();
-    }
+    private static Scene currentScene;
+    private static Map<String, Scene> sceneMap = new HashMap<String, Scene>();
 
     /**
      * Retrieves the singleton instance of SceneManager. SceneManager should
      * only ever have once instance at any given time.
      * @return Singleton SceneManager instance.
      */
-    public static synchronized SceneManager getInstance() {
-        if (instance == null)
-            instance = new SceneManager();
 
-        return instance;
-    }
-
-    public Scene getCurrentScene() {
+    public static Scene getCurrentScene() {
         return currentScene;
     }
 
-    public String getStartScene() {
-        return startScene;
-    }
 
     /**
      * Retrieves the {@link Scene} with the given name.
      * @param name The name of the Scene to retrieve.
      * @return The target Scene.
      */
-    public Scene getScene(String name) {
+    public static Scene getScene(String name) {
         return sceneMap.get(name);
     }
 
@@ -77,7 +62,7 @@ public class SceneManager {
      * Adds a Scene to the scene manager.
      * @param scene The Scene to add.
      */
-    public void addScene(Scene scene) {
+    public static void addScene(Scene scene) {
         sceneMap.put(scene.getName(), scene);
     }
 
@@ -86,29 +71,28 @@ public class SceneManager {
      * assets and loading in the assets for the new scene.
      * @param name The name of the Scene to load.
      */
-    public void setCurrentScene(String name) {
+    public static void setCurrentScene(String name) {
 
         if (sceneMap.containsKey(name)) {
             if (currentScene != null) {
                 currentScene.finish();
-                AssetManager.getInstance().unloadAssets(currentScene.getName());
+                AssetManager.unloadAssets(currentScene.getName());
             }
             currentScene = getScene(name);
-            AssetManager.getInstance().loadAssets(name);
+            AssetManager.loadAssets(name);
             currentScene.start();
         }
     }
 
-    public void start() {
-
+    public static void start() {
         currentScene.start();
     }
 
-    public void update(float dt) {
+    public static void update(float dt) {
         currentScene.update(dt);
     }
 
-    public void fixedUpdate() {
+    public static void fixedUpdate() {
         World physicalWorld = currentScene.getPhysicalWorld();
         physicalWorld.step(1/45f, 6, 2);
 
@@ -124,11 +108,11 @@ public class SceneManager {
         }
     }
 
-    public void loadSceneData(FileHandle scenesFile) {
+    public static void loadSceneData(FileHandle scenesFile) {
 
     }
 
-    public void cleanup() {
+    public static void cleanup() {
         for (Scene scene : sceneMap.values()) {
             scene.cleanup();
         }
