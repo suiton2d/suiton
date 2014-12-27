@@ -28,7 +28,7 @@ import com.nebula2d.scene.Transform;
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public abstract class Collider extends Component {
+public class Collider extends Component {
 
     protected boolean isSensor;
     protected CollisionShape shape;
