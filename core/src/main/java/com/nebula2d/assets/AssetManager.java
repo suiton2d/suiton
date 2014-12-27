@@ -21,10 +21,14 @@ package com.nebula2d.assets;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
 import com.nebula2d.assets.loaders.*;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +61,6 @@ public class AssetManager {
         manager.setLoader(Script.class, new ScriptLoader(resolver));
         manager.setLoader(SoundEffect.class, new SoundEffectLoader(resolver));
         manager.setLoader(Sprite.class, new SpriteLoader(resolver));
-        manager.setLoader(SpriteSheet.class, new SpriteSheetLoader(resolver));
         manager.setLoader(TiledTileSheet.class, new TiledTileSheetLoader(resolver));
     }
 
@@ -93,8 +96,31 @@ public class AssetManager {
             manager.unload(asset.fileName);
     }
 
-    public static void installAssets(FileHandle assetsFile) {
+    public static void installAssets(FileHandle assetsFile) throws IOException {
+        XmlReader reader = new XmlReader();
+        XmlReader.Element root = reader.parse(assetsFile);
 
+        Array<XmlReader.Element> assets = root.getChildrenByName("asset");
+        for (XmlReader.Element assetElement : assets) {
+            String path = assetElement.getAttribute("path");
+            String type = assetElement.getAttribute("assetType");
+            String sceneName = assetElement.getAttribute("sceneName");
+
+            List<AssetDescriptor> assetList = assetMap.getOrDefault(sceneName, new ArrayList<AssetDescriptor>());
+            if (type.equalsIgnoreCase("SPRITE")) {
+                assetList.add(new AssetDescriptor<Sprite>(path, Sprite.class));
+            } else if (type.equalsIgnoreCase("MUSIC")) {
+                assetList.add(new AssetDescriptor<MusicTrack>(path, MusicTrack.class));
+            } else if (type.equalsIgnoreCase("SFX")) {
+                assetList.add(new AssetDescriptor<SoundEffect>(path, SoundEffect.class));
+            } else if (type.equalsIgnoreCase("SCRIPT")) {
+                assetList.add(new AssetDescriptor<Script>(path, Script.class));
+            } else if (type.equalsIgnoreCase("TILED_TILE_SHEET")) {
+                assetList.add(new AssetDescriptor<TiledTileSheet>(path, TiledTileSheet.class));
+            }
+
+            assetMap.put(sceneName, assetList);
+        }
     }
 
     public static void cleanup() {

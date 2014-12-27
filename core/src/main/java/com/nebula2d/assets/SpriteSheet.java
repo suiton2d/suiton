@@ -10,15 +10,14 @@ import java.util.Arrays;
  *
  * @author      Jon Bonazza <jonbonazza@gmail.com>
  */
-public class SpriteSheet extends Sprite {
-
+public class SpriteSheet {
+    private Sprite sprite;
     private TextureRegion[] frames;
     private int frameWidth;
     private int frameHeight;
 
 
-    public SpriteSheet(String path, Texture texture, int frameWidth, int frameHeight) {
-        super(path, texture);
+    public SpriteSheet(int frameWidth, int frameHeight) {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         init();
@@ -26,7 +25,7 @@ public class SpriteSheet extends Sprite {
 
     private void init() {
         if (frameWidth > 0 && frameHeight > 0) {
-            TextureRegion[][] tmpRegions = TextureRegion.split(getData(), frameWidth, frameHeight);
+            TextureRegion[][] tmpRegions = TextureRegion.split(sprite.getData(), frameWidth, frameHeight);
             int numRows = tmpRegions.length;
             int numCols = tmpRegions[0].length;
             frames = new TextureRegion[numRows * numCols];
@@ -47,5 +46,9 @@ public class SpriteSheet extends Sprite {
 
     public TextureRegion[] getFrames(int startFrame, int endFrame) {
         return Arrays.copyOfRange(frames, startFrame, endFrame + 1);
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 }
