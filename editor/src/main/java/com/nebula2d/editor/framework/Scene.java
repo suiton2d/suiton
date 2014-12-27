@@ -95,15 +95,14 @@ public class Scene extends BaseSceneNode implements ISerializable, IBuildable {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml, int sceneId) throws IOException {
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
         sceneXml.element("scene").
-                attribute("name", name).
-                attribute("id", sceneId);
+                attribute("name", name);
 
         Enumeration children = children();
         while (children.hasMoreElements()) {
             Layer child = (Layer) children.nextElement();
-            child.build(sceneXml, assetsXml, sceneId);
+            child.build(sceneXml, assetsXml, sceneName);
             sceneXml.pop();
         }
     }

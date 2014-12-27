@@ -274,7 +274,7 @@ public class GameObject extends BaseSceneNode implements ISerializable, IBuildab
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
         sceneXml.
             attribute("name", name).
             element("gameObject").
@@ -289,14 +289,14 @@ public class GameObject extends BaseSceneNode implements ISerializable, IBuildab
                 attribute("rot", rot);
 
         for (Component component : components) {
-            component.build(sceneXml, assetsXml);
+            component.build(sceneXml, assetsXml, sceneName);
             sceneXml.pop();
         }
 
         Enumeration children = children();
         while (children.hasMoreElements()) {
             GameObject childGo = (GameObject) children.nextElement();
-            childGo.build(sceneXml, assetsXml);
+            childGo.build(sceneXml, assetsXml, sceneName);
             sceneXml.pop();
         }
     }

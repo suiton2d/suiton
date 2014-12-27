@@ -204,7 +204,7 @@ public class Project implements ISerializable {
 
         for (int i = 0; i < scenes.size(); ++i) {
             Scene scene = scenes.get(i);
-            scene.build(sceneXmlWriter, assetsXmlWriter);
+            scene.build(sceneXmlWriter, assetsXmlWriter, scene.getName());
             sceneXmlWriter.pop();
             listener.onBuildProgressUpdate(scene, i, scenes.size());
         }

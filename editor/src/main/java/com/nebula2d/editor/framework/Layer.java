@@ -86,13 +86,13 @@ public class Layer extends BaseSceneNode implements ISerializable, IBuildable {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
         sceneXml.element("layer").
                 attribute("name", name);
         Enumeration children = children();
         while (children.hasMoreElements()) {
             GameObject child = (GameObject) children.nextElement();
-            child.build(sceneXml, assetsXml);
+            child.build(sceneXml, assetsXml, sceneName);
             sceneXml.pop();
         }
     }
