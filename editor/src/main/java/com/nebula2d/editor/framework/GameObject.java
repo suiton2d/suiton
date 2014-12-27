@@ -276,8 +276,8 @@ public class GameObject extends BaseSceneNode implements ISerializable, IBuildab
     @Override
     public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
         sceneXml.
-            attribute("name", name).
             element("gameObject").
+                attribute("name", name).
                 element("pos").
                     attribute("x", pos.x).
                     attribute("y", pos.y).
