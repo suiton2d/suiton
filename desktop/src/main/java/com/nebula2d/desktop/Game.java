@@ -20,18 +20,17 @@ public class Game implements ApplicationListener {
 
     @Override
     public void create() {
-        FileHandle assetsFile = Gdx.files.internal("assets.xml");
-        FileHandle scenesFile = Gdx.files.internal("scenes.xml");
+        FileHandle assetsFile = Gdx.files.classpath("assets.xml");
+        FileHandle scenesFile = Gdx.files.classpath("scenes.xml");
         AssetManager.init(new ClassPathFileHandleResolver());
 
         try {
             AssetManager.installAssets(assetsFile);
+            SceneManager.loadSceneData(scenesFile);
         } catch (IOException e) {
             e.printStackTrace();
             Gdx.app.exit();
         }
-
-        SceneManager.loadSceneData(scenesFile);
     }
 
     @Override
@@ -48,12 +47,8 @@ public class Game implements ApplicationListener {
     public void render() {
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
         float dt = Gdx.graphics.getDeltaTime();
-        Scene scene = SceneManager.getCurrentScene();
-        if (scene != null) {
-            Stage stage = scene.getStage();
-            stage.act(dt);
-            stage.draw();
-        }
+        SceneManager.update(dt);
+        SceneManager.fixedUpdate();
     }
 
     @Override
