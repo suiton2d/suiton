@@ -18,6 +18,8 @@
 
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.utils.XmlWriter;
+import com.nebula2d.editor.common.IBuildable;
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.util.FullBufferedReader;
 import com.nebula2d.editor.util.FullBufferedWriter;
@@ -27,7 +29,7 @@ import java.io.IOException;
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class PhysicsMaterial implements ISerializable {
+public class PhysicsMaterial implements ISerializable, IBuildable {
 
     private float density;
     private float friction;
@@ -69,5 +71,14 @@ public class PhysicsMaterial implements ISerializable {
         fw.writeFloatLine(density);
         fw.writeFloatLine(friction);
         fw.writeFloatLine(restitution);
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
+        sceneXml.element("physicsMaterial").
+                attribute("density", density).
+                attribute("friction", friction).
+                attribute("restitution", restitution);
+        sceneXml.pop();
     }
 }

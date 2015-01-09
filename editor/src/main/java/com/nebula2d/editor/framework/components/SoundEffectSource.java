@@ -20,6 +20,7 @@ package com.nebula2d.editor.framework.components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.framework.assets.SoundEffect;
 import com.nebula2d.editor.ui.ComponentsDialog;
@@ -160,5 +161,14 @@ public class SoundEffectSource extends Component {
             fw.writeIntLine(1);
             soundEffect.save(fw);
         }
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneName);
+        sceneXml.attribute("sfx", soundEffect.getBuildPath());
+        assetsXml.element("asset").attribute("path", soundEffect.getBuildPath()).attribute("assetType", "SFX").
+                attribute("sceneName", sceneName);
+        assetsXml.pop();
     }
 }

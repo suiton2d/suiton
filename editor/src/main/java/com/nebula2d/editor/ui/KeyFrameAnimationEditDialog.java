@@ -33,8 +33,6 @@ import java.awt.event.WindowEvent;
 
 public class KeyFrameAnimationEditDialog extends JDialog {
 
-
-
     private KeyFrameAnimation animation;
     private AnimationRenderCanvas animatedCanvas;
     public KeyFrameAnimationEditDialog(final AnimatedRenderer renderer, final KeyFrameAnimation animation) {
@@ -136,6 +134,7 @@ public class KeyFrameAnimationEditDialog extends JDialog {
         setSize(new Dimension(800, 600));
         validate();
         pack();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         animatedCanvas.initCamera();

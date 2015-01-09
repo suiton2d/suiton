@@ -1,6 +1,5 @@
 package com.nebula2d.assets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 /**
@@ -9,12 +8,10 @@ import com.badlogic.gdx.audio.Sound;
  *
  * @author      Jon Bonazza <jonbonazza@gmail.com>
  */
-public class SoundEffect extends Asset {
+public class SoundEffect extends Asset<Sound> {
 
-    private Sound sound;
-
-    public SoundEffect(String path) {
-        super(path);
+    public SoundEffect(String path, Sound sound) {
+        super(path, sound);
     }
 
     /**
@@ -22,7 +19,7 @@ public class SoundEffect extends Asset {
      * @return The sound ID associated with the current playback instance.
      */
     public long play() {
-        return sound.play();
+        return data.play();
     }
 
     /**
@@ -31,7 +28,7 @@ public class SoundEffect extends Asset {
      * @return The sound ID associated with th current playback instance.
      */
     public long play(float volume) {
-        return sound.play(volume);
+        return data.play(volume);
     }
 
     /**
@@ -39,7 +36,7 @@ public class SoundEffect extends Asset {
      * @return The sound ID associated with th current playback instance.
      */
     public long loop() {
-        return sound.loop();
+        return data.loop();
     }
 
     /**
@@ -48,7 +45,7 @@ public class SoundEffect extends Asset {
      * @return The sound ID associated with th current playback instance.
      */
     public long loop(float volume) {
-        return sound.loop(volume);
+        return data.loop(volume);
     }
 
     /**
@@ -56,7 +53,7 @@ public class SoundEffect extends Asset {
      * @param soundId The sound ID of the playback instance to stop.
      */
     public void stop(long soundId) {
-        sound.stop(soundId);
+        data.stop(soundId);
     }
 
     /**
@@ -64,7 +61,7 @@ public class SoundEffect extends Asset {
      * @param soundId The sound ID of the playback instance to pause.
      */
     public void pause(long soundId) {
-        sound.pause(soundId);
+        data.pause(soundId);
     }
 
     /**
@@ -73,17 +70,6 @@ public class SoundEffect extends Asset {
      * @param soundId The sound ID of the playback instance to resume.
      */
     public void resume(long soundId) {
-        sound.resume(soundId);
-    }
-
-    @Override
-    protected void onLoad() {
-        sound = Gdx.audio.newSound(Gdx.files.internal(path));
-    }
-
-    @Override
-    protected void onUnload() {
-        sound.dispose();
-        sound = null;
+        data.resume(soundId);
     }
 }

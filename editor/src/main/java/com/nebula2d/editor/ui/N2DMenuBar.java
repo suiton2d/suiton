@@ -18,14 +18,18 @@
 
 package com.nebula2d.editor.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.util.ExitAction;
 import com.nebula2d.editor.util.PlatformUtil;
+import com.nebula2d.editor.util.ProjectBuilder;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.IOException;
 
 
@@ -40,9 +44,12 @@ public class N2DMenuBar extends JMenuBar {
     private JMenuItem newMenuItem;
     private JMenuItem saveMenuItem;
     private JMenuItem openMenuItem;
+    private JMenuItem settingsMenuItem;
+    private JMenuItem buildMenuItem;
 
     private JMenuItem newSceneMenuItem;
     private JMenuItem changeSceneMenuItem;
+    private JMenuItem renameSceneMenuItem;
     private JMenuItem newLayerMenuItem;
 
     private JMenuItem newEmptyGameObjectMenuItem;
@@ -55,16 +62,19 @@ public class N2DMenuBar extends JMenuBar {
         saveMenuItem.setAccelerator(KeyStroke.getKeyStroke("control S"));
         saveMenuItem.setEnabled(false);
         openMenuItem = fileMenu.add("Open Project");
+        settingsMenuItem = fileMenu.add("Settings");
+        buildMenuItem = fileMenu.add("Build");
+
         setBorder(BorderFactory.createEmptyBorder());
         //Don't need exit menu item on Mac
-        JMenuItem exitMenuItem;
         if (!PlatformUtil.isMac())
-            exitMenuItem = fileMenu.add(new ExitAction());
+            fileMenu.add(new ExitAction());
 
         sceneMenu = new JMenu("Scene");
 
         newSceneMenuItem = sceneMenu.add("New Scene");
         changeSceneMenuItem = sceneMenu.add("Change Scene");
+        renameSceneMenuItem = sceneMenu.add("Rename Scene");
         newLayerMenuItem = sceneMenu.add("New Layer");
 
         gameObjectMenu = new JMenu("New GameObject");
@@ -72,6 +82,8 @@ public class N2DMenuBar extends JMenuBar {
         newEmptyGameObjectMenuItem = gameObjectMenu.add("Empty GameObject");
 
         sceneMenu.add(gameObjectMenu);
+
+        buildMenuItem.setEnabled(false);
         gameObjectMenu.setEnabled(false);
         sceneMenu.setEnabled(false);
         add(fileMenu);
@@ -93,6 +105,8 @@ public class N2DMenuBar extends JMenuBar {
 
         openMenuItem.addActionListener(e -> {
             JFileChooser fc = new JFileChooser();
+            fc.setFileFilter(new FileNameExtensionFilter("Nebula2D Project File (*.n2d)", "n2d"));
+            fc.setAcceptAllFileFilterUsed(false);
             if (fc.showOpenDialog(N2DMenuBar.this) == JFileChooser.APPROVE_OPTION) {
                 MainFrame.getSceneGraph().wipe();
                 MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
@@ -108,10 +122,20 @@ public class N2DMenuBar extends JMenuBar {
             }
         });
 
+        settingsMenuItem.addActionListener(e -> new SettingsDialog());
+
+        buildMenuItem.addActionListener(e -> {
+            try {
+                new ProjectBuilder(MainFrame.getProject()).build(0, ProjectBuilder.ProjectType.PC);
+            } catch (Exception e1) {
+                JOptionPane.showMessageDialog(null, "Failed to build project.");
+            }
+        });
+
         newSceneMenuItem.addActionListener(e -> new NewSceneDialog());
 
         changeSceneMenuItem.addActionListener(e -> new ChangeSceneDialog());
-
+        renameSceneMenuItem.addActionListener(e -> new RenameSceneDialog());
         newLayerMenuItem.addActionListener(e -> {
             Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount());
             MainFrame.getSceneGraph().addLayer(layer);
@@ -124,6 +148,10 @@ public class N2DMenuBar extends JMenuBar {
             GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
             selectedNode.addGameObject(go);
         });
+    }
+
+    public JMenuItem getBuildMenuItem() {
+        return  buildMenuItem;
     }
 
     public JMenu getSceneMenu() {

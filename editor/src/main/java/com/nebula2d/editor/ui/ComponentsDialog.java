@@ -43,7 +43,6 @@ public class ComponentsDialog extends JDialog {
 
     public ComponentsDialog(GameObject gameObject) {
         this.gameObject = gameObject;
-
         N2DPanel componentListPanel = forgeComponentsListPanel();
         rightPanel = forgeEmptyPanel();
         mainPanel = new N2DPanel(new BorderLayout());
@@ -51,6 +50,7 @@ public class ComponentsDialog extends JDialog {
         mainPanel.add(rightPanel);
 
         add(mainPanel);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(new Dimension(800, 600));
         setResizable(false);
         setLocationRelativeTo(null);

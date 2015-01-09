@@ -1,5 +1,6 @@
 package com.nebula2d.components;
 
+import com.nebula2d.assets.AssetManager;
 import com.nebula2d.assets.SoundEffect;
 import com.nebula2d.scene.GameObject;
 
@@ -11,11 +12,15 @@ import com.nebula2d.scene.GameObject;
  */
 public class SoundEffectSource extends Component {
 
-    private SoundEffect soundEffect;
+    private String filename;
 
-    public SoundEffectSource(String name, String soundEffectPath) {
+    public SoundEffectSource(String name, String filename) {
         super(name);
-        soundEffect = new SoundEffect(soundEffectPath);
+        this.filename = filename;
+    }
+
+    public SoundEffect getSoundEffect() {
+        return AssetManager.getAsset(filename, SoundEffect.class);
     }
 
     /**
@@ -23,7 +28,7 @@ public class SoundEffectSource extends Component {
      * @return The sound ID associated with the playback instance
      */
     public long play() {
-        return soundEffect.play();
+        return getSoundEffect().play();
     }
 
     /**
@@ -31,7 +36,7 @@ public class SoundEffectSource extends Component {
      * @return The sound ID associated with the playback instance
      */
     public long loop() {
-        return soundEffect.loop();
+        return getSoundEffect().loop();
     }
 
     /**
@@ -39,7 +44,7 @@ public class SoundEffectSource extends Component {
      * @param soundId The sound ID associated with the playback instance to stop.
      */
     public void stop(long soundId) {
-        soundEffect.stop(soundId);
+        getSoundEffect().stop(soundId);
     }
 
     /**
@@ -47,7 +52,7 @@ public class SoundEffectSource extends Component {
      * @param soundId The sound ID associated with the playback instance to pause.
      */
     public void pause(long soundId) {
-        soundEffect.pause(soundId);
+        getSoundEffect().pause(soundId);
     }
 
     /**
@@ -55,7 +60,7 @@ public class SoundEffectSource extends Component {
      * @param soundId The sound ID associated with the playback instance to resume.
      */
     public void resume(long soundId) {
-        soundEffect.resume(soundId);
+        getSoundEffect().resume(soundId);
     }
 
     @Override

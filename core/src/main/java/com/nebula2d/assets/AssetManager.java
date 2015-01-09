@@ -18,9 +18,17 @@
 
 package com.nebula2d.assets;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
+import com.nebula2d.assets.loaders.*;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +40,15 @@ import java.util.Map;
  */
 public class AssetManager {
 
-    private static AssetManager instance;
-    private Map<String, List<Asset>> assetMap;
-    private ScriptableObject globalScriptScope;
+    private static Map<String, List<AssetDescriptor>> assetMap = new HashMap<String, List<AssetDescriptor>>();
+    private static ScriptableObject globalScriptScope;
+    private static com.badlogic.gdx.assets.AssetManager manager;
 
-    private AssetManager() {
-        this.assetMap = new HashMap<String, List<Asset>>();
+    public static void init(FileHandleResolver fileHandleResolver) {
+        manager = new com.badlogic.gdx.assets.AssetManager(fileHandleResolver);
+        initLoaders(fileHandleResolver);
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
             globalScriptScope = context.initStandardObjects();
         } finally {
@@ -46,39 +56,82 @@ public class AssetManager {
         }
     }
 
-    /**
-     * Gets the singleton instance of AssetManager. Only one instance of
-     * AssetManager should exist at any given time
-     * @return the singleton AssetManager instance
-     */
-    public static synchronized AssetManager getInstance() {
-        if (instance == null)
-            instance = new AssetManager();
-
-        return instance;
+    private static void initLoaders(FileHandleResolver resolver) {
+        manager.setLoader(MusicTrack.class, new MusicTrackLoader(resolver));
+        manager.setLoader(Script.class, new ScriptLoader(resolver));
+        manager.setLoader(SoundEffect.class, new SoundEffectLoader(resolver));
+        manager.setLoader(Sprite.class, new SpriteLoader(resolver));
+        manager.setLoader(TiledTileSheet.class, new TiledTileSheetLoader(resolver));
     }
 
-    public ScriptableObject getGlobalScriptScope() {
+    public static ScriptableObject getGlobalScriptScope() {
         return globalScriptScope;
+    }
+
+    public static <T> T getAsset(String filename, Class<T> type) {
+        return manager.get(filename, type);
     }
 
     /**
      * Loads the assets for the {@link com.nebula2d.scene.Scene} with the given name into memory.
      * @param sceneName the name of the Scene whose assets should be loaded.
      */
-    public void loadAssets(String sceneName) {
-        List<Asset> assets = assetMap.get(sceneName);
-        for (Asset asset : assets)
-            asset.load();
+    public static void loadAssets(String sceneName) {
+        List<AssetDescriptor> assets = assetMap.get(sceneName);
+        if (assets != null) {
+            for (AssetDescriptor asset : assets)
+                manager.load(asset);
+        }
+
+        manager.finishLoading();
     }
 
     /**
      * Unloads the assets for the Scene with the given name from memory.
      * @param sceneName the name of the Scene whose assets should be unloaded.
      */
-    public void unloadAssets(String sceneName) {
-        List<Asset> assets = assetMap.get(sceneName);
-        for (Asset asset : assets)
-            asset.unload();
+    public static void unloadAssets(String sceneName) {
+        List<AssetDescriptor> assets = assetMap.get(sceneName);
+        for (AssetDescriptor asset : assets)
+            manager.unload(asset.fileName);
+    }
+
+    public static void installAssets(FileHandle assetsFile) throws IOException {
+        XmlReader reader = new XmlReader();
+        XmlReader.Element root = reader.parse(assetsFile);
+
+        Array<XmlReader.Element> assets = root.getChildrenByName("asset");
+        for (XmlReader.Element assetElement : assets) {
+            String path = assetElement.getAttribute("path");
+            String type = assetElement.getAttribute("assetType");
+            String sceneName = assetElement.getAttribute("sceneName");
+
+            List<AssetDescriptor> assetList = assetMap.getOrDefault(sceneName, new ArrayList<AssetDescriptor>());
+            if (type.equalsIgnoreCase("SPRITE")) {
+                assetList.add(new AssetDescriptor<Sprite>(path, Sprite.class));
+            } else if (type.equalsIgnoreCase("MUSIC")) {
+                assetList.add(new AssetDescriptor<MusicTrack>(path, MusicTrack.class));
+            } else if (type.equalsIgnoreCase("SFX")) {
+                assetList.add(new AssetDescriptor<SoundEffect>(path, SoundEffect.class));
+            } else if (type.equalsIgnoreCase("SCRIPT")) {
+                assetList.add(new AssetDescriptor<Script>(path, Script.class));
+            } else if (type.equalsIgnoreCase("TILED_TILE_SHEET")) {
+                assetList.add(new AssetDescriptor<TiledTileSheet>(path, TiledTileSheet.class));
+            }
+
+            assetMap.put(sceneName, assetList);
+        }
+    }
+
+    public static void cleanup() {
+        for (List<AssetDescriptor> assetList : assetMap.values()) {
+            for (AssetDescriptor asset : assetList) {
+                manager.unload(asset.fileName);
+            }
+
+            assetList.clear();
+        }
+
+        assetMap.clear();
     }
 }

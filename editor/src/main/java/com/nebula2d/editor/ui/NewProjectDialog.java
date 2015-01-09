@@ -22,6 +22,7 @@ import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.framework.Scene;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
+import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -81,6 +82,7 @@ public class NewProjectDialog extends JDialog {
         pack();
         setModal(true);
         bindButtons();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -95,7 +97,25 @@ public class NewProjectDialog extends JDialog {
 
                 return;
             }
-            Project project = new Project(parentDirTf.getText().trim(), projNameTf.getText().trim());
+            String projName = projNameTf.getText().trim();
+            String parentDir = parentDirTf.getText().trim();
+            File projDir = new File(PlatformUtil.pathJoin(parentDir, projName));
+            if (projDir.exists()) {
+                File existingFile = new File(PlatformUtil.pathJoin(projDir.getAbsolutePath(), projName+".n2d"));
+                if (existingFile.exists()) {
+                    JOptionPane.showMessageDialog(NewProjectDialog.this,
+                            String.format("Project %s already exists.", projName));
+                    return;
+                }
+            } else {
+                if (!projDir.mkdir()) {
+                    JOptionPane.showMessageDialog(NewProjectDialog.this,
+                            String.format("Failed to create directory %s.", projDir.getAbsolutePath()));
+                    return;
+                }
+            }
+
+            Project project = new Project(projDir.getAbsolutePath(), projName);
             project.addScene(new Scene("Untitled Scene 0"));
             MainFrame.setProject(project);
             dispose();

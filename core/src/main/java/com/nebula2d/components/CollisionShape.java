@@ -48,7 +48,7 @@ public abstract class CollisionShape {
     }
 
     public Fixture affixTo(Body body, boolean isSensor) {
-        Transform transform = ((GameObject) body.getUserData()).getTransform();
+        Transform transform = new Transform((GameObject) body.getUserData());
         FixtureDef fixtureDef = createFixtureDef(transform, isSensor);
         return body.createFixture(fixtureDef);
     }

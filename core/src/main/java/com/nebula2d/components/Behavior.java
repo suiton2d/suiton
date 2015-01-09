@@ -17,7 +17,6 @@ import org.mozilla.javascript.ScriptableObject;
  */
 public class Behavior extends Component {
 
-    private Script script;
     private Scriptable scope;
     private Function startFunction;
     private Function updateFunction;
@@ -25,20 +24,23 @@ public class Behavior extends Component {
     private Function beginCollisionFunction;
     private Function endCollisionFunction;
 
-    public Behavior(String name, String scriptPath) {
+    private String filename;
+
+    public Behavior(String name, String filename) {
         super(name);
-        script = new Script(scriptPath);
-        initScript();
+
+        this.filename = filename;
     }
 
     private void initScript() {
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
-            ScriptableObject globalScope = AssetManager.getInstance().getGlobalScriptScope();
+            ScriptableObject globalScope = AssetManager.getGlobalScriptScope();
             scope = context.newObject(globalScope);
             scope.setPrototype(globalScope);
             scope.setParentScope(null);
-            context.evaluateString(scope, script.getContents(), script.getFilename(), 1, null);
+            context.evaluateString(scope, getScript().getData(), getScript().getFilename(), 1, null);
             startFunction = (Function) scope.get("start", scope);
             updateFunction = (Function) scope.get("update", scope);
             finishFunction = (Function) scope.get("finish", scope);
@@ -49,11 +51,19 @@ public class Behavior extends Component {
         }
     }
 
+    Script getScript() {
+        return AssetManager.getAsset(filename, Script.class);
+    }
+
     @Override
     public void start() {
+        initScript();
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
-            startFunction.call(context, scope, scope, new Object[]{gameObject});
+            if (startFunction != Scriptable.NOT_FOUND) {
+                startFunction.call(context, scope, scope, new Object[]{gameObject});
+            }
         } finally {
             Context.exit();
         }
@@ -62,8 +72,11 @@ public class Behavior extends Component {
     @Override
     public void update(float dt) {
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
-            updateFunction.call(context, scope, scope, new Object[]{gameObject, dt});
+            if (updateFunction != Scriptable.NOT_FOUND) {
+                updateFunction.call(context, scope, scope, new Object[]{gameObject, dt});
+            }
         } finally {
             Context.exit();
         }
@@ -71,9 +84,18 @@ public class Behavior extends Component {
 
     @Override
     public void finish() {
+        scope = null;
+        startFunction = null;
+        updateFunction = null;
+        finishFunction = null;
+        beginCollisionFunction = null;
+        endCollisionFunction = null;
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
-            finishFunction.call(context, scope, scope, null);
+            if (finishFunction != Scriptable.NOT_FOUND) {
+                finishFunction.call(context, scope, scope, null);
+            }
         } finally {
             Context.exit();
         }
@@ -82,8 +104,11 @@ public class Behavior extends Component {
     @Override
     public void beginCollision(GameObject go1, GameObject go2) {
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
-            beginCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
+            if (beginCollisionFunction != Scriptable.NOT_FOUND) {
+                beginCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
+            }
         } finally {
             Context.exit();
         }
@@ -92,8 +117,11 @@ public class Behavior extends Component {
     @Override
     public void endCollision(GameObject go1, GameObject go2) {
         Context context = Context.enter();
+        context.setOptimizationLevel(-1);
         try {
-            endCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
+            if (endCollisionFunction != Scriptable.NOT_FOUND) {
+                endCollisionFunction.call(context, scope, scope, new Object[]{go1, go2});
+            }
         } finally {
             Context.exit();
         }

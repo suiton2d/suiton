@@ -24,6 +24,12 @@ package com.nebula2d.editor.util;
  */
 public class StringUtil {
 
+    /**
+     * Converts a string of text to a float value.
+     * @param text the text to convert
+     * @return If the conversion was successful, the resulting float value is returned. If the string does not
+     * represent a float value, null is returned.
+     */
     public static Float toFloat(String text) {
 
         try {

@@ -37,7 +37,6 @@ import java.util.List;
  */
 public class GameObject extends Group {
 
-    protected Transform transform;
     protected List<Component> components;
     protected Layer layer;
     protected Renderer renderer;
@@ -45,12 +44,7 @@ public class GameObject extends Group {
 
     public GameObject(String name) {
         setName(name);
-        this.transform = new Transform(this);
         this.components = new ArrayList<Component>();
-    }
-
-    public Transform getTransform() {
-       return transform;
     }
 
     public List<Component> getComponents() {
@@ -122,7 +116,6 @@ public class GameObject extends Group {
     }
 
     public void start(Stage stage) {
-        this.transform = new Transform(this);
         stage.addActor(this);
         for (Component c : components) {
             if (c.isEnabled())

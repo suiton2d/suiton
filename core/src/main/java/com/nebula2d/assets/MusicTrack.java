@@ -1,6 +1,5 @@
 package com.nebula2d.assets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
 /**
@@ -9,55 +8,39 @@ import com.badlogic.gdx.audio.Music;
  *
  * @author      Jon Bonazza <jonbonazza@gmail.com>
  */
-public class MusicTrack extends Asset {
+public class MusicTrack extends Asset<Music> {
 
-    private Music track;
 
-    public MusicTrack(String path) {
-        super(path);
-    }
-
-    public Music getTrack() {
-        return track;
+    public MusicTrack(String path, Music track) {
+        super(path, track);
     }
 
     /**
      * Plays the MusicSource.
      */
     public void play() {
-        track.play();
+        data.play();
     }
 
     /**
      * Stops playback of the MusicSource.
      */
     public void stop() {
-        track.stop();
+        data.stop();
     }
 
     /**
      * Pauses playback of the MusicSource.
      */
     public void pause() {
-        track.pause();
+        data.pause();
     }
 
     public boolean isLooping() {
-        return track.isLooping();
+        return data.isLooping();
     }
 
     public void setLooping(boolean looping) {
-        track.setLooping(looping);
-    }
-
-    @Override
-    protected void onLoad() {
-        track = Gdx.audio.newMusic(Gdx.files.internal(path));
-    }
-
-    @Override
-    protected void onUnload() {
-        track.dispose();
-        track = null;
+        data.setLooping(looping);
     }
 }

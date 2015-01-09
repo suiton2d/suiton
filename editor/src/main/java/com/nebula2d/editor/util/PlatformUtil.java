@@ -18,7 +18,9 @@
 
 package com.nebula2d.editor.util;
 
+import java.awt.*;
 import java.io.File;
+import java.util.Locale;
 
 
 /**
@@ -44,5 +46,44 @@ public class PlatformUtil {
      */
     public static boolean isMac() {
         return System.getProperty("os.name").toLowerCase().contains("mac");
+    }
+
+    /**
+     * Joins a number of paths into one path.
+     * @param paths an array of paths.
+     *
+     * @return the conjoined path.
+     */
+    public static String pathJoin(String... paths) {
+        StringBuilder sb = new StringBuilder();
+        for (String path : paths) {
+            if (!path.endsWith(File.separator))
+                path += File.separator;
+            sb.append(path);
+        }
+
+        return sb.toString();
+    }
+
+    public static String getCommandChainString() {
+        String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+        if (os.contains("win")) {
+            return "&";
+        } else {
+            return "&&";
+        }
+    }
+
+    public static Dimension getScreenSize() {
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        return tk.getScreenSize();
+    }
+
+    public static int getScreenWidth() {
+        return getScreenSize().width;
+    }
+
+    public static int getScreenHeight() {
+        return getScreenSize().height;
     }
 }

@@ -38,6 +38,7 @@ public class NewSceneDialog extends JDialog {
     public NewSceneDialog() {
         setTitle("New Scene");
         setupContents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }

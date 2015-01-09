@@ -23,6 +23,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.nebula2d.scene.GameObject;
 import com.nebula2d.scene.SceneManager;
+import com.nebula2d.scene.Transform;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
@@ -50,13 +51,14 @@ public class RigidBody extends Component {
     public void start() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = isKinematic ? BodyDef.BodyType.KinematicBody : BodyDef.BodyType.DynamicBody;
-        Vector2 pos = getGameObject().getTransform().getPosition();
+        Transform transform = new Transform(getGameObject());
+        Vector2 pos = transform.getPosition();
         bodyDef.position.set(pos);
-        bodyDef.angle = getGameObject().getTransform().getRotation();
+        bodyDef.angle = transform.getRotation();
         bodyDef.fixedRotation = fixedRotation;
         bodyDef.bullet = isBullet;
 
-        physicsBody = SceneManager.getInstance().getCurrentScene().getPhysicalWorld().createBody(bodyDef);
+        physicsBody = SceneManager.getCurrentScene().getPhysicalWorld().createBody(bodyDef);
         physicsBody.setUserData(getGameObject());
         physicsBody.getMassData().mass = mass;
 
@@ -92,7 +94,7 @@ public class RigidBody extends Component {
 
     @Override
     public void finish() {
-        SceneManager.getInstance().getCurrentScene().getPhysicalWorld().destroyBody(physicsBody);
+        SceneManager.getCurrentScene().getPhysicalWorld().destroyBody(physicsBody);
         physicsBody = null;
     }
 

@@ -1,22 +1,25 @@
 package com.nebula2d.assets;
 
-public class TileSheet extends Sprite {
+import com.badlogic.gdx.maps.Map;
 
-    protected int tileWidth;
-    protected int tileHeight;
+public abstract class TileSheet<T extends Map> extends Asset<T> {
 
-    public TileSheet(String path, int tileWidth, int tileHeight) {
-        super(path);
-
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
+    public static enum TileSheetType {
+        TILED,
     }
 
-    public int getTileWidth() {
-        return tileWidth;
+    protected TileSheetType type;
+
+    public TileSheet(String path, T tileMap, TileSheetType type) {
+        super(path, tileMap);
+        this.type = type;
     }
 
-    public int getTileHeight() {
-        return tileHeight;
+    public TileSheetType getType() {
+        return type;
     }
+
+    public abstract int getBoundingWidth();
+
+    public abstract int getBoundingHeight();
 }

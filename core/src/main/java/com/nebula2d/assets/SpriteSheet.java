@@ -1,5 +1,6 @@
 package com.nebula2d.assets;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Arrays;
@@ -9,15 +10,14 @@ import java.util.Arrays;
  *
  * @author      Jon Bonazza <jonbonazza@gmail.com>
  */
-public class SpriteSheet extends Sprite {
-
+public class SpriteSheet {
+    private Sprite sprite;
     private TextureRegion[] frames;
     private int frameWidth;
     private int frameHeight;
 
 
-    public SpriteSheet(String path, int frameWidth, int frameHeight) {
-        super(path);
+    public SpriteSheet(int frameWidth, int frameHeight) {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         init();
@@ -25,7 +25,7 @@ public class SpriteSheet extends Sprite {
 
     private void init() {
         if (frameWidth > 0 && frameHeight > 0) {
-            TextureRegion[][] tmpRegions = TextureRegion.split(getTexture(), frameWidth, frameHeight);
+            TextureRegion[][] tmpRegions = TextureRegion.split(sprite.getData(), frameWidth, frameHeight);
             int numRows = tmpRegions.length;
             int numCols = tmpRegions[0].length;
             frames = new TextureRegion[numRows * numCols];
@@ -46,5 +46,9 @@ public class SpriteSheet extends Sprite {
 
     public TextureRegion[] getFrames(int startFrame, int endFrame) {
         return Arrays.copyOfRange(frames, startFrame, endFrame + 1);
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 }

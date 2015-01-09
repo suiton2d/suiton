@@ -20,6 +20,7 @@ package com.nebula2d.editor.framework.assets;
 
 import com.nebula2d.editor.common.ISerializable;
 import com.nebula2d.editor.util.FullBufferedWriter;
+import com.nebula2d.editor.util.PlatformUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +43,10 @@ public abstract class Asset implements ISerializable {
 
     public String getPath() {
         return this.path;
+    }
+
+    public String getBuildPath() {
+        return PlatformUtil.pathJoin("assets", name);
     }
 
     public String getName() {

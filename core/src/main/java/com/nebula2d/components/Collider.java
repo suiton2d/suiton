@@ -23,11 +23,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.nebula2d.scene.GameObject;
 import com.nebula2d.scene.SceneManager;
+import com.nebula2d.scene.Transform;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public abstract class Collider extends Component {
+public class Collider extends Component {
 
     protected boolean isSensor;
     protected CollisionShape shape;
@@ -50,7 +51,7 @@ public abstract class Collider extends Component {
     @Override
     public void start() {
         BodyDef bodyDef = createBodyDef();
-        physicalBody = SceneManager.getInstance().getCurrentScene().getPhysicalWorld().createBody(bodyDef);
+        physicalBody = SceneManager.getCurrentScene().getPhysicalWorld().createBody(bodyDef);
         physicalBody.setUserData(getGameObject());
         shape.affixTo(physicalBody, isSensor).setUserData(gameObject);
     }
@@ -58,21 +59,22 @@ public abstract class Collider extends Component {
     private BodyDef createBodyDef() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        Vector2 pos = getGameObject().getTransform().getPosition();
+        Transform transform = new Transform(getGameObject());
+        Vector2 pos = transform.getPosition();
         bodyDef.position.set(pos);
-        bodyDef.angle = (float) (getGameObject().getTransform().getRotation() * Math.PI / 180.0f);
+        bodyDef.angle = (float) (transform.getRotation() * Math.PI / 180.0f);
 
         return bodyDef;
     }
 
     @Override
     public void update(float dt) {
-        physicalBody.getPosition().set(gameObject.getTransform().getPosition());
+        physicalBody.getPosition().set(gameObject.getX(), gameObject.getY());
     }
 
     @Override
     public void finish() {
-        SceneManager.getInstance().getCurrentScene().getPhysicalWorld().destroyBody(physicalBody);
+        SceneManager.getCurrentScene().getPhysicalWorld().destroyBody(physicalBody);
     }
 
     @Override

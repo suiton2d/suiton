@@ -47,7 +47,7 @@ public class SoundEffect extends Asset {
 
     @Override
     public void dispose() {
-        if (isLoaded) {
+        if (sound != null) {
             Gdx.app.postRunnable(() -> {
                 sound.dispose();
                 sound = null;

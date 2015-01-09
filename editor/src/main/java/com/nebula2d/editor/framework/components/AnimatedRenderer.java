@@ -18,6 +18,7 @@
 
 package com.nebula2d.editor.framework.components;
 
+import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.editor.common.IRenderable;
 import com.nebula2d.editor.util.FullBufferedWriter;
 
@@ -83,5 +84,13 @@ public abstract class AnimatedRenderer extends Renderer {
             anim.save(fw);
 
         fw.writeIntLine(currentAnim);
+    }
+
+    @Override
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneName);
+        sceneXml.attribute("currentAnim", currentAnim);
+        for (Animation anim : animations)
+            anim.build(sceneXml, assetsXml, sceneName);
     }
 }

@@ -18,41 +18,23 @@
 
 package com.nebula2d.assets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
  * Sprite is a wrapper class around libGdx's Texture class
  * for 2D textures
  */
-public class Sprite extends Asset {
+public class Sprite extends Asset<Texture> {
 
-    protected Texture texture;
-
-    public Sprite(String path) {
-        super(path);
-    }
-
-    public Texture getTexture() {
-        return texture;
+    public Sprite(String path, Texture texture) {
+        super(path, texture);
     }
 
     public int getWidth() {
-        return texture.getWidth();
+        return data.getWidth();
     }
 
     public int getHeight() {
-        return texture.getHeight();
-    }
-
-    @Override
-    protected void onLoad() {
-        texture = new Texture(Gdx.files.internal(path));
-    }
-
-    @Override
-    protected void onUnload() {
-        texture.dispose();
-        texture = null;
+        return data.getHeight();
     }
 }
