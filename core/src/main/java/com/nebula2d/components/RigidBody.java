@@ -58,7 +58,7 @@ public class RigidBody extends Component {
         bodyDef.fixedRotation = fixedRotation;
         bodyDef.bullet = isBullet;
 
-        physicsBody = SceneManager.getInstance().getCurrentScene().getPhysicalWorld().createBody(bodyDef);
+        physicsBody = SceneManager.getCurrentScene().getPhysicalWorld().createBody(bodyDef);
         physicsBody.setUserData(getGameObject());
         physicsBody.getMassData().mass = mass;
 
@@ -94,7 +94,7 @@ public class RigidBody extends Component {
 
     @Override
     public void finish() {
-        SceneManager.getInstance().getCurrentScene().getPhysicalWorld().destroyBody(physicsBody);
+        SceneManager.getCurrentScene().getPhysicalWorld().destroyBody(physicsBody);
         physicsBody = null;
     }
 

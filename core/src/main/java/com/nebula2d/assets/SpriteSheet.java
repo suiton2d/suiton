@@ -1,5 +1,6 @@
 package com.nebula2d.assets;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Arrays;
@@ -9,22 +10,22 @@ import java.util.Arrays;
  *
  * @author      Jon Bonazza <jonbonazza@gmail.com>
  */
-public class SpriteSheet extends Sprite {
-
+public class SpriteSheet {
+    private Sprite sprite;
     private TextureRegion[] frames;
     private int frameWidth;
     private int frameHeight;
 
 
-    public SpriteSheet(String path, int frameWidth, int frameHeight) {
-        super(path);
+    public SpriteSheet(int frameWidth, int frameHeight) {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
+        init();
     }
 
     private void init() {
         if (frameWidth > 0 && frameHeight > 0) {
-            TextureRegion[][] tmpRegions = TextureRegion.split(getTexture(), frameWidth, frameHeight);
+            TextureRegion[][] tmpRegions = TextureRegion.split(sprite.getData(), frameWidth, frameHeight);
             int numRows = tmpRegions.length;
             int numCols = tmpRegions[0].length;
             frames = new TextureRegion[numRows * numCols];
@@ -39,12 +40,6 @@ public class SpriteSheet extends Sprite {
         }
     }
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        init();
-    }
-
     public TextureRegion getFrame(int idx) {
         return frames[idx];
     }
@@ -53,9 +48,7 @@ public class SpriteSheet extends Sprite {
         return Arrays.copyOfRange(frames, startFrame, endFrame + 1);
     }
 
-    @Override
-    protected void onUnload() {
-        super.onUnload();
-        frames = null;
+    public Sprite getSprite() {
+        return sprite;
     }
 }

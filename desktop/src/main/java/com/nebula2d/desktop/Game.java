@@ -4,12 +4,13 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.nebula2d.assets.AssetManager;
 import com.nebula2d.scene.Scene;
 import com.nebula2d.scene.SceneManager;
+
+import java.io.IOException;
 
 /**
  *
@@ -17,38 +18,37 @@ import com.nebula2d.scene.SceneManager;
  */
 public class Game implements ApplicationListener {
 
-    private SceneManager sceneManager = SceneManager.getInstance();
-    private AssetManager assetManager = AssetManager.getInstance();
-
     @Override
     public void create() {
-        FileHandle assetsFile = Gdx.files.internal("assets.xml");
-        FileHandle scenesFile = Gdx.files.internal("scenes.xml");
+        FileHandle assetsFile = Gdx.files.classpath("assets.xml");
+        FileHandle scenesFile = Gdx.files.classpath("scenes.xml");
+        AssetManager.init(new ClassPathFileHandleResolver());
 
-        assetManager.installAssets(assetsFile);
-        sceneManager.loadSceneData(scenesFile);
-
-//        sceneManager.setCurrentScene(sceneManager.getStartScene());
-        sceneManager.addScene(new Scene("test", new Vector2(), true));
-        sceneManager.setCurrentScene("test");
+        try {
+            AssetManager.installAssets(assetsFile);
+            SceneManager.loadSceneData(scenesFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Gdx.app.exit();
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-        Scene scene = sceneManager.getCurrentScene();
-        Stage stage = scene.getStage();
-        Viewport viewport = stage.getViewport();
-        viewport.update(width, height);
+        Scene scene = SceneManager.getCurrentScene();
+        if (scene != null) {
+            Stage stage = scene.getStage();
+            Viewport viewport = stage.getViewport();
+            viewport.update(width, height);
+        }
     }
 
     @Override
     public void render() {
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
         float dt = Gdx.graphics.getDeltaTime();
-        Stage stage = sceneManager.getCurrentScene().getStage();
-        stage.act(dt);
-        stage.draw();
-
+        SceneManager.update(dt);
+        SceneManager.fixedUpdate();
     }
 
     @Override
@@ -63,10 +63,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void dispose() {
-        assetManager.cleanup();
-        sceneManager.cleanup();
-
-        assetManager = null;
-        sceneManager = null;
+        AssetManager.cleanup();
+        SceneManager.cleanup();
     }
 }

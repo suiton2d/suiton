@@ -2,16 +2,12 @@ package com.nebula2d.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.files.FileHandle;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Created by bonazza on 10/10/14.
- */
+
 public class DesktopApp {
 
     public static void main(String[] args) {

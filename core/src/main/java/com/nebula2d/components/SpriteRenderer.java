@@ -3,6 +3,7 @@ package com.nebula2d.components;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.nebula2d.assets.AssetManager;
 import com.nebula2d.assets.Sprite;
 import com.nebula2d.scene.Transform;
 
@@ -14,11 +15,15 @@ import com.nebula2d.scene.Transform;
  */
 public class SpriteRenderer extends Renderer {
 
-    private Sprite sprite;
+    private String filename;
 
-    public SpriteRenderer(String name, Sprite sprite) {
+    public SpriteRenderer(String name, String filename) {
         super(name);
-        this.sprite = sprite;
+        this.filename = filename;
+    }
+
+    public Sprite getSprite() {
+        return AssetManager.getAsset(filename, Sprite.class);
     }
 
     @Override
@@ -28,10 +33,11 @@ public class SpriteRenderer extends Renderer {
         if (currentAnimation != null) {
             currentAnimation.render(transform, batch, cam, dt);
         } else {
+            Sprite sprite = getSprite();
             float halfw = sprite.getWidth() / 2.0f;
             float halfh = sprite.getHeight() / 2.0f;
 
-            batch.draw(new TextureRegion(sprite.getTexture()),
+            batch.draw(new TextureRegion(sprite.getData()),
                     transform.getPosition().x - halfw - cam.position.x,
                     transform.getPosition().y - halfh - cam.position.y,
                     transform.getPosition().x - halfw - cam.position.x,

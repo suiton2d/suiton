@@ -99,8 +99,8 @@ public class Circle extends CollisionShape {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws IOException {
-        super.build(sceneXml, assetsXml);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws IOException {
+        super.build(sceneXml, assetsXml, sceneName);
         sceneXml.attribute("r", r);
         sceneXml.pop();
     }

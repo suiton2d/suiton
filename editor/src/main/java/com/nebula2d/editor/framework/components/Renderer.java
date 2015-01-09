@@ -82,8 +82,8 @@ public abstract class Renderer extends Component implements ISelectable {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
-        super.build(sceneXml, assetsXml);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneName);
         sceneXml.attribute("rendererType", rendererType.name());
     }
 }

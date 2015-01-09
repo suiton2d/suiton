@@ -167,10 +167,11 @@ public class MusicSource extends Component {
     }
 
     @Override
-    public void build(XmlWriter sceneXml, XmlWriter assetsXml) throws  IOException {
-        super.build(sceneXml, assetsXml);
+    public void build(XmlWriter sceneXml, XmlWriter assetsXml, String sceneName) throws  IOException {
+        super.build(sceneXml, assetsXml, sceneName);
         sceneXml.attribute("track", musicTrack.getBuildPath());
-        assetsXml.element("asset").attribute("path", musicTrack.getBuildPath()).attribute("assetType", "MUSIC");
+        assetsXml.element("asset").attribute("path", musicTrack.getBuildPath()).attribute("assetType", "MUSIC").
+                attribute("sceneName", sceneName);
         assetsXml.pop();
     }
 }
