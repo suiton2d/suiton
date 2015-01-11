@@ -93,10 +93,16 @@ public class SceneManager {
     }
 
     public static void update(float dt) {
-        currentScene.update(dt);
+
+        if (currentScene != null)
+            currentScene.update(dt);
     }
 
     public static void fixedUpdate() {
+
+        if (currentScene == null)
+            return;
+
         World physicalWorld = currentScene.getPhysicalWorld();
         physicalWorld.step(1/45f, 6, 2);
 
