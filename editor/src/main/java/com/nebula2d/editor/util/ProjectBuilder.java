@@ -40,7 +40,7 @@ public class ProjectBuilder {
         this.project = project;
     }
 
-    public void build(int startScene, ProjectType type) throws IOException, ZipException, InterruptedException {
+    public void build(String startScene, ProjectType type) throws IOException, ZipException, InterruptedException {
         switch (type) {
             case PC:
                 buildPC(startScene);
@@ -48,7 +48,7 @@ public class ProjectBuilder {
         }
     }
 
-    private void buildPC(int startScene) throws IOException, ZipException, InterruptedException {
+    private void buildPC(String startScene) throws IOException, ZipException, InterruptedException {
         ProjectType type = ProjectType.PC;
         FileHandle source = extractSource(type);
         FileHandle resourcesDir = source.child("src/main/resources");
