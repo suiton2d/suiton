@@ -18,8 +18,6 @@
 
 package com.nebula2d.editor.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.nebula2d.editor.framework.BaseSceneNode;
 import com.nebula2d.editor.framework.GameObject;
 import com.nebula2d.editor.framework.Layer;
@@ -126,7 +124,9 @@ public class N2DMenuBar extends JMenuBar {
 
         buildMenuItem.addActionListener(e -> {
             try {
-                new ProjectBuilder(MainFrame.getProject()).build(0, ProjectBuilder.ProjectType.PC);
+                // TODO: Make start scene configurable.
+                Project p = MainFrame.getProject();
+                new ProjectBuilder(p).build(p.getCurrentScene().getName(), ProjectBuilder.ProjectType.PC);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(null, "Failed to build project.");
             }

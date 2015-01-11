@@ -190,7 +190,7 @@ public class Project implements ISerializable {
         return false;
     }
 
-    public void build(int startScene, FileHandle sceneFileOut, FileHandle assetsFileOut,
+    public void build(String startScene, FileHandle sceneFileOut, FileHandle assetsFileOut,
                       BuildProgressUpdateListener listener) throws  IOException {
         StringWriter sceneStrWriter = new StringWriter();
         StringWriter assetsStrWriter = new StringWriter();
