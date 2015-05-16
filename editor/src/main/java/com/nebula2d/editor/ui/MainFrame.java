@@ -19,8 +19,8 @@
 package com.nebula2d.editor.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.nebula2d.assets.AssetManager;
 import com.nebula2d.editor.framework.Project;
-import com.nebula2d.editor.framework.assets.AssetManager;
 import com.nebula2d.editor.settings.N2DSettings;
 
 import javax.swing.*;
@@ -56,7 +56,6 @@ public class MainFrame extends JFrame {
         getContentPane().add(renderCanvas.getCanvas());
 
         sceneGraph.setEnabled(false);
-        renderCanvas.setEnabled(false);
 
         menuBar = new N2DMenuBar();
         setJMenuBar(menuBar);
@@ -66,7 +65,6 @@ public class MainFrame extends JFrame {
         validate();
         setLocationRelativeTo(null);
         setVisible(true);
-        renderCanvas.initCamera(renderCanvas.getCanvas().getWidth(), renderCanvas.getCanvas().getHeight());
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -79,7 +77,7 @@ public class MainFrame extends JFrame {
                     } catch (IOException e1) {
                         JOptionPane.showMessageDialog(MainFrame.this, "Failed to save settings.");
                     }
-                    AssetManager.getInstance().cleanup();
+                    AssetManager.cleanup();
 
                     Gdx.app.postRunnable(() -> {
                         renderCanvas.stop();
@@ -120,7 +118,6 @@ public class MainFrame extends JFrame {
     public static void setProject(Project project) {
         MainFrame.project = project;
         sceneGraph.setEnabled(project != null);
-        renderCanvas.setEnabled(project != null);
         menuBar.getBuildMenuItem().setEnabled(project != null);
         menuBar.getSceneMenu().setEnabled(project != null);
         toolbar.setRendererWidgetsEnabled(project != null);

@@ -10,7 +10,6 @@ import com.badlogic.gdx.audio.Music;
  */
 public class MusicTrack extends Asset<Music> {
 
-
     public MusicTrack(String path, Music track) {
         super(path, track);
     }

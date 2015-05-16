@@ -45,7 +45,11 @@ public class Scene {
         physicalWorld.setContactListener(new CollisionListener(this));
         stage = new Stage(new ScreenViewport());
         this.name = name;
-        this.layers = new ArrayList<Layer>();
+        this.layers = new ArrayList<>();
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -55,10 +59,6 @@ public class Scene {
 
     public Stage getStage() {
         return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 
     public Camera getCamera() {
@@ -103,15 +103,6 @@ public class Scene {
         }
 
         return null;
-    }
-
-    /**
-     * Removes a Layer from the Scene.
-     * @param layer The Layer to remove.
-     */
-    public void remove(Layer layer) {
-        layers.remove(layer);
-        layer.setScene(null);
     }
 
     public void start() {

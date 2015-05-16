@@ -1,6 +1,5 @@
 package com.nebula2d.assets;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Arrays;
@@ -16,11 +15,27 @@ public class SpriteSheet {
     private int frameWidth;
     private int frameHeight;
 
-
-    public SpriteSheet(int frameWidth, int frameHeight) {
+    public SpriteSheet(Sprite sprite, int frameWidth, int frameHeight) {
+        this.sprite = sprite;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         init();
+    }
+
+    public int getFrameWidth() {
+        return frameWidth;
+    }
+
+    public void setFrameWidth(int frameWidth) {
+        this.frameWidth = frameWidth;
+    }
+
+    public int getFrameHeight() {
+        return frameHeight;
+    }
+
+    public void setFrameHeight(int frameHeight) {
+        this.frameHeight = frameHeight;
     }
 
     private void init() {

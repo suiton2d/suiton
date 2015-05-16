@@ -18,13 +18,14 @@
 
 package com.nebula2d.editor.ui;
 
-import com.nebula2d.editor.framework.BaseSceneNode;
-import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.Layer;
+import com.nebula2d.editor.framework.SceneNode;
 import com.nebula2d.editor.framework.Project;
+import com.nebula2d.editor.io.ProjectSerializer;
 import com.nebula2d.editor.util.ExitAction;
 import com.nebula2d.editor.util.PlatformUtil;
 import com.nebula2d.editor.util.ProjectBuilder;
+import com.nebula2d.scene.GameObject;
+import com.nebula2d.scene.Layer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -94,7 +95,7 @@ public class N2DMenuBar extends JMenuBar {
 
         saveMenuItem.addActionListener(e -> {
             try {
-                MainFrame.getProject().saveProject();
+                new ProjectSerializer(MainFrame.getProject()).save();
                 System.out.println("Saved!");
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(null, "Failed to save project.");
@@ -137,16 +138,24 @@ public class N2DMenuBar extends JMenuBar {
         changeSceneMenuItem.addActionListener(e -> new ChangeSceneDialog());
         renameSceneMenuItem.addActionListener(e -> new RenameSceneDialog());
         newLayerMenuItem.addActionListener(e -> {
-            Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount());
+            Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount(),
+                    MainFrame.getProject().getCurrentScene().getLayers().size());
             MainFrame.getSceneGraph().addLayer(layer);
         });
 
         newEmptyGameObjectMenuItem.addActionListener(e -> {
             //If this menu item is enabled, we know 100% that something is selected, so no check is necessary. =)
-            BaseSceneNode selectedNode = (BaseSceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
+            SceneNode selectedNode = (SceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
 
             GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
-            selectedNode.addGameObject(go);
+            System.out.println(selectedNode.getData().getClass().getSimpleName());
+            if (selectedNode.getData() instanceof GameObject)
+                ((GameObject) selectedNode.getData()).addActor(go);
+            else if (selectedNode.getData() instanceof Layer)
+                ((Layer) selectedNode.getData()).addGameObject(go);
+
+            selectedNode.add(new SceneNode<>(go.getName(), go));
+            MainFrame.getSceneGraph().refresh();
         });
     }
 

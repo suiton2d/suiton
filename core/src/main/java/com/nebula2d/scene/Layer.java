@@ -41,7 +41,7 @@ public class Layer {
     public Layer(String name, int zOrder) {
         this.name = name;
         this.zOrder = zOrder;
-        gameObjects = new ArrayList<GameObject>();
+        gameObjects = new ArrayList<>();
     }
 
     public String getName() {
@@ -62,6 +62,10 @@ public class Layer {
 
     public void setScene(Scene scene) {
         this.scene = scene;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

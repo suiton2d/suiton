@@ -21,6 +21,7 @@ package com.nebula2d.components;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.google.gson.annotations.Expose;
 import com.nebula2d.scene.Transform;
 
 /**
@@ -40,6 +41,18 @@ public abstract class Animation {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 
     /**

@@ -18,10 +18,11 @@
 
 package com.nebula2d.editor.ui;
 
-import com.nebula2d.editor.framework.BaseSceneNode;
-import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.Layer;
+import com.nebula2d.editor.framework.SceneNode;
 import com.nebula2d.editor.ui.controls.N2DTree;
+import com.nebula2d.scene.GameObject;
+import com.nebula2d.scene.Layer;
+import com.nebula2d.scene.Scene;
 
 import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
@@ -52,9 +53,6 @@ public class SceneGraph extends N2DTree {
     public SceneGraph() {
         setRootVisible(false);
         setModel(new DefaultTreeModel(new DefaultMutableTreeNode()));
-//        Border outterBorder = new MatteBorder(0, 0, 0, 0, new Color(40, 40, 40));
-//        Border innerBorder = new MatteBorder(0, 0, 0, 0, new Color(80, 80, 80));
-//        setBorder(BorderFactory.createCompoundBorder(outterBorder, innerBorder));
         setBorder(null);
         dragSource = new TreeDragSource(this, DnDConstants.ACTION_MOVE);
         dropTarget = new TreeDropTarget(this);
@@ -65,14 +63,15 @@ public class SceneGraph extends N2DTree {
     }
 
     public void init() {
-        root = MainFrame.getProject().getCurrentScene();
+        Scene currentScene = MainFrame.getProject().getCurrentScene();
+        root = new SceneNode<>(currentScene.getName(), currentScene);
 
         //We need to create our own tree model so that we can override some default behaviour.
         DefaultTreeModel model = new DefaultTreeModel(root);
         model.addTreeModelListener(new TreeModelListener() {
             @Override
             public void treeNodesChanged(TreeModelEvent e) {
-                //When a tree node has been edited, we need to update the BaseSceneNode's name.
+                //When a tree node has been edited, we need to update the SceneNode's name.
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getTreePath().getLastPathComponent();
 
                 try {
@@ -81,8 +80,7 @@ public class SceneGraph extends N2DTree {
                 } catch (NullPointerException ex) {
                     //Noop!
                 }
-                ((BaseSceneNode)node).setName((String)node.getUserObject());
-                System.out.println(((BaseSceneNode)node).getName());
+                ((SceneNode)node).setName((String)node.getUserObject());
             }
 
             @Override
@@ -101,15 +99,13 @@ public class SceneGraph extends N2DTree {
             MainFrame.getN2DMenuBar().getGameObjectMenu().setEnabled(e.isAddedPath());
 
             if (e.isAddedPath()) {
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
-                if (selectedNode instanceof GameObject) {
-                    MainFrame.getRenderCanvas().setSelectedObject((GameObject) selectedNode);
-                    MainFrame.getToolbar().getComponentsButton().setEnabled(true);
+                SceneNode selectedNode = (SceneNode) e.getPath().getLastPathComponent();
+                if (selectedNode.getData() instanceof GameObject) {
+                    MainFrame.getRenderCanvas().setSelectedObject((GameObject) selectedNode.getData());
                     return;
                 }
             }
 
-            MainFrame.getToolbar().getComponentsButton().setEnabled(false);
             MainFrame.getRenderCanvas().setSelectedObject(null);
         });
 
@@ -125,7 +121,7 @@ public class SceneGraph extends N2DTree {
                 TreePath clickedPath = graph.getClosestPathForLocation(e.getPoint().x, e.getPoint().y);
                 if (clickedPath == null)
                     return;
-                BaseSceneNode clickedNode = (BaseSceneNode) clickedPath.getLastPathComponent();
+                SceneNode clickedNode = (SceneNode) clickedPath.getLastPathComponent();
                 graph.setSelectedNode(clickedNode);
                 if (e.isPopupTrigger()) {
                     new SceneNodePopup(clickedNode).show(graph, e.getPoint().x, e.getPoint().y);
@@ -137,7 +133,7 @@ public class SceneGraph extends N2DTree {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.isPopupTrigger()) {
-                    new SceneNodePopup((BaseSceneNode) SceneGraph.this.
+                    new SceneNodePopup((SceneNode) SceneGraph.this.
                             getSelectionPath().getLastPathComponent()).
                             show(SceneGraph.this, e.getPoint().x, e.getPoint().y);
                 }
@@ -164,7 +160,7 @@ public class SceneGraph extends N2DTree {
      * @param layer the layer to be added
      */
     public void addLayer(Layer layer) {
-        root.add(layer);
+        root.add(new SceneNode<>(layer.getName(), layer));
         refresh();
     }
 
@@ -173,8 +169,8 @@ public class SceneGraph extends N2DTree {
         int count = 0;
 
         while (children.hasMoreElements()) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
-            if (node instanceof GameObject)
+            SceneNode node = (SceneNode) children.nextElement();
+            if (node.getData() instanceof GameObject)
                 ++count;
         }
 
@@ -305,7 +301,7 @@ public class SceneGraph extends N2DTree {
             DropTargetContext dtc = dtde.getDropTargetContext();
             SceneGraph sceneGraph = (SceneGraph) dtc.getComponent();
             TreePath parentpath = sceneGraph.getClosestPathForLocation(pt.x, pt.y);
-            DefaultMutableTreeNode dest = (DefaultMutableTreeNode) parentpath
+            SceneNode dest = (SceneNode) parentpath
                     .getLastPathComponent();
 
             try {
@@ -314,14 +310,17 @@ public class SceneGraph extends N2DTree {
                 for (DataFlavor flavor : flavors) {
                     if (tr.isDataFlavorSupported(flavor)) {
                         TreePath p = (TreePath) tr.getTransferData(flavor);
-                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) p
+                        SceneNode node = (SceneNode) p
                                 .getLastPathComponent();
-                        if (node instanceof Layer)
+                        if (node.getData() instanceof Layer)
                             break;
 
 
-                        if (node instanceof GameObject) {
-                            ((BaseSceneNode) dest).addGameObject((GameObject) node);
+                        if (node.getData() instanceof GameObject) {
+                            if (dest.getData() instanceof Layer)
+                                ((Layer) dest.getData()).addGameObject((GameObject) node.getData());
+                            else if (dest.getData() instanceof GameObject)
+                                ((GameObject) dest.getData()).addActor((GameObject) node.getData());
                         }
                         dtde.acceptDrop(dtde.getDropAction());
                         dtde.dropComplete(true);

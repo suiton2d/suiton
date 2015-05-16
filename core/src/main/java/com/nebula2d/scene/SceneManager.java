@@ -40,7 +40,7 @@ import java.util.Map;
 public class SceneManager {
 
     private static Scene currentScene;
-    private static Map<String, Scene> sceneMap = new HashMap<String, Scene>();
+    private static Map<String, Scene> sceneMap = new HashMap<>();
 
     /**
      * Retrieves the singleton instance of SceneManager. SceneManager should

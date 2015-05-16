@@ -22,7 +22,6 @@ public class KeyFrameAnimation extends Animation {
     protected boolean wrap;
     protected TextureRegion currentFrame;
 
-
     /**
      * Constructor used for loading animation form disk
      * @param name a name for the animation
@@ -54,9 +53,49 @@ public class KeyFrameAnimation extends Animation {
         init();
     }
 
+    public void setSpriteSheet(SpriteSheet spriteSheet) {
+        this.spriteSheet = spriteSheet;
+    }
+
+    public int getStartFrame() {
+        return startFrame;
+    }
+
+    public void setStartFrame(int startFrame) {
+        this.startFrame = startFrame;
+    }
+
+    public int getEndFrame() {
+        return endFrame;
+    }
+
+    public void setEndFrame(int endFrame) {
+        this.endFrame = endFrame;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public boolean isWrap() {
+        return wrap;
+    }
+
+    public void setWrap(boolean wrap) {
+        this.wrap = wrap;
+    }
+
     private void init() {
         TextureRegion[] frames = spriteSheet.getFrames(startFrame, endFrame);
         animation = new com.badlogic.gdx.graphics.g2d.Animation(speed, frames);
+    }
+
+    public SpriteSheet getSpriteSheet() {
+        return spriteSheet;
     }
 
     /**

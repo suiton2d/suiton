@@ -6,9 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
  * @author Jon Bonazza <jonbonazza@gmail.com
  */
 public class TiledTileSheet extends TileSheet<TiledMap> {
-
     private float unitScale = 1f;
-
     private int width;
     private int height;
 

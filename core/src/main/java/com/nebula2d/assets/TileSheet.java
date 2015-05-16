@@ -4,7 +4,7 @@ import com.badlogic.gdx.maps.Map;
 
 public abstract class TileSheet<T extends Map> extends Asset<T> {
 
-    public static enum TileSheetType {
+    public enum TileSheetType {
         TILED,
     }
 

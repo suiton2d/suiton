@@ -20,91 +20,62 @@ package com.nebula2d.editor.ui;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.nebula2d.editor.framework.GameObject;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.nebula2d.editor.framework.Project;
+import com.nebula2d.editor.framework.Selection;
+import com.nebula2d.scene.Scene;
+import com.nebula2d.scene.SceneManager;
 
 
 public class RenderAdapter implements ApplicationListener {
 
-    private GameObject selectedObject;
-    private boolean enabled;
-    private OrthographicCamera camera;
-    private SpriteBatch batcher;
+    private Selection selectedObject;
 
     public RenderAdapter() {
 
     }
 
-    public void initCamera(int w, int h) {
-        camera = new OrthographicCamera(w, h);
-    }
-
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
-
-    public GameObject getSelectedObject() {
+    public Selection getSelectedObject() {
         return selectedObject;
     }
 
-    public void setSelectedObject(GameObject selectedObject) {
+    public void setSelectedObject(Selection selectedObject) {
         this.selectedObject = selectedObject;
     }
 
     @Override
     public void create() {
-        batcher = new SpriteBatch();
+
+    }
+
+    public OrthographicCamera getCamera() {
+        return (OrthographicCamera) MainFrame.getProject().getCurrentScene().getCamera();
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();
+        Scene scene = SceneManager.getCurrentScene();
+        if (scene != null) {
+            Stage stage = scene.getStage();
+            Viewport viewport = stage.getViewport();
+            viewport.update(width, height);
+        }
     }
 
     @Override
     public void render() {
         Gdx.graphics.getGL20().glClearColor(.17f, .17f, .17f, 1.0f);
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if (!enabled)
-            return;
 
-        if (camera == null)
-            return;
-
-        batcher.setProjectionMatrix(camera.projection);
-        batcher.begin();
         Project p = MainFrame.getProject();
         if (p != null && p.getCurrentScene() != null) {
-            p.getCurrentScene().render(selectedObject, batcher, camera);
-        }
-        batcher.end();
-
-        if (selectedObject != null && selectedObject.getRenderer() != null &&
-                selectedObject.getRenderer().isReady()) {
-            Rectangle boundingBox = selectedObject.getRenderer().getBoundingBox(camera);
-
-            if (boundingBox != null) {
-                Gdx.gl.glEnable(GL20.GL_BLEND);
-//                Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-                ShapeRenderer shape = new ShapeRenderer();
-                shape.setColor(new Color(0.0f, 1.0f, 0.0f, 0.5f));
-                shape.begin(ShapeRenderer.ShapeType.Filled);
-
-                float x = boundingBox.getX();
-                float y = boundingBox.getY();
-                shape.rect(x, y, boundingBox.getWidth(), boundingBox.getHeight());
-
-                shape.end();
-                Gdx.gl.glDisable(GL20.GL_BLEND);
-            }
+            Scene scene = p.getCurrentScene();
+            scene.update(Gdx.graphics.getDeltaTime());
+            if (selectedObject != null)
+                selectedObject.renderSelection(scene.getCamera());
         }
     }
 
@@ -119,10 +90,7 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
-        batcher.dispose();
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        if (MainFrame.getProject() != null)
+            MainFrame.getProject().getCurrentScene().cleanup();
     }
 }

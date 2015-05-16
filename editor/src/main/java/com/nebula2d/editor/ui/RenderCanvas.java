@@ -19,20 +19,19 @@
 package com.nebula2d.editor.ui;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.nebula2d.editor.framework.BaseSceneNode;
-import com.nebula2d.editor.framework.GameObject;
-import com.nebula2d.editor.framework.Scene;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.nebula2d.editor.framework.SceneNode;
+import com.nebula2d.editor.framework.Selection;
+import com.nebula2d.scene.GameObject;
+import com.nebula2d.scene.Layer;
+import com.nebula2d.scene.Scene;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, MouseMotionListener, MouseWheelListener {
@@ -52,66 +51,63 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         this.isMouseDown = false;
     }
 
-    public void setEnabled(boolean enabled) {
-        adapter.setEnabled(enabled);
-    }
-
     public OrthographicCamera getCamera() {
         return adapter.getCamera();
     }
 
-    protected List<GameObject> getSelectedGameObjects(int x, int y) {
+    protected List<Selection> getSelectedGameObjects(int x, int y) {
 
-        List<GameObject> res = new ArrayList<>();
+        List<Selection> res = new ArrayList<>();
 
         Scene scene = MainFrame.getProject().getCurrentScene();
-        Enumeration nodes = scene.depthFirstEnumeration();
-
-        while (nodes.hasMoreElements()) {
-            BaseSceneNode currentNode = (BaseSceneNode) nodes.nextElement();
-            if (currentNode instanceof GameObject) {
-                GameObject g = (GameObject) currentNode;
-                Camera cam = getCamera();
-
-                if (g.isSelected(cam, x, cam.viewportHeight - y))
-                    res.add(g);
-            }
+        for (Layer layer : scene.getLayers()) {
+            for (GameObject gameObject : layer.getGameObjects())
+                searchGameObjectChildrenForSelection(gameObject, res, x, y);
         }
 
         return res;
     }
 
-    public void initCamera(int w, int h) {
-        adapter.initCamera(w, h);
+    private void searchGameObjectChildrenForSelection(GameObject gameObject, List<Selection> selections, float x, float y) {
+        for (Actor child : gameObject.getChildren()) {
+            GameObject g = (GameObject) child;
+            if (isGameObjectSelected(g, getCamera(), x, getCamera().viewportHeight-y)) {
+                selections.add(new Selection(g));
+            } else {
+                searchGameObjectChildrenForSelection(g, selections, x, y);
+            }
+        }
+    }
+
+    private boolean isGameObjectSelected(GameObject gameObject, OrthographicCamera cam, float x, float y) {
+        Selection maybeSelection = new Selection(gameObject);
+        if (gameObject.getRenderer() != null && maybeSelection.getBoundingBox(cam).contains(x, y))
+            return true;
+
+        Vector3 proj = cam.project(new Vector3(gameObject.getX(), gameObject.getY(), 0));
+        Circle point = new Circle(proj.x, proj.y, 4);
+        return point.contains(x, y);
     }
 
     protected void translateObject(Point mousePos) {
         int dx = mousePos.x - lastPoint.x;
         int dy = mousePos.y - lastPoint.y;
-
-        float newX = adapter.getSelectedObject().getPosition().x + dx * getCamera().zoom;
-        float newY = adapter.getSelectedObject().getPosition().y - dy * getCamera().zoom;
-        adapter.getSelectedObject().setPosition(newX, newY);
+        adapter.getSelectedObject().getGameObject().moveBy(dx, dy);
     }
 
     protected void scaleObject(Point mousePos) {
         int dx = mousePos.x - lastPoint.x;
         int dy = mousePos.y - lastPoint.y;
-
-        float newX = adapter.getSelectedObject().getScale().x + dx;
-        float newY = adapter.getSelectedObject().getScale().y - dy;
-
-        adapter.getSelectedObject().setScale(newX, newY);
+        adapter.getSelectedObject().getGameObject().scaleBy(dx, dy);
     }
 
     protected void rotateObject(Point mousePos) {
         int dy = mousePos.y - lastPoint.y;
-        float newY = adapter.getSelectedObject().getRotation() + dy * 0.5f;
-        adapter.getSelectedObject().setRotation(newY);
+        adapter.getSelectedObject().getGameObject().rotateBy(dy*0.5f);
     }
 
     public void setSelectedObject(GameObject go) {
-        this.adapter.setSelectedObject(go);
+        this.adapter.setSelectedObject(new Selection(go));
     }
 
     @Override
@@ -125,17 +121,16 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
                 return;
             }
 
-            List<GameObject> selectedObjects = getSelectedGameObjects(lastPoint.x, lastPoint.y);
+            List<Selection> selectedObjects = getSelectedGameObjects(lastPoint.x, lastPoint.y);
             int size = selectedObjects.size();
             if (size > 0) {
-                GameObject selectedObject = selectedObjects.get(size - 1);
-                MainFrame.getSceneGraph().setSelectedNode(selectedObject);
+                GameObject selectedObject = selectedObjects.get(size - 1).getGameObject();
+                MainFrame.getSceneGraph().setSelectedNode(new SceneNode<>(selectedObject.getName(), selectedObject));
             } else {
                 MainFrame.getSceneGraph().setSelectionPath(null);
             }
         }
     }
-
 
     @Override
     public void mouseReleased(MouseEvent e) {}
@@ -149,7 +144,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     @Override
     public void mouseDragged(MouseEvent e) {
         Point pos = e.getPoint();
-        GameObject selectedObject = adapter.getSelectedObject();
+        GameObject selectedObject = adapter.getSelectedObject().getGameObject();
         if (e.isControlDown()) {
             int dx = (pos.x - lastPoint.x) / 2;
             int dy = -(pos.y - lastPoint.y) / 2;
@@ -157,7 +152,7 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
             getCamera().update();
 
 
-        } else if (selectedObject != null && selectedObject.isMoveable()) {
+        } else if (selectedObject != null) {
              transformObject(pos);
         }
 

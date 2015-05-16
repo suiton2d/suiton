@@ -20,25 +20,21 @@ package com.nebula2d.editor.framework;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
-import com.nebula2d.editor.common.ISerializable;
-import com.nebula2d.editor.framework.assets.AssetManager;
+import com.nebula2d.assets.AssetManager;
 import com.nebula2d.editor.ui.BuildProgressUpdateListener;
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
-import com.nebula2d.editor.util.FullBufferedReader;
-import com.nebula2d.editor.util.FullBufferedWriter;
 import com.nebula2d.editor.util.PlatformUtil;
+import com.nebula2d.editor.util.builders.SceneBuilder;
+import com.nebula2d.scene.Scene;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
-public class Project implements ISerializable {
+public class Project {
 
     private List<Scene> scenes;
     private int currentSceneIdx;
@@ -97,8 +93,9 @@ public class Project implements ISerializable {
     }
 
     public void setCurrentScene(int idx) {
-        AssetManager.getInstance().changeScene(currentSceneIdx);
+        AssetManager.unloadAssets(getCurrentScene().getName());
         currentSceneIdx = idx;
+        AssetManager.loadAssets(getCurrentScene().getName());
     }
 
     public String getPath() {
@@ -124,15 +121,10 @@ public class Project implements ISerializable {
 
     public void loadProject() throws IOException {
         scenes.clear();
-        FullBufferedReader fr = new FullBufferedReader(new FileReader(getPath()));
-
-        load(fr);
+        // TODO: Implement
     }
 
     public void saveProject() throws IOException {
-        FullBufferedWriter fw = new FullBufferedWriter(new FileWriter(getPath()));
-        save(fw);
-        fw.close();
     }
 
     public void loadCurrentScene() {
@@ -150,35 +142,8 @@ public class Project implements ISerializable {
 
     private void loadScene(Scene scene) {
         SceneGraph graph = MainFrame.getSceneGraph();
-        Enumeration layers = scene.children();
-        while (layers.hasMoreElements()) {
-            graph.addLayer((Layer) layers.nextElement());
-        }
+        scene.getLayers().forEach(graph::addLayer);
         graph.refresh();
-    }
-
-    @Override
-    public void load(FullBufferedReader fr) throws IOException {
-        //Need to preset this so that it is available during loading.
-        currentSceneIdx = fr.readIntLine();
-        int size = fr.readIntLine();
-        for (int i = 0; i < size; ++i) {
-            String name = fr.readLine();
-            Scene s = new Scene(name);
-            s.load(fr);
-            addScene(s);
-        }
-
-        AssetManager.getInstance().changeScene(currentSceneIdx);
-    }
-
-    @Override
-    public void save(FullBufferedWriter fw) throws IOException {
-        fw.writeIntLine(currentSceneIdx);
-        fw.writeIntLine(scenes.size());
-        for (Scene scene : scenes) {
-            scene.save(fw);
-        }
     }
 
     public boolean containsSceneWithName(String name) {
@@ -204,7 +169,7 @@ public class Project implements ISerializable {
 
         for (int i = 0; i < scenes.size(); ++i) {
             Scene scene = scenes.get(i);
-            scene.build(sceneXmlWriter, assetsXmlWriter, scene.getName());
+            new SceneBuilder(scene).build(sceneXmlWriter, assetsXmlWriter);
             sceneXmlWriter.pop();
             listener.onBuildProgressUpdate(scene, i, scenes.size());
         }

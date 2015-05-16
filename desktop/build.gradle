@@ -21,10 +21,10 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
     compile 'com.google.guava:guava:16.0.1'
-    compile 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.4.1'
-    compile 'com.badlogicgames.gdx:gdx-platform:1.4.1:natives-desktop'
-    compile 'com.badlogicgames.gdx:gdx-box2d:1.4.1'
-    compile 'com.badlogicgames.gdx:gdx-box2d-platform:1.4.1:natives-desktop'
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:${GDX_VERSION}"
+    compile "com.badlogicgames.gdx:gdx-platform:${GDX_VERSION}:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-box2d:${GDX_VERSION}"
+    compile "com.badlogicgames.gdx:gdx-box2d-platform:${GDX_VERSION}:natives-desktop"
     compile fileTree(dir: 'lib', include: ['core*.jar'])
 }
 

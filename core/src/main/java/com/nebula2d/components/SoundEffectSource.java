@@ -14,6 +14,8 @@ public class SoundEffectSource extends Component {
 
     private String filename;
 
+    public SoundEffectSource() {}
+
     public SoundEffectSource(String name, String filename) {
         super(name);
         this.filename = filename;
@@ -21,6 +23,14 @@ public class SoundEffectSource extends Component {
 
     public SoundEffect getSoundEffect() {
         return AssetManager.getAsset(filename, SoundEffect.class);
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     /**

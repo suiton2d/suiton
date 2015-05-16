@@ -28,10 +28,11 @@ import com.nebula2d.scene.GameObject;
  * @author Jon Bonazza
  */
 public abstract class Component {
-
     protected String name;
     protected GameObject gameObject;
     protected boolean enabled;
+
+    public Component() {}
 
     public Component(String name) {
         this.name = name;

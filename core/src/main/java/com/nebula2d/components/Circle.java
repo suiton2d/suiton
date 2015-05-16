@@ -20,6 +20,7 @@ package com.nebula2d.components;
 
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.google.gson.annotations.Expose;
 import com.nebula2d.scene.Transform;
 
 /**
@@ -27,12 +28,22 @@ import com.nebula2d.scene.Transform;
  */
 public class Circle extends CollisionShape {
 
+    @Expose
     private float radius;
+
+    public Circle() {}
 
     public Circle(PhysicsMaterial physicsMaterial, float radius) {
         super(physicsMaterial);
         this.radius = radius;
-        shapeType = ShapeType.CIRCLE;
+    }
+
+    public float getRadius() {
+        return radius;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
     }
 
     @Override

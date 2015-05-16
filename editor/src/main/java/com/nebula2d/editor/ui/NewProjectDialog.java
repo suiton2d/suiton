@@ -18,11 +18,13 @@
 
 package com.nebula2d.editor.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.nebula2d.editor.framework.Project;
-import com.nebula2d.editor.framework.Scene;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
 import com.nebula2d.editor.util.PlatformUtil;
+import com.nebula2d.scene.Scene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -115,10 +117,12 @@ public class NewProjectDialog extends JDialog {
                 }
             }
 
-            Project project = new Project(projDir.getAbsolutePath(), projName);
-            project.addScene(new Scene("Untitled Scene 0"));
-            MainFrame.setProject(project);
-            dispose();
+            Gdx.app.postRunnable(() -> {
+                Project project = new Project(projDir.getAbsolutePath(), projName);
+                project.addScene(new Scene("Untitled Scene 0", new Vector2(), true));
+                MainFrame.setProject(project);
+                dispose();
+            });
         });
 
         browseBtn.addActionListener(e -> {

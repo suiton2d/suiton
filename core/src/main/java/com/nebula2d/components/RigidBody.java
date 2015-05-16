@@ -28,16 +28,18 @@ import com.nebula2d.scene.Transform;
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class RigidBody extends Component {
+public class RigidBody<T extends CollisionShape> extends Component {
 
     private boolean isKinematic;
     private boolean fixedRotation;
     private boolean isBullet;
     private float mass;
     private Body physicsBody;
-    private CollisionShape collisionShape;
+    private T collisionShape;
 
-    public RigidBody(String name, CollisionShape collisionShape, boolean isKinematic,
+    public RigidBody() {}
+
+    public RigidBody(String name, T collisionShape, boolean isKinematic,
                      float mass, boolean fixedRotation, boolean isBullet) {
         super(name);
         this.isKinematic = isKinematic;
@@ -45,6 +47,42 @@ public class RigidBody extends Component {
         this.isBullet = isBullet;
         this.collisionShape = collisionShape;
         this.mass = mass;
+    }
+
+    public boolean isKinematic() {
+        return isKinematic;
+    }
+
+    public void setIsKinematic(boolean isKinematic) {
+        this.isKinematic = isKinematic;
+    }
+
+    public boolean isFixedRotation() {
+        return fixedRotation;
+    }
+
+    public void setFixedRotation(boolean fixedRotation) {
+        this.fixedRotation = fixedRotation;
+    }
+
+    public boolean isBullet() {
+        return isBullet;
+    }
+
+    public void setIsBullet(boolean isBullet) {
+        this.isBullet = isBullet;
+    }
+
+    public float getMass() {
+        return mass;
+    }
+
+    public T getCollisionShape() {
+        return collisionShape;
+    }
+
+    public void setCollisionShape(T collisionShape) {
+        this.collisionShape = collisionShape;
     }
 
     @Override

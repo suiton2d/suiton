@@ -23,7 +23,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.nebula2d.editor.framework.components.Animation;
+import com.nebula2d.components.Animation;
+import com.nebula2d.scene.Transform;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,26 +33,22 @@ public class AnimationRenderAdapter implements ApplicationListener {
 
     private Animation animation;
     private OrthographicCamera camera;
-    private int w, h;
+    private SpriteBatch badger;
 
     public AnimationRenderAdapter(Animation animation) {
         this.animation = animation;
     }
 
-    public void initCamera(int w, int h) {
-        this.w = w;
-        this.h = h;
-        camera = new OrthographicCamera(w, h);
-    }
-
     @Override
     public void create() {
-
+        camera = new OrthographicCamera();
+        badger = new SpriteBatch();
     }
 
     @Override
-    public void resize(int i, int i2) {
-
+    public void resize(int w, int h) {
+        camera.setToOrtho(false, w, h);
+        camera.update();
     }
 
     @Override
@@ -65,10 +62,9 @@ public class AnimationRenderAdapter implements ApplicationListener {
             return;
 
         camera.update();
-        SpriteBatch badger = new SpriteBatch();
 
         badger.begin();
-        animation.renderAnimated(badger, camera, w, h);
+        animation.render(new Transform(), badger, camera, Gdx.graphics.getDeltaTime());
         badger.end();
     }
 
@@ -84,7 +80,8 @@ public class AnimationRenderAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
-
+        if (badger != null)
+            badger.dispose();
     }
 
     public Animation getAnimation() {

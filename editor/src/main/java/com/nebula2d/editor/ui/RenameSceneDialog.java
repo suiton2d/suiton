@@ -1,9 +1,9 @@
 package com.nebula2d.editor.ui;
 
 import com.nebula2d.editor.framework.Project;
-import com.nebula2d.editor.framework.Scene;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
+import com.nebula2d.scene.Scene;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

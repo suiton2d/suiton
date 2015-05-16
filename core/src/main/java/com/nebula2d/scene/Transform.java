@@ -21,16 +21,12 @@ package com.nebula2d.scene;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Transform is a class representing for position, scale, and rotation
+ * Transform is a class representing position, scale, and rotation
  *
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
 public class Transform {
 
-    /*
-    We use position and scale buffers to prevent
-    having to instantiate a new Vector2 every operation
-     */
     private Vector2 position;
     private Vector2 scale;
     private float rotation;
@@ -59,52 +55,15 @@ public class Transform {
         return rotation;
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
-    public void setPosition(float x, float y) {
+    private void setPosition(float x, float y) {
         this.position = new Vector2(x, y);
     }
 
-    public void setScale(Vector2 scale) {
-        this.scale = scale;
-    }
-
-    public void setScale(float x, float y) {
+    private void setScale(float x, float y) {
         this.scale = new Vector2(x, y);
     }
 
-    public void setRotation(float rotation) {
+    private void setRotation(float rotation) {
         this.rotation = rotation;
-    }
-
-    /**
-     * Translates the position of the transform.
-     * @param other A Vector2 containing the delta to translate.
-     */
-    public void translate(Vector2 other) {
-        position.add(other);
-    }
-
-    /**
-     * Translates the position of the transform.
-     * @param dx The amount to translate the x coordinate.
-     * @param dy The amount to translate the y coordinate.
-     */
-    public void translate(float dx, float dy) {
-        position.add(dx, dy);
-    }
-
-    /**
-     * Rotates the transform.
-     * @param theta The amount to rotate in degrees.
-     */
-    public void rotate(float theta) {
-        rotation += theta;
-
-        if (rotation >= 360) {
-            rotation -= 360;
-        }
     }
 }

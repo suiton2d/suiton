@@ -26,13 +26,15 @@ public class Behavior extends Component {
 
     private String filename;
 
+    public Behavior() {}
+
     public Behavior(String name, String filename) {
         super(name);
 
         this.filename = filename;
     }
 
-    private void initScript() {
+    public void init() {
         Context context = Context.enter();
         context.setOptimizationLevel(-1);
         try {
@@ -51,13 +53,21 @@ public class Behavior extends Component {
         }
     }
 
-    Script getScript() {
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public Script getScript() {
         return AssetManager.getAsset(filename, Script.class);
     }
 
     @Override
     public void start() {
-        initScript();
+        init();
         Context context = Context.enter();
         context.setOptimizationLevel(-1);
         try {

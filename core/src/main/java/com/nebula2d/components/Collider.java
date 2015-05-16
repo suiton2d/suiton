@@ -28,24 +28,34 @@ import com.nebula2d.scene.Transform;
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class Collider extends Component {
+public class Collider<T extends CollisionShape> extends Component {
 
     protected boolean isSensor;
-    protected CollisionShape shape;
+    protected T collisionShape;
     protected Body physicalBody;
 
-    public Collider(String name, CollisionShape shape, boolean isSensor) {
+    public Collider() {}
+
+    public Collider(String name, T collisionShape, boolean isSensor) {
         super(name);
         this.isSensor = isSensor;
-        this.shape = shape;
+        this.collisionShape = collisionShape;
     }
 
     public boolean isSensor() {
         return isSensor;
     }
 
-    public CollisionShape getShape() {
-        return shape;
+    public void setIsSensor(boolean isSensor) {
+        this.isSensor = isSensor;
+    }
+
+    public T getCollisionShape() {
+        return collisionShape;
+    }
+
+    public void setCollisionShape(T collisionShape) {
+        this.collisionShape = collisionShape;
     }
 
     @Override
@@ -53,7 +63,7 @@ public class Collider extends Component {
         BodyDef bodyDef = createBodyDef();
         physicalBody = SceneManager.getCurrentScene().getPhysicalWorld().createBody(bodyDef);
         physicalBody.setUserData(getGameObject());
-        shape.affixTo(physicalBody, isSensor).setUserData(gameObject);
+        collisionShape.affixTo(physicalBody, isSensor).setUserData(gameObject);
     }
 
     private BodyDef createBodyDef() {

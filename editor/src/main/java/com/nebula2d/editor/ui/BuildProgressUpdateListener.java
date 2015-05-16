@@ -1,6 +1,6 @@
 package com.nebula2d.editor.ui;
 
-import com.nebula2d.editor.framework.Scene;
+import com.nebula2d.scene.Scene;
 
 /**
  *
@@ -8,9 +8,9 @@ import com.nebula2d.editor.framework.Scene;
  */
 public interface BuildProgressUpdateListener {
 
-    public void onBuildProgressUpdate(Scene scene, int idx, int size);
+    void onBuildProgressUpdate(Scene scene, int idx, int size);
 
-    public void onProjectCompiled();
+    void onProjectCompiled();
 
-    public void onBuildComplete();
+    void onBuildComplete();
 }

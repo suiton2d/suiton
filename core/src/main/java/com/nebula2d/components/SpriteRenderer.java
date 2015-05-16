@@ -13,17 +13,37 @@ import com.nebula2d.scene.Transform;
  *
  * @author      Jon Bonazza <jonbonazza@gmail.com>
  */
-public class SpriteRenderer extends Renderer {
+public class SpriteRenderer<T extends Animation> extends AnimatedRenderer<T> {
 
     private String filename;
+
+    public SpriteRenderer() {}
 
     public SpriteRenderer(String name, String filename) {
         super(name);
         this.filename = filename;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     public Sprite getSprite() {
         return AssetManager.getAsset(filename, Sprite.class);
+    }
+
+    @Override
+    public int getBoundingWidth() {
+        return getSprite() != null ? getSprite().getWidth() : 0;
+    }
+
+    @Override
+    public int getBoundingHeight() {
+        return getSprite() != null ? getSprite().getHeight() : 0;
     }
 
     @Override

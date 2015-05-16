@@ -18,10 +18,11 @@
 
 package com.nebula2d.editor.ui;
 
+import com.badlogic.gdx.math.Vector2;
 import com.nebula2d.editor.framework.Project;
-import com.nebula2d.editor.framework.Scene;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
+import com.nebula2d.scene.Scene;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -94,7 +95,7 @@ public class NewSceneDialog extends JDialog {
 
         okBtn.addActionListener(e -> {
             String newSceneName = nameTf.getText();
-            Scene scene = new Scene(newSceneName);
+            Scene scene = new Scene(newSceneName, new Vector2(), true);
             SceneGraph sceneGraph = MainFrame.getSceneGraph();
             Project project1 = MainFrame.getProject();
             project1.addScene(scene);

@@ -5,7 +5,6 @@ import com.nebula2d.editor.settings.N2DSettings;
 import com.nebula2d.editor.ui.controls.N2DDialog;
 import com.nebula2d.editor.ui.controls.N2DList;
 import com.nebula2d.editor.ui.controls.N2DPanel;
-import com.nebula2d.editor.util.PlatformUtil;
 
 import javax.swing.*;
 import java.awt.*;

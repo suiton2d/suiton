@@ -20,6 +20,7 @@ package com.nebula2d.components;
 
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.google.gson.annotations.Expose;
 import com.nebula2d.scene.Transform;
 
 /**
@@ -28,7 +29,10 @@ import com.nebula2d.scene.Transform;
 public class BoundingBox extends CollisionShape {
 
     public static class Extents {
+        @Expose
         public float halfw;
+
+        @Expose
         public float halfh;
 
         public Extents(float halfw, float halfh) {
@@ -37,12 +41,22 @@ public class BoundingBox extends CollisionShape {
         }
     }
 
+    @Expose
     private Extents extents;
+
+    public BoundingBox() {}
 
     public BoundingBox(PhysicsMaterial physicsMaterial, float w, float h) {
         super(physicsMaterial);
         extents = new Extents(w/2.0f, h/2.0f);
-        shapeType = ShapeType.BOX;
+    }
+
+    public Extents getExtents() {
+        return extents;
+    }
+
+    public void setExtents(Extents extents) {
+        this.extents = extents;
     }
 
     @Override

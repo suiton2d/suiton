@@ -5,18 +5,27 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.nebula2d.assets.AssetManager;
 import com.nebula2d.assets.TiledTileSheet;
+import com.nebula2d.scene.GameObject;
 import com.nebula2d.scene.SceneManager;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com
  */
-public class TiledMapRenderer extends Renderer {
+public class TiledMapRenderer extends Component implements Renderer {
 
     private String filename;
     private OrthogonalTiledMapRenderer renderer;
 
     public TiledMapRenderer(String name, String filename) {
         super(name);
+        this.filename = filename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
         this.filename = filename;
     }
 
@@ -50,16 +59,28 @@ public class TiledMapRenderer extends Renderer {
     }
 
     @Override
+    public int getBoundingWidth() {
+        return getTiledTileSheet() != null ? getTiledTileSheet().getBoundingWidth() : 0;
+    }
+
+    @Override
+    public int getBoundingHeight() {
+        return getTiledTileSheet() != null ? getTiledTileSheet().getBoundingHeight() : 0;
+    }
+
+    @Override
     public void finish() {
         if (renderer != null)
             renderer.dispose();
     }
 
-    public int getBoundingWidth() {
-        return getTiledTileSheet() != null ? getTiledTileSheet().getBoundingWidth() : 0;
+    @Override
+    public void beginCollision(GameObject go1, GameObject go2) {
+
     }
 
-    public int getBoundingHeight() {
-        return getTiledTileSheet() != null ? getTiledTileSheet().getBoundingHeight() : 0;
+    @Override
+    public void endCollision(GameObject go1, GameObject go2) {
+
     }
 }

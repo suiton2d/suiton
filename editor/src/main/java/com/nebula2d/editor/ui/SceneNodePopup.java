@@ -18,15 +18,13 @@
 
 package com.nebula2d.editor.ui;
 
-import com.nebula2d.editor.framework.BaseSceneNode;
+import com.nebula2d.editor.framework.SceneNode;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SceneNodePopup extends JPopupMenu {
 
-    public SceneNodePopup(final BaseSceneNode node) {
+    public SceneNodePopup(final SceneNode node) {
 
         JMenuItem deleteMenuItem = add("Delete");
 

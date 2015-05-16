@@ -15,8 +15,18 @@ public class MusicSource extends Component {
 
     private String filename;
 
+    public MusicSource() {}
+
     public MusicSource(String name, String filename) {
         super(name);
+        this.filename = filename;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
         this.filename = filename;
     }
 

@@ -23,8 +23,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.nebula2d.components.AnimatedRenderer;
 import com.nebula2d.components.Component;
-import com.nebula2d.components.Renderer;
 import com.nebula2d.components.RigidBody;
 
 import java.util.ArrayList;
@@ -39,12 +39,14 @@ public class GameObject extends Group {
 
     protected List<Component> components;
     protected Layer layer;
-    protected Renderer renderer;
+    protected AnimatedRenderer renderer;
     protected RigidBody rigidBody;
+
+    public GameObject() {}
 
     public GameObject(String name) {
         setName(name);
-        this.components = new ArrayList<Component>();
+        this.components = new ArrayList<>();
     }
 
     public List<Component> getComponents() {
@@ -55,12 +57,20 @@ public class GameObject extends Group {
         return layer;
     }
 
-    public Renderer getRenderer() {
+    public AnimatedRenderer getRenderer() {
         return renderer;
     }
 
     public RigidBody getRigidBody() {
         return rigidBody;
+    }
+
+    public void setRenderer(AnimatedRenderer renderer) {
+        this.renderer = renderer;
+    }
+
+    public void setRigidBody(RigidBody rigidBody) {
+        this.rigidBody = rigidBody;
     }
 
     public void setLayer(Layer layer) {
@@ -90,8 +100,8 @@ public class GameObject extends Group {
     public void addComponent(Component component) {
         components.add(component);
         component.setGameObject(this);
-        if (component instanceof Renderer)
-            renderer = (Renderer) component;
+        if (component instanceof AnimatedRenderer)
+            renderer = (AnimatedRenderer) component;
         else if (component instanceof RigidBody)
             rigidBody = (RigidBody) component;
     }
@@ -127,7 +137,7 @@ public class GameObject extends Group {
     public void act(float dt) {
 
         for (Component c : components) {
-            if (!(c instanceof Renderer) && c.isEnabled())
+            if (!(c instanceof AnimatedRenderer) && c.isEnabled())
                 c.update(dt);
         }
 

@@ -1,8 +1,8 @@
 package com.nebula2d.editor.ui;
 
-import com.nebula2d.editor.framework.Scene;
 import com.nebula2d.editor.ui.controls.N2DDialog;
 import com.nebula2d.editor.util.GradleExecutor;
+import com.nebula2d.scene.Scene;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;

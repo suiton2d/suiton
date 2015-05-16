@@ -18,8 +18,6 @@
 
 package com.nebula2d.editor.ui;
 
-import com.nebula2d.editor.framework.GameObject;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
@@ -36,7 +34,6 @@ public class N2DToolbar extends JToolBar {
 
     private int selectedRendererWidget;
     private ButtonGroup renderWidgets;
-    private JButton componentsButton;
 
     public N2DToolbar() {
         selectedRendererWidget = 0;
@@ -52,9 +49,6 @@ public class N2DToolbar extends JToolBar {
         return selectedRendererWidget;
     }
 
-    public JButton getComponentsButton() {
-        return componentsButton;
-    }
 
     private void addButtons() {
         renderWidgets = forgeRendererWidgetButtons();
@@ -64,23 +58,6 @@ public class N2DToolbar extends JToolBar {
         while(buttons.hasMoreElements()) {
             add((JToggleButton)buttons.nextElement());
         }
-        addSeparator();
-
-        componentsButton = forgeComponentButton();
-        add(componentsButton);
-    }
-
-    private JButton forgeComponentButton() {
-        JButton componentsButton = new JButton("Components");
-        componentsButton.setEnabled(false);
-
-
-        componentsButton.addActionListener(e -> {
-            GameObject selectedGameObject = (GameObject) MainFrame.getSceneGraph().
-                    getSelectionPath().getLastPathComponent();
-            new ComponentsDialog(selectedGameObject);
-        });
-        return componentsButton;
     }
 
     private ButtonGroup forgeRendererWidgetButtons() {
