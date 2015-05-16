@@ -1,17 +1,15 @@
 package com.nebula2d.editor.io.savers;
 
 import com.nebula2d.components.*;
-import com.nebula2d.editor.io.ComponentSaver;
-import com.nebula2d.editor.io.ComponentType;
 import com.nebula2d.editor.io.FullBufferedWriter;
+import com.nebula2d.editor.io.Saver;
+import com.nebula2d.editor.io.Types;
 
 import java.io.IOException;
 
-public abstract class BaseComponentSaver<T extends Component> implements ComponentSaver {
+public abstract class BaseComponentSaver<T extends Component> implements Saver {
 
     private T component;
-
-    public BaseComponentSaver() {}
 
     public BaseComponentSaver(T component) {
         this.component = component;
@@ -26,20 +24,19 @@ public abstract class BaseComponentSaver<T extends Component> implements Compone
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         if (component instanceof AnimatedRenderer)
-            fw.writeLine(ComponentType.RENDER.name());
+            fw.writeLine(Types.ComponentType.RENDER.name());
         else if (component instanceof MusicSource)
-            fw.writeLine(ComponentType.MUSIC.name());
+            fw.writeLine(Types.ComponentType.MUSIC.name());
         else if (component instanceof SoundEffectSource)
-            fw.writeLine(ComponentType.SFX.name());
+            fw.writeLine(Types.ComponentType.SFX.name());
         else if (component instanceof Behavior)
-            fw.writeLine(ComponentType.BEHAVE.name());
+            fw.writeLine(Types.ComponentType.BEHAVE.name());
         else if (component instanceof RigidBody)
-            fw.writeLine(ComponentType.RIGID_BODY.name());
+            fw.writeLine(Types.ComponentType.RIGID_BODY.name());
         else if (component instanceof Collider)
-            fw.writeLine(ComponentType.COLLIDER.name());
+            fw.writeLine(Types.ComponentType.COLLIDER.name());
 
         fw.writeLine(component.getName());
-
         onSave(fw);
     }
 }

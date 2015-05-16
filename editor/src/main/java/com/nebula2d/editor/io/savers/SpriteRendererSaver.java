@@ -10,6 +10,10 @@ import java.util.List;
 
 public class SpriteRendererSaver extends BaseComponentSaver<SpriteRenderer> {
 
+    public SpriteRendererSaver(SpriteRenderer component) {
+        super(component);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void onSave(FullBufferedWriter fw) throws IOException {

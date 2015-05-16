@@ -21,6 +21,8 @@ package com.nebula2d.editor.framework;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.assets.AssetManager;
+import com.nebula2d.editor.io.FullBufferedWriter;
+import com.nebula2d.editor.io.savers.SceneSaver;
 import com.nebula2d.editor.ui.BuildProgressUpdateListener;
 import com.nebula2d.editor.ui.MainFrame;
 import com.nebula2d.editor.ui.SceneGraph;
@@ -29,6 +31,7 @@ import com.nebula2d.editor.util.builders.SceneBuilder;
 import com.nebula2d.scene.Scene;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -37,14 +40,13 @@ import java.util.List;
 public class Project {
 
     private List<Scene> scenes;
-    private int currentSceneIdx;
+    private Scene currentScene;
     private String projectDir;
     private String projectName;
 
     public Project(String dir, String name) {
         this.projectDir = dir;
         this.projectName = name;
-        this.currentSceneIdx = 0;
         scenes = new ArrayList<>();
     }
 
@@ -55,7 +57,6 @@ public class Project {
         if (this.projectName.endsWith(".n2d"))
             this.projectName = this.projectName.substring(0, this.projectName.length() - 4);
 
-        this.currentSceneIdx = 0;
         scenes = new ArrayList<>();
     }
 
@@ -72,15 +73,11 @@ public class Project {
     }
 
     public Scene getCurrentScene() {
-
-        if (scenes.isEmpty())
-            return null;
-
-        return scenes.get(currentSceneIdx);
+        return currentScene;
     }
 
-    public int getCurrentSceneIdx() {
-        return currentSceneIdx;
+    public int getCurrentSceneIndex() {
+        return currentScene != null ? scenes.indexOf(currentScene) : -1;
     }
 
     public void setCurrentScene(String name) {
@@ -93,9 +90,11 @@ public class Project {
     }
 
     public void setCurrentScene(int idx) {
-        AssetManager.unloadAssets(getCurrentScene().getName());
-        currentSceneIdx = idx;
-        AssetManager.loadAssets(getCurrentScene().getName());
+        if (scenes.size() > idx) {
+            AssetManager.unloadAssets(getCurrentScene().getName());
+            currentScene = getScene(idx);
+            AssetManager.loadAssets(getCurrentScene().getName());
+        }
     }
 
     public String getPath() {
@@ -125,19 +124,19 @@ public class Project {
     }
 
     public void saveProject() throws IOException {
+        try (FullBufferedWriter fw = new FullBufferedWriter(new FileWriter(getPath()))) {
+            fw.writeLine(projectDir);
+            fw.writeLine(projectName);
+            fw.writeIntLine(scenes.size());
+            for (Scene scene : scenes)
+                new SceneSaver(scene).save(fw);
+
+            fw.writeIntLine(getCurrentSceneIndex());
+        }
     }
 
     public void loadCurrentScene() {
-        loadScene(currentSceneIdx);
-    }
-
-    public void loadScene(int idx) {
-        Scene scene = getScene(idx);
-
-        if (scene == null)
-            return;
-
-        loadScene(scene);
+        loadScene(getCurrentScene());
     }
 
     private void loadScene(Scene scene) {

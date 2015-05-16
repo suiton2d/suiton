@@ -7,6 +7,10 @@ import java.io.IOException;
 
 public class SoundEffectSourceSaver extends BaseComponentSaver<SoundEffectSource> {
 
+    public SoundEffectSourceSaver(SoundEffectSource component) {
+        super(component);
+    }
+
     @Override
     public void onSave(FullBufferedWriter fw) throws IOException {
         fw.writeLine(getComponent().getFilename());

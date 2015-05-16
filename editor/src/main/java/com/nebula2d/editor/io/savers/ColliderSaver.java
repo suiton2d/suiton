@@ -11,6 +11,9 @@ import java.io.IOException;
 
 public class ColliderSaver extends BaseComponentSaver<Collider> {
 
+    public ColliderSaver(Collider component) {
+        super(component);
+    }
 
     @Override
     public void onSave(FullBufferedWriter fw) throws IOException {

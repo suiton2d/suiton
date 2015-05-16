@@ -11,6 +11,10 @@ import java.io.IOException;
 public class RigidBodySaver extends BaseComponentSaver<RigidBody> {
 
 
+    public RigidBodySaver(RigidBody component) {
+        super(component);
+    }
+
     @Override
     public void onSave(FullBufferedWriter fw) throws IOException {
         fw.writeBoolLine(getComponent().isKinematic());
