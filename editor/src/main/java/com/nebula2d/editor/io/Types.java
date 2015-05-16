@@ -20,4 +20,13 @@ public class Types {
         RIGID_BODY,
         COLLIDER
     }
+
+    public enum RendererType {
+        TILED,
+        SPRITE
+    }
+
+    public enum AnimationType {
+        KEY_FRAME
+    }
 }

@@ -16,6 +16,8 @@ public class TiledMapRenderer extends Component implements Renderer {
     private String filename;
     private OrthogonalTiledMapRenderer renderer;
 
+    public TiledMapRenderer() {}
+
     public TiledMapRenderer(String name, String filename) {
         super(name);
         this.filename = filename;

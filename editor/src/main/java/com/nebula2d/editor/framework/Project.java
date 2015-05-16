@@ -21,7 +21,9 @@ package com.nebula2d.editor.framework;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
 import com.nebula2d.assets.AssetManager;
+import com.nebula2d.editor.io.FullBufferedReader;
 import com.nebula2d.editor.io.FullBufferedWriter;
+import com.nebula2d.editor.io.loaders.SceneLoader;
 import com.nebula2d.editor.io.savers.SceneSaver;
 import com.nebula2d.editor.ui.BuildProgressUpdateListener;
 import com.nebula2d.editor.ui.MainFrame;
@@ -30,10 +32,7 @@ import com.nebula2d.editor.util.PlatformUtil;
 import com.nebula2d.editor.util.builders.SceneBuilder;
 import com.nebula2d.scene.Scene;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,29 +98,29 @@ public class Project {
     }
 
     public String getPath() {
-        return projectDir + File.separator + projectName + ".n2d";
+        return getProjectDir() + File.separator + getName() + ".n2d";
     }
 
     public String getProjectDir() {
         return projectDir;
     }
 
-    public String getNameWithoutExt() {
-        int dot = projectName.indexOf('.');
-        if (dot == -1)
-            return projectName;
-
-        String ext = projectName.substring(dot);
-
-        if (!ext.equals(".n2d"))
-            return projectName;
-
-        return projectName.substring(0, projectName.length() - ext.length());
+    public String getName() {
+        return projectName;
     }
 
     public void loadProject() throws IOException {
         scenes.clear();
-        // TODO: Implement
+        try (FullBufferedReader fr = new FullBufferedReader(new FileReader(getPath()))) {
+            this.projectDir = fr.readLine();
+            this.projectName = fr.readLine();
+            int numScenes = fr.readIntLine();
+            for (int i = 0; i < numScenes; ++i) {
+                Scene scene = new SceneLoader().load(fr);
+                addScene(scene);
+            }
+            setCurrentScene(fr.readIntLine());
+        }
     }
 
     public void saveProject() throws IOException {

@@ -43,8 +43,7 @@ public class GameObjectSaver implements Saver {
         }
 
         fw.writeIntLine(gameObject.getChildren().size);
-        for (Actor child : gameObject.getChildren()) {
+        for (Actor child : gameObject.getChildren())
             new GameObjectSaver((GameObject) child).save(fw);
-        }
     }
 }

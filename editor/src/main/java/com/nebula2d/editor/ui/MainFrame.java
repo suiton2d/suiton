@@ -125,7 +125,7 @@ public class MainFrame extends JFrame {
 
         if (project != null) {
             sceneGraph.init();
-            instance.setTitle("Nebula2D - " + project.getNameWithoutExt());
+            instance.setTitle("Nebula2D - " + project.getName());
         } else {
             instance.setTitle("Nebual2D");
         }

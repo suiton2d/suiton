@@ -18,12 +18,13 @@ public class SceneSaver implements Saver {
     @Override
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(scene.getName());
+        fw.writeFloatLine(scene.getGravity().x);
+        fw.writeFloatLine(scene.getGravity().y);
+        fw.writeBoolLine(scene.isAllowSleeping());
+
         fw.writeIntLine(scene.getLayers().size());
         for (Layer layer : scene.getLayers()) {
             new LayerSaver(layer).save(fw);
         }
-
-        fw.writeFloatLine(scene.getGravity().x);
-        fw.writeFloatLine(scene.getGravity().y);
     }
 }

@@ -57,7 +57,7 @@ public class ProjectBuilder {
         FileHandle assetsFileHandle = resourcesDir.child("assets.xml");
         createConfigFile(resourcesDir);
 
-        BuildProgressDialog buildDialog = new BuildProgressDialog(project.getNameWithoutExt());
+        BuildProgressDialog buildDialog = new BuildProgressDialog(project.getName());
         buildDialog.setVisible(true);
         new Thread(() -> {
             try {
@@ -66,7 +66,7 @@ public class ProjectBuilder {
                 buildDialog.onBuildComplete();
             } catch (Exception e) {
                 SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null,
-                        String.format("Failed to build project %s", project.getNameWithoutExt())));
+                        String.format("Failed to build project %s", project.getName())));
             }
         }).start();
     }

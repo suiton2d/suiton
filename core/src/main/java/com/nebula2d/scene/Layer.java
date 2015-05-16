@@ -38,6 +38,10 @@ public class Layer {
     private List<GameObject> gameObjects;
     private Scene scene;
 
+    public Layer(String name) {
+        this(name, 0);
+    }
+
     public Layer(String name, int zOrder) {
         this.name = name;
         this.zOrder = zOrder;
@@ -66,6 +70,10 @@ public class Layer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setZOrder(int zOrder) {
+        this.zOrder = zOrder;
     }
 
     /**

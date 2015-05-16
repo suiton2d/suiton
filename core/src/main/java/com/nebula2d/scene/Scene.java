@@ -39,12 +39,14 @@ public class Scene {
     private List<Layer> layers;
     private Stage stage;
     private World physicalWorld;
+    private boolean allowSleeping;
 
     public Scene(String name, Vector2 gravity, boolean sleepPhysics) {
         physicalWorld = new World(gravity, sleepPhysics);
         physicalWorld.setContactListener(new CollisionListener(this));
         stage = new Stage(new ScreenViewport());
         this.name = name;
+        this.allowSleeping = sleepPhysics;
         this.layers = new ArrayList<>();
     }
 
@@ -55,7 +57,6 @@ public class Scene {
     public String getName() {
         return name;
     }
-
 
     public Stage getStage() {
         return stage;
@@ -75,6 +76,10 @@ public class Scene {
 
     public void setGravity(int x, int y) {
         physicalWorld.setGravity(new Vector2(x, y));
+    }
+
+    public boolean isAllowSleeping() {
+        return allowSleeping;
     }
 
     public List<Layer> getLayers() {
