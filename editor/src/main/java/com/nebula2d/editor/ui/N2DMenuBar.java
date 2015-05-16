@@ -18,6 +18,7 @@
 
 package com.nebula2d.editor.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.nebula2d.editor.framework.SceneNode;
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.io.ProjectSerializer;
@@ -96,7 +97,6 @@ public class N2DMenuBar extends JMenuBar {
         saveMenuItem.addActionListener(e -> {
             try {
                 MainFrame.getProject().saveProject();
-                System.out.println("Saved!");
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(null, "Failed to save project.");
             }
@@ -110,14 +110,17 @@ public class N2DMenuBar extends JMenuBar {
                 MainFrame.getSceneGraph().wipe();
                 MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
 
-                try {
-                    MainFrame.getProject().loadProject();
-                    MainFrame.getSceneGraph().init();
-                    MainFrame.getProject().loadCurrentScene();
-                } catch (IOException e1) {
-                    MainFrame.setProject(null);
-                    JOptionPane.showMessageDialog(N2DMenuBar.this, e1.getMessage());
-                }
+                Gdx.app.postRunnable(() -> {
+                    try {
+                        MainFrame.getProject().loadProject();
+                        MainFrame.getSceneGraph().init();
+                        SwingUtilities.invokeLater(() -> MainFrame.getProject().loadCurrentScene());
+                    } catch (IOException e1) {
+                        MainFrame.setProject(null);
+                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(N2DMenuBar.this, e1.getMessage()));
+                    }
+                });
+
             }
         });
 
@@ -140,6 +143,7 @@ public class N2DMenuBar extends JMenuBar {
         newLayerMenuItem.addActionListener(e -> {
             Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount(),
                     MainFrame.getProject().getCurrentScene().getLayers().size());
+            MainFrame.getProject().getCurrentScene().addLayer(layer);
             MainFrame.getSceneGraph().addLayer(layer);
         });
 
@@ -148,7 +152,6 @@ public class N2DMenuBar extends JMenuBar {
             SceneNode selectedNode = (SceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
 
             GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
-            System.out.println(selectedNode.getData().getClass().getSimpleName());
             if (selectedNode.getData() instanceof GameObject)
                 ((GameObject) selectedNode.getData()).addActor(go);
             else if (selectedNode.getData() instanceof Layer)

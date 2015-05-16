@@ -126,6 +126,7 @@ public class NewProjectDialog extends JDialog {
                 project.setCurrentScene(0);
 
                 MainFrame.setProject(project);
+                MainFrame.getSceneGraph().init();
                 dispose();
             });
         });

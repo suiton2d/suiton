@@ -90,7 +90,7 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
-        if (MainFrame.getProject() != null)
+        if (MainFrame.getProject() != null && MainFrame.getProject().getCurrentScene() != null)
             MainFrame.getProject().getCurrentScene().cleanup();
     }
 }

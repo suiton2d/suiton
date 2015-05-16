@@ -19,6 +19,7 @@
 package com.nebula2d.editor.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.nebula2d.assets.AssetManager;
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.settings.N2DSettings;
@@ -89,6 +90,8 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+
+        AssetManager.init(new AbsoluteFileHandleResolver());
     }
 
     public static RenderCanvas getRenderCanvas() {
@@ -124,7 +127,6 @@ public class MainFrame extends JFrame {
         menuBar.getSaveMenuItem().setEnabled(project != null);
 
         if (project != null) {
-            sceneGraph.init();
             instance.setTitle("Nebula2D - " + project.getName());
         } else {
             instance.setTitle("Nebual2D");

@@ -91,7 +91,6 @@ public class ScriptEditor extends JDialog {
         JMenuItem saveMenuItem = fileMenu.add("Save");
         saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
         saveMenuItem.addActionListener(e -> {
-            System.out.println("saved!");
             try {
                 save();
             } catch (IOException ex) {
