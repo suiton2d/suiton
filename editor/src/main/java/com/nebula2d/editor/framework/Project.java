@@ -91,7 +91,8 @@ public class Project {
 
     public void setCurrentScene(int idx) {
         if (scenes.size() > idx) {
-            AssetManager.unloadAssets(getCurrentScene().getName());
+            if (currentScene != null)
+                AssetManager.unloadAssets(getCurrentScene().getName());
             currentScene = getScene(idx);
             AssetManager.loadAssets(getCurrentScene().getName());
         }

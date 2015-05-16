@@ -19,7 +19,9 @@
 package com.nebula2d.editor.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.math.Vector2;
+import com.nebula2d.assets.AssetManager;
 import com.nebula2d.editor.framework.Project;
 import com.nebula2d.editor.ui.controls.N2DLabel;
 import com.nebula2d.editor.ui.controls.N2DPanel;
@@ -118,8 +120,11 @@ public class NewProjectDialog extends JDialog {
             }
 
             Gdx.app.postRunnable(() -> {
+                AssetManager.init(new AbsoluteFileHandleResolver());
                 Project project = new Project(projDir.getAbsolutePath(), projName);
                 project.addScene(new Scene("Untitled Scene 0", new Vector2(), true));
+                project.setCurrentScene(0);
+
                 MainFrame.setProject(project);
                 dispose();
             });

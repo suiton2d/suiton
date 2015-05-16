@@ -95,7 +95,7 @@ public class N2DMenuBar extends JMenuBar {
 
         saveMenuItem.addActionListener(e -> {
             try {
-                new ProjectSerializer(MainFrame.getProject()).save();
+                MainFrame.getProject().saveProject();
                 System.out.println("Saved!");
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(null, "Failed to save project.");
