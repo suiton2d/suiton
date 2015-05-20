@@ -60,9 +60,11 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
         List<Selection> res = new ArrayList<>();
 
         Scene scene = MainFrame.getProject().getCurrentScene();
-        for (Layer layer : scene.getLayers()) {
-            for (GameObject gameObject : layer.getGameObjects())
-                searchGameObjectChildrenForSelection(gameObject, res, x, y);
+        if (scene != null) {
+            for (Layer layer : scene.getLayers()) {
+                for (GameObject gameObject : layer.getGameObjects())
+                    searchGameObjectChildrenForSelection(gameObject, res, x, y);
+            }
         }
 
         return res;
