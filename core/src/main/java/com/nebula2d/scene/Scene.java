@@ -18,6 +18,7 @@
 
 package com.nebula2d.scene;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -148,14 +149,19 @@ public class Scene {
     }
 
     public void cleanup() {
-        if (physicalWorld != null) {
-            physicalWorld.dispose();
-            physicalWorld = null;
-        }
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                if (physicalWorld != null) {
+                    physicalWorld.dispose();
+                    physicalWorld = null;
+                }
 
-        if (stage != null) {
-            stage.dispose();
-            stage = null;
-        }
+                if (stage != null) {
+                    stage.dispose();
+                    stage = null;
+                }
+            }
+        });
     }
 }

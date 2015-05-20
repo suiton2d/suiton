@@ -18,7 +18,7 @@
 
 package com.nebula2d.editor.ui;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
+import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector3;
@@ -34,7 +34,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, MouseMotionListener, MouseWheelListener {
+public class RenderCanvas extends LwjglCanvas implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     protected RenderAdapter adapter;
 
@@ -58,6 +58,9 @@ public class RenderCanvas extends LwjglAWTCanvas implements MouseListener, Mouse
     protected List<Selection> getSelectedGameObjects(int x, int y) {
 
         List<Selection> res = new ArrayList<>();
+
+        if (MainFrame.getProject() == null)
+            return res;
 
         Scene scene = MainFrame.getProject().getCurrentScene();
         if (scene != null) {

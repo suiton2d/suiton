@@ -50,29 +50,29 @@ public class MainFrame extends JFrame {
         }
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         JScrollPane sp = new JScrollPane(sceneGraph);
+        JPanel canvasPanel = new JPanel(new BorderLayout());
+        canvasPanel.add(renderCanvas.getCanvas());
         sp.setPreferredSize(new Dimension(300, 600));
-
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sp, canvasPanel);
         getContentPane().add(toolbar, BorderLayout.NORTH);
-        getContentPane().add(sp, BorderLayout.WEST);
-        getContentPane().add(renderCanvas.getCanvas());
+        getContentPane().add(splitPane);
 
         sceneGraph.setEnabled(false);
 
         menuBar = new N2DMenuBar();
         setJMenuBar(menuBar);
 
-        setSize(1200, 768);
-
-        validate();
-        setLocationRelativeTo(null);
+        pack();
         setVisible(true);
+        setSize(1200, 768);
+        setLocationRelativeTo(null);
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
                         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
+                    renderCanvas.stop();
                     try {
                         settings.saveProperties();
                     } catch (IOException e1) {
