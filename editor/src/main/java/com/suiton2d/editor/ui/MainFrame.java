@@ -72,7 +72,6 @@ public class MainFrame extends JFrame {
             public void windowClosing(WindowEvent e) {
                 if (JOptionPane.showConfirmDialog(getParent(), "Are you sure you want to exit?", "Are you sure?",
                         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    renderCanvas.stop();
                     try {
                         settings.saveProperties();
                     } catch (IOException e1) {
@@ -85,8 +84,8 @@ public class MainFrame extends JFrame {
                         SwingUtilities.invokeLater(MainFrame.this::dispose);
                     });
 
-//                    Gdx.app.exit();
-//                    dispose();
+                    Gdx.app.exit();
+                    dispose();
                 }
             }
         });
