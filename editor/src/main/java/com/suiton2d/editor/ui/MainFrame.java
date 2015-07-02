@@ -24,8 +24,17 @@ import com.suiton2d.assets.AssetManager;
 import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.settings.N2DSettings;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -38,10 +47,13 @@ public class MainFrame extends JFrame {
     private static N2DMenuBar menuBar;
     private static Project project;
     private static N2DSettings settings = new N2DSettings();
+    private static AssetsPane assetsPane = new AssetsPane();
 
     public MainFrame() {
         super("Nebula2D");
         instance = this;
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Rectangle screenSize = ge.getMaximumWindowBounds();
         try {
             settings.loadFromProperties();
         } catch (IOException e) {
@@ -52,19 +64,22 @@ public class MainFrame extends JFrame {
         JScrollPane sp = new JScrollPane(sceneGraph);
         JPanel canvasPanel = new JPanel(new BorderLayout());
         canvasPanel.add(renderCanvas.getCanvas());
-        sp.setPreferredSize(new Dimension(300, 600));
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sp, canvasPanel);
+        sp.setPreferredSize(new Dimension(screenSize.width/6, (screenSize.height - screenSize.height/4)));
+        JSplitPane hSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sp, canvasPanel);
+
+        JSplitPane vSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, hSplitPane, assetsPane);
         getContentPane().add(toolbar, BorderLayout.NORTH);
-        getContentPane().add(splitPane);
+        getContentPane().add(vSplitPane);
 
         sceneGraph.setEnabled(false);
 
         menuBar = new N2DMenuBar();
         setJMenuBar(menuBar);
-
         pack();
         setVisible(true);
-        setSize(1200, 768);
+        vSplitPane.setDividerLocation(getHeight() - getHeight()/3);
+
+        setSize(new Dimension(screenSize.width, screenSize.height));
         setLocationRelativeTo(null);
 
         addWindowListener(new WindowAdapter() {
@@ -112,6 +127,10 @@ public class MainFrame extends JFrame {
 
     public static N2DSettings getSettings() {
         return settings;
+    }
+
+    public static AssetsPane getAssetsPane() {
+        return assetsPane;
     }
 
     public static void setProject(Project project) {

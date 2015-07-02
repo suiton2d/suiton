@@ -20,6 +20,8 @@ package com.suiton2d.editor.ui;
 
 import com.suiton2d.editor.framework.SceneNode;
 import com.suiton2d.editor.ui.controls.SuitonTree;
+import com.suiton2d.editor.ui.controls.TransferableTreeNode;
+import com.suiton2d.editor.ui.controls.TreeDragSource;
 import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.Scene;
@@ -199,63 +201,7 @@ public class SceneGraph extends SuitonTree {
         }
     }
 
-    private static class TreeDragSource implements DragSourceListener, DragGestureListener {
 
-        private DragSource dragSource;
-        private DragGestureRecognizer recognizer;
-
-        private TransferableTreeNode transferable;
-
-        private DefaultMutableTreeNode oldNode;
-
-        private JTree sourceTree;
-
-        public TreeDragSource(JTree sourceTree, int actions) {
-            this.sourceTree = sourceTree;
-            dragSource = new DragSource();
-            recognizer = dragSource.createDefaultDragGestureRecognizer(sourceTree,
-                    actions, this);
-        }
-
-        @Override
-        public void dragGestureRecognized(DragGestureEvent dge) {
-            TreePath path = sourceTree.getSelectionPath();
-            if ((path == null) || (path.getPathCount() <= 1)) {
-                // We can't move the root node or an empty selection
-                return;
-            }
-            oldNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-            transferable = new TransferableTreeNode(path);
-            dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop, transferable, this);
-        }
-
-        @Override
-        public void dragEnter(DragSourceDragEvent dsde) {
-
-        }
-
-        @Override
-        public void dragOver(DragSourceDragEvent dsde) {
-
-        }
-
-        @Override
-        public void dropActionChanged(DragSourceDragEvent dsde) {
-
-        }
-
-        @Override
-        public void dragExit(DragSourceEvent dse) {
-
-        }
-
-        @Override
-        public void dragDropEnd(DragSourceDropEvent dsde) {
-            if (dsde.getDropSuccess()) {
-                ((DefaultTreeModel) sourceTree.getModel()).removeNodeFromParent(oldNode);
-            }
-        }
-    }
 
     private static class TreeDropTarget implements DropTargetListener {
         private DropTarget target;
@@ -333,39 +279,6 @@ public class SceneGraph extends SuitonTree {
                 dtde.rejectDrop();
                 dtde.dropComplete(false);
             }
-        }
-    }
-
-
-    private static class TransferableTreeNode implements Transferable {
-
-        public static DataFlavor TREE_PATH_FLAVOR = new DataFlavor(TreePath.class,
-                "Tree Path");
-
-        private DataFlavor[] flavors = { TREE_PATH_FLAVOR };
-
-        private TreePath treePath;
-
-        public TransferableTreeNode(TreePath treePath) {
-            this.treePath = treePath;
-        }
-        @Override
-        public synchronized DataFlavor[] getTransferDataFlavors() {
-            return flavors;
-        }
-
-        @Override
-        public boolean isDataFlavorSupported(DataFlavor flavor) {
-            return flavor.getRepresentationClass() == TreePath.class;
-        }
-
-        @Override
-        public synchronized Object getTransferData(DataFlavor flavor)
-                throws UnsupportedFlavorException, IOException {
-            if (!isDataFlavorSupported(flavor))
-                throw new UnsupportedFlavorException(flavor);
-
-            return treePath;
         }
     }
 }
