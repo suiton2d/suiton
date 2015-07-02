@@ -23,7 +23,6 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-import com.nebula2d.assets.loaders.*;
 import com.suiton2d.assets.loaders.*;
 import com.suiton2d.scene.Scene;
 import org.mozilla.javascript.Context;

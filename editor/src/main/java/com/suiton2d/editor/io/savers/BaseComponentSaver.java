@@ -1,6 +1,5 @@
 package com.suiton2d.editor.io.savers;
 
-import com.nebula2d.components.*;
 import com.suiton2d.components.*;
 import com.suiton2d.editor.io.FullBufferedWriter;
 import com.suiton2d.editor.io.Saver;

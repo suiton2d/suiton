@@ -26,7 +26,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
 import com.suiton2d.assets.AssetManager;
-import com.nebula2d.components.*;
 import com.suiton2d.components.*;
 
 import java.io.IOException;
