@@ -1,7 +1,11 @@
 package com.suiton2d.editor.io.loaders;
 
-import com.nebula2d.components.*;
-import com.suiton2d.components.*;
+import com.suiton2d.components.BoundingBox;
+import com.suiton2d.components.Circle;
+import com.suiton2d.components.Collider;
+import com.suiton2d.components.CollisionShape;
+import com.suiton2d.components.Component;
+import com.suiton2d.components.PhysicsMaterial;
 import com.suiton2d.editor.io.FullBufferedReader;
 import com.suiton2d.editor.io.Types;
 
