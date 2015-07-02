@@ -83,9 +83,6 @@ public class MainFrame extends JFrame {
                         renderCanvas.stop();
                         SwingUtilities.invokeLater(MainFrame.this::dispose);
                     });
-
-                    Gdx.app.exit();
-                    dispose();
                 }
             }
         });
