@@ -41,7 +41,7 @@ apply plugin: 'eu.appsatori.fatjar'
 
 fatJar {
     manifest {
-        attributes 'Main-Class': 'com.nebula2d.editor.Main'
+        attributes 'Main-Class': 'Main'
     }
 }
 
