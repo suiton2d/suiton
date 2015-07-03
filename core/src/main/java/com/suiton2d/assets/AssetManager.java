@@ -23,7 +23,11 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
-import com.suiton2d.assets.loaders.*;
+import com.suiton2d.assets.loaders.MusicTrackLoader;
+import com.suiton2d.assets.loaders.ScriptLoader;
+import com.suiton2d.assets.loaders.SoundEffectLoader;
+import com.suiton2d.assets.loaders.SpriteLoader;
+import com.suiton2d.assets.loaders.TiledTileSheetLoader;
 import com.suiton2d.scene.Scene;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
@@ -107,7 +111,11 @@ public class AssetManager {
             String type = assetElement.getAttribute("assetType");
             String sceneName = assetElement.getAttribute("sceneName");
 
-            List<AssetDescriptor> assetList = assetMap.getOrDefault(sceneName, new ArrayList<AssetDescriptor>());
+            List<AssetDescriptor> assetList = assetMap.get(sceneName);
+            if (assetList == null) {
+                assetList = new ArrayList<AssetDescriptor>();
+                assetMap.put(sceneName, assetList);
+            }
             if (type.equalsIgnoreCase("SPRITE")) {
                 assetList.add(new AssetDescriptor<Sprite>(path, Sprite.class));
             } else if (type.equalsIgnoreCase("MUSIC")) {

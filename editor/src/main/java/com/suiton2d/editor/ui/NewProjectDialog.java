@@ -27,6 +27,7 @@ import com.suiton2d.editor.ui.controls.SuitonLabel;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.editor.util.PlatformUtil;
 import com.suiton2d.scene.Scene;
+import com.suiton2d.scene.SceneManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,8 +123,9 @@ public class NewProjectDialog extends JDialog {
             Gdx.app.postRunnable(() -> {
                 AssetManager.init(new AbsoluteFileHandleResolver());
                 Project project = new Project(projDir.getAbsolutePath(), projName);
-                project.addScene(new Scene("Untitled Scene 0", new Vector2(), true));
-                project.setCurrentScene(0);
+                String newSceneName = "Untitled Scene 0";
+                SceneManager.addScene(new Scene(newSceneName, new Vector2(), true));
+                SceneManager.setCurrentScene(newSceneName);
 
                 MainFrame.setProject(project);
                 MainFrame.getSceneGraph().init();

@@ -23,6 +23,7 @@ import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.ui.controls.SuitonLabel;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.scene.Scene;
+import com.suiton2d.scene.SceneManager;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -47,7 +48,6 @@ public class NewSceneDialog extends JDialog {
     private void setupContents() {
         nameTf = new JTextField(20);
 
-        final Project project = MainFrame.getProject();
         final Color defaultFg = nameTf.getForeground();
         final SuitonLabel nameLbl = new SuitonLabel("Scene Name: ");
         final JButton okBtn = new JButton("Ok");
@@ -56,7 +56,7 @@ public class NewSceneDialog extends JDialog {
         final SuitonPanel namePanel = new SuitonPanel();
         final SuitonPanel btnPanel = new SuitonPanel();
 
-        nameTf.setText("Untitled Scene " + project.getScenes().size());
+        nameTf.setText("Untitled Scene " + SceneManager.getSceneCount());
 
         namePanel.add(nameLbl);
         namePanel.add(nameTf);
@@ -98,10 +98,10 @@ public class NewSceneDialog extends JDialog {
             Scene scene = new Scene(newSceneName, new Vector2(), true);
             SceneGraph sceneGraph = MainFrame.getSceneGraph();
             Project project1 = MainFrame.getProject();
-            project1.addScene(scene);
-            project1.setCurrentScene(newSceneName);
+            SceneManager.addScene(scene);
+            SceneManager.setCurrentScene(newSceneName);
             sceneGraph.init();
-            project1.loadCurrentScene();
+            scene.getLayers().forEach(sceneGraph::addLayer);
             sceneGraph.refresh();
             dispose();
         });

@@ -25,6 +25,7 @@ import com.suiton2d.editor.ui.controls.TreeDragSource;
 import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.Scene;
+import com.suiton2d.scene.SceneManager;
 
 import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
@@ -65,7 +66,7 @@ public class SceneGraph extends SuitonTree {
     }
 
     public void init() {
-        Scene currentScene = MainFrame.getProject().getCurrentScene();
+        Scene currentScene = SceneManager.getCurrentScene();
         root = new SceneNode<>(currentScene.getName(), currentScene);
 
         //We need to create our own tree model so that we can override some default behaviour.

@@ -4,6 +4,7 @@ import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.ui.controls.SuitonLabel;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.scene.Scene;
+import com.suiton2d.scene.SceneManager;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -30,7 +31,7 @@ public class RenameSceneDialog extends JDialog {
     private void setupContents() {
         nameTf = new JTextField(20);
 
-        final Scene currentScene = MainFrame.getProject().getCurrentScene();
+        final Scene currentScene = SceneManager.getCurrentScene();
         final Color defaultFg = nameTf.getForeground();
         final SuitonLabel nameLbl = new SuitonLabel("Scene Name: ");
         final JButton okBtn = new JButton("Ok");

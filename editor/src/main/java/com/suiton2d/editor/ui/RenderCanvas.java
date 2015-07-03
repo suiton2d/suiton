@@ -28,6 +28,7 @@ import com.suiton2d.editor.framework.Selection;
 import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.Scene;
+import com.suiton2d.scene.SceneManager;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -62,7 +63,7 @@ public class RenderCanvas extends LwjglCanvas implements MouseListener, MouseMot
         if (MainFrame.getProject() == null)
             return res;
 
-        Scene scene = MainFrame.getProject().getCurrentScene();
+        Scene scene = SceneManager.getCurrentScene();
         if (scene != null) {
             for (Layer layer : scene.getLayers()) {
                 for (GameObject gameObject : layer.getGameObjects())

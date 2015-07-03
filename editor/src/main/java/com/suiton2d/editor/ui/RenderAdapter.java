@@ -24,7 +24,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.framework.Selection;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
@@ -52,7 +51,7 @@ public class RenderAdapter implements ApplicationListener {
     }
 
     public OrthographicCamera getCamera() {
-        return (OrthographicCamera) MainFrame.getProject().getCurrentScene().getCamera();
+        return (OrthographicCamera) SceneManager.getCurrentScene().getCamera();
     }
 
     @Override
@@ -70,10 +69,9 @@ public class RenderAdapter implements ApplicationListener {
         Gdx.graphics.getGL20().glClearColor(.17f, .17f, .17f, 1.0f);
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Project p = MainFrame.getProject();
-        if (p != null && p.getCurrentScene() != null) {
-            Scene scene = p.getCurrentScene();
-            scene.update(Gdx.graphics.getDeltaTime());
+        if (SceneManager.getCurrentScene() != null) {
+            Scene scene = SceneManager.getCurrentScene();
+            scene.update(Gdx.graphics.getDeltaTime(), false);
             if (selectedObject != null)
                 selectedObject.renderSelection(scene.getCamera());
         }
@@ -90,7 +88,7 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
-        if (MainFrame.getProject() != null && MainFrame.getProject().getCurrentScene() != null)
-            MainFrame.getProject().getCurrentScene().cleanup();
+        if (SceneManager.getCurrentScene() != null)
+            SceneManager.getCurrentScene().cleanup();
     }
 }

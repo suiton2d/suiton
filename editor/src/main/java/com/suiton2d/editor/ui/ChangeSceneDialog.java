@@ -22,6 +22,7 @@ import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.ui.controls.SuitonList;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.scene.Scene;
+import com.suiton2d.scene.SceneManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,11 +58,11 @@ public class ChangeSceneDialog extends JDialog {
 
         okBtn.addActionListener(e -> {
             Scene scene = sceneListBox.getSelectedValue();
-            Project project = MainFrame.getProject();
             SceneGraph sceneGraph = MainFrame.getSceneGraph();
-            project.setCurrentScene(scene.getName());
+            SceneManager.setCurrentScene(scene.getName());
             sceneGraph.init();
-            project.loadCurrentScene();
+            scene.getLayers().forEach(sceneGraph::addLayer);
+            sceneGraph.refresh();
             sceneGraph.refresh();
             dispose();
         });
@@ -76,11 +77,9 @@ public class ChangeSceneDialog extends JDialog {
     }
 
     private DefaultListModel<Scene> createListModel() {
-        Project project = MainFrame.getProject();
         DefaultListModel<Scene> sceneList = new DefaultListModel<>();
-        for (Scene scene : project.getScenes()) {
+        for (Scene scene : SceneManager.getSceneList())
             sceneList.addElement(scene);
-        }
 
         return sceneList;
     }

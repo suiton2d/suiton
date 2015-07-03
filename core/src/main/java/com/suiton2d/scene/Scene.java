@@ -116,15 +116,21 @@ public class Scene {
             l.start(stage);
     }
 
-    public void update(float dt) {
+    public void update(float dt, boolean act) {
         Camera cam = stage.getCamera();
 
         if (cam == null)
             return;
 
         cam.update();
-        stage.act(dt);
+        if (act)
+            stage.act(dt);
+
         stage.draw();
+    }
+
+    public void update(float dt) {
+        update(dt, true);
     }
 
     public void finish() {

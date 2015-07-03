@@ -26,6 +26,7 @@ import com.suiton2d.editor.util.PlatformUtil;
 import com.suiton2d.editor.util.ProjectBuilder;
 import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
+import com.suiton2d.scene.SceneManager;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -113,7 +114,11 @@ public class N2DMenuBar extends JMenuBar {
                     try {
                         MainFrame.getProject().loadProject();
                         MainFrame.getSceneGraph().init();
-                        SwingUtilities.invokeLater(() -> MainFrame.getProject().loadCurrentScene());
+                        SwingUtilities.invokeLater(() -> {
+                            SceneGraph graph = MainFrame.getSceneGraph();
+                            SceneManager.getCurrentScene().getLayers().forEach(graph::addLayer);
+                            graph.refresh();
+                        });
                     } catch (IOException e1) {
                         MainFrame.setProject(null);
                         SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(N2DMenuBar.this, e1.getMessage()));
@@ -129,7 +134,7 @@ public class N2DMenuBar extends JMenuBar {
             try {
                 // TODO: Make start scene configurable.
                 Project p = MainFrame.getProject();
-                new ProjectBuilder(p).build(p.getCurrentScene().getName(), ProjectBuilder.ProjectType.PC);
+                new ProjectBuilder(p).build(SceneManager.getCurrentScene().getName(), ProjectBuilder.ProjectType.PC);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(null, "Failed to build project.");
             }
@@ -141,8 +146,8 @@ public class N2DMenuBar extends JMenuBar {
         renameSceneMenuItem.addActionListener(e -> new RenameSceneDialog());
         newLayerMenuItem.addActionListener(e -> {
             Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount(),
-                    MainFrame.getProject().getCurrentScene().getLayers().size());
-            MainFrame.getProject().getCurrentScene().addLayer(layer);
+                    SceneManager.getCurrentScene().getLayers().size());
+            SceneManager.getCurrentScene().addLayer(layer);
             MainFrame.getSceneGraph().addLayer(layer);
         });
 

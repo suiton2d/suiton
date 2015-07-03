@@ -31,10 +31,16 @@ import java.io.IOException;
 public class ImagePanel extends SuitonPanel {
 
     private SuitonLabel emptyLbl;
+
     public ImagePanel() {
+        super(new BorderLayout());
         emptyLbl = new SuitonLabel("No image selected", SwingConstants.CENTER);
-        setLayout(new BorderLayout());
         add(emptyLbl, BorderLayout.CENTER);
+    }
+
+    public ImagePanel(String path) throws IOException {
+        this();
+        setImage(path);
     }
 
     public void setImage(String path) throws IOException {

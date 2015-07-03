@@ -20,33 +20,29 @@ package com.suiton2d.editor.framework;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
-import com.suiton2d.assets.AssetManager;
 import com.suiton2d.editor.io.FullBufferedReader;
 import com.suiton2d.editor.io.FullBufferedWriter;
 import com.suiton2d.editor.io.loaders.SceneLoader;
 import com.suiton2d.editor.io.savers.SceneSaver;
 import com.suiton2d.editor.ui.BuildProgressUpdateListener;
-import com.suiton2d.editor.ui.MainFrame;
-import com.suiton2d.editor.ui.SceneGraph;
 import com.suiton2d.editor.util.PlatformUtil;
 import com.suiton2d.editor.util.builders.SceneBuilder;
 import com.suiton2d.scene.Scene;
+import com.suiton2d.scene.SceneManager;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 
 public class Project {
-
-    private List<Scene> scenes;
-    private Scene currentScene;
     private String projectDir;
     private String projectName;
 
     public Project(String dir, String name) {
         this.projectDir = dir;
         this.projectName = name;
-        scenes = new ArrayList<>();
     }
 
     public Project(String path) {
@@ -56,45 +52,6 @@ public class Project {
         if (this.projectName.endsWith(".n2d"))
             this.projectName = this.projectName.substring(0, this.projectName.length() - 4);
 
-        scenes = new ArrayList<>();
-    }
-
-    public List<Scene> getScenes() {
-        return this.scenes;
-    }
-
-    public void addScene(Scene scene) {
-        scenes.add(scene);
-    }
-
-    public Scene getScene(int idx) {
-        return scenes.get(idx);
-    }
-
-    public Scene getCurrentScene() {
-        return currentScene;
-    }
-
-    public int getCurrentSceneIndex() {
-        return currentScene != null ? scenes.indexOf(currentScene) : -1;
-    }
-
-    public void setCurrentScene(String name) {
-        for (int i = 0; i < scenes.size(); ++i) {
-            if (scenes.get(i).getName().equals(name)) {
-                setCurrentScene(i);
-                break;
-            }
-        }
-    }
-
-    public void setCurrentScene(int idx) {
-        if (scenes.size() > idx) {
-            if (currentScene != null)
-                AssetManager.unloadAssets(getCurrentScene().getName());
-            currentScene = getScene(idx);
-            AssetManager.loadAssets(getCurrentScene().getName());
-        }
     }
 
     public String getPath() {
@@ -110,16 +67,17 @@ public class Project {
     }
 
     public void loadProject() throws IOException {
-        scenes.clear();
+        SceneManager.clear();
         try (FullBufferedReader fr = new FullBufferedReader(new FileReader(getPath()))) {
             this.projectDir = fr.readLine();
             this.projectName = fr.readLine();
             int numScenes = fr.readIntLine();
             for (int i = 0; i < numScenes; ++i) {
                 Scene scene = new SceneLoader().load(fr);
-                addScene(scene);
+                SceneManager.addScene(scene);
             }
-            setCurrentScene(fr.readIntLine());
+            String currSceneName = fr.readLine();
+            SceneManager.setCurrentScene(currSceneName);
         }
     }
 
@@ -127,26 +85,16 @@ public class Project {
         try (FullBufferedWriter fw = new FullBufferedWriter(new FileWriter(getPath()))) {
             fw.writeLine(projectDir);
             fw.writeLine(projectName);
-            fw.writeIntLine(scenes.size());
-            for (Scene scene : scenes)
+            fw.writeIntLine(SceneManager.getSceneCount());
+            for (Scene scene : SceneManager.getSceneList())
                 new SceneSaver(scene).save(fw);
 
-            fw.writeIntLine(getCurrentSceneIndex());
+            fw.write(SceneManager.getCurrentScene().getName());
         }
     }
 
-    public void loadCurrentScene() {
-        loadScene(getCurrentScene());
-    }
-
-    private void loadScene(Scene scene) {
-        SceneGraph graph = MainFrame.getSceneGraph();
-        scene.getLayers().forEach(graph::addLayer);
-        graph.refresh();
-    }
-
     public boolean containsSceneWithName(String name) {
-        for (Scene scene : scenes) {
+        for (Scene scene : SceneManager.getSceneList()) {
             if (scene.getName().equals(name))
                 return true;
         }
@@ -166,11 +114,11 @@ public class Project {
                 attribute("startScene", startScene);
         assetsXmlWriter.element("assets");
 
-        for (int i = 0; i < scenes.size(); ++i) {
-            Scene scene = scenes.get(i);
+        for (int i = 0; i < SceneManager.getSceneCount(); ++i) {
+            Scene scene = SceneManager.getSceneList().get(i);
             new SceneBuilder(scene).build(sceneXmlWriter, assetsXmlWriter);
             sceneXmlWriter.pop();
-            listener.onBuildProgressUpdate(scene, i, scenes.size());
+            listener.onBuildProgressUpdate(scene, i, SceneManager.getSceneCount());
         }
         sceneXmlWriter.pop();
         assetsXmlWriter.pop();

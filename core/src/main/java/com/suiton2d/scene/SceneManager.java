@@ -25,11 +25,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.XmlReader;
+import com.google.common.collect.ImmutableList;
 import com.suiton2d.assets.AssetManager;
 import com.suiton2d.components.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,14 +90,24 @@ public class SceneManager {
         }
     }
 
+    public static void setSceneList(List<Scene> sceneList) {
+        clear();
+        for (Scene scene : sceneList)
+            sceneMap.put(scene.getName(), scene);
+    }
+
     public static void start() {
         currentScene.start();
     }
 
-    public static void update(float dt) {
+    public static void update(float dt, boolean act) {
 
         if (currentScene != null)
-            currentScene.update(dt);
+            currentScene.update(dt, act);
+    }
+
+    public static void update(float dt) {
+        update(dt, true);
     }
 
     public static void fixedUpdate() {
@@ -116,6 +128,14 @@ public class SceneManager {
                 go.setRotation((float) (body.getAngle() * 180.0f / Math.PI));
             }
         }
+    }
+
+    public static ImmutableList<Scene> getSceneList() {
+        return ImmutableList.copyOf(sceneMap.values());
+    }
+
+    public static int getSceneCount() {
+        return sceneMap.size();
     }
 
     public static void loadSceneData(FileHandle scenesFile) throws IOException {
@@ -255,5 +275,10 @@ public class SceneManager {
         for (Scene scene : sceneMap.values()) {
             scene.cleanup();
         }
+    }
+
+    public static void clear() {
+        cleanup();
+        sceneMap.clear();
     }
 }
