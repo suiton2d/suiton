@@ -24,6 +24,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        SwingUtilities.invokeLater(MainFrame::new);
+        new MainFrame();
     }
 }
