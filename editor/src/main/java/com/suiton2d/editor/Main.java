@@ -25,7 +25,7 @@ public class Main {
         }
 
         if (PlatformUtil.isMac()) {
-            new Main();
+            new MainFrame();
         } else {
             SwingUtilities.invokeLater(MainFrame::new);
         }
