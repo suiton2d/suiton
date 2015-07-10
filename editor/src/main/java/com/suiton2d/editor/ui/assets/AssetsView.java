@@ -1,12 +1,9 @@
 package com.suiton2d.editor.ui.assets;
 
-import com.badlogic.gdx.assets.AssetDescriptor;
 import com.suiton2d.assets.Asset;
-import com.suiton2d.assets.Sprite;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 
 import java.awt.GridLayout;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
