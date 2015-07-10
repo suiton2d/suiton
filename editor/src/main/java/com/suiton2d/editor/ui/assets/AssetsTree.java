@@ -1,24 +1,19 @@
-package com.suiton2d.editor.ui;
+package com.suiton2d.editor.ui.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.editor.ui.controls.SuitonTree;
 import com.suiton2d.editor.ui.controls.TreeDragSource;
 
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetContext;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
+import java.awt.dnd.*;
 import java.io.File;
 import java.util.List;
 
@@ -81,13 +76,16 @@ public class AssetsTree extends SuitonTree {
                         dtde.acceptDrop(DnDConstants.ACTION_COPY);
                         FileHandle dest = Gdx.files.absolute(getPathString(parentpath));
                         List<File> fileList = (List<File>)tr.getTransferData(DataFlavor.javaFileListFlavor);
+
+                        // Need to do an initial pass to ensure that we don't have any directories.
                         for (File f : fileList) {
                             if (f.isDirectory())
                                 throw new Exception("Directory DnD not supported.");
+                        }
 
+                        for (File f : fileList) {
                             FileHandle fileHandle = Gdx.files.absolute(f.getAbsolutePath());
                             fileHandle.copyTo(dest);
-                            lastNode.add(new DefaultMutableTreeNode(fileHandle.file().getName()));
                         }
                         dtde.dropComplete(true);
                     } else if (flavor.getRepresentationClass().equals(TreePath.class)) {
@@ -107,6 +105,7 @@ public class AssetsTree extends SuitonTree {
                 e.printStackTrace();
                 dtde.rejectDrop();
                 dtde.dropComplete(false);
+                JOptionPane.showMessageDialog(assetsTree.getRootPane(), e.getMessage());
             }
         }
 

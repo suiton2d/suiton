@@ -1,11 +1,9 @@
-package com.suiton2d.editor.ui;
+package com.suiton2d.editor.ui.assets;
 
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
