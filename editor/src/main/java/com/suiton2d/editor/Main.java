@@ -24,6 +24,10 @@ public class Main {
             e.printStackTrace();
         }
 
-        new MainFrame();
+        if (PlatformUtil.isMac()) {
+            new Main();
+        } else {
+            SwingUtilities.invokeLater(MainFrame::new);
+        }
     }
 }
