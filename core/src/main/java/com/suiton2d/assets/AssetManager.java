@@ -113,23 +113,33 @@ public class AssetManager {
 
             List<AssetDescriptor> assetList = assetMap.get(sceneName);
             if (assetList == null) {
-                assetList = new ArrayList<AssetDescriptor>();
+                assetList = new ArrayList<>();
                 assetMap.put(sceneName, assetList);
             }
             if (type.equalsIgnoreCase("SPRITE")) {
-                assetList.add(new AssetDescriptor<Sprite>(path, Sprite.class));
+                assetList.add(new AssetDescriptor<>(path, Sprite.class));
             } else if (type.equalsIgnoreCase("MUSIC")) {
-                assetList.add(new AssetDescriptor<MusicTrack>(path, MusicTrack.class));
+                assetList.add(new AssetDescriptor<>(path, MusicTrack.class));
             } else if (type.equalsIgnoreCase("SFX")) {
-                assetList.add(new AssetDescriptor<SoundEffect>(path, SoundEffect.class));
+                assetList.add(new AssetDescriptor<>(path, SoundEffect.class));
             } else if (type.equalsIgnoreCase("SCRIPT")) {
-                assetList.add(new AssetDescriptor<Script>(path, Script.class));
+                assetList.add(new AssetDescriptor<>(path, Script.class));
             } else if (type.equalsIgnoreCase("TILED_TILE_SHEET")) {
-                assetList.add(new AssetDescriptor<TiledTileSheet>(path, TiledTileSheet.class));
+                assetList.add(new AssetDescriptor<>(path, TiledTileSheet.class));
             }
 
             assetMap.put(sceneName, assetList);
         }
+    }
+
+    public static void addAsset(String sceneName, AssetDescriptor ad) {
+        List<AssetDescriptor> ads = assetMap.get(sceneName);
+        if (ads == null) {
+            ads = new ArrayList<>();
+            assetMap.put(sceneName, ads);
+        }
+
+        ads.add(ad);
     }
 
     public static void cleanup() {
