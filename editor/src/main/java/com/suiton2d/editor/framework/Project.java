@@ -72,8 +72,9 @@ public class Project {
             this.projectDir = fr.readLine();
             this.projectName = fr.readLine();
             int numScenes = fr.readIntLine();
+            SceneLoader sceneLoader = new SceneLoader();
             for (int i = 0; i < numScenes; ++i) {
-                Scene scene = new SceneLoader().load(fr);
+                Scene scene = sceneLoader.load(fr);
                 SceneManager.addScene(scene);
             }
             String currSceneName = fr.readLine();
