@@ -18,8 +18,9 @@ public class SceneLoader implements Loader<Scene> {
         boolean sleepPhysics = fr.readBooleanLine();
         Scene scene = new Scene(name, new Vector2(gx, gy), sleepPhysics);
         int numLayers = fr.readIntLine();
+        LayerLoader layerLoader = new LayerLoader();
         for (int i = 0; i < numLayers; ++i) {
-            Layer layer = new LayerLoader().load(fr);
+            Layer layer = layerLoader.load(fr);
             scene.addLayer(layer);
         }
 

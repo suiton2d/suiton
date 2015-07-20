@@ -14,8 +14,9 @@ public class LayerLoader implements Loader<Layer> {
         Layer layer = new Layer(fr.readLine());
         layer.setZOrder(fr.readIntLine());
         int numGameObjects = fr.readIntLine();
+        GameObjectLoader gameObjectLoader = new GameObjectLoader();
         for (int i = 0; i < numGameObjects; ++i) {
-            GameObject gameObject = new GameObjectLoader().load(fr);
+            GameObject gameObject = gameObjectLoader.load(fr);
             layer.addGameObject(gameObject);
         }
 
