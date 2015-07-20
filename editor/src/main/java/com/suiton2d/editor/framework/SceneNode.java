@@ -19,6 +19,9 @@
 package com.suiton2d.editor.framework;
 
 import com.suiton2d.editor.ui.MainFrame;
+import com.suiton2d.scene.GameObject;
+import com.suiton2d.scene.Layer;
+import com.suiton2d.scene.Scene;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -53,8 +56,16 @@ public class SceneNode<T> extends DefaultMutableTreeNode {
     }
 
     public void remove() {
-        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) getParent();
+        SceneNode parent = (SceneNode) getParent();
         parent.remove(this);
+        Object parentData = parent.getData();
+        if (parentData instanceof Scene)
+            ((Scene) parentData).removeLayer(((Layer) data));
+        else if (parentData instanceof Layer)
+            ((Layer) parentData).removeGameObject(((GameObject) data));
+        else
+            ((GameObject) parentData).removeActor(((GameObject) data));
+
         MainFrame.getSceneGraph().refresh();
     }
 
