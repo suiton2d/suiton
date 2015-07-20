@@ -97,8 +97,10 @@ public class AssetManager {
      */
     public static void unloadAssets(String sceneName) {
         List<AssetDescriptor> assets = assetMap.get(sceneName);
-        for (AssetDescriptor asset : assets)
-            manager.unload(asset.fileName);
+        if (assets != null) {
+            for (AssetDescriptor asset : assets)
+                manager.unload(asset.fileName);
+        }
     }
 
     public static void installAssets(FileHandle assetsFile) throws IOException {
