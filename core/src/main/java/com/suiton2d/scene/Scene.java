@@ -155,19 +155,14 @@ public class Scene {
     }
 
     public void cleanup() {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                if (physicalWorld != null) {
-                    physicalWorld.dispose();
-                    physicalWorld = null;
-                }
+        if (physicalWorld != null) {
+            physicalWorld.dispose();
+            physicalWorld = null;
+        }
 
-                if (stage != null) {
-                    stage.dispose();
-                    stage = null;
-                }
-            }
-        });
+        if (stage != null) {
+            stage.dispose();
+            stage = null;
+        }
     }
 }

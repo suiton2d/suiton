@@ -88,7 +88,9 @@ public class RenderAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
-        if (SceneManager.getCurrentScene() != null)
-            SceneManager.getCurrentScene().cleanup();
+        Gdx.app.postRunnable(() -> {
+            if (SceneManager.getCurrentScene() != null)
+                SceneManager.cleanup();
+        });
     }
 }
