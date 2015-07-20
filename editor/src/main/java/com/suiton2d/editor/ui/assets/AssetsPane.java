@@ -20,11 +20,12 @@ public class AssetsPane extends SuitonPanel {
             // TODO: populate right panel.
         });
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Rectangle screenSize = ge.getMaximumWindowBounds();
+        Rectangle windowSize = ge.getMaximumWindowBounds();
         assetsView = new AssetsView();
-        JScrollPane sp = new JScrollPane(assetsTree);
-        sp.setPreferredSize(new Dimension(screenSize.width/6, screenSize.height/4));
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sp, assetsView);
+        JScrollPane treeSp = new JScrollPane(assetsTree);
+        JScrollPane avSp = new JScrollPane(assetsView);
+        treeSp.setPreferredSize(new Dimension(windowSize.width / 6, windowSize.height / 4));
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeSp, avSp);
 
         add(splitPane);
     }

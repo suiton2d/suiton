@@ -54,7 +54,7 @@ public class MainFrame extends JFrame {
         super("Nebula2D");
         instance = this;
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        Rectangle screenSize = ge.getMaximumWindowBounds();
+        Rectangle windowSize = ge.getMaximumWindowBounds();
         try {
             settings.loadFromProperties();
         } catch (IOException e) {
@@ -65,7 +65,7 @@ public class MainFrame extends JFrame {
         JScrollPane sp = new JScrollPane(sceneGraph);
         JPanel canvasPanel = new JPanel(new BorderLayout());
         canvasPanel.add(renderCanvas.getCanvas());
-        sp.setPreferredSize(new Dimension(screenSize.width/6, (screenSize.height - screenSize.height/4)));
+        sp.setPreferredSize(new Dimension(windowSize.width/6, (windowSize.height - windowSize.height/4)));
         JSplitPane hSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sp, canvasPanel);
 
         JSplitPane vSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, hSplitPane, assetsPane);
@@ -80,7 +80,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
         vSplitPane.setDividerLocation(getHeight() - getHeight()/3);
 
-        setSize(new Dimension(screenSize.width, screenSize.height));
+        setSize(new Dimension(windowSize.width, windowSize.height));
         setLocationRelativeTo(null);
 
         addWindowListener(new WindowAdapter() {

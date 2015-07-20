@@ -16,7 +16,6 @@ public class Main {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
         }
 
-
         try {
             MetalLookAndFeel.setCurrentTheme(new N2DDarkTheme());
             UIManager.setLookAndFeel(new MetalLookAndFeel());
