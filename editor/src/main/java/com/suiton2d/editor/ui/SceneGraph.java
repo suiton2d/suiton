@@ -163,7 +163,9 @@ public class SceneGraph extends SuitonTree {
      * @param layer the layer to be added
      */
     public void addLayer(Layer layer) {
-        root.add(new SceneNode<>(layer.getName(), layer));
+        SceneNode<Layer> layerNode = new SceneNode<>(layer.getName(), layer);
+        layer.getGameObjects().forEach(go -> layerNode.add(new SceneNode<>(go.getName(), go)));
+        root.add(layerNode);
         refresh();
     }
 
