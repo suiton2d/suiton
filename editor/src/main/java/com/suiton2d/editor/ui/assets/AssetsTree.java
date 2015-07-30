@@ -1,44 +1,106 @@
 package com.suiton2d.editor.ui.assets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.suiton2d.editor.framework.FileNode;
 import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.editor.ui.controls.SuitonTree;
 import com.suiton2d.editor.ui.controls.TreeDragSource;
 
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.JOptionPane;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import java.awt.*;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.dnd.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetContext;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.List;
 
 public class AssetsTree extends SuitonTree {
 
-    private DefaultMutableTreeNode root;
+    private FileNode root;
 
+    @SuppressWarnings("all")
     private TreeDragSource dragSource;
+    @SuppressWarnings("all")
     private TreeDropTarget dropTarget;
 
-    public AssetsTree() {
+    private boolean initialized = false;
+
+    public void init() {
         setRootVisible(true);
-        setModel(new DefaultTreeModel(new DefaultMutableTreeNode("Assets")));
+        root = new FileNode(MainFrame.getProject().getAssetsDirPath());
+        setModel(new DefaultTreeModel(root));
         setBorder(null);
         dropTarget = new TreeDropTarget(this);
         dragSource = new TreeDragSource(this, DnDConstants.ACTION_MOVE);
+        populateChildren(root);
+        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                AssetsTree tree = AssetsTree.this;
+                TreePath clickedPath = tree.getClosestPathForLocation(e.getX(), e.getY());
+                if (clickedPath == null)
+                    return;
+                FileNode fileNode = (FileNode) clickedPath.getLastPathComponent();
+                tree.setSelectionPath(clickedPath);
+                if (e.isPopupTrigger())
+                    new FileNodePopup(fileNode).show(tree, e.getX(), e.getY());
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    new FileNodePopup((FileNode) AssetsTree.this.getSelectionPath().
+                            getLastPathComponent()).show(AssetsTree.this, e.getPoint().x, e.getPoint().y);
+                }
+            }
+        });
+        expandAll();
+        initialized = true;
+    }
+
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    public void expandAll() {
+        for (int i = 0; i < getRowCount(); ++i) {
+            expandRow(i);
+        }
+    }
+
+    private void populateChildren(FileNode root) {
+        FileHandle[] childDirs = root.getFile().list(File::isDirectory);
+        for (FileHandle dir : childDirs) {
+            FileNode child = new FileNode(dir);
+            populateChildren(child);
+            root.add(child);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public void refresh() {
+        ((DefaultTreeModel)getModel()).nodeStructureChanged(root);
     }
 
     private static class TreeDropTarget implements DropTargetListener {
+
+        @SuppressWarnings("all")
         private DropTarget target;
 
-        private JTree targetTree;
-
         public TreeDropTarget(JTree targetTree) {
-            this.targetTree = targetTree;
             target = new DropTarget(targetTree, this);
         }
 
@@ -68,31 +130,16 @@ public class AssetsTree extends SuitonTree {
             DropTargetContext dtc = dtde.getDropTargetContext();
             AssetsTree assetsTree = (AssetsTree) dtc.getComponent();
             TreePath parentpath = assetsTree.getClosestPathForLocation(pt.x, pt.y);
-            DefaultMutableTreeNode lastNode = (DefaultMutableTreeNode) parentpath.getLastPathComponent();
+            FileNode selectedTarget = (FileNode)parentpath.getLastPathComponent();
             try {
                 Transferable tr = dtde.getTransferable();
                 for (DataFlavor flavor : tr.getTransferDataFlavors()) {
-                    if (flavor.isFlavorJavaFileListType()) {
-                        dtde.acceptDrop(DnDConstants.ACTION_COPY);
-                        FileHandle dest = Gdx.files.absolute(getPathString(parentpath));
-                        List<File> fileList = (List<File>)tr.getTransferData(DataFlavor.javaFileListFlavor);
-
-                        // Need to do an initial pass to ensure that we don't have any directories.
-                        for (File f : fileList) {
-                            if (f.isDirectory())
-                                throw new Exception("Directory DnD not supported.");
-                        }
-
-                        for (File f : fileList) {
-                            FileHandle fileHandle = Gdx.files.absolute(f.getAbsolutePath());
-                            fileHandle.copyTo(dest);
-                        }
-                        dtde.dropComplete(true);
-                    } else if (flavor.getRepresentationClass().equals(TreePath.class)) {
+                    if (dtde.isDataFlavorSupported(flavor)) {
                         dtde.acceptDrop(DnDConstants.ACTION_MOVE);
-                        FileHandle dest = Gdx.files.absolute(getPathString(parentpath));
+                        FileHandle dest = selectedTarget.getFile();
                         TreePath p = (TreePath) tr.getTransferData(flavor);
-                        FileHandle source = Gdx.files.absolute(getPathString(p));
+                        FileNode sourceNode = (FileNode)p.getLastPathComponent();
+                        FileHandle source = sourceNode.getFile();
                         source.moveTo(dest);
                         dtde.dropComplete(true);
                     } else {
@@ -100,25 +147,12 @@ public class AssetsTree extends SuitonTree {
                         dtde.dropComplete(false);
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
                 dtde.rejectDrop();
                 dtde.dropComplete(false);
                 JOptionPane.showMessageDialog(assetsTree.getRootPane(), e.getMessage());
             }
-        }
-
-        private String getPathString(TreePath path) {
-            StringBuilder sb = new StringBuilder();
-            Object[] paths = path.getPath();
-            for (int i = 0; i < paths.length; ++i) {
-                sb.append(paths[i]);
-                if (i+1 < paths.length)
-                    sb.append(File.separator);
-            }
-
-            return MainFrame.getProject().getProjectDir() + File.separator + sb.toString();
         }
     }
 }

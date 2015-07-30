@@ -144,6 +144,8 @@ public class MainFrame extends JFrame {
 
         if (project != null) {
             instance.setTitle("Nebula2D - " + project.getName());
+            if (!assetsPane.getAssetsTree().isInitialized())
+                assetsPane.getAssetsTree().init();
         } else {
             instance.setTitle("Nebual2D");
         }

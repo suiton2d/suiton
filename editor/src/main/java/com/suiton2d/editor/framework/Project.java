@@ -45,13 +45,15 @@ public class Project {
         this.projectName = name;
     }
 
+    @SuppressWarnings("all")
     public Project(String path) {
         File file = new File(path);
         this.projectDir = file.getParent();
         this.projectName = file.getName();
         if (this.projectName.endsWith(".n2d"))
             this.projectName = this.projectName.substring(0, this.projectName.length() - 4);
-
+        File assetsDir = new File(getAssetsDirPath());
+        assetsDir.mkdir();
     }
 
     public String getPath() {
@@ -64,6 +66,10 @@ public class Project {
 
     public String getName() {
         return projectName;
+    }
+
+    public String getAssetsDirPath() {
+        return getProjectDir() + File.separator + "Assets";
     }
 
     public void loadProject() throws IOException {
