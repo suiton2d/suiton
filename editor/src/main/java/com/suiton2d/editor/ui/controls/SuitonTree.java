@@ -13,5 +13,6 @@ public class SuitonTree extends JTree {
     public SuitonTree() {
         setBackground(new Color(60, 63, 65));
         setCellRenderer(new N2DTreeCellRenderer());
+        setModel(null);
     }
 }
