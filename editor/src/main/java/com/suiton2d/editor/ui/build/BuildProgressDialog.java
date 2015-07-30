@@ -1,4 +1,4 @@
-package com.suiton2d.editor.ui;
+package com.suiton2d.editor.ui.build;
 
 import com.suiton2d.editor.ui.controls.SuitonDialog;
 import com.suiton2d.editor.util.GradleExecutor;

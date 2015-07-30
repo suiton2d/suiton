@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.suiton2d.editor.ui;
+package com.suiton2d.editor.ui.render;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,6 +25,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.suiton2d.editor.framework.SceneNode;
 import com.suiton2d.editor.framework.Selection;
+import com.suiton2d.editor.ui.MainFrame;
+import com.suiton2d.editor.ui.N2DToolbar;
 import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.Scene;

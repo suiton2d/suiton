@@ -16,29 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.suiton2d.editor.ui;
+package com.suiton2d.editor.ui.scene;
 
 import com.suiton2d.editor.framework.SceneNode;
+import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.editor.ui.controls.SuitonTree;
-import com.suiton2d.editor.ui.controls.TransferableTreeNode;
 import com.suiton2d.editor.ui.controls.TreeDragSource;
 import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
-import javax.swing.*;
+import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.*;
-import java.awt.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetContext;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.Enumeration;
 
 /**

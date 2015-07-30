@@ -3,7 +3,7 @@ package com.suiton2d.editor.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.suiton2d.editor.framework.Project;
-import com.suiton2d.editor.ui.BuildProgressDialog;
+import com.suiton2d.editor.ui.build.BuildProgressDialog;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 

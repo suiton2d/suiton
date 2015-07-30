@@ -16,16 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.suiton2d.editor.ui;
+package com.suiton2d.editor.ui.scene;
 
-import com.suiton2d.editor.framework.Project;
+import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.editor.ui.controls.SuitonList;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.suiton2d.editor.ui;
+package com.suiton2d.editor.ui.scene;
 
 import com.suiton2d.editor.framework.SceneNode;
 

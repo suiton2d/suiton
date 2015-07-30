@@ -24,7 +24,7 @@ import com.suiton2d.editor.io.FullBufferedReader;
 import com.suiton2d.editor.io.FullBufferedWriter;
 import com.suiton2d.editor.io.loaders.SceneLoader;
 import com.suiton2d.editor.io.savers.SceneSaver;
-import com.suiton2d.editor.ui.BuildProgressUpdateListener;
+import com.suiton2d.editor.ui.build.BuildProgressUpdateListener;
 import com.suiton2d.editor.util.PlatformUtil;
 import com.suiton2d.editor.util.builders.SceneBuilder;
 import com.suiton2d.scene.Scene;

@@ -24,6 +24,9 @@ import com.suiton2d.assets.AssetManager;
 import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.settings.N2DSettings;
 import com.suiton2d.editor.ui.assets.AssetsPane;
+import com.suiton2d.editor.ui.render.RenderAdapter;
+import com.suiton2d.editor.ui.render.RenderCanvas;
+import com.suiton2d.editor.ui.scene.SceneGraph;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
