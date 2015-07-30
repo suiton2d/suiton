@@ -38,7 +38,7 @@ public class AssetsTree extends SuitonTree {
 
     public void init() {
         setRootVisible(true);
-        root = new FileNode(MainFrame.getProject().getAssetsDirPath());
+        root = new FileNode(this, MainFrame.getProject().getAssetsDirPath());
         setModel(new DefaultTreeModel(root));
         setBorder(null);
         dropTarget = new TreeDropTarget(this);
@@ -84,7 +84,7 @@ public class AssetsTree extends SuitonTree {
     private void populateChildren(FileNode root) {
         FileHandle[] childDirs = root.getFile().list(File::isDirectory);
         for (FileHandle dir : childDirs) {
-            FileNode child = new FileNode(dir);
+            FileNode child = new FileNode(this, dir);
             populateChildren(child);
             root.add(child);
         }
