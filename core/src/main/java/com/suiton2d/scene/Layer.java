@@ -19,9 +19,7 @@
 package com.suiton2d.scene;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Layer is a class used to provide logical order to the update of
@@ -35,7 +33,7 @@ public class Layer {
 
     private String name;
     private int zOrder;
-    private List<GameObject> gameObjects;
+    private Array<GameObject> gameObjects;
     private Scene scene;
 
     public Layer(String name) {
@@ -45,7 +43,7 @@ public class Layer {
     public Layer(String name, int zOrder) {
         this.name = name;
         this.zOrder = zOrder;
-        gameObjects = new ArrayList<>();
+        gameObjects = new Array<>();
     }
 
     public String getName() {
@@ -56,7 +54,7 @@ public class Layer {
         return zOrder;
     }
 
-    public List<GameObject> getGameObjects() {
+    public Array<GameObject> getGameObjects() {
         return gameObjects;
     }
 
@@ -105,7 +103,7 @@ public class Layer {
      * @param gameObject The GameObject to remove.
      */
     public void removeGameObject(GameObject gameObject) {
-        gameObjects.remove(gameObject);
+        gameObjects.removeValue(gameObject, true);
         gameObject.setLayer(null);
     }
 

@@ -22,7 +22,7 @@ public class SceneSaver implements Saver {
         fw.writeFloatLine(scene.getGravity().y);
         fw.writeBoolLine(scene.isAllowSleeping());
 
-        fw.writeIntLine(scene.getLayers().size());
+        fw.writeIntLine(scene.getLayers().size);
         for (Layer layer : scene.getLayers()) {
             new LayerSaver(layer).save(fw);
         }

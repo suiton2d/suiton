@@ -20,7 +20,7 @@ public class SpriteRendererSaver extends BaseComponentSaver<SpriteRenderer> {
     public void onSave(FullBufferedWriter fw) throws IOException {
         fw.writeLine(Types.RendererType.SPRITE.name());
         fw.writeLine(getComponent().getFilename());
-        fw.writeIntLine(getComponent().getAnimations().size());
+        fw.writeIntLine(getComponent().getAnimations().size);
         for (Animation anim : (List<Animation>) getComponent().getAnimations()) {
             if (anim instanceof KeyFrameAnimation) {
                 fw.writeLine(Types.AnimationType.KEY_FRAME.name());

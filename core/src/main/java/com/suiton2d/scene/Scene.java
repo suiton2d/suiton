@@ -18,16 +18,13 @@
 
 package com.suiton2d.scene;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.suiton2d.util.CollisionListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Scene is a class representing a single "level" in the game.
@@ -37,7 +34,7 @@ import java.util.List;
 public class Scene {
 
     private String name;
-    private List<Layer> layers;
+    private Array<Layer> layers;
     private Stage stage;
     private World physicalWorld;
     private boolean allowSleeping;
@@ -48,7 +45,7 @@ public class Scene {
         stage = new Stage(new ScreenViewport());
         this.name = name;
         this.allowSleeping = sleepPhysics;
-        this.layers = new ArrayList<>();
+        this.layers = new Array<>();
     }
 
     public void setName(String name) {
@@ -83,7 +80,7 @@ public class Scene {
         return allowSleeping;
     }
 
-    public List<Layer> getLayers() {
+    public Array<Layer> getLayers() {
         return layers;
     }
 
@@ -93,7 +90,7 @@ public class Scene {
     }
 
     public void removeLayer(Layer l) {
-        layers.remove(l);
+        layers.removeValue(l, true);
         l.setScene(null);
     }
 

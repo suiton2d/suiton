@@ -22,6 +22,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 import com.suiton2d.assets.loaders.MusicTrackLoader;
 import com.suiton2d.assets.loaders.ScriptLoader;
@@ -34,9 +35,7 @@ import org.mozilla.javascript.ScriptableObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * AssetManager is a singleton class used to manage a game's assets
@@ -45,7 +44,7 @@ import java.util.Map;
  */
 public class AssetManager {
 
-    private static Map<String, List<AssetDescriptor>> assetMap = new HashMap<String, List<AssetDescriptor>>();
+    private static ObjectMap<String, List<AssetDescriptor>> assetMap = new ObjectMap<String, List<AssetDescriptor>>();
     private static ScriptableObject globalScriptScope;
     private static com.badlogic.gdx.assets.AssetManager manager;
 

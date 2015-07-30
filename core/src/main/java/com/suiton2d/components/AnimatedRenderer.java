@@ -18,10 +18,8 @@
 
 package com.suiton2d.components;
 
+import com.badlogic.gdx.utils.Array;
 import com.suiton2d.scene.GameObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * AnimatedRenderer is an abstract base class for rendering components
@@ -30,21 +28,21 @@ import java.util.List;
  */
 public abstract class AnimatedRenderer<T extends Animation> extends Component implements Renderer {
 
-    protected List<T> animations;
+    protected Array<T> animations;
     protected T currentAnimation;
 
     public AnimatedRenderer() {}
 
     public AnimatedRenderer(String name) {
         super(name);
-        animations = new ArrayList<>();
+        animations = new Array<>();
     }
 
-    public List<T> getAnimations() {
+    public Array<T> getAnimations() {
         return animations;
     }
 
-    public void setAnimations(List<T> animations) {
+    public void setAnimations(Array<T> animations) {
         this.animations = animations;
     }
 
@@ -53,16 +51,16 @@ public abstract class AnimatedRenderer<T extends Animation> extends Component im
     }
 
     public int getCurrentAnimationIndex() {
-        return currentAnimation != null ? animations.indexOf(currentAnimation) : -1;
+        return currentAnimation != null ? animations.indexOf(currentAnimation, true) : -1;
     }
 
     public void setCurrentAnimation(T currentAnimation) {
-        if (animations.contains(currentAnimation))
+        if (animations.contains(currentAnimation, true))
             this.currentAnimation = currentAnimation;
     }
 
     public void setCurrentAnimation(int idx) {
-        if (animations.size() > idx)
+        if (animations.size > idx)
             this.currentAnimation = animations.get(idx);
     }
 
@@ -86,7 +84,7 @@ public abstract class AnimatedRenderer<T extends Animation> extends Component im
     }
 
     public void removeAnimation(T anim) {
-        animations.remove(anim);
+        animations.removeValue(anim, true);
     }
 
     /**

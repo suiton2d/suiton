@@ -24,15 +24,24 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
-import com.google.common.collect.ImmutableList;
 import com.suiton2d.assets.AssetManager;
-import com.suiton2d.components.*;
+import com.suiton2d.components.Behavior;
+import com.suiton2d.components.BoundingBox;
+import com.suiton2d.components.Circle;
+import com.suiton2d.components.Collider;
+import com.suiton2d.components.CollisionShape;
+import com.suiton2d.components.Component;
+import com.suiton2d.components.MusicSource;
+import com.suiton2d.components.PhysicsMaterial;
+import com.suiton2d.components.RigidBody;
+import com.suiton2d.components.SoundEffectSource;
+import com.suiton2d.components.SpriteRenderer;
+import com.suiton2d.components.TiledMapRenderer;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * SceneManager is a singleton class used to manage the game's various {@link Scene}s.
@@ -42,7 +51,7 @@ import java.util.Map;
 public class SceneManager {
 
     private static Scene currentScene;
-    private static Map<String, Scene> sceneMap = new HashMap<>();
+    private static ObjectMap<String, Scene> sceneMap = new ObjectMap<>();
 
     /**
      * Retrieves the singleton instance of SceneManager. SceneManager should
@@ -130,14 +139,15 @@ public class SceneManager {
         }
     }
 
-    public static ImmutableList<Scene> getSceneList() {
-        return ImmutableList.copyOf(sceneMap.values());
+    public static Array<Scene> getSceneList() {
+        return sceneMap.values().toArray();
     }
 
     public static int getSceneCount() {
-        return sceneMap.size();
+        return sceneMap.size;
     }
 
+    @SuppressWarnings("unchecked")
     public static void loadSceneData(FileHandle scenesFile) throws IOException {
         XmlReader reader = new XmlReader();
         XmlReader.Element root = reader.parse(scenesFile);

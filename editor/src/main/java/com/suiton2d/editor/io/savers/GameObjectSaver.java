@@ -24,7 +24,7 @@ public class GameObjectSaver implements Saver {
         fw.writeFloatLine(gameObject.getScaleX());
         fw.writeFloatLine(gameObject.getScaleY());
         fw.writeFloatLine(gameObject.getRotation());
-        fw.writeIntLine(gameObject.getComponents().size());
+        fw.writeIntLine(gameObject.getComponents().size);
         for (Component component : gameObject.getComponents()) {
             if (component instanceof TiledMapRenderer)
                 new TiledMapRendererSaver((TiledMapRenderer) component).save(fw);

@@ -146,7 +146,7 @@ public class N2DMenuBar extends JMenuBar {
         renameSceneMenuItem.addActionListener(e -> new RenameSceneDialog());
         newLayerMenuItem.addActionListener(e -> {
             Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount(),
-                    SceneManager.getCurrentScene().getLayers().size());
+                    SceneManager.getCurrentScene().getLayers().size);
             SceneManager.getCurrentScene().addLayer(layer);
             MainFrame.getSceneGraph().addLayer(layer);
         });

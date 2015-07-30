@@ -19,7 +19,7 @@ public class LayerSaver implements Saver {
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(layer.getName());
         fw.writeIntLine(layer.getZOrder());
-        fw.writeIntLine(layer.getGameObjects().size());
+        fw.writeIntLine(layer.getGameObjects().size);
         for (GameObject gameObject : layer.getGameObjects()) {
             new GameObjectSaver(gameObject).save(fw);
         }

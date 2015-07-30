@@ -23,12 +23,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.suiton2d.components.AnimatedRenderer;
 import com.suiton2d.components.Component;
 import com.suiton2d.components.RigidBody;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * GameObject is the core of Nebula2D's component-based entity system.
@@ -37,7 +35,7 @@ import java.util.List;
  */
 public class GameObject extends Group {
 
-    protected List<Component> components;
+    protected Array<Component> components;
     protected Layer layer;
     protected AnimatedRenderer renderer;
     protected RigidBody rigidBody;
@@ -46,10 +44,10 @@ public class GameObject extends Group {
 
     public GameObject(String name) {
         setName(name);
-        this.components = new ArrayList<>();
+        this.components = new Array<>();
     }
 
-    public List<Component> getComponents() {
+    public Array<Component> getComponents() {
         return components;
     }
 
@@ -111,7 +109,7 @@ public class GameObject extends Group {
      * @param component The Component to remove.
      */
     public void removeComponent(Component component) {
-        components.remove(component);
+        components.removeValue(component, true);
         component.setGameObject(null);
         if (component == renderer)
             renderer = null;
