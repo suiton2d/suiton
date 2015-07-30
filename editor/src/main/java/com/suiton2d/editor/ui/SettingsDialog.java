@@ -20,7 +20,7 @@ public class SettingsDialog extends SuitonDialog {
     private JPanel rightPanel;
 
     public SettingsDialog() {
-        super("Nebula2D Settings");
+        super("Nebula2D Settings", true);
         render();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();

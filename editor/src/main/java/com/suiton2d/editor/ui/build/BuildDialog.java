@@ -9,7 +9,7 @@ import com.suiton2d.editor.ui.controls.SuitonDialog;
 public class BuildDialog extends SuitonDialog {
 
     public BuildDialog() {
-        super("Project Build");
+        super("Project Build", true);
         setup();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();

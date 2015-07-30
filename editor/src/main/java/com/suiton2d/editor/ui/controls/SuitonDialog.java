@@ -12,7 +12,7 @@ import java.awt.*;
 public class SuitonDialog extends JDialog {
 
     public SuitonDialog(String title) {
-        this(title, true);
+        this(title, false);
     }
 
     public SuitonDialog(String title, boolean autoSize) {
