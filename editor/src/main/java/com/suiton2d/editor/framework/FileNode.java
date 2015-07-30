@@ -86,8 +86,6 @@ public class FileNode extends DefaultMutableTreeNode {
 
         child.mkdirs();
         add(new FileNode(parentTree, child));
-        System.out.println(parentTree);
-        System.out.println(parentTree.getModel());
         ((DefaultTreeModel)parentTree.getModel()).nodeStructureChanged(this);
         return true;
     }
