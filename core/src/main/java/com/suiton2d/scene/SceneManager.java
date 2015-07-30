@@ -99,12 +99,6 @@ public class SceneManager {
         }
     }
 
-    public static void setSceneList(List<Scene> sceneList) {
-        clear();
-        for (Scene scene : sceneList)
-            sceneMap.put(scene.getName(), scene);
-    }
-
     public static void start() {
         currentScene.start();
     }

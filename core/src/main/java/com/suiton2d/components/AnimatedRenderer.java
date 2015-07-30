@@ -42,10 +42,7 @@ public abstract class AnimatedRenderer<T extends Animation> extends Component im
         return animations;
     }
 
-    public void setAnimations(Array<T> animations) {
-        this.animations = animations;
-    }
-
+    @SuppressWarnings("unused")
     public T getCurrentAnimation() {
         return currentAnimation;
     }
@@ -54,6 +51,7 @@ public abstract class AnimatedRenderer<T extends Animation> extends Component im
         return currentAnimation != null ? animations.indexOf(currentAnimation, true) : -1;
     }
 
+    @SuppressWarnings("unused")
     public void setCurrentAnimation(T currentAnimation) {
         if (animations.contains(currentAnimation, true))
             this.currentAnimation = currentAnimation;
@@ -69,6 +67,7 @@ public abstract class AnimatedRenderer<T extends Animation> extends Component im
      * @param name The name of the animation to find.
      * @return The target animation if it exists, else null.
      */
+    @SuppressWarnings("unused")
     public T getAnimation(String name) {
         for (T anim : animations) {
             if (anim.getName().equals(name)) {
@@ -83,6 +82,7 @@ public abstract class AnimatedRenderer<T extends Animation> extends Component im
         animations.add(anim);
     }
 
+    @SuppressWarnings("unused")
     public void removeAnimation(T anim) {
         animations.removeValue(anim, true);
     }
@@ -92,6 +92,7 @@ public abstract class AnimatedRenderer<T extends Animation> extends Component im
      * @param name The name of the animation to set as active. Can be null. If an Animation with
      *             the given name cannot be found, the current animation will not be updated.
      */
+    @SuppressWarnings("unused")
     public void setCurrentAnimation(String name) {
 
         if (name == null) {

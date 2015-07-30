@@ -18,7 +18,8 @@ import java.io.*;
  */
 public class ProjectBuilder {
 
-    public static enum ProjectType {
+    @SuppressWarnings("unused")
+    public enum ProjectType {
         PC("desktop.zip"),
         MAC("desktop.zip"),
         LINUX("desktop.zip"),
@@ -26,7 +27,7 @@ public class ProjectBuilder {
 
         private String sourcePath;
 
-        private ProjectType(String sourcePath) {
+        ProjectType(String sourcePath) {
             this.sourcePath = sourcePath;
         }
 
@@ -71,6 +72,7 @@ public class ProjectBuilder {
         }).start();
     }
 
+    @SuppressWarnings("all")
     private void createConfigFile(FileHandle dir) throws IOException {
         dir.child("meta.cfg").file().createNewFile();
     }

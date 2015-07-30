@@ -104,18 +104,22 @@ public class RigidBody<T extends CollisionShape> extends Component {
             collisionShape.affixTo(physicsBody, false).setUserData(gameObject);
     }
 
+    @SuppressWarnings("unused")
     public void applyForce(Vector2 force, Vector2 point, boolean wake) {
         physicsBody.applyForce(force, point, wake);
     }
 
+    @SuppressWarnings("unused")
     public void applyLinearImpulse(Vector2 impulse, Vector2 point, boolean wake) {
         physicsBody.applyLinearImpulse(impulse, point, wake);
     }
 
+    @SuppressWarnings("unused")
     public void applyAngularImpulse(float impulse, boolean wake) {
         physicsBody.applyAngularImpulse(impulse, wake);
     }
 
+    @SuppressWarnings("unused")
     public void applyTorque(float torque, boolean wake) {
         physicsBody.applyTorque(torque, wake);
     }

@@ -55,12 +55,9 @@ public abstract class Asset<T> implements Disposable {
         return path;
     }
 
+    @SuppressWarnings("unused")
     public boolean isLoaded() {
         return loaded;
-    }
-
-    public void setLoaded(boolean loaded) {
-        this.loaded = loaded;
     }
 
     public void dispose() {

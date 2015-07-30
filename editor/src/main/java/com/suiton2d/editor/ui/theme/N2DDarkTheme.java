@@ -3,9 +3,6 @@ package com.suiton2d.editor.ui.theme;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 
-/**
- * Created by bonazza on 4/26/2014.
- */
 public class N2DDarkTheme extends DefaultMetalTheme {
     @Override
     public String getName() {

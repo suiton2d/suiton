@@ -47,10 +47,12 @@ public abstract class Animation {
         this.name = name;
     }
 
+    @SuppressWarnings("unused")
     public boolean isPlaying() {
         return isPlaying;
     }
 
+    @SuppressWarnings("unused")
     public boolean isPaused() {
         return isPaused;
     }
@@ -58,6 +60,7 @@ public abstract class Animation {
     /**
      * Plays the animation.
      */
+    @SuppressWarnings("unused")
     public void play() {
         isPlaying = true;
         isPaused = false;
@@ -66,6 +69,7 @@ public abstract class Animation {
     /**
      * Stops the animation.
      */
+    @SuppressWarnings("unused")
     public void stop() {
         isPlaying = false;
         isPaused = false;
@@ -74,6 +78,7 @@ public abstract class Animation {
     /**
      * Pauses the animation.
      */
+    @SuppressWarnings("unused")
     public void pause() {
         if (isPlaying)
             isPaused = true;

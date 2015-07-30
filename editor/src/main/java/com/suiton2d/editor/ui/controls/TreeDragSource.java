@@ -17,6 +17,8 @@ public class TreeDragSource implements DragSourceListener, DragGestureListener {
     public TreeDragSource(JTree sourceTree, int actions) {
         this.sourceTree = sourceTree;
         dragSource = new DragSource();
+
+        @SuppressWarnings("unused")
         DragGestureRecognizer recognizer = dragSource.createDefaultDragGestureRecognizer(sourceTree,
                 actions, this);
     }

@@ -98,7 +98,6 @@ public class NewSceneDialog extends JDialog {
             String newSceneName = nameTf.getText();
             Scene scene = new Scene(newSceneName, new Vector2(), true);
             SceneGraph sceneGraph = MainFrame.getSceneGraph();
-            Project project1 = MainFrame.getProject();
             SceneManager.addScene(scene);
             SceneManager.setCurrentScene(newSceneName);
             sceneGraph.init();

@@ -18,26 +18,15 @@
 
 package com.suiton2d.editor.util;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
-import java.util.Locale;
 
 
 /**
  * Utility class for platform specific functionality
  */
 public class PlatformUtil {
-
-    /**
-     * Finds the index of the platform specific file separator character in the provided string.
-     *
-     * @param base The string for which to find the character.
-     * @return The index of the platform specific file separator. If no instance of the separator exists in the string,
-     * -1 is returned.
-     */
-    public static int findLastSlashChar(String base) {
-        return base.lastIndexOf(File.separator);
-    }
 
     /**
      * Determines whether or not the app is running on a Mac computer.
@@ -65,25 +54,8 @@ public class PlatformUtil {
         return sb.toString();
     }
 
-    public static String getCommandChainString() {
-        String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
-        if (os.contains("win")) {
-            return "&";
-        } else {
-            return "&&";
-        }
-    }
-
     public static Dimension getScreenSize() {
         Toolkit tk = Toolkit.getDefaultToolkit();
         return tk.getScreenSize();
-    }
-
-    public static int getScreenWidth() {
-        return getScreenSize().width;
-    }
-
-    public static int getScreenHeight() {
-        return getScreenSize().height;
     }
 }

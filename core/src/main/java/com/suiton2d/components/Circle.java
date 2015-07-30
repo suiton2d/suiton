@@ -31,8 +31,6 @@ public class Circle extends CollisionShape {
     @Expose
     private float radius;
 
-    public Circle() {}
-
     public Circle(PhysicsMaterial physicsMaterial, float radius) {
         super(physicsMaterial);
         this.radius = radius;
@@ -42,6 +40,7 @@ public class Circle extends CollisionShape {
         return radius;
     }
 
+    @SuppressWarnings("unused")
     public void setRadius(float radius) {
         this.radius = radius;
     }

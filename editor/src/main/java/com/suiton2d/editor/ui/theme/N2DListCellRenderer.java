@@ -3,9 +3,6 @@ package com.suiton2d.editor.ui.theme;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by bonazza on 4/26/2014.
- */
 public class N2DListCellRenderer extends DefaultListCellRenderer {
 
     @Override

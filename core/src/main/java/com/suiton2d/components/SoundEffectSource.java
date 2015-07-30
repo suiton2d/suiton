@@ -45,6 +45,7 @@ public class SoundEffectSource extends Component {
      * Plays the SoundEffect in a loop.
      * @return The sound ID associated with the playback instance
      */
+    @SuppressWarnings("unused")
     public long loop() {
         return getSoundEffect().loop();
     }
@@ -53,6 +54,7 @@ public class SoundEffectSource extends Component {
      * Stops a playback instance of the SoundEffect.
      * @param soundId The sound ID associated with the playback instance to stop.
      */
+    @SuppressWarnings("unused")
     public void stop(long soundId) {
         getSoundEffect().stop(soundId);
     }
@@ -61,6 +63,7 @@ public class SoundEffectSource extends Component {
      * Pauses a playback instance of the SoundEffect.
      * @param soundId The sound ID associated with the playback instance to pause.
      */
+    @SuppressWarnings("unused")
     public void pause(long soundId) {
         getSoundEffect().pause(soundId);
     }
@@ -69,6 +72,7 @@ public class SoundEffectSource extends Component {
      * Resumes a playback instance of the SoundEffect.
      * @param soundId The sound ID associated with the playback instance to resume.
      */
+    @SuppressWarnings("unused")
     public void resume(long soundId) {
         getSoundEffect().resume(soundId);
     }

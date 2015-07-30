@@ -44,8 +44,6 @@ public class BoundingBox extends CollisionShape {
     @Expose
     private Extents extents;
 
-    public BoundingBox() {}
-
     public BoundingBox(PhysicsMaterial physicsMaterial, float w, float h) {
         super(physicsMaterial);
         extents = new Extents(w/2.0f, h/2.0f);
@@ -55,6 +53,7 @@ public class BoundingBox extends CollisionShape {
         return extents;
     }
 
+    @SuppressWarnings("unused")
     public void setExtents(Extents extents) {
         this.extents = extents;
     }

@@ -59,16 +59,9 @@ public class GameObject extends Group {
         return renderer;
     }
 
+    @SuppressWarnings("unused")
     public RigidBody getRigidBody() {
         return rigidBody;
-    }
-
-    public void setRenderer(AnimatedRenderer renderer) {
-        this.renderer = renderer;
-    }
-
-    public void setRigidBody(RigidBody rigidBody) {
-        this.rigidBody = rigidBody;
     }
 
     public void setLayer(Layer layer) {

@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class AssetManager {
 
-    private static ObjectMap<String, List<AssetDescriptor>> assetMap = new ObjectMap<String, List<AssetDescriptor>>();
+    private static ObjectMap<String, List<AssetDescriptor>> assetMap = new ObjectMap<>();
     private static ScriptableObject globalScriptScope;
     private static com.badlogic.gdx.assets.AssetManager manager;
 

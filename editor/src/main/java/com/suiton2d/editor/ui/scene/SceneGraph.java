@@ -59,7 +59,9 @@ public class SceneGraph extends SuitonTree {
 
     private DefaultMutableTreeNode root;
 
+    @SuppressWarnings("all")
     private TreeDragSource dragSource;
+    @SuppressWarnings("all")
     private TreeDropTarget dropTarget;
 
     public SceneGraph() {
@@ -68,10 +70,6 @@ public class SceneGraph extends SuitonTree {
         setBorder(null);
         dragSource = new TreeDragSource(this, DnDConstants.ACTION_MOVE);
         dropTarget = new TreeDropTarget(this);
-    }
-
-    public DefaultMutableTreeNode getRoot() {
-        return root;
     }
 
     public void init() {
@@ -216,21 +214,11 @@ public class SceneGraph extends SuitonTree {
 
 
     private static class TreeDropTarget implements DropTargetListener {
+        @SuppressWarnings("all")
         private DropTarget target;
 
-        private JTree targetTree;
-
         public TreeDropTarget(JTree targetTree) {
-            this.targetTree = targetTree;
             target = new DropTarget(targetTree, this);
-        }
-
-        private TreeNode getNodeForEvent(DropTargetDragEvent dtde) {
-            Point p = dtde.getLocation();
-            DropTargetContext dtc = dtde.getDropTargetContext();
-            JTree tree = (JTree) dtc.getComponent();
-            TreePath path = tree.getClosestPathForLocation(p.x, p.y);
-            return (TreeNode) path.getLastPathComponent();
         }
 
         @Override

@@ -27,6 +27,7 @@ public class SoundEffect extends Asset<Sound> {
      * @param volume The volume at which to play the SoundEffect.
      * @return The sound ID associated with th current playback instance.
      */
+    @SuppressWarnings("unused")
     public long play(float volume) {
         return data.play(volume);
     }
@@ -44,6 +45,7 @@ public class SoundEffect extends Asset<Sound> {
      * @param volume The volume at which to play the SoundEffect.
      * @return The sound ID associated with th current playback instance.
      */
+    @SuppressWarnings("unused")
     public long loop(float volume) {
         return data.loop(volume);
     }

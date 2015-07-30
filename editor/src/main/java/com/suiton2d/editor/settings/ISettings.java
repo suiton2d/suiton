@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public interface ISettings {
 
-    public JPanel createSettingsPanel(JDialog parent);
+    JPanel createSettingsPanel(JDialog parent);
 
-    public void loadFromProperties() throws IOException;
+    void loadFromProperties() throws IOException;
 }

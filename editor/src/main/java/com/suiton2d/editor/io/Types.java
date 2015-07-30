@@ -1,8 +1,5 @@
 package com.suiton2d.editor.io;
 
-/**
- * Created by Jon on 5/15/2015.
- */
 public class Types {
 
     private Types() {}

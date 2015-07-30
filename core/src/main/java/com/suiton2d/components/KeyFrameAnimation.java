@@ -23,18 +23,6 @@ public class KeyFrameAnimation extends Animation {
     protected TextureRegion currentFrame;
 
     /**
-     * Constructor used for loading animation form disk
-     * @param name a name for the animation
-     * @param spriteSheet the {@link SpriteSheet} used for the animation
-     */
-    public KeyFrameAnimation(String name, SpriteSheet spriteSheet) {
-        this(name, spriteSheet, 0, 0, 0.0f);
-        wrap = false;
-
-        init();
-    }
-
-    /**
      * Constructor used for creating a completely new animation
      * @param name a name for the animation
      * @param spriteSheet the {@link SpriteSheet} used for the animation
@@ -53,30 +41,19 @@ public class KeyFrameAnimation extends Animation {
         init();
     }
 
-    public void setSpriteSheet(SpriteSheet spriteSheet) {
-        this.spriteSheet = spriteSheet;
-    }
-
     public int getStartFrame() {
         return startFrame;
-    }
-
-    public void setStartFrame(int startFrame) {
-        this.startFrame = startFrame;
     }
 
     public int getEndFrame() {
         return endFrame;
     }
 
-    public void setEndFrame(int endFrame) {
-        this.endFrame = endFrame;
-    }
-
     public float getSpeed() {
         return speed;
     }
 
+    @SuppressWarnings("unused")
     public void setSpeed(float speed) {
         this.speed = speed;
     }

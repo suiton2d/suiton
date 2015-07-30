@@ -1,7 +1,6 @@
 package com.suiton2d.editor.ui.assets;
 
 import com.suiton2d.editor.framework.FileNode;
-import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.editor.ui.controls.SuitonDialog;
 import com.suiton2d.editor.ui.controls.SuitonLabel;
 import com.suiton2d.editor.ui.controls.SuitonPanel;

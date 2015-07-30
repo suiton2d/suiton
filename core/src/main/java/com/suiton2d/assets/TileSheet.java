@@ -15,6 +15,7 @@ public abstract class TileSheet<T extends Map> extends Asset<T> {
         this.type = type;
     }
 
+    @SuppressWarnings("unused")
     public TileSheetType getType() {
         return type;
     }

@@ -36,6 +36,7 @@ public class MusicSource extends Component {
     /**
      * Plays the {@link MusicTrack}.
      */
+    @SuppressWarnings("unused")
     public void play() {
         getMusicTrack().play();
     }
@@ -43,6 +44,7 @@ public class MusicSource extends Component {
     /**
      * Stops the MusicTrack.
      */
+    @SuppressWarnings("unused")
     public void stop() {
         getMusicTrack().stop();
     }
@@ -50,22 +52,27 @@ public class MusicSource extends Component {
     /**
      * Pauses the MusicTrack.
      */
+    @SuppressWarnings("unused")
     public void pause() {
         getMusicTrack().pause();
     }
 
+    @SuppressWarnings("unused")
     public boolean isLooping() {
         return getMusicTrack().isLooping();
     }
 
+    @SuppressWarnings("unused")
     public void setLooping(boolean looping) {
         getMusicTrack().setLooping(looping);
     }
 
+    @SuppressWarnings("unused")
     public float getVolume() {
         return getMusicTrack().getData().getVolume();
     }
 
+    @SuppressWarnings("unused")
     public void setVolume(float volume) {
         getMusicTrack().getData().setVolume(volume);
     }
@@ -99,6 +106,7 @@ public class MusicSource extends Component {
      * Sets a callback that is fired whenever MusicTrack playback completes.
      * @param listener The callback that will be fired on playback completion.
      */
+    @SuppressWarnings("unused")
     public void setOnCompletionListener(Music.OnCompletionListener listener) {
         getMusicTrack().getData().setOnCompletionListener(listener);
     }

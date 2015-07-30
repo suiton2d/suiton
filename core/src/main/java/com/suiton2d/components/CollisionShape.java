@@ -32,8 +32,6 @@ public abstract class CollisionShape {
 
     private PhysicsMaterial physicsMaterial;
 
-    public CollisionShape() {}
-
     public CollisionShape(PhysicsMaterial physicsMaterial) {
         this.physicsMaterial = physicsMaterial;
     }
@@ -42,6 +40,7 @@ public abstract class CollisionShape {
         return physicsMaterial;
     }
 
+    @SuppressWarnings("unused")
     public void setPhysicsMaterial(PhysicsMaterial physicsMaterial) {
         this.physicsMaterial = physicsMaterial;
     }

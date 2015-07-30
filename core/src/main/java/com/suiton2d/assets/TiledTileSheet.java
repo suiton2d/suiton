@@ -29,10 +29,12 @@ public class TiledTileSheet extends TileSheet<TiledMap> {
         }
     }
 
+    @SuppressWarnings("unused")
     public float getUnitScale() {
         return unitScale;
     }
 
+    @SuppressWarnings("unused")
     public void setUnitScale(float unitScale) {
         this.unitScale = unitScale;
     }

@@ -5,9 +5,6 @@ import com.suiton2d.scene.Scene;
 
 import java.io.IOException;
 
-/**
- * Created by Jon on 5/15/2015.
- */
 public class SceneBuilder {
 
     private Scene scene;

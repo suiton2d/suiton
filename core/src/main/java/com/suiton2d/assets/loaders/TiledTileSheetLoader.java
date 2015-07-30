@@ -11,9 +11,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
 import com.suiton2d.assets.TiledTileSheet;
 
-/**
- * Created by bonazza on 12/27/14.
- */
 public class TiledTileSheetLoader extends AsynchronousAssetLoader<TiledTileSheet,
         TiledTileSheetLoader.TiledTileSheetParameter> {
 
