@@ -119,18 +119,14 @@ public class NewProjectDialog extends JDialog {
                     return;
                 }
             }
-
-            Gdx.app.postRunnable(() -> {
-                AssetManager.init(new AbsoluteFileHandleResolver());
-                Project project = new Project(projDir.getAbsolutePath(), projName);
-                String newSceneName = "Untitled Scene 0";
-                SceneManager.addScene(new Scene(newSceneName, new Vector2(), true));
-                SceneManager.setCurrentScene(newSceneName);
-
-                MainFrame.setProject(project);
-                MainFrame.getSceneGraph().init();
-                dispose();
-            });
+            Gdx.app.postRunnable(() -> AssetManager.init(new AbsoluteFileHandleResolver()));
+            Project project = new Project(projDir.getAbsolutePath(), projName);
+            String newSceneName = "Untitled Scene 0";
+            SceneManager.addScene(new Scene(newSceneName, new Vector2(), true));
+            SceneManager.setCurrentScene(newSceneName);
+            dispose();
+            MainFrame.setProject(project);
+            MainFrame.getSceneGraph().init();
         });
 
         browseBtn.addActionListener(e -> {
