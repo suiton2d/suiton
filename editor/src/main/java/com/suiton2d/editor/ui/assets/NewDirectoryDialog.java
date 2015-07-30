@@ -80,7 +80,6 @@ public class NewDirectoryDialog extends SuitonDialog {
         okBtn.addActionListener(e -> {
             String newDirName = nameTf.getText();
             parent.addChildDirectory(newDirName);
-            MainFrame.getAssetsPane().getAssetsTree().refresh();
             dispose();
         });
 
