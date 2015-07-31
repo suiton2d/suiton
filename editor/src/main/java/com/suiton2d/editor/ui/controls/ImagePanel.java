@@ -28,14 +28,13 @@ import java.io.IOException;
 /**
  * Custom JPanel that displays an image
  */
-public class ImagePanel extends SuitonPanel {
+public class ImagePanel extends JPanel {
 
-    private SuitonLabel emptyLbl;
+    private JLabel emptyLbl;
 
     public ImagePanel() {
-        super(new BorderLayout());
-        emptyLbl = new SuitonLabel("No image selected", SwingConstants.CENTER);
-        add(emptyLbl, BorderLayout.CENTER);
+        emptyLbl = new JLabel("No image selected", SwingConstants.CENTER);
+        add(emptyLbl);
     }
 
     public ImagePanel(String path) throws IOException {
