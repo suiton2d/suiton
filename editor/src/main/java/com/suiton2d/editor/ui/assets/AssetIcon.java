@@ -8,14 +8,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.IOException;
 
 public class AssetIcon extends SuitonPanel {
 
+    @SuppressWarnings("all")
+    private AssetIconDragSource dragSource;
+
     private FileHandle fileHandle;
 
-    public AssetIcon(FileHandle fileHandle) {
+    public AssetIcon(FileHandle fileHandle) throws IOException {
         super(new BorderLayout());
         this.fileHandle = fileHandle;
+        this.dragSource = new AssetIconDragSource(this);
         ImagePanel imagePanel = new ImagePanel();
         JLabel filenameLbl = new JLabel(fileHandle.name());
         add(filenameLbl, BorderLayout.SOUTH);
