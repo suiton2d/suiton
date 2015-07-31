@@ -8,10 +8,8 @@ import java.io.IOException;
 
 public class TransferableTreeNode implements Transferable {
 
-    public static DataFlavor TREE_PATH_FLAVOR = new DataFlavor(TreePath.class,
-            "Tree Path");
-
-    private DataFlavor[] flavors = { TREE_PATH_FLAVOR };
+    private DataFlavor[] flavors = { new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
+            + "; class=java.lang.Object", "Local Domain Object") };
 
     private TreePath treePath;
 
@@ -25,7 +23,12 @@ public class TransferableTreeNode implements Transferable {
 
     @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
-        return flavor.getRepresentationClass() == TreePath.class;
+        for (DataFlavor df : flavors) {
+            if (df.equals(flavor))
+                return true;
+
+        }
+        return false;
     }
 
     @Override

@@ -57,8 +57,6 @@ import java.util.Enumeration;
  */
 public class SceneGraph extends SuitonTree {
 
-    private DefaultMutableTreeNode root;
-
     @SuppressWarnings("all")
     private TreeDragSource dragSource;
     @SuppressWarnings("all")
@@ -200,17 +198,6 @@ public class SceneGraph extends SuitonTree {
         }
     }
 
-    public void refresh() {
-        ((DefaultTreeModel)getModel()).nodeStructureChanged(root);
-        expandAll();
-    }
-
-    public void expandAll() {
-        for (int i = 0; i < getRowCount(); ++i) {
-            expandRow(i);
-        }
-    }
-
 
 
     private static class TreeDropTarget implements DropTargetListener {
@@ -267,6 +254,8 @@ public class SceneGraph extends SuitonTree {
                                 ((Layer) dest.getData()).addGameObject((GameObject) node.getData());
                             else if (dest.getData() instanceof GameObject)
                                 ((GameObject) dest.getData()).addActor((GameObject) node.getData());
+
+                            dest.add(node);
                         }
                         dtde.acceptDrop(dtde.getDropAction());
                         dtde.dropComplete(true);
@@ -274,6 +263,7 @@ public class SceneGraph extends SuitonTree {
                     }
                 }
                 dtde.rejectDrop();
+                dtde.dropComplete(false);
             } catch (Exception e) {
                 e.printStackTrace();
                 dtde.rejectDrop();

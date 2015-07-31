@@ -1,20 +1,22 @@
 package com.suiton2d.editor.ui.controls;
 
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import java.awt.dnd.*;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragGestureRecognizer;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.DragSourceEvent;
+import java.awt.dnd.DragSourceListener;
 
 public class TreeDragSource implements DragSourceListener, DragGestureListener {
 
     private DragSource dragSource;
 
-    private DefaultMutableTreeNode oldNode;
+    private SuitonTree sourceTree;
 
-    private JTree sourceTree;
-
-    public TreeDragSource(JTree sourceTree, int actions) {
+    public TreeDragSource(SuitonTree sourceTree, int actions) {
         this.sourceTree = sourceTree;
         dragSource = new DragSource();
 
@@ -30,9 +32,9 @@ public class TreeDragSource implements DragSourceListener, DragGestureListener {
             // We can't move the root node or an empty selection
             return;
         }
-        oldNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+
         TransferableTreeNode transferable = new TransferableTreeNode(path);
-        dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop, transferable, this);
+        dragSource.startDrag(dge, DragSource.DefaultMoveDrop, transferable, this);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class TreeDragSource implements DragSourceListener, DragGestureListener {
     @Override
     public void dragDropEnd(DragSourceDropEvent dsde) {
         if (dsde.getDropSuccess()) {
-            ((DefaultTreeModel) sourceTree.getModel()).removeNodeFromParent(oldNode);
+            sourceTree.refresh();
         }
     }
 }
