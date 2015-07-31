@@ -67,18 +67,14 @@ public class AssetsTree extends SuitonTree {
                 }
             }
         });
+
         expandAll();
+        setSelectionPath(new TreePath(root.getPath()));
         initialized = true;
     }
 
     public boolean isInitialized() {
         return initialized;
-    }
-
-    public void expandAll() {
-        for (int i = 0; i < getRowCount(); ++i) {
-            expandRow(i);
-        }
     }
 
     private void populateChildren(FileNode root) {
@@ -90,7 +86,7 @@ public class AssetsTree extends SuitonTree {
         }
     }
 
-    @SuppressWarnings("unused")
+    @Override
     public void refresh() {
         ((DefaultTreeModel)getModel()).nodeStructureChanged(root);
     }
@@ -135,12 +131,14 @@ public class AssetsTree extends SuitonTree {
                 Transferable tr = dtde.getTransferable();
                 for (DataFlavor flavor : tr.getTransferDataFlavors()) {
                     if (dtde.isDataFlavorSupported(flavor)) {
-                        dtde.acceptDrop(DnDConstants.ACTION_MOVE);
                         FileHandle dest = selectedTarget.getFile();
                         TreePath p = (TreePath) tr.getTransferData(flavor);
                         FileNode sourceNode = (FileNode)p.getLastPathComponent();
                         FileHandle source = sourceNode.getFile();
-                        source.moveTo(dest);
+                        FileHandle newLoc = moveDir(source, dest);
+                        sourceNode.setFile(newLoc);
+                        selectedTarget.add(sourceNode);
+                        dtde.acceptDrop(DnDConstants.ACTION_MOVE);
                         dtde.dropComplete(true);
                     } else {
                         dtde.rejectDrop();
@@ -153,6 +151,19 @@ public class AssetsTree extends SuitonTree {
                 dtde.dropComplete(false);
                 JOptionPane.showMessageDialog(assetsTree.getRootPane(), e.getMessage());
             }
+        }
+
+        private FileHandle moveDir(FileHandle source, FileHandle dest) {
+            dest = dest.child(source.name());
+            dest.mkdirs();
+            for (FileHandle f : source.list()) {
+                if (f.isDirectory())
+                    moveDir(f, dest);
+                else
+                    f.moveTo(dest);
+            }
+            source.delete();
+            return dest;
         }
     }
 }
