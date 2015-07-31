@@ -18,11 +18,19 @@
 
 package com.suiton2d.editor.ui.controls;
 
+import com.badlogic.gdx.files.FileHandle;
+
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import java.awt.AlphaComposite;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -37,19 +45,16 @@ public class ImagePanel extends JPanel {
         add(emptyLbl);
     }
 
-    public ImagePanel(String path) throws IOException {
-        this();
-        setImage(path);
-    }
+    public void setImage(FileHandle fileHandle) throws IOException {
+        if (fileHandle != null) {
+            BufferedImage img = ImageIO.read(fileHandle.read());
+            Dimension newSize = calculateNewSize(img);
+            Image scaledImage = resizeImage(img, newSize.width, newSize.height);
 
-    public void setImage(String path) throws IOException {
-        BufferedImage img = ImageIO.read(new File(path));
-        Dimension newSize = calculateNewSize(img);
-        Image scaledImage = resizeImage(img, newSize.width, newSize.height);
-
-        ImageIcon icon = new ImageIcon(scaledImage);
-        emptyLbl.setText("");
-        emptyLbl.setIcon(icon);
+            ImageIcon icon = new ImageIcon(scaledImage);
+            emptyLbl.setText("");
+            emptyLbl.setIcon(icon);
+        }
     }
 
     private Image resizeImage(Image og, int w, int h) {
