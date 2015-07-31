@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,32 +30,38 @@ public class AssetsView extends SuitonPanel {
         Dimension rowsColumns = getRowsColumns(children.length);
         setLayout(new GridLayout(rowsColumns.height, rowsColumns.width, 24, 24));
         for (FileHandle file : children) {
-            AssetIcon icon = new AssetIcon(file);
-            icon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    assetIcons.forEach(AssetIcon::deselect);
-                    ((AssetIcon)e.getSource()).select();
-                }
+            AssetIcon icon;
+            try {
+                icon = new AssetIcon(file);
+                icon.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        assetIcons.forEach(AssetIcon::deselect);
+                        ((AssetIcon)e.getSource()).select();
+                    }
 
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    assetIcons.forEach(AssetIcon::deselect);
-                    ((AssetIcon)e.getSource()).select();
-                    if (e.isPopupTrigger())
-                        new AssetPopup((AssetIcon)e.getSource()).show((AssetIcon)e.getSource(), e.getX(), e.getY());
-                }
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        assetIcons.forEach(AssetIcon::deselect);
+                        ((AssetIcon)e.getSource()).select();
+                        if (e.isPopupTrigger())
+                            new AssetPopup((AssetIcon)e.getSource()).show((AssetIcon)e.getSource(), e.getX(), e.getY());
+                    }
 
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    if (e.isPopupTrigger())
-                        new AssetPopup((AssetIcon)e.getSource()).show((AssetIcon)e.getSource(), e.getX(), e.getY());
-                }
-            });
-            assetIcons.add(icon);
-            add(icon);
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+                        if (e.isPopupTrigger())
+                            new AssetPopup((AssetIcon)e.getSource()).show((AssetIcon)e.getSource(), e.getX(), e.getY());
+                    }
+                });
+                assetIcons.add(icon);
+                add(icon);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         revalidate();
+        this.path = path;
     }
 
     public void resync() {
