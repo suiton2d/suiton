@@ -22,9 +22,26 @@ public class AssetIcon extends SuitonPanel {
         this.fileHandle = fileHandle;
         this.dragSource = new AssetIconDragSource(this);
         ImagePanel imagePanel = new ImagePanel();
+        imagePanel.setImage(getImageFileForAsset());
         JLabel filenameLbl = new JLabel(fileHandle.name());
         add(filenameLbl, BorderLayout.SOUTH);
         add(imagePanel);
+    }
+
+    @SuppressWarnings("all")
+    private FileHandle getImageFileForAsset() {
+        String ext = fileHandle.extension();
+        if (AssetExtension.GRAPHIC.contains(ext)) {
+            // TODO: Load graphic type icon.
+        } else if (AssetExtension.SCRIPT.contains(ext)) {
+            // TODO: Load script type icon.
+        } else if (AssetExtension.SOUND.contains(ext)) {
+            // TODO: Load sound type icon.
+        } else if (AssetExtension.TILED.contains(ext)) {
+            // TODO: Load tiled type icon.
+        }
+
+        return null;
     }
 
     public void deselect() {
