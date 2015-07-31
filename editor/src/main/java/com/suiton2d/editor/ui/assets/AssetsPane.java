@@ -1,5 +1,6 @@
 package com.suiton2d.editor.ui.assets;
 
+import com.suiton2d.editor.framework.FileNode;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 
 import javax.swing.JScrollPane;
@@ -17,6 +18,12 @@ public class AssetsPane extends SuitonPanel {
         super(new BorderLayout());
         assetsView = new AssetsView();
         assetsTree = new AssetsTree();
+        assetsTree.addTreeSelectionListener(e -> {
+            if (e.isAddedPath()) {
+                FileNode selection = (FileNode)e.getPath().getLastPathComponent();
+                assetsView.setPath(selection.getFile());
+            }
+        });
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Rectangle windowSize = ge.getMaximumWindowBounds();
         JScrollPane treeSp = new JScrollPane(assetsTree);
