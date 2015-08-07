@@ -1,12 +1,16 @@
 package com.suiton2d.editor.settings;
 
-import com.suiton2d.editor.ui.controls.SuitonLabel;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 
-import javax.swing.*;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.util.Properties;
 
 /**
@@ -32,7 +36,7 @@ public class GradleSettings implements ISettings {
 
     @Override
     public JPanel createSettingsPanel(JDialog parent) {
-        JLabel gradleHomeLbl = new SuitonLabel("Gradle Home: ");
+        JLabel gradleHomeLbl = new JLabel("Gradle Home: ");
         JTextField gradleHomeTf = new JTextField(gradleHome, 20);
         JButton applyBtn = new JButton("Apply");
         applyBtn.setEnabled(false);

@@ -23,14 +23,21 @@ import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.math.Vector2;
 import com.suiton2d.assets.AssetManager;
 import com.suiton2d.editor.framework.Project;
-import com.suiton2d.editor.ui.controls.SuitonLabel;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.editor.util.PlatformUtil;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.io.File;
 
 public class NewProjectDialog extends JDialog {
@@ -44,8 +51,8 @@ public class NewProjectDialog extends JDialog {
     public NewProjectDialog() {
         setTitle("New Project");
 
-        SuitonLabel projNameLbl = new SuitonLabel("Project Name:");
-        SuitonLabel parentDirLbl = new SuitonLabel("Parent Directory:");
+        JLabel projNameLbl = new JLabel("Project Name:");
+        JLabel parentDirLbl = new JLabel("Parent Directory:");
 
         projNameTf = new JTextField(20);
         parentDirTf = new JTextField(20);

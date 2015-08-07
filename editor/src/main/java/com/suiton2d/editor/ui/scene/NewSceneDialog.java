@@ -21,15 +21,19 @@ package com.suiton2d.editor.ui.scene;
 import com.badlogic.gdx.math.Vector2;
 import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.ui.MainFrame;
-import com.suiton2d.editor.ui.controls.SuitonLabel;
 import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
 
 /**
  * @author Jon Bonazza <jonbonazza@gmail.com>
@@ -50,7 +54,7 @@ public class NewSceneDialog extends JDialog {
         nameTf = new JTextField(20);
 
         final Color defaultFg = nameTf.getForeground();
-        final SuitonLabel nameLbl = new SuitonLabel("Scene Name: ");
+        final JLabel nameLbl = new JLabel("Scene Name: ");
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
 
