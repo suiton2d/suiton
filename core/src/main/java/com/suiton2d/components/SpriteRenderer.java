@@ -54,19 +54,20 @@ public class SpriteRenderer<T extends Animation> extends AnimatedRenderer<T> {
             currentAnimation.render(transform, batch, cam, dt);
         } else {
             Sprite sprite = getSprite();
-            float halfw = sprite.getWidth() / 2.0f;
-            float halfh = sprite.getHeight() / 2.0f;
-
-            batch.draw(new TextureRegion(sprite.getData()),
-                    transform.getPosition().x - halfw - cam.position.x,
-                    transform.getPosition().y - halfh - cam.position.y,
-                    transform.getPosition().x - halfw - cam.position.x,
-                    transform.getPosition().y - halfh - cam.position.y,
-                    sprite.getWidth(),
-                    sprite.getHeight(),
-                    transform.getScale().x,
-                    transform.getScale().y,
-                    transform.getRotation());
+            if (sprite != null) {
+                float halfw = sprite.getWidth() / 2.0f;
+                float halfh = sprite.getHeight() / 2.0f;
+                batch.draw(new TextureRegion(sprite.getData()),
+                        transform.getPosition().x - halfw,
+                        transform.getPosition().y - halfh,
+                        transform.getPosition().x - halfw,
+                        transform.getPosition().y - halfh,
+                        sprite.getWidth(),
+                        sprite.getHeight(),
+                        transform.getScale().x,
+                        transform.getScale().y,
+                        transform.getRotation());
+            }
         }
     }
 
