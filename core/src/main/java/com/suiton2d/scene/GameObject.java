@@ -70,6 +70,13 @@ public class GameObject extends Group {
     }
 
     @Override
+    public void addActor(Actor actor) {
+        super.addActor(actor);
+        if (actor instanceof GameObject)
+            ((GameObject)actor).setLayer(layer);
+    }
+
+    @Override
     public boolean remove() {
         boolean removed = super.remove();
         if (removed)
