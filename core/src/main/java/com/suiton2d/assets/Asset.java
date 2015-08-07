@@ -38,7 +38,7 @@ public abstract class Asset<T> implements Disposable {
 
     protected Asset(String path, T data) {
         this.path = path;
-        this.filename = path.substring(path.lastIndexOf(File.separator));
+        this.filename = path.substring(path.lastIndexOf("/"));
         this.loaded = false;
         this.data = data;
     }
