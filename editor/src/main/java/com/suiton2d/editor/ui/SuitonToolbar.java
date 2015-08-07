@@ -27,7 +27,7 @@ import java.util.Enumeration;
 /**
  * custom toolbar implementation
  */
-public class N2DToolbar extends JToolBar {
+public class SuitonToolbar extends JToolBar {
     public static final int RENDERER_WIDGET_TRANSLATE = 0;
     public static final int RENDERER_WIDGET_SCALE = 1;
     public static final int RENDERER_WIDGET_ROTATE = 2;
@@ -35,7 +35,7 @@ public class N2DToolbar extends JToolBar {
     private int selectedRendererWidget;
     private ButtonGroup renderWidgets;
 
-    public N2DToolbar() {
+    public SuitonToolbar() {
         selectedRendererWidget = 0;
         addButtons();
 

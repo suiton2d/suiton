@@ -26,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.suiton2d.editor.framework.SceneNode;
 import com.suiton2d.editor.framework.Selection;
 import com.suiton2d.editor.ui.MainFrame;
-import com.suiton2d.editor.ui.N2DToolbar;
+import com.suiton2d.editor.ui.SuitonToolbar;
 import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.Scene;
@@ -169,13 +169,13 @@ public class RenderCanvas extends LwjglCanvas implements MouseListener, MouseMot
 
     private void transformObject(Point mousPos) {
         switch (MainFrame.getToolbar().getSelectedRendererWidget()) {
-            case N2DToolbar.RENDERER_WIDGET_TRANSLATE:
+            case SuitonToolbar.RENDERER_WIDGET_TRANSLATE:
                 translateObject(mousPos);
                 break;
-            case N2DToolbar.RENDERER_WIDGET_SCALE:
+            case SuitonToolbar.RENDERER_WIDGET_SCALE:
                 scaleObject(mousPos);
                 break;
-            case N2DToolbar.RENDERER_WIDGET_ROTATE:
+            case SuitonToolbar.RENDERER_WIDGET_ROTATE:
                 rotateObject(mousPos);
                 break;
         }

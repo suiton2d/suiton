@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
     private static MainFrame instance;
     private static RenderCanvas renderCanvas = new RenderCanvas(new RenderAdapter());
     private static SceneGraph sceneGraph = new SceneGraph();
-    private static N2DToolbar toolbar = new N2DToolbar();
+    private static SuitonToolbar toolbar = new SuitonToolbar();
     private static N2DMenuBar menuBar;
     private static Project project;
     private static N2DSettings settings = new N2DSettings();
@@ -125,7 +125,7 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
-    public static N2DToolbar getToolbar() {
+    public static SuitonToolbar getToolbar() {
         return toolbar;
     }
 
