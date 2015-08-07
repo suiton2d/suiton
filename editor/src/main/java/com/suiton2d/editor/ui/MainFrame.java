@@ -48,7 +48,7 @@ public class MainFrame extends JFrame {
     private static RenderCanvas renderCanvas = new RenderCanvas(new RenderAdapter());
     private static SceneGraph sceneGraph = new SceneGraph();
     private static SuitonToolbar toolbar = new SuitonToolbar();
-    private static N2DMenuBar menuBar;
+    private static SuitonMenuBar menuBar;
     private static Project project;
     private static N2DSettings settings = new N2DSettings();
     private static AssetsPane assetsPane = new AssetsPane();
@@ -77,7 +77,7 @@ public class MainFrame extends JFrame {
 
         sceneGraph.setEnabled(false);
 
-        menuBar = new N2DMenuBar();
+        menuBar = new SuitonMenuBar();
         setJMenuBar(menuBar);
         pack();
         setVisible(true);
@@ -121,7 +121,7 @@ public class MainFrame extends JFrame {
         return project;
     }
 
-    public static N2DMenuBar getN2DMenuBar() {
+    public static SuitonMenuBar getN2DMenuBar() {
         return menuBar;
     }
 

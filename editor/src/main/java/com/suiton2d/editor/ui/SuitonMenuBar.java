@@ -40,7 +40,7 @@ import java.io.IOException;
 /**
  * Custom JMenuBar implementation
  */
-public class N2DMenuBar extends JMenuBar {
+public class SuitonMenuBar extends JMenuBar {
 
     private JMenu sceneMenu;
     private JMenu gameObjectMenu;
@@ -58,7 +58,7 @@ public class N2DMenuBar extends JMenuBar {
 
     private JMenuItem newEmptyGameObjectMenuItem;
 
-    public N2DMenuBar() {
+    public SuitonMenuBar() {
         JMenu fileMenu = new JMenu("File");
 
         newMenuItem = fileMenu.add("New Project");
@@ -110,7 +110,7 @@ public class N2DMenuBar extends JMenuBar {
             JFileChooser fc = new JFileChooser();
             fc.setFileFilter(new FileNameExtensionFilter("Nebula2D Project File (*.n2d)", "n2d"));
             fc.setAcceptAllFileFilterUsed(false);
-            if (fc.showOpenDialog(N2DMenuBar.this) == JFileChooser.APPROVE_OPTION) {
+            if (fc.showOpenDialog(SuitonMenuBar.this) == JFileChooser.APPROVE_OPTION) {
                 MainFrame.getSceneGraph().wipe();
                 MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
 
@@ -125,7 +125,7 @@ public class N2DMenuBar extends JMenuBar {
                         });
                     } catch (IOException e1) {
                         MainFrame.setProject(null);
-                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(N2DMenuBar.this, e1.getMessage()));
+                        SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(SuitonMenuBar.this, e1.getMessage()));
                     }
                 });
 
