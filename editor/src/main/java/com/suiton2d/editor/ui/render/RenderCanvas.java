@@ -77,13 +77,12 @@ public class RenderCanvas extends LwjglCanvas implements MouseListener, MouseMot
     }
 
     private void searchGameObjectChildrenForSelection(GameObject gameObject, List<Selection> selections, float x, float y) {
+        if (isGameObjectSelected(gameObject, getCamera(), x, getCamera().viewportHeight-y))
+            selections.add(new Selection(gameObject));
+
         for (Actor child : gameObject.getChildren()) {
             GameObject g = (GameObject) child;
-            if (isGameObjectSelected(g, getCamera(), x, getCamera().viewportHeight-y)) {
-                selections.add(new Selection(g));
-            } else {
-                searchGameObjectChildrenForSelection(g, selections, x, y);
-            }
+            searchGameObjectChildrenForSelection(g, selections, x, y);
         }
     }
 
