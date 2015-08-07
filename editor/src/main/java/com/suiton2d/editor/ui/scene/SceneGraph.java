@@ -18,6 +18,7 @@
 
 package com.suiton2d.editor.ui.scene;
 
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.suiton2d.editor.framework.SceneNode;
 import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.editor.ui.controls.SuitonTree;
@@ -169,7 +170,7 @@ public class SceneGraph extends SuitonTree {
      */
     public void addLayer(Layer layer) {
         SceneNode<Layer> layerNode = new SceneNode<>(layer.getName(), layer);
-        layer.getGameObjects().forEach(go -> layerNode.add(new SceneNode<>(go.getName(), go)));
+        layer.getChildren().forEach(go -> layerNode.add(new SceneNode<>(go.getName(), (Group)go)));
         root.add(layerNode);
         refresh();
     }
@@ -248,15 +249,9 @@ public class SceneGraph extends SuitonTree {
                         if (node.getData() instanceof Layer)
                             break;
 
-
-                        if (node.getData() instanceof GameObject) {
-                            if (dest.getData() instanceof Layer)
-                                ((Layer) dest.getData()).addGameObject((GameObject) node.getData());
-                            else if (dest.getData() instanceof GameObject)
-                                ((GameObject) dest.getData()).addActor((GameObject) node.getData());
-
+                        if (node.getData() instanceof GameObject)
                             dest.add(node);
-                        }
+
                         dtde.acceptDrop(dtde.getDropAction());
                         dtde.dropComplete(true);
                         return;

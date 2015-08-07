@@ -18,10 +18,9 @@
 
 package com.suiton2d.editor.framework;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.suiton2d.editor.ui.MainFrame;
-import com.suiton2d.scene.GameObject;
-import com.suiton2d.scene.Layer;
-import com.suiton2d.scene.Scene;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -37,6 +36,12 @@ public class SceneNode<T> extends DefaultMutableTreeNode {
     public SceneNode(String name, T data) {
         this(name);
         this.data = data;
+    }
+
+    public void add(SceneNode sceneNode) {
+        super.add(sceneNode);
+        if (sceneNode.getData() != null && sceneNode.getData() instanceof Actor && getData() instanceof Group)
+            ((Group)getData()).addActor((Actor)sceneNode.getData());
     }
 
     public String getName() {
@@ -57,15 +62,9 @@ public class SceneNode<T> extends DefaultMutableTreeNode {
 
     public void remove() {
         SceneNode parent = (SceneNode) getParent();
+        if (data instanceof Actor)
+            ((Actor)data).remove();
         parent.remove(this);
-        Object parentData = parent.getData();
-        if (parentData instanceof Scene)
-            ((Scene) parentData).removeLayer(((Layer) data));
-        else if (parentData instanceof Layer)
-            ((Layer) parentData).removeGameObject(((GameObject) data));
-        else
-            ((GameObject) parentData).removeActor(((GameObject) data));
-
         MainFrame.getSceneGraph().refresh();
     }
 

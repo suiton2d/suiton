@@ -1,5 +1,6 @@
 package com.suiton2d.editor.io.savers;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.suiton2d.editor.io.FullBufferedWriter;
 import com.suiton2d.editor.io.Saver;
 import com.suiton2d.scene.GameObject;
@@ -19,9 +20,9 @@ public class LayerSaver implements Saver {
     public void save(FullBufferedWriter fw) throws IOException {
         fw.writeLine(layer.getName());
         fw.writeIntLine(layer.getZOrder());
-        fw.writeIntLine(layer.getGameObjects().size);
-        for (GameObject gameObject : layer.getGameObjects()) {
-            new GameObjectSaver(gameObject).save(fw);
+        fw.writeIntLine(layer.getChildren().size);
+        for (Actor gameObject : layer.getChildren()) {
+            new GameObjectSaver((GameObject)gameObject).save(fw);
         }
     }
 }

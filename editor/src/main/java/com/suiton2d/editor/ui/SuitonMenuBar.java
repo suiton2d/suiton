@@ -19,8 +19,8 @@
 package com.suiton2d.editor.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.suiton2d.editor.framework.SceneNode;
 import com.suiton2d.editor.framework.Project;
+import com.suiton2d.editor.framework.SceneNode;
 import com.suiton2d.editor.ui.scene.ChangeSceneDialog;
 import com.suiton2d.editor.ui.scene.NewSceneDialog;
 import com.suiton2d.editor.ui.scene.RenameSceneDialog;
@@ -32,7 +32,14 @@ import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.SceneManager;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.IOException;
 
@@ -120,7 +127,7 @@ public class SuitonMenuBar extends JMenuBar {
                         MainFrame.getSceneGraph().init();
                         SwingUtilities.invokeLater(() -> {
                             SceneGraph graph = MainFrame.getSceneGraph();
-                            SceneManager.getCurrentScene().getLayers().forEach(graph::addLayer);
+                            SceneManager.getCurrentScene().getChildren().forEach((l) -> graph.addLayer((Layer) l));
                             graph.refresh();
                         });
                     } catch (IOException e1) {
@@ -150,7 +157,7 @@ public class SuitonMenuBar extends JMenuBar {
         renameSceneMenuItem.addActionListener(e -> new RenameSceneDialog());
         newLayerMenuItem.addActionListener(e -> {
             Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount(),
-                    SceneManager.getCurrentScene().getLayers().size);
+                    SceneManager.getCurrentScene().getChildren().size);
             SceneManager.getCurrentScene().addLayer(layer);
             MainFrame.getSceneGraph().addLayer(layer);
         });
@@ -160,11 +167,6 @@ public class SuitonMenuBar extends JMenuBar {
             SceneNode selectedNode = (SceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
 
             GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
-            if (selectedNode.getData() instanceof GameObject)
-                ((GameObject) selectedNode.getData()).addActor(go);
-            else if (selectedNode.getData() instanceof Layer)
-                ((Layer) selectedNode.getData()).addGameObject(go);
-
             selectedNode.add(new SceneNode<>(go.getName(), go));
             MainFrame.getSceneGraph().refresh();
         });

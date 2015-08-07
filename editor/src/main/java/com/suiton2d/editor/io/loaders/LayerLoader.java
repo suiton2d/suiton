@@ -17,7 +17,7 @@ public class LayerLoader implements Loader<Layer> {
         GameObjectLoader gameObjectLoader = new GameObjectLoader();
         for (int i = 0; i < numGameObjects; ++i) {
             GameObject gameObject = gameObjectLoader.load(fr);
-            layer.addGameObject(gameObject);
+            layer.addActor(gameObject);
         }
 
         return layer;

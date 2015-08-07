@@ -67,9 +67,9 @@ public class RenderCanvas extends LwjglCanvas implements MouseListener, MouseMot
 
         Scene scene = SceneManager.getCurrentScene();
         if (scene != null) {
-            for (Layer layer : scene.getLayers()) {
-                for (GameObject gameObject : layer.getGameObjects())
-                    searchGameObjectChildrenForSelection(gameObject, res, x, y);
+            for (Actor layer : scene.getChildren()) {
+                for (Actor gameObject : ((Layer)layer).getChildren())
+                    searchGameObjectChildrenForSelection((GameObject)gameObject, res, x, y);
             }
         }
 

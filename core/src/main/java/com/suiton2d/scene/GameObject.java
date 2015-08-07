@@ -22,7 +22,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.suiton2d.components.AnimatedRenderer;
 import com.suiton2d.components.Component;
@@ -68,6 +67,14 @@ public class GameObject extends Group {
         this.layer = layer;
         for (Actor actor : getChildren())
             ((GameObject) actor).setLayer(layer);
+    }
+
+    @Override
+    public boolean remove() {
+        boolean removed = super.remove();
+        if (removed)
+            layer = null;
+        return removed;
     }
 
     /**
@@ -116,8 +123,7 @@ public class GameObject extends Group {
         drawChildren(batch, parentAlpha);
     }
 
-    public void start(Stage stage) {
-        stage.addActor(this);
+    public void start() {
         for (Component c : components) {
             if (c.isEnabled())
                 c.start();

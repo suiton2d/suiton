@@ -18,8 +18,8 @@
 
 package com.suiton2d.scene;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
  * Layer is a class used to provide logical order to the update of
@@ -29,11 +29,10 @@ import com.badlogic.gdx.utils.Array;
  *
  * @author Jon Bonazza <jonbonazza@gmail.com>
  */
-public class Layer {
+public class Layer extends Group {
 
     private String name;
     private int zOrder;
-    private Array<GameObject> gameObjects;
     private Scene scene;
 
     public Layer(String name) {
@@ -43,7 +42,6 @@ public class Layer {
     public Layer(String name, int zOrder) {
         this.name = name;
         this.zOrder = zOrder;
-        gameObjects = new Array<>();
     }
 
     public String getName() {
@@ -54,12 +52,16 @@ public class Layer {
         return zOrder;
     }
 
-    public Array<GameObject> getGameObjects() {
-        return gameObjects;
-    }
-
     public Scene getScene() {
         return scene;
+    }
+
+    @Override
+    public boolean remove() {
+        boolean removed = super.remove();
+        if (removed)
+            scene = null;
+        return removed;
     }
 
     public void setScene(Scene scene) {
@@ -80,50 +82,34 @@ public class Layer {
      * @return The target GameObject.
      */
     public GameObject getGameObject(String name) {
-        for (GameObject go : gameObjects) {
-            GameObject hit = (GameObject) go.findActor(name);
-            if (hit != null)
-                return hit;
-        }
-
-        return null;
+        Actor actor = findActor(name);
+        return actor != null ? (GameObject) actor : null;
     }
 
-    /**
-     * Adds a GameObject to the Layer.
-     * @param gameObject The GameObject to add.
-     */
-    public void addGameObject(GameObject gameObject) {
-        gameObjects.add(gameObject);
-        gameObject.setLayer(this);
+    public void start() {
+        for (Actor actor : getChildren())
+            ((GameObject) actor).start();
     }
 
-    /**
-     * Removes a GameObject from the Layer.
-     * @param gameObject The GameObject to remove.
-     */
-    public void removeGameObject(GameObject gameObject) {
-        gameObjects.removeValue(gameObject, true);
-        gameObject.setLayer(null);
-    }
-
-    public void start(Stage stage) {
-        for (GameObject go : gameObjects)
-            go.start(stage);
+    @Override
+    public void addActor(Actor actor) {
+        super.addActor(actor);
+        if(actor instanceof GameObject)
+            ((GameObject)actor).setLayer(this);
     }
 
     public void finish() {
-        for (GameObject go : gameObjects)
-            go.finish();
+        for (Actor actor : getChildren())
+            ((GameObject) actor).finish();
     }
 
     public void beginCollision(GameObject go1, GameObject go2) {
-        for (GameObject go : gameObjects)
-            go.beginCollision(go1, go2);
+        for (Actor actor : getChildren())
+            ((GameObject) actor).beginCollision(go1, go2);
     }
 
     public void endCollision(GameObject go1, GameObject go2) {
-        for (GameObject go : gameObjects)
-            go.endCollision(go1, go2);
+        for (Actor actor : getChildren())
+            ((GameObject) actor).endCollision(go1, go2);
     }
 }

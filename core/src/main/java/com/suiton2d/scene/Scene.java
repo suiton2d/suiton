@@ -21,6 +21,7 @@ package com.suiton2d.scene;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -34,7 +35,6 @@ import com.suiton2d.util.CollisionListener;
 public class Scene {
 
     private String name;
-    private Array<Layer> layers;
     private Stage stage;
     private World physicalWorld;
     private boolean allowSleeping;
@@ -45,7 +45,6 @@ public class Scene {
         stage = new Stage(new ScreenViewport());
         this.name = name;
         this.allowSleeping = sleepPhysics;
-        this.layers = new Array<>();
     }
 
     public void setName(String name) {
@@ -80,18 +79,9 @@ public class Scene {
         return allowSleeping;
     }
 
-    public Array<Layer> getLayers() {
-        return layers;
-    }
-
-    public void addLayer(Layer l) {
-        layers.add(l);
-        l.setScene(this);
-    }
-
-    public void removeLayer(Layer l) {
-        layers.removeValue(l, true);
-        l.setScene(null);
+    public void addLayer(Layer layer) {
+        stage.addActor(layer);
+        layer.setScene(this);
     }
 
     /**
@@ -100,17 +90,21 @@ public class Scene {
      * @return the target Layer.
      */
     public Layer getLayer(String name) {
-        for (Layer l : layers) {
-            if (l.getName().equals(name))
-                return l;
+        for (Actor a : stage.getActors()) {
+            if (a.getName().equals(name))
+                return (Layer)a;
         }
 
         return null;
     }
 
+    public Array<Actor> getChildren() {
+        return stage.getActors();
+    }
+
     public void start() {
-        for (Layer l : layers)
-            l.start(stage);
+        for (Actor a : stage.getActors())
+            ((Layer)a).start();
     }
 
     public void update(float dt, boolean act) {
@@ -131,8 +125,8 @@ public class Scene {
     }
 
     public void finish() {
-        for (Layer layer : layers)
-            layer.finish();
+        for (Actor a : stage.getActors())
+            ((Layer)a).finish();
 
         if (stage != null)
             stage.dispose();
@@ -142,13 +136,13 @@ public class Scene {
     }
 
     public void beginCollision(GameObject go1, GameObject go2) {
-        for (Layer layer : layers)
-            layer.beginCollision(go1, go2);
+        for (Actor a : stage.getActors())
+            ((Layer)a).beginCollision(go1, go2);
     }
 
     public void endCollision(GameObject go1, GameObject go2) {
-        for (Layer layer : layers)
-            layer.endCollision(go1, go2);
+        for (Actor a : stage.getActors())
+            ((Layer)a).endCollision(go1, go2);
     }
 
     public void cleanup() {

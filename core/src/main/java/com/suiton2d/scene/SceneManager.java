@@ -41,7 +41,6 @@ import com.suiton2d.components.SpriteRenderer;
 import com.suiton2d.components.TiledMapRenderer;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * SceneManager is a singleton class used to manage the game's various {@link Scene}s.
@@ -121,7 +120,7 @@ public class SceneManager {
         World physicalWorld = currentScene.getPhysicalWorld();
         physicalWorld.step(1/45f, 6, 2);
 
-        Array<Body> bodies = new Array<Body>();
+        Array<Body> bodies = new Array<>();
         physicalWorld.getBodies(bodies);
 
         for (Body body : bodies) {
@@ -263,7 +262,7 @@ public class SceneManager {
                         }
                     }
 
-                    layer.addGameObject(gameObject);
+                    layer.addActor(gameObject);
                 }
 
                 scene.addLayer(layer);

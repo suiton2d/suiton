@@ -20,6 +20,7 @@ package com.suiton2d.editor.ui.scene;
 
 import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.editor.ui.controls.SuitonList;
+import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
@@ -66,7 +67,7 @@ public class ChangeSceneDialog extends JDialog {
             SceneGraph sceneGraph = MainFrame.getSceneGraph();
             SceneManager.setCurrentScene(scene.getName());
             sceneGraph.init();
-            scene.getLayers().forEach(sceneGraph::addLayer);
+            scene.getChildren().forEach((l) -> sceneGraph.addLayer((Layer)l));
             sceneGraph.refresh();
             sceneGraph.refresh();
             dispose();

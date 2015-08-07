@@ -21,6 +21,7 @@ package com.suiton2d.editor.ui.scene;
 import com.badlogic.gdx.math.Vector2;
 import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.ui.MainFrame;
+import com.suiton2d.scene.Layer;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
@@ -105,7 +106,7 @@ public class NewSceneDialog extends JDialog {
             SceneManager.addScene(scene);
             SceneManager.setCurrentScene(newSceneName);
             sceneGraph.init();
-            scene.getLayers().forEach(sceneGraph::addLayer);
+            scene.getChildren().forEach((l) -> sceneGraph.addLayer((Layer) l));
             sceneGraph.refresh();
             dispose();
         });
