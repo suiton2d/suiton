@@ -40,9 +40,14 @@ public class Project {
     private String projectDir;
     private String projectName;
 
+    @SuppressWarnings("all")
     public Project(String dir, String name) {
         this.projectDir = dir;
         this.projectName = name;
+        if (this.projectName.endsWith(".n2d"))
+            this.projectName = this.projectName.substring(0, this.projectName.length() - 4);
+        File assetsDir = new File(getAssetsDirPath());
+        assetsDir.mkdir();
     }
 
     @SuppressWarnings("all")
