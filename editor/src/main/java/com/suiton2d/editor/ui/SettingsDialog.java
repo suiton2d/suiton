@@ -4,10 +4,12 @@ import com.suiton2d.editor.settings.ISettings;
 import com.suiton2d.editor.settings.N2DSettings;
 import com.suiton2d.editor.ui.controls.SuitonDialog;
 import com.suiton2d.editor.ui.controls.SuitonList;
-import com.suiton2d.editor.ui.controls.SuitonPanel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 /**
  *
@@ -32,7 +34,7 @@ public class SettingsDialog extends SuitonDialog {
 
     private void render() {
         JScrollPane settingsPanel = createSettingsListPanel();
-        mainPanel = new SuitonPanel(new BorderLayout());
+        mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(settingsPanel, BorderLayout.WEST);
         add(mainPanel);
         settingsList.setSelectedIndex(0);

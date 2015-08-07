@@ -23,7 +23,6 @@ import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.math.Vector2;
 import com.suiton2d.assets.AssetManager;
 import com.suiton2d.editor.framework.Project;
-import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.editor.util.PlatformUtil;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
@@ -34,6 +33,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
@@ -61,12 +61,12 @@ public class NewProjectDialog extends JDialog {
         createBtn = new JButton("Create");
         cancelBtn = new JButton("Cancel");
 
-        SuitonPanel buttonPanel = new SuitonPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(createBtn);
         buttonPanel.add(cancelBtn);
 
 
-        SuitonPanel mainPanel = new SuitonPanel();
+        JPanel mainPanel = new JPanel();
         GroupLayout layout = new GroupLayout(mainPanel);
         mainPanel.setLayout(layout);
 

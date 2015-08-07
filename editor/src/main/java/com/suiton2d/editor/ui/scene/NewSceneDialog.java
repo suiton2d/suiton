@@ -21,13 +21,13 @@ package com.suiton2d.editor.ui.scene;
 import com.badlogic.gdx.math.Vector2;
 import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.ui.MainFrame;
-import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
@@ -58,8 +58,8 @@ public class NewSceneDialog extends JDialog {
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
 
-        final SuitonPanel namePanel = new SuitonPanel();
-        final SuitonPanel btnPanel = new SuitonPanel();
+        final JPanel namePanel = new JPanel();
+        final JPanel btnPanel = new JPanel();
 
         nameTf.setText("Untitled Scene " + SceneManager.getSceneCount());
 

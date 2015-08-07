@@ -1,7 +1,5 @@
 package com.suiton2d.editor.settings;
 
-import com.suiton2d.editor.ui.controls.SuitonPanel;
-
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -67,11 +65,11 @@ public class GradleSettings implements ISettings {
 
         cancelBtn.addActionListener(e -> parent.dispose());
 
-        final JPanel buttonPanel = new SuitonPanel();
+        final JPanel buttonPanel = new JPanel();
         buttonPanel.add(applyBtn);
         buttonPanel.add(cancelBtn);
 
-        JPanel topPanel = new SuitonPanel();
+        JPanel topPanel = new JPanel();
         GroupLayout layout = new GroupLayout(topPanel);
         topPanel.setLayout(layout);
         layout.setAutoCreateContainerGaps(true);
@@ -87,7 +85,7 @@ public class GradleSettings implements ISettings {
                 addComponent(gradleHomeLbl).addComponent(gradleHomeTf));
         layout.setVerticalGroup(vGroup);
 
-        JPanel mainPanel = new SuitonPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         mainPanel.add(topPanel, BorderLayout.CENTER);
 

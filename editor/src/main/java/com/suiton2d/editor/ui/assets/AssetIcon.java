@@ -2,15 +2,15 @@ package com.suiton2d.editor.ui.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.suiton2d.editor.ui.controls.ImagePanel;
-import com.suiton2d.editor.ui.controls.SuitonPanel;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
 
-public class AssetIcon extends SuitonPanel {
+public class AssetIcon extends JPanel {
 
     @SuppressWarnings("all")
     private AssetIconDragSource dragSource;

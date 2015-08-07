@@ -1,8 +1,8 @@
 package com.suiton2d.editor.ui.assets;
 
 import com.suiton2d.editor.framework.FileNode;
-import com.suiton2d.editor.ui.controls.SuitonPanel;
 
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import java.awt.BorderLayout;
@@ -10,7 +10,7 @@ import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 
-public class AssetsPane extends SuitonPanel {
+public class AssetsPane extends JPanel {
     private AssetsTree assetsTree;
     private AssetsView assetsView;
 

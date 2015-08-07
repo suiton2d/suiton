@@ -2,10 +2,10 @@ package com.suiton2d.editor.ui.assets;
 
 import com.suiton2d.editor.framework.FileNode;
 import com.suiton2d.editor.ui.controls.SuitonDialog;
-import com.suiton2d.editor.ui.controls.SuitonPanel;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
@@ -36,8 +36,8 @@ public class NewDirectoryDialog extends SuitonDialog {
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
 
-        final SuitonPanel namePanel = new SuitonPanel();
-        final SuitonPanel btnPanel = new SuitonPanel();
+        final JPanel namePanel = new JPanel();
+        final JPanel btnPanel = new JPanel();
 
         nameTf.setText(String.format("New Directory (%d)", parent.getFile().list(File::isDirectory).length+1));
 

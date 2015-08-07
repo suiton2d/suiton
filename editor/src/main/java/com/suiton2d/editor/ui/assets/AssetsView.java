@@ -1,8 +1,8 @@
 package com.suiton2d.editor.ui.assets;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.suiton2d.editor.ui.controls.SuitonPanel;
 
+import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssetsView extends SuitonPanel {
+public class AssetsView extends JPanel {
 
     private static final int MAX_ROW_SIZE = 6;
     private List<AssetIcon> assetIcons = new ArrayList<>();

@@ -20,13 +20,13 @@ package com.suiton2d.editor.ui.scene;
 
 import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.editor.ui.controls.SuitonList;
-import com.suiton2d.editor.ui.controls.SuitonPanel;
 import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
@@ -51,7 +51,7 @@ public class ChangeSceneDialog extends JDialog {
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
 
-        SuitonPanel btnPanel = new SuitonPanel();
+        JPanel btnPanel = new JPanel();
         btnPanel.add(okBtn);
         btnPanel.add(cancelBtn);
 
