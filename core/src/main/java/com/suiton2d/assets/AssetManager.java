@@ -73,7 +73,7 @@ public class AssetManager {
     }
 
     public static <T> T getAsset(String filename, Class<T> type) {
-        return manager.get(filename, type);
+        return manager.isLoaded(filename) ? manager.get(filename, type) : null;
     }
 
     /**
