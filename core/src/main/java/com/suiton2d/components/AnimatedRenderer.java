@@ -28,14 +28,13 @@ import com.suiton2d.scene.GameObject;
  */
 public abstract class AnimatedRenderer<T extends Animation> extends Component implements Renderer {
 
-    protected Array<T> animations;
+    protected Array<T> animations = new Array<>();
     protected T currentAnimation;
 
     public AnimatedRenderer() {}
 
     public AnimatedRenderer(String name) {
         super(name);
-        animations = new Array<>();
     }
 
     public Array<T> getAnimations() {
