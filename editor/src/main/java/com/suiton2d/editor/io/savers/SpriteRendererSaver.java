@@ -1,5 +1,6 @@
 package com.suiton2d.editor.io.savers;
 
+import com.badlogic.gdx.utils.Array;
 import com.suiton2d.components.Animation;
 import com.suiton2d.components.KeyFrameAnimation;
 import com.suiton2d.components.SpriteRenderer;
@@ -7,7 +8,6 @@ import com.suiton2d.editor.io.FullBufferedWriter;
 import com.suiton2d.editor.io.Types;
 
 import java.io.IOException;
-import java.util.List;
 
 public class SpriteRendererSaver extends BaseComponentSaver<SpriteRenderer> {
 
@@ -21,7 +21,7 @@ public class SpriteRendererSaver extends BaseComponentSaver<SpriteRenderer> {
         fw.writeLine(Types.RendererType.SPRITE.name());
         fw.writeLine(getComponent().getFilename());
         fw.writeIntLine(getComponent().getAnimations().size);
-        for (Animation anim : (List<Animation>) getComponent().getAnimations()) {
+        for (Animation anim : (Array<Animation>) getComponent().getAnimations()) {
             if (anim instanceof KeyFrameAnimation) {
                 fw.writeLine(Types.AnimationType.KEY_FRAME.name());
                 KeyFrameAnimation keyFrameAnimation = (KeyFrameAnimation) anim;
