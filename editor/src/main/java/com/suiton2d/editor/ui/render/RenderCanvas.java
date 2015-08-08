@@ -123,6 +123,7 @@ public class RenderCanvas extends LwjglCanvas implements MouseListener, MouseMot
 
     @Override
     public void mousePressed(MouseEvent e) {
+        System.out.println(e.getButton());
         if (e.getButton() == MouseEvent.BUTTON1) {
             lastPoint = e.getPoint();
             if (e.isControlDown()) {
