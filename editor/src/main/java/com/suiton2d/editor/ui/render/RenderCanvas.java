@@ -18,173 +18,29 @@
 
 package com.suiton2d.editor.ui.render;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.suiton2d.editor.framework.SceneNode;
 import com.suiton2d.editor.framework.Selection;
-import com.suiton2d.editor.ui.MainFrame;
-import com.suiton2d.editor.ui.SuitonToolbar;
 import com.suiton2d.scene.GameObject;
-import com.suiton2d.scene.Layer;
-import com.suiton2d.scene.Scene;
-import com.suiton2d.scene.SceneManager;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
-
-public class RenderCanvas extends LwjglCanvas implements MouseListener, MouseMotionListener, MouseWheelListener {
+public class RenderCanvas extends LwjglCanvas {
 
     protected RenderAdapter adapter;
-
-    protected Point lastPoint;
 
     protected boolean isMouseDown;
 
     public RenderCanvas(RenderAdapter adapter) {
         super(adapter);
         this.adapter = adapter;
-        this.getCanvas().addMouseListener(this);
-        this.getCanvas().addMouseMotionListener(this);
-        this.getCanvas().addMouseWheelListener(this);
         this.isMouseDown = false;
+        Gdx.input.setInputProcessor(new CanvasInputHandler(this));
     }
 
-    public OrthographicCamera getCamera() {
-        return adapter.getCamera();
-    }
-
-    protected List<Selection> getSelectedGameObjects(int x, int y) {
-
-        List<Selection> res = new ArrayList<>();
-
-        if (MainFrame.getProject() == null)
-            return res;
-
-        Scene scene = SceneManager.getCurrentScene();
-        if (scene != null) {
-            for (Actor layer : scene.getChildren()) {
-                for (Actor gameObject : ((Layer)layer).getChildren())
-                    searchGameObjectChildrenForSelection((GameObject)gameObject, res, x, y);
-            }
-        }
-
-        return res;
-    }
-
-    private void searchGameObjectChildrenForSelection(GameObject gameObject, List<Selection> selections, float x, float y) {
-        if (isGameObjectSelected(gameObject, getCamera(), x, getCamera().viewportHeight-y))
-            selections.add(new Selection(gameObject));
-
-        for (Actor child : gameObject.getChildren()) {
-            GameObject g = (GameObject) child;
-            searchGameObjectChildrenForSelection(g, selections, x, y);
-        }
-    }
-
-    private boolean isGameObjectSelected(GameObject gameObject, OrthographicCamera cam, float x, float y) {
-        Selection maybeSelection = new Selection(gameObject);
-        if (gameObject.getRenderer() != null && maybeSelection.getBoundingBox(cam).contains(x, y))
-            return true;
-
-        Vector3 proj = cam.project(new Vector3(gameObject.getX(), gameObject.getY(), 0));
-        Circle point = new Circle(proj.x, proj.y, 4);
-        return point.contains(x, y);
-    }
-
-    protected void translateObject(Point mousePos) {
-        int dx = mousePos.x - lastPoint.x;
-        int dy = mousePos.y - lastPoint.y;
-        adapter.getSelectedObject().getGameObject().moveBy(dx, dy);
-    }
-
-    protected void scaleObject(Point mousePos) {
-        int dx = mousePos.x - lastPoint.x;
-        int dy = mousePos.y - lastPoint.y;
-        adapter.getSelectedObject().getGameObject().scaleBy(dx, dy);
-    }
-
-    protected void rotateObject(Point mousePos) {
-        int dy = mousePos.y - lastPoint.y;
-        adapter.getSelectedObject().getGameObject().rotateBy(dy*0.5f);
+    public Selection getSelectedObject() {
+        return adapter.getSelectedObject();
     }
 
     public void setSelectedObject(GameObject go) {
         this.adapter.setSelectedObject(new Selection(go));
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {}
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            lastPoint = e.getPoint();
-            if (e.isControlDown()) {
-                return;
-            }
-
-            List<Selection> selectedObjects = getSelectedGameObjects(lastPoint.x, lastPoint.y);
-            int size = selectedObjects.size();
-            if (size > 0) {
-                GameObject selectedObject = selectedObjects.get(size - 1).getGameObject();
-                MainFrame.getSceneGraph().setSelectedNode(new SceneNode<>(selectedObject.getName(), selectedObject));
-            } else {
-                MainFrame.getSceneGraph().setSelectionPath(null);
-            }
-        }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
-
-    @Override
-    public void mouseEntered(MouseEvent e) {}
-
-    @Override
-    public void mouseExited(MouseEvent e) {}
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        Point pos = e.getPoint();
-        GameObject selectedObject = adapter.getSelectedObject().getGameObject();
-        if (e.isControlDown()) {
-            int dx = (pos.x - lastPoint.x) / 2;
-            int dy = -(pos.y - lastPoint.y) / 2;
-            getCamera().translate(dx, dy);
-            getCamera().update();
-
-
-        } else if (selectedObject != null) {
-             transformObject(pos);
-        }
-
-        lastPoint = pos;
-    }
-
-    private void transformObject(Point mousPos) {
-        switch (MainFrame.getToolbar().getSelectedRendererWidget()) {
-            case SuitonToolbar.RENDERER_WIDGET_TRANSLATE:
-                translateObject(mousPos);
-                break;
-            case SuitonToolbar.RENDERER_WIDGET_SCALE:
-                scaleObject(mousPos);
-                break;
-            case SuitonToolbar.RENDERER_WIDGET_ROTATE:
-                rotateObject(mousPos);
-                break;
-        }
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {}
-
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-        getCamera().zoom += e.getWheelRotation() * 0.25f;
     }
 }
