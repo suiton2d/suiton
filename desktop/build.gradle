@@ -21,7 +21,7 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
-    compile "com.suiton2d:suiton-core:0.1.1"
+    compile "com.suiton2d:suiton-core:${SUITON_CORE_VERSION}"
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl:${GDX_VERSION}"
     compile "com.badlogicgames.gdx:gdx-platform:${GDX_VERSION}:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-box2d:${GDX_VERSION}"
