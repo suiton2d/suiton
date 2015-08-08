@@ -5,10 +5,17 @@ import com.suiton2d.editor.io.FullBufferedReader;
 import com.suiton2d.editor.io.Loader;
 import com.suiton2d.editor.io.Types;
 import com.suiton2d.scene.GameObject;
+import com.suiton2d.scene.Scene;
 
 import java.io.IOException;
 
 public class GameObjectLoader implements Loader<GameObject> {
+
+    private Scene scene;
+
+    public GameObjectLoader(Scene scene) {
+        this.scene = scene;
+    }
 
     @Override
     public GameObject load(FullBufferedReader fr) throws IOException {
@@ -24,30 +31,22 @@ public class GameObjectLoader implements Loader<GameObject> {
             Types.ComponentType componentType = Types.ComponentType.valueOf(fr.readLine());
             switch (componentType) {
                 case RENDER:
-                    Types.RendererType rendererType = Types.RendererType.valueOf(fr.readLine());
-                    switch (rendererType) {
-                        case TILED:
-                            loader = new TiledMapRendererLoader();
-                            break;
-                        case SPRITE:
-                            loader = new SpriteRendererLoader();
-                            break;
-                    }
+                    loader = new RendererLoader(scene);
                     break;
                 case MUSIC:
-                    loader = new MusicSourceLoader();
+                    loader = new MusicSourceLoader(scene);
                     break;
                 case SFX:
-                    loader = new SoundEffectSourceLoader();
+                    loader = new SoundEffectSourceLoader(scene);
                     break;
                 case BEHAVE:
-                    loader = new BehaviorLoader();
+                    loader = new BehaviorLoader(scene);
                     break;
                 case RIGID_BODY:
-                    loader = new RigidBodyLoader();
+                    loader = new RigidBodyLoader(scene);
                     break;
                 case COLLIDER:
-                    loader = new ColliderLoader();
+                    loader = new ColliderLoader(scene);
                     break;
             }
 
@@ -56,7 +55,7 @@ public class GameObjectLoader implements Loader<GameObject> {
 
         int numChildren = fr.readIntLine();
         for (int i = 0; i < numChildren; ++i) {
-            GameObject child = new GameObjectLoader().load(fr);
+            GameObject child = new GameObjectLoader(scene).load(fr);
             gameObject.addActor(child);
         }
 

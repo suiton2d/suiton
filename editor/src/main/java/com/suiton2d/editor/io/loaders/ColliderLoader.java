@@ -3,10 +3,15 @@ package com.suiton2d.editor.io.loaders;
 import com.suiton2d.components.*;
 import com.suiton2d.editor.io.FullBufferedReader;
 import com.suiton2d.editor.io.Types;
+import com.suiton2d.scene.Scene;
 
 import java.io.IOException;
 
 public class ColliderLoader extends BaseComponentLoader {
+
+    public ColliderLoader(Scene scene) {
+        super(scene);
+    }
 
     @SuppressWarnings("unchecked")
     @Override

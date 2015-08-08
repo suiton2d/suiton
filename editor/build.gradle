@@ -8,6 +8,7 @@ version = '1.0'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 buildscript {
@@ -33,7 +34,7 @@ dependencies {
     compile 'net.lingala.zip4j:zip4j:1.3.2'
 
 
-    compile project(':core')
+    compile "com.suiton2d:suiton-core:${SUITON_CORE_VERSION}"
     compile project(':avocado')
 }
 
@@ -45,17 +46,11 @@ fatJar {
     }
 }
 
-// TODO: Re-enabled this when we have some clients implemented.
-task fixDesktop(dependsOn: ":core:fatJar", type: Copy) {
-    String desktopDir = project(":desktop").projectDir
-    String dest = "$desktopDir${File.separator}lib"
-    from tasks.getByPath(":core:fatJar")
-    into dest
-    String destDirectory = project(":editor").projectDir.absolutePath + "/src/main/resources/client"
-    def created = new File(destDirectory).mkdirs()
-    println created
-    println destDirectory + "/desktop.zip"
-    zipIt(desktopDir, (String)(destDirectory + "/desktop.zip"))
+task fixDesktop(type: Copy) {
+    def desktopDir = project(":desktop").projectDir
+    def destDirectory = projectDir.absolutePath + "/src/main/resources/client"
+    new File(destDirectory).mkdirs()
+    zipIt(desktopDir, destDirectory + "/desktop.zip")
 }
 
 task unfix(type: Delete) {
@@ -63,9 +58,9 @@ task unfix(type: Delete) {
 }
 
 
-def zipIt(String src, String dest) {
-    File topDir = new File(src)
-    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(dest))
+def zipIt(src, dest) {
+    File topDir = new File((String)src)
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream((String)dest))
     int topDirLength = topDir.absolutePath.length()
 
     topDir.eachFileRecurse { file ->
@@ -86,4 +81,5 @@ def zipIt(String src, String dest) {
 
 build.dependsOn fixDesktop
 jar.dependsOn fixDesktop
+fatJar.dependsOn fixDesktop
 clean.dependsOn unfix
