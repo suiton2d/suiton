@@ -16,8 +16,7 @@ public class ColliderLoader extends BaseComponentLoader {
     @SuppressWarnings("unchecked")
     @Override
     public Component onLoad(FullBufferedReader fr) throws IOException {
-        Collider collider = new Collider();
-        collider.setIsSensor(fr.readBooleanLine());
+        boolean isSensor = fr.readBooleanLine();
         float density = fr.readFloatLine();
         float friction = fr.readFloatLine();
         float restitiution = fr.readFloatLine();
@@ -32,8 +31,6 @@ public class ColliderLoader extends BaseComponentLoader {
             float r = fr.readFloatLine();
             collisionShape = new Circle(physicsMaterial, r);
         }
-        collider.setCollisionShape(collisionShape);
-
-        return collider;
+        return new Collider(getName(), collisionShape, isSensor);
     }
 }

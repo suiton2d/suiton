@@ -16,11 +16,12 @@ public class RigidBodyLoader extends BaseComponentLoader {
     @SuppressWarnings("unchecked")
     @Override
     public Component onLoad(FullBufferedReader fr) throws IOException {
-        RigidBody rigidBody = new RigidBody();
-        rigidBody.setIsKinematic(fr.readBooleanLine());
-        rigidBody.setFixedRotation(fr.readBooleanLine());
-        rigidBody.setIsBullet(fr.readBooleanLine());
-        rigidBody.setMass(fr.readFloatLine());
+
+        boolean isKinematic = fr.readBooleanLine();
+        boolean isFixedRotation = fr.readBooleanLine();
+        boolean isBullet = fr.readBooleanLine();
+        float mass = fr.readFloatLine();
+
         float density = fr.readFloatLine();
         float friction = fr.readFloatLine();
         float restitiution = fr.readFloatLine();
@@ -35,8 +36,7 @@ public class RigidBodyLoader extends BaseComponentLoader {
             float r = fr.readFloatLine();
             collisionShape = new Circle(physicsMaterial, r);
         }
-        rigidBody.setCollisionShape(collisionShape);
 
-        return rigidBody;
+        return new RigidBody(getName(), collisionShape, isKinematic, mass, isFixedRotation, isBullet);
     }
 }

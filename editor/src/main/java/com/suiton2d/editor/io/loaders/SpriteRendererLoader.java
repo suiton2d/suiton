@@ -20,17 +20,18 @@ import java.io.IOException;
 public class SpriteRendererLoader implements Loader<Component> {
 
     private Scene scene;
+    private String name;
 
-    public SpriteRendererLoader(Scene scene) {
+    public SpriteRendererLoader(Scene scene, String name) {
         this.scene = scene;
+        this.name = name;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Component load(FullBufferedReader fr) throws IOException {
-        SpriteRenderer spriteRenderer = new SpriteRenderer();
         String filename = fr.readLine();
-        spriteRenderer.setFilename(filename);
+        SpriteRenderer spriteRenderer = new SpriteRenderer(name, filename);
         SpriteLoader.SpriteParameter parameter = new SpriteLoader.SpriteParameter();
         parameter.textureParameter = new TextureLoader.TextureParameter();
         AssetManager.addAsset(scene.getName(), new AssetDescriptor<>(filename, Sprite.class, parameter));

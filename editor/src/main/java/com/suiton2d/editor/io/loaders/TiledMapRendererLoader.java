@@ -16,19 +16,19 @@ import java.io.IOException;
 public class TiledMapRendererLoader implements Loader<Component> {
 
     private Scene scene;
+    private String name;
 
-    public TiledMapRendererLoader(Scene scene) {
+    public TiledMapRendererLoader(Scene scene, String name) {
         this.scene = scene;
+        this.name = name;
     }
 
     @Override
     public Component load(FullBufferedReader fr) throws IOException {
-        TiledMapRenderer tiledMapRenderer = new TiledMapRenderer();
         String filename = fr.readLine();
-        tiledMapRenderer.setFilename(filename);
         TiledTileSheetLoader.TiledTileSheetParameter parameter = new TiledTileSheetLoader.TiledTileSheetParameter();
         parameter.tmxParameters = new TmxMapLoader.Parameters();
         AssetManager.addAsset(scene.getName(), new AssetDescriptor<>(filename, TiledTileSheet.class, parameter));
-        return tiledMapRenderer;
+        return new TiledMapRenderer(name, filename);
     }
 }

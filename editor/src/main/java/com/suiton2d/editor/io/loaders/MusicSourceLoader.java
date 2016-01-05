@@ -20,12 +20,10 @@ public class MusicSourceLoader extends BaseComponentLoader {
 
     @Override
     public Component onLoad(FullBufferedReader fr) throws IOException {
-        MusicSource musicSource = new MusicSource();
         String filename = fr.readLine();
-        musicSource.setFilename(filename);
         MusicTrackLoader.MusicTrackParameter parameter = new MusicTrackLoader.MusicTrackParameter();
         parameter.musicParameter = new MusicLoader.MusicParameter();
         AssetManager.addAsset(scene.getName(), new AssetDescriptor<>(filename, MusicTrack.class, parameter));
-        return musicSource;
+        return new MusicSource(getName(), filename);
     }
 }

@@ -18,10 +18,8 @@ public class BehaviorLoader extends BaseComponentLoader {
 
     @Override
     public Component onLoad(FullBufferedReader fr) throws IOException {
-        Behavior behavior = new Behavior();
         String filename = fr.readLine();
-        behavior.setFilename(filename);
         AssetManager.addAsset(scene.getName(), new AssetDescriptor<>(filename, Script.class));
-        return behavior;
+        return new Behavior(getName(), filename);
     }
 }

@@ -10,16 +10,21 @@ import java.io.IOException;
 public abstract class BaseComponentLoader implements Loader<Component> {
 
     protected Scene scene;
+    private String name;
 
     public BaseComponentLoader(Scene scene) {
         this.scene = scene;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public abstract Component onLoad(FullBufferedReader fr) throws IOException;
 
     @Override
     public Component load(FullBufferedReader fr) throws IOException {
-        String name = fr.readLine();
+        name = fr.readLine();
         Component component = onLoad(fr);
         component.setName(name);
         return component;

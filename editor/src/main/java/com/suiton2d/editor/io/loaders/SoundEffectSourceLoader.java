@@ -20,12 +20,10 @@ public class SoundEffectSourceLoader extends BaseComponentLoader {
 
     @Override
     public Component onLoad(FullBufferedReader fr) throws IOException {
-        SoundEffectSource soundEffectSource = new SoundEffectSource();
         String filename =fr.readLine();
-        soundEffectSource.setFilename(filename);
         SoundEffectLoader.SoundEffectParameter parameter = new SoundEffectLoader.SoundEffectParameter();
         parameter.soundParameter = new SoundLoader.SoundParameter();
         AssetManager.addAsset(scene.getName(), new AssetDescriptor<>(filename, SoundEffect.class, parameter));
-        return soundEffectSource;
+        return new SoundEffectSource(getName(), filename);
     }
 }
