@@ -19,17 +19,20 @@
 package com.suiton2d.editor.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.World;
+import com.suiton2d.assets.AssetManager;
 import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.framework.SceneNode;
+import com.suiton2d.editor.io.loaders.ProjectSceneDataLoader;
 import com.suiton2d.editor.ui.scene.ChangeSceneDialog;
 import com.suiton2d.editor.ui.scene.NewSceneDialog;
 import com.suiton2d.editor.ui.scene.RenameSceneDialog;
-import com.suiton2d.editor.ui.scene.SceneGraph;
 import com.suiton2d.editor.util.ExitAction;
 import com.suiton2d.editor.util.PlatformUtil;
 import com.suiton2d.editor.util.ProjectBuilder;
 import com.suiton2d.scene.GameObject;
 import com.suiton2d.scene.Layer;
+import com.suiton2d.scene.SceneData;
 import com.suiton2d.scene.SceneManager;
 
 import javax.swing.BorderFactory;
@@ -49,6 +52,9 @@ import java.io.IOException;
  */
 public class SuitonMenuBar extends JMenuBar {
 
+    private MainFrame mainFrame;
+    private Project project;
+
     private JMenu sceneMenu;
     private JMenu gameObjectMenu;
 
@@ -65,7 +71,8 @@ public class SuitonMenuBar extends JMenuBar {
 
     private JMenuItem newEmptyGameObjectMenuItem;
 
-    public SuitonMenuBar() {
+    public SuitonMenuBar(MainFrame mainFrame, SceneManager sceneManager, AssetManager assetManager, World world) {
+        this.mainFrame = mainFrame;
         JMenu fileMenu = new JMenu("File");
 
         newMenuItem = fileMenu.add("New Project");
@@ -99,15 +106,23 @@ public class SuitonMenuBar extends JMenuBar {
         sceneMenu.setEnabled(false);
         add(fileMenu);
         add(sceneMenu);
-        bindMenuItems();
+        bindMenuItems(sceneManager, assetManager, world);
     }
 
-    private void bindMenuItems() {
-        newMenuItem.addActionListener(e -> new NewProjectDialog());
+    public void setProject(Project project) {
+        this.project = project;
+        buildMenuItem.setEnabled(project != null);
+        sceneMenu.setEnabled(project != null);
+        saveMenuItem.setEnabled(project != null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void bindMenuItems(SceneManager sceneManager, AssetManager assetManager, World world) {
+        newMenuItem.addActionListener(e -> new NewProjectDialog(mainFrame, sceneManager, assetManager));
 
         saveMenuItem.addActionListener(e -> {
             try {
-                MainFrame.getProject().saveProject();
+                project.saveProject();
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(null, "Failed to save project.");
             }
@@ -118,20 +133,23 @@ public class SuitonMenuBar extends JMenuBar {
             fc.setFileFilter(new FileNameExtensionFilter("Nebula2D Project File (*.n2d)", "n2d"));
             fc.setAcceptAllFileFilterUsed(false);
             if (fc.showOpenDialog(SuitonMenuBar.this) == JFileChooser.APPROVE_OPTION) {
-                MainFrame.getSceneGraph().wipe();
-                MainFrame.setProject(new Project(fc.getSelectedFile().getAbsolutePath()));
+                mainFrame.getSceneGraph().wipe();
+                Project newProject = new Project(fc.getSelectedFile().getAbsolutePath(), sceneManager);
+                mainFrame.setProject(newProject);
 
                 Gdx.app.postRunnable(() -> {
                     try {
-                        MainFrame.getProject().loadProject();
-                        MainFrame.getSceneGraph().init();
+                        ProjectSceneDataLoader loader = new ProjectSceneDataLoader(assetManager, world);
+                        SceneData sceneData = loader.loadSceneData(assetManager, Gdx.files.absolute(project.getPath()));
+                        sceneManager.clear();
+                        sceneManager.init(sceneData);
+                        mainFrame.getSceneGraph().init(sceneManager);
                         SwingUtilities.invokeLater(() -> {
-                            SceneGraph graph = MainFrame.getSceneGraph();
-                            SceneManager.getCurrentScene().getChildren().forEach((l) -> graph.addLayer((Layer) l));
-                            graph.refresh();
+                            sceneManager.getCurrentScene().getChildren().forEach((l) -> mainFrame.getSceneGraph().addLayer((Layer) l));
+                            mainFrame.getSceneGraph().refresh();
                         });
                     } catch (IOException e1) {
-                        MainFrame.setProject(null);
+                        mainFrame.setProject(null);
                         SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(SuitonMenuBar.this, e1.getMessage()));
                     }
                 });
@@ -139,52 +157,39 @@ public class SuitonMenuBar extends JMenuBar {
             }
         });
 
-        settingsMenuItem.addActionListener(e -> new SettingsDialog());
+        settingsMenuItem.addActionListener(e -> new SettingsDialog(mainFrame.getSettings()));
 
         buildMenuItem.addActionListener(e -> {
             try {
                 // TODO: Make start scene configurable.
-                Project p = MainFrame.getProject();
-                new ProjectBuilder(p).build(SceneManager.getCurrentScene().getName(), ProjectBuilder.ProjectType.PC);
+                new ProjectBuilder(project).build(sceneManager.getCurrentScene().getName(), ProjectBuilder.ProjectType.PC);
             } catch (Exception e1) {
                 JOptionPane.showMessageDialog(null, "Failed to build project.");
             }
         });
 
-        newSceneMenuItem.addActionListener(e -> new NewSceneDialog());
+        newSceneMenuItem.addActionListener(e -> new NewSceneDialog(mainFrame, sceneManager));
 
-        changeSceneMenuItem.addActionListener(e -> new ChangeSceneDialog());
-        renameSceneMenuItem.addActionListener(e -> new RenameSceneDialog());
+        changeSceneMenuItem.addActionListener(e -> new ChangeSceneDialog(mainFrame, sceneManager));
+        renameSceneMenuItem.addActionListener(e -> new RenameSceneDialog(mainFrame, sceneManager));
         newLayerMenuItem.addActionListener(e -> {
-            Layer layer = new Layer("New Layer " + MainFrame.getSceneGraph().getLayerCount(),
-                    SceneManager.getCurrentScene().getChildren().size);
-            SceneManager.getCurrentScene().addLayer(layer);
-            MainFrame.getSceneGraph().addLayer(layer);
+            Layer layer = new Layer("New Layer " + mainFrame.getSceneGraph().getLayerCount(),
+                    sceneManager.getCurrentScene().getChildren().size);
+            sceneManager.getCurrentScene().addLayer(layer);
+            mainFrame.getSceneGraph().addLayer(layer);
         });
 
         newEmptyGameObjectMenuItem.addActionListener(e -> {
             //If this menu item is enabled, we know 100% that something is selected, so no check is necessary. =)
-            SceneNode selectedNode = (SceneNode) MainFrame.getSceneGraph().getLastSelectedPathComponent();
+            SceneNode selectedNode = (SceneNode) mainFrame.getSceneGraph().getLastSelectedPathComponent();
 
-            GameObject go = new GameObject("Empty Game Object " + MainFrame.getSceneGraph().getGameObjectCount());
-            selectedNode.add(new SceneNode<>(go.getName(), go));
-            MainFrame.getSceneGraph().refresh();
+            GameObject go = new GameObject("Empty Game Object " + mainFrame.getSceneGraph().getGameObjectCount());
+            selectedNode.add(go.getName(), go);
+            mainFrame.getSceneGraph().refresh();
         });
-    }
-
-    public JMenuItem getBuildMenuItem() {
-        return  buildMenuItem;
-    }
-
-    public JMenu getSceneMenu() {
-        return sceneMenu;
     }
 
     public JMenu getGameObjectMenu() {
         return gameObjectMenu;
-    }
-
-    public JMenuItem getSaveMenuItem() {
-        return saveMenuItem;
     }
 }

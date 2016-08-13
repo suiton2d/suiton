@@ -20,13 +20,16 @@ package com.suiton2d.editor.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.suiton2d.assets.AssetManager;
 import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.settings.N2DSettings;
 import com.suiton2d.editor.ui.assets.AssetsPane;
-import com.suiton2d.editor.ui.render.RenderAdapter;
 import com.suiton2d.editor.ui.render.RenderCanvas;
 import com.suiton2d.editor.ui.scene.SceneGraph;
+import com.suiton2d.scene.SceneData;
+import com.suiton2d.scene.SceneManager;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -44,20 +47,25 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public class MainFrame extends JFrame {
-    private static MainFrame instance;
-    private static RenderCanvas renderCanvas = new RenderCanvas(new RenderAdapter());
-    private static SceneGraph sceneGraph = new SceneGraph();
-    private static SuitonToolbar toolbar = new SuitonToolbar();
-    private static SuitonMenuBar menuBar;
-    private static Project project;
-    private static N2DSettings settings = new N2DSettings();
-    private static AssetsPane assetsPane = new AssetsPane();
+    private RenderCanvas renderCanvas;
+    private SceneGraph sceneGraph;
+    private SuitonToolbar toolbar = new SuitonToolbar();
+    private SuitonMenuBar menuBar;
+    private N2DSettings settings = new N2DSettings();
+    private AssetsPane assetsPane = new AssetsPane();
+    private AssetManager assetManager;
+    private SceneManager sceneManager;
+    private Project project;
 
     public MainFrame() {
         super("Nebula2D");
-        instance = this;
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Rectangle windowSize = ge.getMaximumWindowBounds();
+        assetManager = new AssetManager(new AbsoluteFileHandleResolver());
+        sceneManager = new SceneManager(assetManager, new SceneData(""));
+        World world = new World(new Vector2(0, 0), true);
+        renderCanvas = new RenderCanvas(this, sceneManager);
+
         try {
             settings.loadFromProperties();
         } catch (IOException e) {
@@ -65,20 +73,20 @@ public class MainFrame extends JFrame {
             System.exit(1);
         }
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        JScrollPane sp = new JScrollPane(sceneGraph);
         JPanel canvasPanel = new JPanel(new BorderLayout());
         canvasPanel.add(renderCanvas.getCanvas());
+
+        sceneGraph = new SceneGraph(this);
+        sceneGraph.setEnabled(false);
+        menuBar = new SuitonMenuBar(this, sceneManager, assetManager, world);
+        setJMenuBar(menuBar);
+        JScrollPane sp = new JScrollPane(sceneGraph);
         sp.setPreferredSize(new Dimension(windowSize.width/6, (windowSize.height - windowSize.height/4)));
         JSplitPane hSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sp, canvasPanel);
 
         JSplitPane vSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, hSplitPane, assetsPane);
         getContentPane().add(toolbar, BorderLayout.NORTH);
         getContentPane().add(vSplitPane);
-
-        sceneGraph.setEnabled(false);
-
-        menuBar = new SuitonMenuBar();
-        setJMenuBar(menuBar);
         pack();
         setVisible(true);
         vSplitPane.setDividerLocation(getHeight() - getHeight()/3);
@@ -96,7 +104,7 @@ public class MainFrame extends JFrame {
                     } catch (IOException e1) {
                         JOptionPane.showMessageDialog(MainFrame.this, "Failed to save settings.");
                     }
-                    AssetManager.cleanup();
+                    assetManager.cleanup();
 
                     Gdx.app.postRunnable(() -> {
                         renderCanvas.stop();
@@ -105,52 +113,45 @@ public class MainFrame extends JFrame {
                 }
             }
         });
-
-        AssetManager.init(new AbsoluteFileHandleResolver());
     }
 
-    public static RenderCanvas getRenderCanvas() {
-        return renderCanvas;
+    public void setProject(Project project) {
+        this.project = project;
+        sceneGraph.wipe();
+        sceneGraph.init(sceneManager);
+        sceneGraph.setEnabled(project != null);
+        menuBar.setProject(project);
+        toolbar.setRendererWidgetsEnabled(project != null);
+        if (project != null) {
+            setTitle("Nebula2D - " + project.getName());
+            if (!assetsPane.getAssetsTree().isInitialized())
+                assetsPane.getAssetsTree().init(project);
+        } else {
+            setTitle("Nebual2D");
+        }
     }
 
-    public static SceneGraph getSceneGraph() {
-        return sceneGraph;
-    }
-
-    public static Project getProject() {
-        return project;
-    }
-
-    public static SuitonMenuBar getN2DMenuBar() {
-        return menuBar;
-    }
-
-    public static SuitonToolbar getToolbar() {
-        return toolbar;
-    }
-
-    public static N2DSettings getSettings() {
+    public N2DSettings getSettings() {
         return settings;
     }
 
-    public static AssetsPane getAssetsPane() {
-        return assetsPane;
+    public SuitonMenuBar getSuitonMenuBar() {
+        return menuBar;
     }
 
-    public static void setProject(Project project) {
-        MainFrame.project = project;
-        sceneGraph.setEnabled(project != null);
-        menuBar.getBuildMenuItem().setEnabled(project != null);
-        menuBar.getSceneMenu().setEnabled(project != null);
-        toolbar.setRendererWidgetsEnabled(project != null);
-        menuBar.getSaveMenuItem().setEnabled(project != null);
+    public SuitonToolbar getSuitonToolbar() {
+        return toolbar;
+    }
 
-        if (project != null) {
-            instance.setTitle("Nebula2D - " + project.getName());
-            if (!assetsPane.getAssetsTree().isInitialized())
-                assetsPane.getAssetsTree().init();
-        } else {
-            instance.setTitle("Nebual2D");
-        }
+    public SceneGraph getSceneGraph() {
+        return sceneGraph;
+    }
+
+    public RenderCanvas getRenderCanvas() {
+        return renderCanvas;
+    }
+
+    public Project getProject() {
+        return project;
     }
 }

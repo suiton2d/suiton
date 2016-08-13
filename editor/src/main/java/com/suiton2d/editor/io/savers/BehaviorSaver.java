@@ -1,18 +1,24 @@
 package com.suiton2d.editor.io.savers;
 
-import com.suiton2d.components.Behavior;
+import com.suiton2d.components.behavior.Behavior;
 import com.suiton2d.editor.io.FullBufferedWriter;
+import com.suiton2d.editor.io.Saver;
+import com.suiton2d.editor.io.Types;
 
 import java.io.IOException;
 
-public class BehaviorSaver extends BaseComponentSaver<Behavior> {
+public class BehaviorSaver implements Saver {
 
-    public BehaviorSaver(Behavior component) {
-        super(component);
+    private Behavior behavior;
+
+    public BehaviorSaver(Behavior behavior) {
+        this.behavior = behavior;
     }
 
     @Override
-    public void onSave(FullBufferedWriter fw) throws IOException {
-        fw.writeLine(getComponent().getFilename());
+    public void save(FullBufferedWriter fw) throws IOException {
+        fw.writeLine(Types.ComponentType.BEHAVE.name());
+        fw.writeLine(behavior.getName());
+        fw.writeLine(behavior.getFilename());
     }
 }

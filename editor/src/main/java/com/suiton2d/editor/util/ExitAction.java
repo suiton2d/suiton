@@ -13,25 +13,19 @@ import java.awt.event.WindowEvent;
  *  WindowListener that handles the windowClosing event will be executed.
  *  Since clicking on the "Close" button of the frame or selecting the "Close"
  *  option from the system menu also invoke the WindowListener, this will
- *  provide a commen exit point for the application.
+ *  provide a common exit point for the application.
  */
-public class ExitAction extends AbstractAction
-{
-    public ExitAction()
-    {
+public class ExitAction extends AbstractAction {
+    public ExitAction() {
         super("Exit");
         putValue( Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_X) );
     }
 
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         //  Find the active frame before creating and dispatching the event
-
-        for (Frame frame : Frame.getFrames())
-        {
-            if (frame.isActive())
-            {
+        for (Frame frame : Frame.getFrames()) {
+            if (frame.isActive()) {
                 WindowEvent windowClosing = new WindowEvent(frame, WindowEvent.WINDOW_CLOSING);
                 frame.dispatchEvent(windowClosing);
             }

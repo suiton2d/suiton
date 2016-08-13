@@ -24,8 +24,12 @@ import java.awt.Color;
 public class RenameSceneDialog extends JDialog {
 
     private JTextField nameTf;
+    private MainFrame mainFrame;
+    private SceneManager sceneManager;
 
-    public RenameSceneDialog() {
+    public RenameSceneDialog(MainFrame mainFrame, SceneManager sceneManager) {
+        this.mainFrame = mainFrame;
+        this.sceneManager = sceneManager;
         setTitle("Rename Current Scene");
         setupContents();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -36,7 +40,7 @@ public class RenameSceneDialog extends JDialog {
     private void setupContents() {
         nameTf = new JTextField(20);
 
-        final Scene currentScene = SceneManager.getCurrentScene();
+        final Scene currentScene = sceneManager.getCurrentScene();
         final Color defaultFg = nameTf.getForeground();
         final JLabel nameLbl = new JLabel("Scene Name: ");
         final JButton okBtn = new JButton("Ok");
@@ -97,7 +101,7 @@ public class RenameSceneDialog extends JDialog {
 
     private boolean validateText() {
         String txt = nameTf.getText();
-        Project project = MainFrame.getProject();
+        Project project = mainFrame.getProject();
         return !txt.isEmpty() && !project.containsSceneWithName(txt);
     }
 }

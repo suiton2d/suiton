@@ -2,6 +2,13 @@ package com.suiton2d.editor.io.savers;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.suiton2d.components.*;
+import com.suiton2d.components.audio.MusicSource;
+import com.suiton2d.components.audio.SoundEffectSource;
+import com.suiton2d.components.behavior.Behavior;
+import com.suiton2d.components.gfx.SpriteRenderer;
+import com.suiton2d.components.gfx.TiledMapRenderer;
+import com.suiton2d.components.physics.Collider;
+import com.suiton2d.components.physics.RigidBody;
 import com.suiton2d.editor.io.FullBufferedWriter;
 import com.suiton2d.editor.io.Saver;
 import com.suiton2d.scene.GameObject;

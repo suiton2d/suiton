@@ -20,25 +20,28 @@ package com.suiton2d.editor.framework;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.suiton2d.editor.ui.MainFrame;
+import com.suiton2d.editor.ui.scene.SceneGraph;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class SceneNode<T> extends DefaultMutableTreeNode {
 
+    private SceneGraph sceneGraph;
     private String name;
     private T data;
 
-    public SceneNode(String name) {
+    public SceneNode(SceneGraph sceneGraph, String name) {
+        this.sceneGraph = sceneGraph;
         this.name = name;
     }
 
-    public SceneNode(String name, T data) {
-        this(name);
+    public SceneNode(SceneGraph sceneGraph, String name, T data) {
+        this(sceneGraph, name);
         this.data = data;
     }
 
-    public void add(SceneNode sceneNode) {
+    public <E> void add(String name, E data) {
+        SceneNode sceneNode = new SceneNode<>(sceneGraph, name, data);
         super.add(sceneNode);
         if (sceneNode.getData() != null && sceneNode.getData() instanceof Actor && getData() instanceof Group)
             ((Group)getData()).addActor((Actor)sceneNode.getData());
@@ -65,7 +68,7 @@ public class SceneNode<T> extends DefaultMutableTreeNode {
         if (data instanceof Actor)
             ((Actor)data).remove();
         parent.remove(this);
-        MainFrame.getSceneGraph().refresh();
+        sceneGraph.refresh();
     }
 
     @Override

@@ -62,18 +62,20 @@ public class SceneGraph extends SuitonTree {
     private TreeDragSource dragSource;
     @SuppressWarnings("all")
     private TreeDropTarget dropTarget;
+    private MainFrame mainFrame;
 
-    public SceneGraph() {
+    public SceneGraph(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
+        dragSource = new TreeDragSource(this, DnDConstants.ACTION_MOVE);
+        dropTarget = new TreeDropTarget(this);
         setRootVisible(false);
         setModel(new DefaultTreeModel(new DefaultMutableTreeNode()));
         setBorder(null);
-        dragSource = new TreeDragSource(this, DnDConstants.ACTION_MOVE);
-        dropTarget = new TreeDropTarget(this);
     }
 
-    public void init() {
-        Scene currentScene = SceneManager.getCurrentScene();
-        root = new SceneNode<>(currentScene.getName(), currentScene);
+    public void init(SceneManager sceneManager) {
+        Scene currentScene = sceneManager.getCurrentScene();
+        root = new SceneNode<>(this, currentScene.getName(), currentScene);
 
         //We need to create our own tree model so that we can override some default behaviour.
         DefaultTreeModel model = new DefaultTreeModel(root);
@@ -105,17 +107,16 @@ public class SceneGraph extends SuitonTree {
 
         addTreeSelectionListener(e -> {
             //Don't want the new game object menu items to be enabled if nothing is selected.
-            MainFrame.getN2DMenuBar().getGameObjectMenu().setEnabled(e.isAddedPath());
+            mainFrame.getSuitonMenuBar().getGameObjectMenu().setEnabled(e.isAddedPath());
 
             if (e.isAddedPath()) {
                 SceneNode selectedNode = (SceneNode) e.getPath().getLastPathComponent();
                 if (selectedNode.getData() instanceof GameObject) {
-                    MainFrame.getRenderCanvas().setSelectedObject((GameObject) selectedNode.getData());
+                    mainFrame.getRenderCanvas().setSelectedObject((GameObject) selectedNode.getData());
                     return;
                 }
             }
-
-            MainFrame.getRenderCanvas().setSelectedObject(null);
+            mainFrame.getRenderCanvas().setSelectedObject(null);
         });
 
         setEditable(true);
@@ -169,8 +170,8 @@ public class SceneGraph extends SuitonTree {
      * @param layer the layer to be added
      */
     public void addLayer(Layer layer) {
-        SceneNode<Layer> layerNode = new SceneNode<>(layer.getName(), layer);
-        layer.getChildren().forEach(go -> layerNode.add(new SceneNode<>(go.getName(), (Group)go)));
+        SceneNode<Layer> layerNode = new SceneNode<>(this, layer.getName(), layer);
+        layer.getChildren().forEach(go -> layerNode.add(new SceneNode<>(this, go.getName(), (Group)go)));
         root.add(layerNode);
         refresh();
     }

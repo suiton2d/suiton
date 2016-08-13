@@ -18,8 +18,6 @@
 
 package com.suiton2d.editor.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.loaders.resolvers.AbsoluteFileHandleResolver;
 import com.badlogic.gdx.math.Vector2;
 import com.suiton2d.assets.AssetManager;
 import com.suiton2d.editor.framework.Project;
@@ -41,16 +39,18 @@ import java.awt.FlowLayout;
 import java.io.File;
 
 public class NewProjectDialog extends JDialog {
-
+    private MainFrame mainFrame;
+    private AssetManager assetManager;
     private JTextField projNameTf;
     private JTextField parentDirTf;
     private JButton browseBtn;
     private JButton createBtn;
     private JButton cancelBtn;
 
-    public NewProjectDialog() {
+    public NewProjectDialog(MainFrame mainFrame, SceneManager sceneManager, AssetManager assetManager) {
+        this.mainFrame = mainFrame;
+        this.assetManager = assetManager;
         setTitle("New Project");
-
         JLabel projNameLbl = new JLabel("Project Name:");
         JLabel parentDirLbl = new JLabel("Parent Directory:");
 
@@ -93,13 +93,13 @@ public class NewProjectDialog extends JDialog {
 
         pack();
         setModal(true);
-        bindButtons();
+        bindButtons(sceneManager);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private void bindButtons() {
+    private void bindButtons(SceneManager sceneManager) {
         cancelBtn.addActionListener(e -> dispose());
 
         createBtn.addActionListener(e -> {
@@ -126,14 +126,13 @@ public class NewProjectDialog extends JDialog {
                     return;
                 }
             }
-            Gdx.app.postRunnable(() -> AssetManager.init(new AbsoluteFileHandleResolver()));
-            Project project = new Project(projDir.getAbsolutePath(), projName);
+            sceneManager.clear();
+            Project project = new Project(projDir.getAbsolutePath(), projName, sceneManager);
             String newSceneName = "Untitled Scene 0";
-            SceneManager.addScene(new Scene(newSceneName, new Vector2(), true));
-            SceneManager.setCurrentScene(newSceneName);
+            sceneManager.addScene(new Scene(newSceneName, new Vector2(), true));
+            sceneManager.setCurrentScene(newSceneName);
+            mainFrame.setProject(project);
             dispose();
-            MainFrame.setProject(project);
-            MainFrame.getSceneGraph().init();
         });
 
         browseBtn.addActionListener(e -> {

@@ -1,20 +1,25 @@
 package com.suiton2d.editor.io.savers;
 
-import com.suiton2d.components.TiledMapRenderer;
+import com.suiton2d.components.gfx.TiledMapRenderer;
 import com.suiton2d.editor.io.FullBufferedWriter;
+import com.suiton2d.editor.io.Saver;
 import com.suiton2d.editor.io.Types;
 
 import java.io.IOException;
 
-public class TiledMapRendererSaver extends BaseComponentSaver<TiledMapRenderer> {
+public class TiledMapRendererSaver implements Saver {
 
-    public TiledMapRendererSaver(TiledMapRenderer component) {
-        super(component);
+    private TiledMapRenderer renderer;
+
+    public TiledMapRendererSaver(TiledMapRenderer renderer) {
+        this.renderer = renderer;
     }
 
     @Override
-    public void onSave(FullBufferedWriter fw) throws IOException {
+    public void save(FullBufferedWriter fw) throws IOException {
+        fw.writeLine(Types.ComponentType.RENDER.name());
+        fw.writeLine(renderer.getName());
         fw.writeLine(Types.RendererType.TILED.name());
-        fw.writeLine(getComponent().getFilename());
+        fw.writeLine(renderer.getFilename());
     }
 }

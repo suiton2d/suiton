@@ -3,23 +3,28 @@ package com.suiton2d.editor.io.loaders;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.suiton2d.assets.AssetManager;
 import com.suiton2d.assets.Script;
-import com.suiton2d.components.Behavior;
-import com.suiton2d.components.Component;
+import com.suiton2d.components.behavior.Behavior;
 import com.suiton2d.editor.io.FullBufferedReader;
+import com.suiton2d.editor.io.Loader;
 import com.suiton2d.scene.Scene;
 
 import java.io.IOException;
 
-public class BehaviorLoader extends BaseComponentLoader {
+public class BehaviorLoader implements Loader<Behavior> {
 
-    public BehaviorLoader(Scene scene) {
-        super(scene);
+    private Scene scene;
+    private AssetManager assetManager;
+
+    public BehaviorLoader(Scene scene, AssetManager assetManager) {
+        this.scene = scene;
+        this.assetManager = assetManager;
     }
 
     @Override
-    public Component onLoad(FullBufferedReader fr) throws IOException {
+    public Behavior load(FullBufferedReader fr) throws IOException {
+        String name = fr.readLine();
         String filename = fr.readLine();
-        AssetManager.addAsset(scene.getName(), new AssetDescriptor<>(filename, Script.class));
-        return new Behavior(getName(), filename);
+        assetManager.registerAsset(scene.getName(), new AssetDescriptor<>(filename, Script.class));
+        return new Behavior(name, filename, assetManager);
     }
 }

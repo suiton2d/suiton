@@ -38,7 +38,12 @@ import java.awt.Dimension;
  */
 public class ChangeSceneDialog extends JDialog {
 
-    public ChangeSceneDialog() {
+    private MainFrame mainFrame;
+    private SceneManager sceneManager;
+
+    public ChangeSceneDialog(MainFrame mainFrame, SceneManager sceneManager) {
+        this.mainFrame = mainFrame;
+        this.sceneManager = sceneManager;
         setTitle("Change Scene");
         setupContents();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -47,7 +52,7 @@ public class ChangeSceneDialog extends JDialog {
     }
 
     private void setupContents() {
-        final DefaultListModel<Scene> model = createListModel();
+        final DefaultListModel<Scene> model = createListModel(sceneManager);
         final SuitonList<Scene> sceneListBox = new SuitonList<>(model);
         final JButton okBtn = new JButton("Ok");
         final JButton cancelBtn = new JButton("Cancel");
@@ -64,9 +69,9 @@ public class ChangeSceneDialog extends JDialog {
 
         okBtn.addActionListener(e -> {
             Scene scene = sceneListBox.getSelectedValue();
-            SceneGraph sceneGraph = MainFrame.getSceneGraph();
-            SceneManager.setCurrentScene(scene.getName());
-            sceneGraph.init();
+            SceneGraph sceneGraph = mainFrame.getSceneGraph();
+            sceneManager.setCurrentScene(scene.getName());
+            sceneGraph.init(sceneManager);
             scene.getChildren().forEach((l) -> sceneGraph.addLayer((Layer)l));
             sceneGraph.refresh();
             sceneGraph.refresh();
@@ -82,9 +87,9 @@ public class ChangeSceneDialog extends JDialog {
         pack();
     }
 
-    private DefaultListModel<Scene> createListModel() {
+    private DefaultListModel<Scene> createListModel(SceneManager sceneManager) {
         DefaultListModel<Scene> sceneList = new DefaultListModel<>();
-        for (Scene scene : SceneManager.getSceneList())
+        for (Scene scene : sceneManager.getSceneList())
             sceneList.addElement(scene);
 
         return sceneList;

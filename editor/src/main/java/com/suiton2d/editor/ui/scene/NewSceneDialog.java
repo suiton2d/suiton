@@ -41,9 +41,14 @@ import java.awt.Color;
  */
 public class NewSceneDialog extends JDialog {
 
+    private MainFrame mainFrame;
+    private SceneManager sceneManager;
+
     private JTextField nameTf;
 
-    public NewSceneDialog() {
+    public NewSceneDialog(MainFrame mainFrame, SceneManager sceneManager) {
+        this.mainFrame = mainFrame;
+        this.sceneManager = sceneManager;
         setTitle("New Scene");
         setupContents();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -62,7 +67,7 @@ public class NewSceneDialog extends JDialog {
         final JPanel namePanel = new JPanel();
         final JPanel btnPanel = new JPanel();
 
-        nameTf.setText("Untitled Scene " + SceneManager.getSceneCount());
+        nameTf.setText("Untitled Scene " + sceneManager.getSceneCount());
 
         namePanel.add(nameLbl);
         namePanel.add(nameTf);
@@ -102,10 +107,10 @@ public class NewSceneDialog extends JDialog {
         okBtn.addActionListener(e -> {
             String newSceneName = nameTf.getText();
             Scene scene = new Scene(newSceneName, new Vector2(), true);
-            SceneGraph sceneGraph = MainFrame.getSceneGraph();
-            SceneManager.addScene(scene);
-            SceneManager.setCurrentScene(newSceneName);
-            sceneGraph.init();
+            SceneGraph sceneGraph = mainFrame.getSceneGraph();
+            sceneManager.addScene(scene);
+            sceneManager.setCurrentScene(newSceneName);
+            sceneGraph.init(sceneManager);
             scene.getChildren().forEach((l) -> sceneGraph.addLayer((Layer) l));
             sceneGraph.refresh();
             dispose();
@@ -120,7 +125,7 @@ public class NewSceneDialog extends JDialog {
 
     private boolean validateText() {
         String txt = nameTf.getText();
-        Project project = MainFrame.getProject();
+        Project project = mainFrame.getProject();
         return !txt.isEmpty() && !project.containsSceneWithName(txt);
     }
 }

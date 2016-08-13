@@ -25,9 +25,7 @@ import javax.swing.*;
 public class SceneNodePopup extends JPopupMenu {
 
     public SceneNodePopup(final SceneNode node) {
-
         JMenuItem deleteMenuItem = add("Delete");
-
         deleteMenuItem.addActionListener(e -> node.remove());
     }
 }

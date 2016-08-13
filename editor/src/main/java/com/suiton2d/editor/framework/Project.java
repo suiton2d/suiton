@@ -20,9 +20,7 @@ package com.suiton2d.editor.framework;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlWriter;
-import com.suiton2d.editor.io.FullBufferedReader;
 import com.suiton2d.editor.io.FullBufferedWriter;
-import com.suiton2d.editor.io.loaders.SceneLoader;
 import com.suiton2d.editor.io.savers.SceneSaver;
 import com.suiton2d.editor.ui.build.BuildProgressUpdateListener;
 import com.suiton2d.editor.util.PlatformUtil;
@@ -31,7 +29,6 @@ import com.suiton2d.scene.Scene;
 import com.suiton2d.scene.SceneManager;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -39,11 +36,13 @@ import java.io.StringWriter;
 public class Project {
     private String projectDir;
     private String projectName;
+    private SceneManager sceneManager;
 
     @SuppressWarnings("all")
-    public Project(String dir, String name) {
+    public Project(String dir, String name, SceneManager sceneManager) {
         this.projectDir = dir;
         this.projectName = name;
+        this.sceneManager = sceneManager;
         if (this.projectName.endsWith(".n2d"))
             this.projectName = this.projectName.substring(0, this.projectName.length() - 4);
         File assetsDir = new File(getAssetsDirPath());
@@ -51,7 +50,7 @@ public class Project {
     }
 
     @SuppressWarnings("all")
-    public Project(String path) {
+    public Project(String path, SceneManager sceneManager) {
         File file = new File(path);
         this.projectDir = file.getParent();
         this.projectName = file.getName();
@@ -59,6 +58,7 @@ public class Project {
             this.projectName = this.projectName.substring(0, this.projectName.length() - 4);
         File assetsDir = new File(getAssetsDirPath());
         assetsDir.mkdir();
+        this.sceneManager = sceneManager;
     }
 
     public String getPath() {
@@ -77,36 +77,17 @@ public class Project {
         return getProjectDir() + File.separator + "Assets";
     }
 
-    public void loadProject() throws IOException {
-        SceneManager.clear();
-        try (FullBufferedReader fr = new FullBufferedReader(new FileReader(getPath()))) {
-            this.projectDir = fr.readLine();
-            this.projectName = fr.readLine();
-            int numScenes = fr.readIntLine();
-            SceneLoader sceneLoader = new SceneLoader();
-            for (int i = 0; i < numScenes; ++i) {
-                Scene scene = sceneLoader.load(fr);
-                SceneManager.addScene(scene);
-            }
-            String currSceneName = fr.readLine();
-            SceneManager.setCurrentScene(currSceneName);
-        }
-    }
-
     public void saveProject() throws IOException {
         try (FullBufferedWriter fw = new FullBufferedWriter(new FileWriter(getPath()))) {
-            fw.writeLine(projectDir);
-            fw.writeLine(projectName);
-            fw.writeIntLine(SceneManager.getSceneCount());
-            for (Scene scene : SceneManager.getSceneList())
+            fw.write(sceneManager.getCurrentScene().getName());
+            fw.writeIntLine(sceneManager.getSceneCount());
+            for (Scene scene : sceneManager.getSceneList())
                 new SceneSaver(scene).save(fw);
-
-            fw.write(SceneManager.getCurrentScene().getName());
         }
     }
 
     public boolean containsSceneWithName(String name) {
-        for (Scene scene : SceneManager.getSceneList()) {
+        for (Scene scene : sceneManager.getSceneList()) {
             if (scene.getName().equals(name))
                 return true;
         }
@@ -126,11 +107,11 @@ public class Project {
                 attribute("startScene", startScene);
         assetsXmlWriter.element("assets");
 
-        for (int i = 0; i < SceneManager.getSceneCount(); ++i) {
-            Scene scene = SceneManager.getSceneList().get(i);
+        for (int i = 0; i < sceneManager.getSceneCount(); ++i) {
+            Scene scene = sceneManager.getSceneList().get(i);
             new SceneBuilder(scene).build(sceneXmlWriter, assetsXmlWriter);
             sceneXmlWriter.pop();
-            listener.onBuildProgressUpdate(scene, i, SceneManager.getSceneCount());
+            listener.onBuildProgressUpdate(scene, i, sceneManager.getSceneCount());
         }
         sceneXmlWriter.pop();
         assetsXmlWriter.pop();

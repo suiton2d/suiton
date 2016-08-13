@@ -23,10 +23,14 @@ import java.util.List;
 public class CanvasInputHandler extends InputAdapter {
     private Vector2 lastPoint = new Vector2();
     private boolean controlDown = false;
+    private MainFrame mainFrame;
     private RenderCanvas renderCanvas;
+    private SceneManager sceneManager;
 
-    public CanvasInputHandler(RenderCanvas renderCanvas) {
+    public CanvasInputHandler(MainFrame mainFrame, RenderCanvas renderCanvas, SceneManager sceneManager) {
+        this.mainFrame = mainFrame;
         this.renderCanvas = renderCanvas;
+        this.sceneManager = sceneManager;
     }
 
     @Override
@@ -58,9 +62,10 @@ public class CanvasInputHandler extends InputAdapter {
                 int size = selectedObjects.size();
                 if (size > 0) {
                     GameObject selectedObject = selectedObjects.get(size - 1).getGameObject();
-                    MainFrame.getSceneGraph().setSelectedNode(new SceneNode<>(selectedObject.getName(), selectedObject));
+                    mainFrame.getSceneGraph().setSelectedNode(new SceneNode<>(mainFrame.getSceneGraph(),
+                            selectedObject.getName(), selectedObject));
                 } else {
-                    MainFrame.getSceneGraph().setSelectionPath(null);
+                    mainFrame.getSceneGraph().setSelectionPath(null);
                 }
                 return true;
             }
@@ -76,7 +81,7 @@ public class CanvasInputHandler extends InputAdapter {
         if (controlDown) {
             int dx = (screenX - (int)lastPoint.x) / 2;
             int dy = -(screenY - (int)lastPoint.y) / 2;
-            Camera cam = SceneManager.getCurrentScene().getCamera();
+            Camera cam = sceneManager.getCurrentScene().getCamera();
             cam.translate(dx, dy, 0.0f);
             cam.update();
             lastPoint = pos;
@@ -94,7 +99,7 @@ public class CanvasInputHandler extends InputAdapter {
 
     @Override
     public boolean scrolled (int amount) {
-        ((OrthographicCamera)SceneManager.getCurrentScene().getCamera()).zoom += amount * 0.25f;
+        ((OrthographicCamera)sceneManager.getCurrentScene().getCamera()).zoom += amount * 0.25f;
         return true;
     }
 
@@ -102,10 +107,10 @@ public class CanvasInputHandler extends InputAdapter {
 
         List<Selection> res = new ArrayList<>();
 
-        if (MainFrame.getProject() == null)
+        if (mainFrame.getProject() == null)
             return res;
 
-        Scene scene = SceneManager.getCurrentScene();
+        Scene scene = sceneManager.getCurrentScene();
         if (scene != null) {
             for (Actor layer : scene.getChildren()) {
                 for (Actor gameObject : ((Layer)layer).getChildren())
@@ -117,7 +122,7 @@ public class CanvasInputHandler extends InputAdapter {
     }
 
     private void searchGameObjectChildrenForSelection(GameObject gameObject, List<Selection> selections, float x, float y) {
-        OrthographicCamera cam = (OrthographicCamera) SceneManager.getCurrentScene().getCamera();
+        OrthographicCamera cam = (OrthographicCamera) sceneManager.getCurrentScene().getCamera();
         if (isGameObjectSelected(gameObject, cam, x, cam.viewportHeight-y))
             selections.add(new Selection(gameObject));
 
@@ -138,7 +143,7 @@ public class CanvasInputHandler extends InputAdapter {
     }
 
     private void transformObject(Vector2 mousPos) {
-        switch (MainFrame.getToolbar().getSelectedRendererWidget()) {
+        switch (mainFrame.getSuitonToolbar().getSelectedRendererWidget()) {
             case SuitonToolbar.RENDERER_WIDGET_TRANSLATE:
                 translateObject(mousPos);
                 break;

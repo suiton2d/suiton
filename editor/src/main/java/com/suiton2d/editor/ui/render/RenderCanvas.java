@@ -21,26 +21,25 @@ package com.suiton2d.editor.ui.render;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglCanvas;
 import com.suiton2d.editor.framework.Selection;
+import com.suiton2d.editor.ui.MainFrame;
 import com.suiton2d.scene.GameObject;
+import com.suiton2d.scene.SceneManager;
 
 public class RenderCanvas extends LwjglCanvas {
 
-    protected RenderAdapter adapter;
-
     protected boolean isMouseDown;
 
-    public RenderCanvas(RenderAdapter adapter) {
-        super(adapter);
-        this.adapter = adapter;
+    public RenderCanvas(MainFrame mainFrame, SceneManager sceneManager) {
+        super(new RenderAdapter(sceneManager));
         this.isMouseDown = false;
-        Gdx.input.setInputProcessor(new CanvasInputHandler(this));
+        Gdx.input.setInputProcessor(new CanvasInputHandler(mainFrame, this, sceneManager));
     }
 
     public Selection getSelectedObject() {
-        return adapter.getSelectedObject();
+        return ((RenderAdapter)getApplicationListener()).getSelectedObject();
     }
 
     public void setSelectedObject(GameObject go) {
-        this.adapter.setSelectedObject(new Selection(go));
+        ((RenderAdapter)getApplicationListener()).setSelectedObject(new Selection(go));
     }
 }

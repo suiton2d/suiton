@@ -1,27 +1,32 @@
 package com.suiton2d.editor.io.savers;
 
 import com.badlogic.gdx.utils.Array;
-import com.suiton2d.components.Animation;
-import com.suiton2d.components.KeyFrameAnimation;
-import com.suiton2d.components.SpriteRenderer;
+import com.suiton2d.components.anim.Animation;
+import com.suiton2d.components.anim.KeyFrameAnimation;
+import com.suiton2d.components.gfx.SpriteRenderer;
 import com.suiton2d.editor.io.FullBufferedWriter;
+import com.suiton2d.editor.io.Saver;
 import com.suiton2d.editor.io.Types;
 
 import java.io.IOException;
 
-public class SpriteRendererSaver extends BaseComponentSaver<SpriteRenderer> {
+public class SpriteRendererSaver implements Saver {
 
-    public SpriteRendererSaver(SpriteRenderer component) {
-        super(component);
+    private SpriteRenderer spriteRenderer;
+
+    public SpriteRendererSaver(SpriteRenderer spriteRenderer) {
+        this.spriteRenderer = spriteRenderer;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onSave(FullBufferedWriter fw) throws IOException {
+    public void save(FullBufferedWriter fw) throws IOException {
+        fw.writeLine(Types.ComponentType.RENDER.name());
+        fw.writeLine(spriteRenderer.getName());
         fw.writeLine(Types.RendererType.SPRITE.name());
-        fw.writeLine(getComponent().getFilename());
-        fw.writeIntLine(getComponent().getAnimations().size);
-        for (Animation anim : (Array<Animation>) getComponent().getAnimations()) {
+        fw.writeLine(spriteRenderer.getFilename());
+        fw.writeIntLine(spriteRenderer.getAnimations().size);
+        for (Animation anim : (Array<Animation>) spriteRenderer.getAnimations()) {
             if (anim instanceof KeyFrameAnimation) {
                 fw.writeLine(Types.AnimationType.KEY_FRAME.name());
                 KeyFrameAnimation keyFrameAnimation = (KeyFrameAnimation) anim;
@@ -35,6 +40,6 @@ public class SpriteRendererSaver extends BaseComponentSaver<SpriteRenderer> {
             }
         }
 
-        fw.writeIntLine(getComponent().getCurrentAnimationIndex());
+        fw.writeIntLine(spriteRenderer.getCurrentAnimationIndex());
     }
 }

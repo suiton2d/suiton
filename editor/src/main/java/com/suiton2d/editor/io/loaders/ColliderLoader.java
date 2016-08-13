@@ -1,21 +1,28 @@
 package com.suiton2d.editor.io.loaders;
 
+import com.badlogic.gdx.physics.box2d.World;
 import com.suiton2d.components.*;
+import com.suiton2d.components.physics.*;
 import com.suiton2d.editor.io.FullBufferedReader;
+import com.suiton2d.editor.io.Loader;
 import com.suiton2d.editor.io.Types;
 import com.suiton2d.scene.Scene;
 
 import java.io.IOException;
 
-public class ColliderLoader extends BaseComponentLoader {
+public class ColliderLoader implements Loader<Collider<? extends CollisionShape>> {
 
-    public ColliderLoader(Scene scene) {
-        super(scene);
+    private Scene scene;
+    private World world;
+
+    public ColliderLoader(Scene scene, World world) {
+        this.scene = scene;
+        this.world = world;
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public Component onLoad(FullBufferedReader fr) throws IOException {
+    public Collider<? extends CollisionShape> load(FullBufferedReader fr) throws IOException {
+        String name = fr.readLine();
         boolean isSensor = fr.readBooleanLine();
         float density = fr.readFloatLine();
         float friction = fr.readFloatLine();
@@ -31,6 +38,6 @@ public class ColliderLoader extends BaseComponentLoader {
             float r = fr.readFloatLine();
             collisionShape = new Circle(physicsMaterial, r);
         }
-        return new Collider(getName(), collisionShape, isSensor);
+        return new Collider(name, collisionShape, isSensor, world);
     }
 }

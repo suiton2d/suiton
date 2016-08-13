@@ -2,7 +2,7 @@ package com.suiton2d.editor.ui.assets;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.suiton2d.editor.framework.FileNode;
-import com.suiton2d.editor.ui.MainFrame;
+import com.suiton2d.editor.framework.Project;
 import com.suiton2d.editor.ui.controls.SuitonTree;
 import com.suiton2d.editor.ui.controls.TreeDragSource;
 
@@ -36,9 +36,9 @@ public class AssetsTree extends SuitonTree {
 
     private boolean initialized = false;
 
-    public void init() {
+    public void init(Project project) {
         setRootVisible(true);
-        root = new FileNode(this, MainFrame.getProject().getAssetsDirPath());
+        root = new FileNode(this, project.getAssetsDirPath());
         setModel(new DefaultTreeModel(root));
         setBorder(null);
         dropTarget = new TreeDropTarget(this);

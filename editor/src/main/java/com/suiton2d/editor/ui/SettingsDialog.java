@@ -11,19 +11,15 @@ import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-/**
- *
- * Created by bonazza on 8/27/14.
- */
 public class SettingsDialog extends SuitonDialog {
 
     private SuitonList<ISettings> settingsList;
     private JPanel mainPanel;
     private JPanel rightPanel;
 
-    public SettingsDialog() {
+    public SettingsDialog(N2DSettings settings) {
         super("Nebula2D Settings", true);
-        render();
+        render(settings);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
@@ -32,20 +28,20 @@ public class SettingsDialog extends SuitonDialog {
         setVisible(true);
     }
 
-    private void render() {
-        JScrollPane settingsPanel = createSettingsListPanel();
+    private void render(N2DSettings settings) {
+        JScrollPane settingsPanel = createSettingsListPanel(settings);
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(settingsPanel, BorderLayout.WEST);
         add(mainPanel);
         settingsList.setSelectedIndex(0);
     }
 
-    private JScrollPane createSettingsListPanel() {
+    private JScrollPane createSettingsListPanel(N2DSettings settings) {
         settingsList = new SuitonList<>();
         final DefaultListModel<ISettings> listModel = new DefaultListModel<>();
         settingsList.setModel(listModel);
         Dimension windowSize = getPreferredSize();
-        populateSettingsList();
+        populateSettingsList(settings);
 
         JScrollPane sp = new JScrollPane(settingsList);
         sp.setPreferredSize(new Dimension(windowSize.width / 4, windowSize.height));
@@ -53,12 +49,12 @@ public class SettingsDialog extends SuitonDialog {
             if (e.getValueIsAdjusting())
                 return;
 
-            ISettings settings = settingsList.getSelectedValue();
+            ISettings isettings = settingsList.getSelectedValue();
 
-            if (settings != null) {
+            if (isettings != null) {
                 if (rightPanel != null)
                     mainPanel.remove(rightPanel);
-                rightPanel = settings.createSettingsPanel(SettingsDialog.this);
+                rightPanel = isettings.createSettingsPanel(SettingsDialog.this);
                 mainPanel.add(rightPanel);
                 mainPanel.validate();
                 mainPanel.repaint();
@@ -70,8 +66,7 @@ public class SettingsDialog extends SuitonDialog {
         return sp;
     }
 
-    private void populateSettingsList() {
-        N2DSettings settings = MainFrame.getSettings();
+    private void populateSettingsList(N2DSettings settings) {
         DefaultListModel<ISettings> model = (DefaultListModel<ISettings>)settingsList.getModel();
         model.addElement(settings.getGradleSettings());
     }

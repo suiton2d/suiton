@@ -32,9 +32,10 @@ import com.suiton2d.scene.SceneManager;
 public class RenderAdapter implements ApplicationListener {
 
     private Selection selectedObject;
+    private SceneManager sceneManager;
 
-    public RenderAdapter() {
-
+    public RenderAdapter(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
     }
 
     public Selection getSelectedObject() {
@@ -51,12 +52,12 @@ public class RenderAdapter implements ApplicationListener {
     }
 
     public OrthographicCamera getCamera() {
-        return (OrthographicCamera) SceneManager.getCurrentScene().getCamera();
+        return (OrthographicCamera) sceneManager.getCurrentScene().getCamera();
     }
 
     @Override
     public void resize(int width, int height) {
-        Scene scene = SceneManager.getCurrentScene();
+        Scene scene = sceneManager.getCurrentScene();
         if (scene != null) {
             Stage stage = scene.getStage();
             Viewport viewport = stage.getViewport();
@@ -69,8 +70,8 @@ public class RenderAdapter implements ApplicationListener {
         Gdx.graphics.getGL20().glClearColor(.17f, .17f, .17f, 1.0f);
         Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (SceneManager.getCurrentScene() != null) {
-            Scene scene = SceneManager.getCurrentScene();
+        if (sceneManager.getCurrentScene() != null) {
+            Scene scene = sceneManager.getCurrentScene();
             scene.update(Gdx.graphics.getDeltaTime(), false);
             if (selectedObject != null)
                 selectedObject.renderSelection(scene.getCamera());
@@ -89,8 +90,8 @@ public class RenderAdapter implements ApplicationListener {
     @Override
     public void dispose() {
         Gdx.app.postRunnable(() -> {
-            if (SceneManager.getCurrentScene() != null)
-                SceneManager.cleanup();
+            if (sceneManager.getCurrentScene() != null)
+                sceneManager.cleanup();
         });
     }
 }

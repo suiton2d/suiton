@@ -23,7 +23,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.suiton2d.components.Animation;
+import com.suiton2d.components.anim.Animation;
 import com.suiton2d.scene.Transform;
 
 import javax.swing.*;
